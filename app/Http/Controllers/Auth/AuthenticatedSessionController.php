@@ -28,7 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user();
+
+        if ($user && $user->isAdmin()) {
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
+
+        // Operational staff (Cashier, Packer, Installer, Worker) go straight to POS Terminal
+        session()->forget('url.intended');
+        return redirect()->route('pos.index');
     }
 
     /**
