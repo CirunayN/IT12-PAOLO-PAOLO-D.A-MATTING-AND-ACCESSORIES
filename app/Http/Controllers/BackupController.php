@@ -77,10 +77,21 @@ class BackupController extends Controller
         return $fallback;
     }
 
+    protected function getArchiveDirectory(array $settings): string
+    {
+        $backupDir = $this->getBackupDirectory($settings);
+        $archiveDir = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . 'archive';
+        if (!File::exists($archiveDir)) {
+            File::makeDirectory($archiveDir, 0777, true, true);
+        }
+        return $archiveDir;
+    }
+
     public function index()
     {
         $settings = $this->getSettings();
         $backupDir = $this->getBackupDirectory($settings);
+        $archiveDir = $this->getArchiveDirectory($settings);
 
         $files = [];
         if (File::exists($backupDir)) {
@@ -106,7 +117,31 @@ class BackupController extends Controller
             usort($files, fn($a, $b) => $b['created_at']->timestamp <=> $a['created_at']->timestamp);
         }
 
-        return view('backup.index', compact('settings', 'files', 'backupDir'));
+        // Load Archived / Recoverable Backups
+        $archivedFiles = [];
+        if (File::exists($archiveDir)) {
+            $allArchived = File::files($archiveDir);
+            foreach ($allArchived as $file) {
+                if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak'])) {
+                    $bytes = $file->getSize();
+                    $size = $bytes >= 1048576 
+                        ? number_format($bytes / 1048576, 2) . ' MB' 
+                        : number_format($bytes / 1024, 2) . ' KB';
+
+                    $archivedFiles[] = [
+                        'name' => $file->getFilename(),
+                        'path' => $file->getPathname(),
+                        'size' => $size,
+                        'bytes' => $bytes,
+                        'archived_at' => Carbon::createFromTimestamp($file->getMTime()),
+                    ];
+                }
+            }
+
+            usort($archivedFiles, fn($a, $b) => $b['archived_at']->timestamp <=> $a['archived_at']->timestamp);
+        }
+
+        return view('backup.index', compact('settings', 'files', 'archivedFiles', 'backupDir', 'archiveDir'));
     }
 
     public function createBackup()
@@ -297,9 +332,17 @@ class BackupController extends Controller
         $backupDir = $this->getBackupDirectory($settings);
         $clean = basename($filename);
         $path = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+        $archiveDir = $this->getArchiveDirectory($settings);
+        $archivePath = rtrim($archiveDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
 
         if (File::exists($path)) {
             return response()->download($path, $clean, [
+                'Content-Type' => 'application/sql',
+            ]);
+        }
+
+        if (File::exists($archivePath)) {
+            return response()->download($archivePath, $clean, [
                 'Content-Type' => 'application/sql',
             ]);
         }
@@ -312,15 +355,55 @@ class BackupController extends Controller
         $request->validate(['filename' => 'required|string']);
         $settings = $this->getSettings();
         $backupDir = $this->getBackupDirectory($settings);
+        $archiveDir = $this->getArchiveDirectory($settings);
+
         $clean = basename($request->filename);
         $path = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+        $archivePath = rtrim($archiveDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
 
         if (File::exists($path)) {
-            @unlink($path);
-            return redirect()->route('backup.index')->with('success', "Backup '{$clean}' deleted successfully.");
+            // Move file to recovery archive instead of permanently unlinking
+            File::move($path, $archivePath);
+            return redirect()->route('backup.index')->with('success', "Backup '{$clean}' moved to Recovery Archive. You can recover it at any time.");
         }
 
-        return redirect()->route('backup.index')->with('error', 'File not found.');
+        return redirect()->route('backup.index')->with('error', 'Backup file not found.');
+    }
+
+    public function recoverBackup(Request $request)
+    {
+        $request->validate(['filename' => 'required|string']);
+        $settings = $this->getSettings();
+        $backupDir = $this->getBackupDirectory($settings);
+        $archiveDir = $this->getArchiveDirectory($settings);
+
+        $clean = basename($request->filename);
+        $archivePath = rtrim($archiveDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+        $activePath = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+
+        if (File::exists($archivePath)) {
+            File::move($archivePath, $activePath);
+            return redirect()->route('backup.index')->with('success', "Backup '{$clean}' successfully recovered and restored to active backups!");
+        }
+
+        return redirect()->route('backup.index')->with('error', 'Archived backup file not found.');
+    }
+
+    public function purgeBackup(Request $request)
+    {
+        $request->validate(['filename' => 'required|string']);
+        $settings = $this->getSettings();
+        $archiveDir = $this->getArchiveDirectory($settings);
+
+        $clean = basename($request->filename);
+        $archivePath = rtrim($archiveDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+
+        if (File::exists($archivePath)) {
+            @unlink($archivePath);
+            return redirect()->route('backup.index')->with('success', "Archived backup '{$clean}' has been permanently deleted from storage.");
+        }
+
+        return redirect()->route('backup.index')->with('error', 'Archived file not found.');
     }
 
     public function restoreBackup(Request $request)
@@ -332,6 +415,7 @@ class BackupController extends Controller
 
         $settings = $this->getSettings();
         $backupDir = $this->getBackupDirectory($settings);
+        $archiveDir = $this->getArchiveDirectory($settings);
         $targetFile = null;
 
         if ($request->hasFile('backup_file')) {
@@ -342,8 +426,11 @@ class BackupController extends Controller
         } elseif ($request->filled('existing_file')) {
             $clean = basename($request->existing_file);
             $existing = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+            $archiveExisting = rtrim($archiveDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
             if (File::exists($existing)) {
                 $targetFile = $existing;
+            } elseif (File::exists($archiveExisting)) {
+                $targetFile = $archiveExisting;
             }
         }
 

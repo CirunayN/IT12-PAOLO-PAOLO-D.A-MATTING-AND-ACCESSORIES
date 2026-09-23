@@ -166,21 +166,36 @@
         </div>
 
         <!-- RIGHT COLUMN: Backups Archive List (8 cols) -->
-        <div class="lg:col-span-8">
+        <div class="lg:col-span-8 space-y-4">
             <div class="glass-card rounded-2xl border shadow-sm overflow-hidden space-y-0">
-                <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                    <div>
-                        <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                            <i class="fas fa-clock-rotate-left text-red-500"></i>
-                            Backup Archives
-                        </h3>
+                <!-- Header with Tabs -->
+                <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50 dark:bg-dark-850/50">
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="tabActiveBtn" onclick="switchBackupTab('active')"
+                            class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer bg-red-600 text-white shadow-sm shadow-red-600/20">
+                            <i class="fas fa-database"></i>
+                            <span>Active Backups</span>
+                            <span class="px-2 py-0.5 rounded-full text-[11px] font-black bg-white/20 text-white">{{ count($files) }}</span>
+                        </button>
+
+                        <button type="button" id="tabArchiveBtn" onclick="switchBackupTab('archive')"
+                            class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700">
+                            <i class="fas fa-box-archive"></i>
+                            <span>Recovery Archive</span>
+                            <span id="archiveCountBadge" class="px-2 py-0.5 rounded-full text-[11px] font-black {{ count($archivedFiles) > 0 ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30' : 'bg-slate-300 dark:bg-dark-700 text-slate-600 dark:text-slate-400' }}">
+                                {{ count($archivedFiles) }}
+                            </span>
+                        </button>
                     </div>
-                    <span class="text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300">
-                        {{ count($files) }} Available
-                    </span>
+
+                    <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
+                        <i class="fas fa-shield-halved text-emerald-500"></i>
+                        <span>Protected Snapshot Storage</span>
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto">
+                <!-- TAB 1: ACTIVE BACKUPS TABLE -->
+                <div id="activeBackupsTabContent" class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead>
                             <tr class="text-xs uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-dark-850 border-b border-slate-200 dark:border-slate-800">
@@ -208,27 +223,19 @@
                                 <td class="p-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         <!-- Download -->
-                                        <a href="{{ route('backup.download', $file['name']) }}" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-red-600 hover:text-white text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors" title="Download SQL File">
+                                        <a href="{{ route('backup.download', $file['name']) }}" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-red-600 hover:text-white text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Download SQL File">
                                             <i class="fas fa-download"></i>
                                         </a>
 
-                                        <!-- Restore from this archive -->
-                                        <form method="POST" action="{{ route('backup.restore') }}" onsubmit="return confirm('Restore database from {{ $file['name'] }}? Existing records will be replaced.');" class="inline-block">
-                                            @csrf
-                                            <input type="hidden" name="existing_file" value="{{ $file['name'] }}">
-                                            <button type="submit" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-amber-500 hover:text-slate-900 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors" title="Restore this backup">
-                                                <i class="fas fa-rotate-left"></i>
-                                            </button>
-                                        </form>
+                                        <!-- Restore from this backup -->
+                                        <button type="button" onclick="promptRestoreBackup('{{ $file['name'] }}', '{{ $file['size'] }}')" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-amber-500 hover:text-slate-900 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Restore this backup">
+                                            <i class="fas fa-rotate-left"></i>
+                                        </button>
 
-                                        <!-- Delete -->
-                                        <form method="POST" action="{{ route('backup.delete') }}" onsubmit="return confirm('Delete backup file {{ $file['name'] }}?');" class="inline-block">
-                                            @csrf
-                                            <input type="hidden" name="filename" value="{{ $file['name'] }}">
-                                            <button type="submit" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 hover:text-white text-slate-400 flex items-center justify-center text-xs transition-colors" title="Delete backup">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <!-- Archive / Delete (With Modal Confirmation) -->
+                                        <button type="button" onclick="promptArchiveBackup('{{ $file['name'] }}', '{{ $file['size'] }}', '{{ $file['created_at']->format('M d, Y h:i A') }}')" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 hover:text-white text-slate-400 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Archive / Delete backup">
+                                            <i class="fas fa-box-archive"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -236,7 +243,78 @@
                             <tr>
                                 <td colspan="4" class="p-8 text-center text-slate-400 text-sm">
                                     <i class="fas fa-database text-3xl mb-2 opacity-40 block"></i>
-                                    No backups created yet. Click "Backup Database Now" above to generate your first backup.
+                                    No active backups created yet. Click "Backup Database Now" to generate a snapshot.
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- TAB 2: RECOVERY ARCHIVE TABLE -->
+                <div id="archivedBackupsTabContent" class="hidden overflow-x-auto">
+                    <div class="p-3 bg-amber-500/10 border-b border-amber-500/20 text-amber-800 dark:text-amber-300 text-xs flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-info-circle text-amber-500"></i>
+                            <span>Archived backups are kept in safe retention. You can <strong>recover</strong> them back to active backups anytime or <strong>restore</strong> the database directly.</span>
+                        </div>
+                    </div>
+
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="text-xs uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-dark-850 border-b border-slate-200 dark:border-slate-800">
+                                <th class="p-4">Archived Backup</th>
+                                <th class="p-4">File Size</th>
+                                <th class="p-4">Date Archived</th>
+                                <th class="p-4 text-center">Recovery Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                            @forelse($archivedFiles as $archived)
+                            <tr class="hover:bg-slate-50 dark:hover:bg-dark-800/40 transition-colors">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-2.5">
+                                        <i class="fas fa-box-archive text-amber-500 text-lg"></i>
+                                        <div>
+                                            <span class="font-mono font-bold text-xs sm:text-sm text-slate-900 dark:text-white block">{{ $archived['name'] }}</span>
+                                            <span class="text-[10px] text-amber-500 font-semibold uppercase tracking-wider">Archived Snapshot</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4 font-mono text-xs text-slate-600 dark:text-slate-300">
+                                    {{ $archived['size'] }}
+                                </td>
+                                <td class="p-4 text-xs text-slate-500 dark:text-slate-400">
+                                    {{ $archived['archived_at']->format('M d, Y h:i A') }}
+                                </td>
+                                <td class="p-4 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <!-- Recover to Active -->
+                                        <button type="button" onclick="promptRecoverBackup('{{ $archived['name'] }}', '{{ $archived['size'] }}', '{{ $archived['archived_at']->format('M d, Y h:i A') }}')"
+                                            class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500 text-emerald-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer" title="Recover to Active Backups">
+                                            <i class="fas fa-arrow-rotate-left"></i>
+                                            <span>Recover</span>
+                                        </button>
+
+                                        <!-- Direct Restore from Archive -->
+                                        <button type="button" onclick="promptRestoreBackup('{{ $archived['name'] }}', '{{ $archived['size'] }}')"
+                                            class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-amber-500 hover:text-slate-900 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Direct Restore from this Archive">
+                                            <i class="fas fa-rotate-left"></i>
+                                        </button>
+
+                                        <!-- Permanent Purge -->
+                                        <button type="button" onclick="promptPurgeBackup('{{ $archived['name'] }}', '{{ $archived['size'] }}')"
+                                            class="w-8 h-8 rounded-lg bg-rose-500/15 hover:bg-rose-600 text-rose-500 hover:text-white flex items-center justify-center text-xs transition-colors cursor-pointer" title="Permanently Delete">
+                                            <i class="fas fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="p-8 text-center text-slate-400 text-sm">
+                                    <i class="fas fa-box-open text-3xl mb-2 opacity-40 block"></i>
+                                    Recovery Archive is empty. Deleted backups will be preserved here and can be recovered anytime.
                                 </td>
                             </tr>
                             @endforelse
@@ -248,4 +326,334 @@
 
     </div>
 </div>
+
+<!-- ========================================== -->
+<!-- 1. ARCHIVE CONFIRMATION MODAL -->
+<!-- ========================================== -->
+<div id="archiveBackupModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm sm:max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 transform transition-all">
+        <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fas fa-box-archive"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="font-display font-black text-lg text-slate-900 dark:text-white leading-tight">Move to Recovery Archive?</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Safe deletion with full recovery retention</p>
+            </div>
+            <button type="button" onclick="closeArchiveBackupModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl -mr-1 -mt-1 cursor-pointer">
+                &times;
+            </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-dark-900/80 border border-slate-200 dark:border-slate-800 space-y-2 text-xs font-mono">
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400 font-sans">File Name:</span>
+                <span id="archiveModalFilename" class="font-bold text-slate-900 dark:text-white truncate max-w-[200px]">-</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400 font-sans">File Size:</span>
+                <span id="archiveModalSize" class="font-bold text-emerald-500">-</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400 font-sans">Created Date:</span>
+                <span id="archiveModalDate" class="text-slate-700 dark:text-slate-300">-</span>
+            </div>
+        </div>
+
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            This backup will be removed from your active list and stored in the <strong>Recovery Archive</strong>. You can recover it or restore your database from it whenever you need.
+        </p>
+
+        <form id="archiveBackupForm" method="POST" action="{{ route('backup.delete') }}">
+            @csrf
+            <input type="hidden" name="filename" id="archiveFormFilenameInput">
+            <div class="flex items-center gap-3 pt-2">
+                <button type="button" onclick="closeArchiveBackupModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 font-bold text-xs sm:text-sm shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <i class="fas fa-box-archive"></i>
+                    <span>Move to Archive</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 2. RECOVER CONFIRMATION MODAL -->
+<!-- ========================================== -->
+<div id="recoverBackupModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm sm:max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 transform transition-all">
+        <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fas fa-arrow-rotate-left"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="font-display font-black text-lg text-slate-900 dark:text-white leading-tight">Recover Archived Backup?</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Restore file back to active backups</p>
+            </div>
+            <button type="button" onclick="closeRecoverBackupModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl -mr-1 -mt-1 cursor-pointer">
+                &times;
+            </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-dark-900/80 border border-slate-200 dark:border-slate-800 space-y-2 text-xs font-mono">
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400 font-sans">File Name:</span>
+                <span id="recoverModalFilename" class="font-bold text-slate-900 dark:text-white truncate max-w-[200px]">-</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400 font-sans">File Size:</span>
+                <span id="recoverModalSize" class="font-bold text-emerald-500">-</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400 font-sans">Archived Date:</span>
+                <span id="recoverModalDate" class="text-slate-700 dark:text-slate-300">-</span>
+            </div>
+        </div>
+
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            This will move the backup back into your <strong>Active Backups</strong> list, making it immediately available for downloads and standard restores.
+        </p>
+
+        <form id="recoverBackupForm" method="POST" action="{{ route('backup.recover') }}">
+            @csrf
+            <input type="hidden" name="filename" id="recoverFormFilenameInput">
+            <div class="flex items-center gap-3 pt-2">
+                <button type="button" onclick="closeRecoverBackupModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <i class="fas fa-arrow-rotate-left"></i>
+                    <span>Yes, Recover Backup</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 3. PERMANENT PURGE VALIDATION MODAL -->
+<!-- ========================================== -->
+<div id="purgeBackupModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm sm:max-w-md w-full p-6 border border-rose-500/30 shadow-2xl space-y-4 transform transition-all">
+        <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fas fa-triangle-exclamation"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="font-display font-black text-lg text-slate-900 dark:text-white leading-tight">Permanently Delete Backup?</h3>
+                <p class="text-xs text-rose-500 font-semibold mt-1">Irreversible destructive action</p>
+            </div>
+            <button type="button" onclick="closePurgeBackupModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl -mr-1 -mt-1 cursor-pointer">
+                &times;
+            </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1 text-xs text-rose-700 dark:text-rose-300">
+            <strong class="font-bold block">⚠️ Danger: No Recovery After This Point</strong>
+            <p class="text-[11px] leading-relaxed">This backup file will be completely wiped from disk storage. It cannot be recovered from the archive once deleted.</p>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/80 border border-slate-200 dark:border-slate-800 space-y-1 text-xs font-mono">
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 font-sans">File:</span>
+                <span id="purgeModalFilename" class="font-bold text-slate-900 dark:text-white truncate max-w-[200px]">-</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 font-sans">Size:</span>
+                <span id="purgeModalSize" class="text-slate-600 dark:text-slate-300">-</span>
+            </div>
+        </div>
+
+        <!-- Validation Checkbox -->
+        <label class="flex items-start gap-2.5 cursor-pointer p-2.5 rounded-xl bg-slate-100 dark:bg-dark-800 border border-slate-300 dark:border-slate-700 select-none">
+            <input type="checkbox" id="purgeConfirmCheckbox" onchange="togglePurgeButton()" class="mt-0.5 w-4 h-4 rounded text-rose-600 focus:ring-rose-500 border-slate-300 dark:border-slate-600">
+            <span class="text-xs text-slate-700 dark:text-slate-300 font-semibold">
+                I understand this backup cannot be recovered and I want to permanently destroy this file.
+            </span>
+        </label>
+
+        <form id="purgeBackupForm" method="POST" action="{{ route('backup.purge') }}">
+            @csrf
+            <input type="hidden" name="filename" id="purgeFormFilenameInput">
+            <div class="flex items-center gap-3 pt-1">
+                <button type="button" onclick="closePurgeBackupModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" id="purgeSubmitBtn" disabled
+                    class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <i class="fas fa-trash-can"></i>
+                    <span>Permanently Purge</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 4. DATABASE RESTORE CONFIRMATION MODAL -->
+<!-- ========================================== -->
+<div id="restoreBackupModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm sm:max-w-md w-full p-6 border border-amber-500/30 shadow-2xl space-y-4 transform transition-all">
+        <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fas fa-rotate-left"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="font-display font-black text-lg text-slate-900 dark:text-white leading-tight">Restore Database Snapshot?</h3>
+                <p class="text-xs text-amber-500 font-semibold mt-1">Live database overwrite confirmation</p>
+            </div>
+            <button type="button" onclick="closeRestoreBackupModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl -mr-1 -mt-1 cursor-pointer">
+                &times;
+            </button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-800 dark:text-amber-200 space-y-1">
+            <strong class="font-bold flex items-center gap-1.5">
+                <i class="fas fa-triangle-exclamation"></i>
+                Database Overwrite Warning
+            </strong>
+            <p class="text-[11px] leading-relaxed">Restoring this backup will replace current database tables and transactions with the records contained in this backup snapshot.</p>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/80 border border-slate-200 dark:border-slate-800 space-y-1 text-xs font-mono">
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 font-sans">Backup Target:</span>
+                <span id="restoreModalFilename" class="font-bold text-slate-900 dark:text-white truncate max-w-[200px]">-</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-slate-500 font-sans">Size:</span>
+                <span id="restoreModalSize" class="text-slate-600 dark:text-slate-300">-</span>
+            </div>
+        </div>
+
+        <form id="restoreExistingBackupForm" method="POST" action="{{ route('backup.restore') }}">
+            @csrf
+            <input type="hidden" name="existing_file" id="restoreFormFilenameInput">
+            <div class="flex items-center gap-3 pt-2">
+                <button type="button" onclick="closeRestoreBackupModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-slate-900 font-black text-xs sm:text-sm shadow-md shadow-amber-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <i class="fas fa-rotate-left"></i>
+                    <span>Yes, Overwrite &amp; Restore</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    function switchBackupTab(tab) {
+        const activeBtn = document.getElementById('tabActiveBtn');
+        const archiveBtn = document.getElementById('tabArchiveBtn');
+        const activeContent = document.getElementById('activeBackupsTabContent');
+        const archiveContent = document.getElementById('archivedBackupsTabContent');
+
+        if (tab === 'active') {
+            activeBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer bg-red-600 text-white shadow-sm shadow-red-600/20';
+            archiveBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700';
+            activeContent.classList.remove('hidden');
+            archiveContent.classList.add('hidden');
+        } else {
+            archiveBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer bg-amber-600 text-white shadow-sm shadow-amber-600/20';
+            activeBtn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700';
+            activeContent.classList.add('hidden');
+            archiveContent.classList.remove('hidden');
+        }
+    }
+
+    // 1. Archive Modal
+    function promptArchiveBackup(filename, size, date) {
+        document.getElementById('archiveModalFilename').innerText = filename;
+        document.getElementById('archiveModalSize').innerText = size;
+        document.getElementById('archiveModalDate').innerText = date;
+        document.getElementById('archiveFormFilenameInput').value = filename;
+
+        const modal = document.getElementById('archiveBackupModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeArchiveBackupModal() {
+        const modal = document.getElementById('archiveBackupModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // 2. Recover Modal
+    function promptRecoverBackup(filename, size, date) {
+        document.getElementById('recoverModalFilename').innerText = filename;
+        document.getElementById('recoverModalSize').innerText = size;
+        document.getElementById('recoverModalDate').innerText = date;
+        document.getElementById('recoverFormFilenameInput').value = filename;
+
+        const modal = document.getElementById('recoverBackupModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeRecoverBackupModal() {
+        const modal = document.getElementById('recoverBackupModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // 3. Purge Modal
+    function promptPurgeBackup(filename, size) {
+        document.getElementById('purgeModalFilename').innerText = filename;
+        document.getElementById('purgeModalSize').innerText = size;
+        document.getElementById('purgeFormFilenameInput').value = filename;
+
+        const checkbox = document.getElementById('purgeConfirmCheckbox');
+        checkbox.checked = false;
+        togglePurgeButton();
+
+        const modal = document.getElementById('purgeBackupModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function togglePurgeButton() {
+        const checkbox = document.getElementById('purgeConfirmCheckbox');
+        const submitBtn = document.getElementById('purgeSubmitBtn');
+        submitBtn.disabled = !checkbox.checked;
+    }
+
+    function closePurgeBackupModal() {
+        const modal = document.getElementById('purgeBackupModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // 4. Restore Modal
+    function promptRestoreBackup(filename, size) {
+        document.getElementById('restoreModalFilename').innerText = filename;
+        document.getElementById('restoreModalSize').innerText = size;
+        document.getElementById('restoreFormFilenameInput').value = filename;
+
+        const modal = document.getElementById('restoreBackupModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeRestoreBackupModal() {
+        const modal = document.getElementById('restoreBackupModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeArchiveBackupModal();
+            closeRecoverBackupModal();
+            closePurgeBackupModal();
+            closeRestoreBackupModal();
+        }
+    });
+</script>
+@endpush

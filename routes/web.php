@@ -53,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/backup/settings', [BackupController::class, 'updateSettings'])->name('backup.settings');
         Route::get('/backup/download/{filename}', [BackupController::class, 'downloadBackup'])->name('backup.download');
         Route::post('/backup/delete', [BackupController::class, 'deleteBackup'])->name('backup.delete');
+        Route::post('/backup/recover', [BackupController::class, 'recoverBackup'])->name('backup.recover');
+        Route::post('/backup/purge', [BackupController::class, 'purgeBackup'])->name('backup.purge');
         Route::post('/backup/restore', [BackupController::class, 'restoreBackup'])->name('backup.restore');
 
         // Destructive Inventory Operations

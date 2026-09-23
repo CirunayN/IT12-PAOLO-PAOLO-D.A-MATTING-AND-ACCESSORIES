@@ -143,4 +143,101 @@ class BackupGoogleDriveTest extends TestCase
         // Clean up test backups
         File::deleteDirectory(storage_path('app/test_backups'));
     }
+
+    public function test_delete_backup_moves_file_to_archive_and_can_be_recovered(): void
+    {
+        $admin = User::factory()->create([
+            'username' => 'admin',
+            'role' => 'Admin',
+        ]);
+
+        $testDir = storage_path('app/test_backups_archive');
+        File::ensureDirectoryExists($testDir);
+
+        $settings = [
+            'backup_mode' => 'manual',
+            'frequency' => '1_day',
+            'retention' => 'keep_all',
+            'storage_path' => $testDir,
+            'last_backup_at' => null,
+            'gdrive_enabled' => false,
+            'gdrive_folder_id' => '',
+            'gdrive_email' => '',
+        ];
+        File::ensureDirectoryExists(dirname($this->settingsFile));
+        File::put($this->settingsFile, json_encode($settings));
+
+        // Create a dummy backup file in active directory
+        $dummyFile = 'test_backup_snapshot.sql';
+        File::put($testDir . '/' . $dummyFile, '-- Test backup content');
+
+        $this->assertTrue(File::exists($testDir . '/' . $dummyFile));
+
+        // 1. Delete (Archive)
+        $resDelete = $this->actingAs($admin)->post('/backup/delete', [
+            'filename' => $dummyFile,
+        ]);
+        $resDelete->assertRedirect(route('backup.index'));
+        $resDelete->assertSessionHas('success');
+
+        // File should NO LONGER be in active directory, but MUST exist in archive
+        $this->assertFalse(File::exists($testDir . '/' . $dummyFile));
+        $this->assertTrue(File::exists($testDir . '/archive/' . $dummyFile));
+
+        // 2. Recover back to active
+        $resRecover = $this->actingAs($admin)->post('/backup/recover', [
+            'filename' => $dummyFile,
+        ]);
+        $resRecover->assertRedirect(route('backup.index'));
+        $resRecover->assertSessionHas('success');
+
+        // File should be back in active directory
+        $this->assertTrue(File::exists($testDir . '/' . $dummyFile));
+        $this->assertFalse(File::exists($testDir . '/archive/' . $dummyFile));
+
+        // Clean up
+        File::deleteDirectory($testDir);
+    }
+
+    public function test_archived_backup_can_be_permanently_purged(): void
+    {
+        $admin = User::factory()->create([
+            'username' => 'admin',
+            'role' => 'Admin',
+        ]);
+
+        $testDir = storage_path('app/test_backups_purge');
+        $archiveDir = $testDir . '/archive';
+        File::ensureDirectoryExists($archiveDir);
+
+        $settings = [
+            'backup_mode' => 'manual',
+            'frequency' => '1_day',
+            'retention' => 'keep_all',
+            'storage_path' => $testDir,
+            'last_backup_at' => null,
+            'gdrive_enabled' => false,
+            'gdrive_folder_id' => '',
+            'gdrive_email' => '',
+        ];
+        File::ensureDirectoryExists(dirname($this->settingsFile));
+        File::put($this->settingsFile, json_encode($settings));
+
+        $dummyFile = 'purge_target.sql';
+        File::put($archiveDir . '/' . $dummyFile, '-- Purge content');
+        $this->assertTrue(File::exists($archiveDir . '/' . $dummyFile));
+
+        // Purge
+        $resPurge = $this->actingAs($admin)->post('/backup/purge', [
+            'filename' => $dummyFile,
+        ]);
+        $resPurge->assertRedirect(route('backup.index'));
+        $resPurge->assertSessionHas('success');
+
+        // File must be completely gone
+        $this->assertFalse(File::exists($archiveDir . '/' . $dummyFile));
+
+        // Clean up
+        File::deleteDirectory($testDir);
+    }
 }
