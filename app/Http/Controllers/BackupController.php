@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use PDO;
 
@@ -124,8 +126,15 @@ class BackupController extends Controller
             $this->cleanupOldBackups($settings, $backupDir);
 
             $msg = "Database backup '{$filename}' created successfully in {$backupDir}!";
+
             if (!empty($settings['gdrive_enabled'])) {
-                $msg .= " (Cloud sync flag enabled for online storage).";
+                $uploaded = $this->uploadToGoogleDrive($fullPath, $filename);
+
+                if ($uploaded) {
+                    $msg .= " Google Drive upload completed successfully.";
+                } else {
+                    $msg .= " However, the Google Drive upload failed. The local backup is still available.";
+                }
             }
 
             return redirect()->route('backup.index')->with('success', $msg);
@@ -134,11 +143,72 @@ class BackupController extends Controller
         return redirect()->route('backup.index')->with('error', "Failed to create database backup. Please verify directory permissions.");
     }
 
+    protected function uploadToGoogleDrive(string $filePath, string $filename): bool
+    {
+        try {
+            $url = config('services.google_drive.url', env('GOOGLE_DRIVE_WEB_APP_URL'));
+            $secret = config('services.google_drive.secret', env('GOOGLE_DRIVE_UPLOAD_SECRET'));
+
+            if (empty($url) || empty($secret)) {
+                Log::warning('Google Drive backup is enabled but the Web App URL or secret is missing.');
+                return false;
+            }
+
+            if (!File::exists($filePath)) {
+                Log::error('Google Drive upload failed: backup file does not exist.', [
+                    'file' => $filePath,
+                ]);
+                return false;
+            }
+
+            $content = base64_encode(File::get($filePath));
+
+            $response = Http::withoutVerifying()
+                ->timeout(120)
+                ->asJson()
+                ->post($url, [
+                    'secret' => $secret,
+                    'filename' => $filename,
+                    'mimeType' => 'application/sql',
+                    'content' => $content,
+                ]);
+
+            if ($response->successful() && $response->json('success') === true) {
+                Log::info('Backup uploaded to Google Drive successfully.', [
+                    'filename' => $filename,
+                    'file_id' => $response->json('fileId'),
+                ]);
+
+                return true;
+            }
+
+            Log::error('Google Drive backup upload failed.', [
+                'status' => $response->status(),
+                'response' => $response->body(),
+            ]);
+
+            return false;
+
+        } catch (\Throwable $e) {
+            Log::error('Google Drive backup upload exception.', [
+                'message' => $e->getMessage(),
+            ]);
+
+            return false;
+        }
+    }
+
     protected function performDatabaseDump(string $targetFile): bool
     {
         try {
             $pdo = DB::connection()->getPdo();
-            $tables = $pdo->query('SHOW FULL TABLES')->fetchAll(PDO::FETCH_NUM);
+            $driver = DB::connection()->getDriverName();
+
+            if ($driver === 'sqlite') {
+                $tables = $pdo->query("SELECT name, 'BASE TABLE' FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")->fetchAll(PDO::FETCH_NUM);
+            } else {
+                $tables = $pdo->query('SHOW FULL TABLES')->fetchAll(PDO::FETCH_NUM);
+            }
 
             $output = "-- ========================================================\n";
             $output .= "-- PAOLO PAOLO MANAGEMENT SYSTEM (P7)\n";
@@ -155,9 +225,16 @@ class BackupController extends Controller
                     continue; // Skip views, recreate structure after
                 }
 
-                $createTableStmt = $pdo->query("SHOW CREATE TABLE `{$tableName}`")->fetch(PDO::FETCH_ASSOC);
-                $output .= "DROP TABLE IF EXISTS `{$tableName}`;\n";
-                $output .= $createTableStmt['Create Table'] . ";\n\n";
+                if ($driver === 'sqlite') {
+                    $createTableStmt = $pdo->query("SELECT sql FROM sqlite_master WHERE type='table' AND name = '{$tableName}'")->fetch(PDO::FETCH_ASSOC);
+                    $createSql = $createTableStmt['sql'] ?? "CREATE TABLE `{$tableName}`;";
+                    $output .= "DROP TABLE IF EXISTS `{$tableName}`;\n";
+                    $output .= $createSql . ";\n\n";
+                } else {
+                    $createTableStmt = $pdo->query("SHOW CREATE TABLE `{$tableName}`")->fetch(PDO::FETCH_ASSOC);
+                    $output .= "DROP TABLE IF EXISTS `{$tableName}`;\n";
+                    $output .= $createTableStmt['Create Table'] . ";\n\n";
+                }
 
                 $rows = $pdo->query("SELECT * FROM `{$tableName}`")->fetchAll(PDO::FETCH_ASSOC);
                 if (count($rows) > 0) {

@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'google_drive' => [
+        'url' => env('GOOGLE_DRIVE_WEB_APP_URL'),
+        'secret' => env('GOOGLE_DRIVE_UPLOAD_SECRET'),
+    ],
+
 ];
