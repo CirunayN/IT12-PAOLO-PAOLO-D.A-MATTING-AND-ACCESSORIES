@@ -6,7 +6,7 @@ use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'username' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -42,15 +42,39 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        if (! Auth::attempt($this->only('username', 'password'), $this->boolean('remember'))) {
+            $throttleKey = $this->throttleKey();
+            $attemptsKey = 'login_attempts:' . $throttleKey;
+            $tierKey = 'login_tier:' . $throttleKey;
+            $lockoutUntilKey = 'login_lockout_until:' . $throttleKey;
 
+            $attempts = (int) Cache::get($attemptsKey, 0) + 1;
+            Cache::put($attemptsKey, $attempts, now()->addDays(2));
+
+            // Escalating lockout triggers on every 3 failed attempts
+            if ($attempts % 3 === 0) {
+                $currentTier = (int) Cache::get($tierKey, 0) + 1;
+                Cache::put($tierKey, $currentTier, now()->addDays(2));
+
+                $lockoutMinutes = $this->getLockoutMinutes($currentTier);
+                $lockoutUntil = now()->addMinutes($lockoutMinutes)->timestamp;
+                Cache::put($lockoutUntilKey, $lockoutUntil, now()->addMinutes($lockoutMinutes));
+
+                event(new Lockout($this));
+
+                throw ValidationException::withMessages([
+                    'username' => "Failed 3 login attempts. Your account is blocked for {$lockoutMinutes} minute(s). Please try again after the lockout expires.",
+                ]);
+            }
+
+            $remaining = 3 - ($attempts % 3);
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                'username' => "Invalid username or password. You have {$remaining} attempt(s) remaining before your account is blocked.",
             ]);
         }
 
-        RateLimiter::clear($this->throttleKey());
+        // Successfully logged in: clear lockout and attempt counters
+        $this->clearRateLimiting();
     }
 
     /**
@@ -60,20 +84,52 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
+        $lockoutUntilKey = 'login_lockout_until:' . $this->throttleKey();
+        $lockoutUntil = Cache::get($lockoutUntilKey);
+
+        if ($lockoutUntil && now()->timestamp < $lockoutUntil) {
+            event(new Lockout($this));
+
+            $seconds = $lockoutUntil - now()->timestamp;
+            $minutes = ceil($seconds / 60);
+
+            throw ValidationException::withMessages([
+                'username' => "Account is temporarily blocked due to repeated failed attempts. Please try again in {$minutes} minute(s) ({$seconds} seconds remaining).",
+            ]);
+        }
+    }
+
+    /**
+     * Clear all rate limiting and tier tracking for this user.
+     */
+    public function clearRateLimiting(): void
+    {
+        $throttleKey = $this->throttleKey();
+        Cache::forget('login_attempts:' . $throttleKey);
+        Cache::forget('login_tier:' . $throttleKey);
+        Cache::forget('login_lockout_until:' . $throttleKey);
+    }
+
+    /**
+     * Calculate escalating lockout minutes based on tier.
+     * Sequence: 1m, 5m, 10m, 20m, 40m, 80m... capped at 1 day (1440m).
+     */
+    protected function getLockoutMinutes(int $tier): int
+    {
+        $tiers = [
+            1 => 1,
+            2 => 5,
+            3 => 10,
+            4 => 20,
+        ];
+
+        if (isset($tiers[$tier])) {
+            return $tiers[$tier];
         }
 
-        event(new Lockout($this));
-
-        $seconds = RateLimiter::availableIn($this->throttleKey());
-
-        throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
+        // For tier 5+: double successively, capped at 1440 minutes (24 hours / 1 day)
+        $minutes = 20 * pow(2, $tier - 4);
+        return (int) min(1440, $minutes);
     }
 
     /**
@@ -81,6 +137,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('username')).'|'.$this->ip());
     }
 }

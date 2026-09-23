@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login | Wad-Wad Paolo</title>
+    <title>Login | Paolo Paolo</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -58,15 +58,12 @@
 
         <!-- Logo & Brand Header -->
         <div class="text-center mb-8">
-            <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Wad-Wad Paolo" class="w-24 h-24 mx-auto object-contain drop-shadow-xl mb-3 hover:scale-105 transition-transform">
+            <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo" class="w-24 h-24 mx-auto object-contain drop-shadow-xl mb-3 hover:scale-105 transition-transform">
             <h1 class="text-2xl sm:text-3xl font-jdm tracking-wider text-white">
-                WAD-WAD PAOLO
+                PAOLO PAOLO
             </h1>
             <p class="text-xs font-bold text-red-500 uppercase tracking-widest mt-1">
                 D.A Matting &amp; Accessories
-            </p>
-            <p class="text-[11px] text-slate-400 mt-1">
-                Sign in to access POS Cashier &amp; Inventory
             </p>
         </div>
 
@@ -87,15 +84,15 @@
         <form method="POST" action="{{ route('login') }}" class="space-y-4">
             @csrf
 
-            <!-- Email -->
+            <!-- Username -->
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Email Address</label>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Username</label>
                 <div class="relative">
-                    <i class="fas fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-                    <input type="email" name="email" required autofocus
-                        value="{{ old('email', 'admin@paolopaolo.com') }}"
+                    <i class="fas fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                    <input type="text" name="username" required autofocus
+                        value="{{ old('username', 'admin') }}"
                         class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
-                        placeholder="admin@paolopaolo.com">
+                        placeholder="admin or cashier">
                 </div>
             </div>
 
@@ -127,8 +124,7 @@
 
         <!-- Footer Contact Info -->
         <div class="mt-8 pt-5 border-t border-slate-800/80 text-center text-[11px] text-slate-500 space-y-1">
-            <div class="text-slate-400 font-semibold">Store Contacts: 09267994701 &bull; 09105508162</div>
-            <div>&copy; {{ date('Y') }} Wad-Wad Paolo. All rights reserved.</div>
+            <div>&copy; {{ date('Y') }} Paolo Paolo. All rights reserved.</div>
         </div>
     </div>
 
