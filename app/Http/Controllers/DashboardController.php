@@ -51,7 +51,7 @@ class DashboardController extends Controller
             ->get();
             
         // Recent stock-ins
-        $recentStockIns = StockIn::with('product')
+        $recentStockIns = StockIn::with(['product', 'user'])
             ->orderBy('ID', 'desc')
             ->limit(6)
             ->get();
