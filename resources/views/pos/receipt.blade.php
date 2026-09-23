@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Receipt #{{ $sale->ID }} | Wad-Wad Paolo</title>
+    <title>Receipt #{{ $sale->ID }} | Paolo Paolo</title>
     <style>
         @page { size: 80mm auto; margin: 4mm; }
         body {
@@ -30,7 +30,7 @@
 
     <div class="text-center">
         <img src="{{ asset('images/wadwad_paolo_logo.png') }}" style="width: 60px; height: 60px; margin: 0 auto 3px auto; display: block;">
-        <div class="bold" style="font-size: 15px; letter-spacing: 0.5px;">WAD-WAD PAOLO</div>
+        <div class="bold" style="font-size: 15px; letter-spacing: 0.5px;">PAOLO PAOLO</div>
         <div class="bold" style="font-size: 11px;">D.A MATTING &amp; ACCESSORIES</div>
         <div style="font-size: 10px; margin-top: 2px;">Car Accessories &bull; Custom Deep Dish Matting</div>
         <div style="font-size: 10px;">Contact: 09267994701 / 09105508162</div>
@@ -40,7 +40,7 @@
 
     <div class="row"><span>Invoice #:</span><span class="bold">INV-{{ str_pad($sale->ID, 6, '0', STR_PAD_LEFT) }}</span></div>
     <div class="row"><span>Date:</span><span>{{ $sale->Date ? $sale->Date->format('M d, Y h:i A') : $sale->created_at->format('M d, Y h:i A') }}</span></div>
-    <div class="row"><span>Cashier:</span><span>{{ $sale->user->name ?? 'Staff' }}</span></div>
+    <div class="row"><span>Cashier:</span><span>{{ $sale->user->name ?? 'Staff' }} ({{ $sale->user->role ?? 'Staff' }})</span></div>
     <div class="row"><span>Payment:</span><span class="bold">{{ $sale->paymentMethod->Name ?? 'Cash' }}</span></div>
 
     <div class="divider"></div>

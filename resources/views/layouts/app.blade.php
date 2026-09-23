@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Wad-Wad Paolo | D.A Matting & Accessories' }}</title>
+    <title>{{ $title ?? 'Paolo Paolo | D.A Matting & Accessories' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
 
     <!-- Google Fonts: Dela Gothic One (Japanese JDM Display), Outfit & Inter -->
@@ -104,17 +104,16 @@
                 <span class="font-display tracking-wide hidden xs:inline">Menu</span>
             </button>
 
-            <a href="{{ route('dashboard') }}" title="Go to Dashboard"
+            <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" title="Home"
                 class="flex items-center gap-3 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
-                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Wad-Wad Paolo Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
+                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
                 
                 <div class="text-left hidden sm:block">
                     <div class="font-jdm text-slate-900 dark:text-white text-base sm:text-lg tracking-wider group-hover:text-red-500 transition-colors">
-                        WAD-WAD PAOLO
+                        PAOLO PAOLA
                     </div>
                     <div class="text-[11px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5 flex items-center gap-1.5">
                         <span>D.A Matting &amp; Accessories</span>
-                        <span class="text-amber-500 font-bold">&bull; JDM</span>
                     </div>
                 </div>
             </a>
@@ -138,12 +137,12 @@
                 <div class="hidden md:block text-right">
                     <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
                     <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ (auth()->user() && auth()->user()->isAdmin()) ? 'text-amber-500' : 'text-red-500' }}">
-                        {{ auth()->user()->role ?? 'Staff' }}
+                        {{ (auth()->user() && auth()->user()->isAdmin()) ? 'Owner (Admin)' : 'Employee (' . (auth()->user()->role ?? 'Cashier') . ')' }}
                     </span>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" onsubmit="return confirm('Are you sure you want to log out?');">
+                <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" title="Log out" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 text-slate-600 dark:text-slate-300 hover:text-white border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base transition-colors cursor-pointer">
+                    <button type="button" onclick="openLogoutModal(event)" title="Log out" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 text-slate-600 dark:text-slate-300 hover:text-white border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base transition-colors cursor-pointer">
                         <i class="fas fa-power-off"></i>
                     </button>
                 </form>
@@ -157,10 +156,10 @@
     <aside id="navDrawer" class="fixed inset-y-0 left-0 z-50 w-80 sm:w-96 bg-white dark:bg-[#0d121c] border-r border-slate-200 dark:border-slate-800/80 shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
         <!-- Header -->
         <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-dark-850/50">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
-                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Wad-Wad Paolo" class="w-12 h-12 object-contain drop-shadow">
+            <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" class="flex items-center gap-3 group">
+                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo" class="w-12 h-12 object-contain drop-shadow">
                 <div>
-                    <h3 class="font-jdm text-slate-900 dark:text-white text-base group-hover:text-red-500 transition-colors">WAD-WAD PAOLO</h3>
+                    <h3 class="font-jdm text-slate-900 dark:text-white text-base group-hover:text-red-500 transition-colors">PAOLO PAOLO</h3>
                     <p class="text-[11px] font-bold text-red-500 uppercase">D.A Matting &amp; Accessories</p>
                 </div>
             </a>
@@ -175,10 +174,12 @@
         <nav class="flex-1 p-5 space-y-2 overflow-y-auto">
             <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-2 pb-1">Store Navigation</div>
 
+            @if(auth()->user() && auth()->user()->isAdmin())
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('dashboard') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
                 <i class="fas fa-chart-pie w-6 text-center text-lg {{ request()->routeIs('dashboard') ? 'text-red-500' : 'text-slate-400' }}"></i>
                 <span class="font-display">Executive Dashboard</span>
             </a>
+            @endif
 
             <a href="{{ route('pos.index') }}" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('pos.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
                 <i class="fas fa-cash-register w-6 text-center text-lg {{ request()->routeIs('pos.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
@@ -197,13 +198,22 @@
                 <i class="fas fa-hard-drive w-6 text-center text-lg {{ request()->routeIs('backup.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
                 <span class="font-display">Database Backup</span>
             </a>
-
-            <a href="{{ route('users.index') }}" class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('users.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-users-gear w-6 text-center text-lg {{ request()->routeIs('users.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-                <span class="font-display">Staff &amp; Users</span>
-            </a>
             @endif
         </nav>
+
+        <!-- Drawer Footer / Logout -->
+        <div class="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-850/70">
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ auth()->user()->name ?? 'User' }}</p>
+                    <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{{ (auth()->user() && auth()->user()->isAdmin()) ? 'Owner (Admin)' : (auth()->user()->role ?? 'Cashier') }}</p>
+                </div>
+                <button type="button" onclick="closeDrawer(); openLogoutModal(event);" class="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+                    <i class="fas fa-power-off"></i>
+                    <span>Log Out</span>
+                </button>
+            </div>
+        </div>
     </aside>
 
     <!-- Flash Alerts -->
@@ -252,7 +262,7 @@
     <footer class="py-4 px-6 border-t border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 text-center flex flex-col sm:flex-row items-center justify-between gap-2">
         <div class="flex items-center justify-center gap-2">
             <img src="{{ asset('images/wadwad_paolo_logo.png') }}" class="w-5 h-5 object-contain inline-block">
-            <span>&copy; {{ date('Y') }} <strong class="text-slate-700 dark:text-slate-200 font-jdm">Wad-Wad Paolo</strong> &bull; D.A Matting &amp; Accessories.</span>
+            <span>&copy; {{ date('Y') }} <strong class="text-slate-700 dark:text-slate-200 font-jdm">Paolo Paolo</strong> &bull; D.A Matting &amp; Accessories.</span>
         </div>
         <div class="text-[11px] text-slate-400">
             <span>Contacts: <strong>09267994701</strong> / <strong>09105508162</strong></span>
@@ -308,7 +318,128 @@
         if (menuBtn) menuBtn.addEventListener('click', openDrawer);
         if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
         if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+        // Custom Logout Modal & Cart Validation
+        function openLogoutModal(e) {
+            if (e) e.preventDefault();
+
+            const warningBox = document.getElementById('logoutCartWarningBox');
+            const standardMsg = document.getElementById('logoutStandardMessage');
+            const countEl = document.getElementById('logoutCartCount');
+            const confirmBtnText = document.getElementById('logoutConfirmBtnText');
+            const iconWrap = document.getElementById('logoutModalIconWrap');
+            const icon = document.getElementById('logoutModalIcon');
+
+            // Custom POS validation: check if active cart items exist
+            let cartCount = 0;
+            if (typeof window.getPosCartItemCount === 'function') {
+                cartCount = window.getPosCartItemCount();
+            }
+
+            if (cartCount > 0) {
+                warningBox.classList.remove('hidden');
+                standardMsg.classList.add('hidden');
+                countEl.textContent = cartCount + (cartCount === 1 ? ' item' : ' items');
+                confirmBtnText.textContent = 'Discard Cart & Log Out';
+                iconWrap.className = 'w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-xl flex-shrink-0';
+                icon.className = 'fas fa-triangle-exclamation';
+            } else {
+                warningBox.classList.add('hidden');
+                standardMsg.classList.remove('hidden');
+                confirmBtnText.textContent = 'Yes, Log Out';
+                iconWrap.className = 'w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-xl flex-shrink-0';
+                icon.className = 'fas fa-arrow-right-from-bracket';
+            }
+
+            const modal = document.getElementById('logoutConfirmModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeLogoutModal() {
+            const modal = document.getElementById('logoutConfirmModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function confirmLogoutAction() {
+            const form = document.getElementById('globalLogoutForm');
+            if (form) {
+                form.submit();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLogoutModal();
+            }
+        });
     </script>
+
+    <!-- CUSTOM LOGOUT CONFIRMATION MODAL -->
+    <div id="logoutConfirmModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-card rounded-2xl max-w-sm sm:max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 transform transition-all">
+            <!-- Modal Header -->
+            <div class="flex items-start gap-3.5">
+                <div id="logoutModalIconWrap" class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-xl flex-shrink-0">
+                    <i id="logoutModalIcon" class="fas fa-arrow-right-from-bracket"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-display font-black text-lg text-slate-900 dark:text-white leading-tight">Log Out Confirmation</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Ready to end your current session?</p>
+                </div>
+                <button type="button" onclick="closeLogoutModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl -mr-1 -mt-1 cursor-pointer">
+                    &times;
+                </button>
+            </div>
+
+            <!-- User Badge Box -->
+            <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-dark-900/80 border border-slate-200 dark:border-slate-800">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 to-rose-500 text-white font-black text-sm flex items-center justify-center shadow-sm">
+                    {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                </div>
+                <div class="min-w-0 flex-1">
+                    <p class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">{{ auth()->user()->name ?? 'User' }}</p>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">{{ auth()->user()->email ?? '' }} &bull; <strong class="text-red-500">{{ (auth()->user() && auth()->user()->isAdmin()) ? 'Owner (Admin)' : (auth()->user()->role ?? 'Cashier') }}</strong></p>
+                </div>
+            </div>
+
+            <!-- Dynamic Cart Validation Warning (Visible only if POS cart has active items) -->
+            <div id="logoutCartWarningBox" class="hidden p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-300 space-y-1.5 text-xs">
+                <div class="flex items-center gap-2 font-bold text-rose-600 dark:text-rose-400 text-sm">
+                    <i class="fas fa-triangle-exclamation text-base"></i>
+                    <span>Active POS Cart Detected!</span>
+                </div>
+                <p id="logoutCartWarningMessage" class="text-xs leading-relaxed text-rose-800 dark:text-rose-200">
+                    You currently have <strong id="logoutCartCount" class="underline font-black text-rose-600 dark:text-rose-300">0 items</strong> in your POS terminal cart. Logging out now will discard these cart items and reset the current sale.
+                </p>
+                <div class="pt-1 text-[11px] font-semibold text-rose-600 dark:text-rose-400 flex items-center gap-1">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Please charge or clear the transaction before signing out, or confirm exit below.</span>
+                </div>
+            </div>
+
+            <!-- Standard Confirmation message if no cart items -->
+            <p id="logoutStandardMessage" class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                You will be securely signed out of PAOLO PAOLO D.A Matting &amp; Accessories system. Any unsaved changes in progress will be lost.
+            </p>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-3 pt-2">
+                <button type="button" onclick="closeLogoutModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                    Stay Signed In
+                </button>
+                <button type="button" onclick="confirmLogoutAction()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <i class="fas fa-power-off"></i>
+                    <span id="logoutConfirmBtnText">Yes, Log Out</span>
+                </button>
+            </div>
+        </div>
+    </div>
     @stack('scripts')
 </body>
 </html>

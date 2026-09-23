@@ -11,9 +11,17 @@
             </h1>
         </div>
         <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
-                Cashier: <strong>{{ auth()->user()->name ?? 'Staff' }}</strong>
-            </span>
+            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-dark-800 border border-slate-300 dark:border-slate-700">
+                <i class="fas fa-user-tag text-xs text-red-500"></i>
+                <label for="posCashierSelect" class="text-xs font-semibold text-slate-500 dark:text-slate-400">Cashier:</label>
+                <select id="posCashierSelect" onchange="syncCashierSelection(this.value)" class="bg-transparent text-xs font-bold text-slate-800 dark:text-slate-100 border-none focus:ring-0 cursor-pointer">
+                    @foreach($users as $u)
+                    <option value="{{ $u->id }}" {{ auth()->id() == $u->id ? 'selected' : '' }}>
+                        {{ $u->name }} ({{ $u->role ?? 'Staff' }})
+                    </option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
 
@@ -123,7 +131,7 @@
                         <i class="fas fa-basket-shopping text-red-500 text-lg"></i>
                         <h3 class="font-display font-black text-lg text-slate-900 dark:text-white">Customer Cart</h3>
                     </div>
-                    <button type="button" onclick="clearCart()" class="text-xs font-bold text-rose-500 hover:text-rose-400 cursor-pointer">
+                    <button type="button" onclick="promptClearCart()" class="text-xs font-bold text-rose-500 hover:text-rose-400 cursor-pointer">
                         <i class="fas fa-trash-can mr-1"></i> Clear
                     </button>
                 </div>
@@ -145,6 +153,23 @@
                     <div class="flex items-center justify-between text-lg">
                         <span class="font-bold text-slate-700 dark:text-slate-300">Grand Total</span>
                         <strong id="cartGrandTotal" class="font-display font-black text-2xl text-emerald-600 dark:text-emerald-400">₱0.00</strong>
+                    </div>
+
+                    <!-- Cashier / Processed By -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                                Cashier / Processed By
+                            </label>
+                            <span class="text-[10px] text-slate-400">Sales audit log</span>
+                        </div>
+                        <select id="checkoutCashierSelect" onchange="syncCashierSelection(this.value)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 font-semibold focus:ring-2 focus:ring-red-500">
+                            @foreach($users as $u)
+                            <option value="{{ $u->id }}" {{ auth()->id() == $u->id ? 'selected' : '' }}>
+                                {{ $u->name }} ({{ $u->role ?? 'Staff' }})
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <!-- Payment Method -->
@@ -239,6 +264,46 @@
         </div>
     </div>
 </div>
+
+<!-- Cart Removal Confirmation Modal -->
+<div id="cartConfirmModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-sm sm:max-w-md w-full p-6 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-4 transform transition-all">
+        <div class="flex items-start gap-3.5">
+            <div id="cartConfirmIconWrapper" class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-xl flex-shrink-0">
+                <i id="cartConfirmIcon" class="fas fa-trash-can"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 id="cartConfirmTitle" class="font-display font-black text-lg text-slate-900 dark:text-white leading-tight">Remove Item?</h3>
+                <p id="cartConfirmSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Are you sure you want to remove this item from the active cart?</p>
+            </div>
+            <button type="button" onclick="closeCartConfirmModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl -mr-1 -mt-1 cursor-pointer">
+                &times;
+            </button>
+        </div>
+
+        <!-- Item Detail Card -->
+        <div id="cartConfirmItemBox" class="p-3.5 rounded-xl bg-slate-50 dark:bg-dark-900/80 border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
+            <div class="flex items-center justify-between">
+                <span class="font-bold text-slate-900 dark:text-white text-sm" id="cartConfirmItemName">-</span>
+                <span class="font-bold text-rose-500 text-sm" id="cartConfirmItemTotal">₱0.00</span>
+            </div>
+            <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 text-[11px]">
+                <span id="cartConfirmItemQty">Qty: 1</span>
+                <span id="cartConfirmItemPrice">₱0.00 each</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 pt-1">
+            <button type="button" onclick="closeCartConfirmModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
+                Cancel
+            </button>
+            <button type="button" id="cartConfirmAcceptBtn" onclick="executeCartRemoval()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-rose-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                <i class="fas fa-trash-can"></i>
+                <span id="cartConfirmAcceptText">Yes, Remove</span>
+            </button>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
@@ -259,11 +324,90 @@ function addToCart(id, name, price, maxStock) {
     renderCart();
 }
 
+let pendingCartRemoval = null;
+
+function promptRemoveCartItem(id) {
+    const item = cart[id];
+    if (!item) return;
+
+    pendingCartRemoval = { type: 'item', id: id };
+    
+    document.getElementById('cartConfirmIcon').className = 'fas fa-trash-can';
+    document.getElementById('cartConfirmTitle').innerText = 'Remove Item from Cart?';
+    document.getElementById('cartConfirmSubtitle').innerText = 'Are you sure you want to remove this item from the active cart?';
+    document.getElementById('cartConfirmItemName').innerText = item.name;
+    document.getElementById('cartConfirmItemQty').innerText = 'Quantity: ' + item.qty;
+    document.getElementById('cartConfirmItemPrice').innerText = 'Unit Price: ₱' + Number(item.price).toFixed(2);
+    document.getElementById('cartConfirmItemTotal').innerText = '₱' + (item.price * item.qty).toFixed(2);
+    document.getElementById('cartConfirmItemBox').classList.remove('hidden');
+    document.getElementById('cartConfirmAcceptText').innerText = 'Yes, Remove';
+
+    const modal = document.getElementById('cartConfirmModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function promptClearCart() {
+    const keys = Object.keys(cart);
+    if (keys.length === 0) return;
+
+    pendingCartRemoval = { type: 'clear' };
+
+    let totalItems = 0;
+    let grandTotal = 0;
+    keys.forEach(k => {
+        totalItems += cart[k].qty;
+        grandTotal += (cart[k].price * cart[k].qty);
+    });
+
+    document.getElementById('cartConfirmIcon').className = 'fas fa-triangle-exclamation';
+    document.getElementById('cartConfirmTitle').innerText = 'Clear Entire Cart?';
+    document.getElementById('cartConfirmSubtitle').innerText = 'Are you sure you want to remove all items from the current cart?';
+    document.getElementById('cartConfirmItemName').innerText = `${keys.length} product(s) (${totalItems} total units)`;
+    document.getElementById('cartConfirmItemQty').innerText = 'Items: ' + totalItems;
+    document.getElementById('cartConfirmItemPrice').innerText = 'All items will be discarded';
+    document.getElementById('cartConfirmItemTotal').innerText = '₱' + grandTotal.toFixed(2);
+    document.getElementById('cartConfirmItemBox').classList.remove('hidden');
+    document.getElementById('cartConfirmAcceptText').innerText = 'Yes, Clear All';
+
+    const modal = document.getElementById('cartConfirmModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeCartConfirmModal() {
+    pendingCartRemoval = null;
+    const modal = document.getElementById('cartConfirmModal');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+}
+
+function executeCartRemoval() {
+    if (!pendingCartRemoval) return;
+
+    if (pendingCartRemoval.type === 'item') {
+        delete cart[pendingCartRemoval.id];
+    } else if (pendingCartRemoval.type === 'clear') {
+        cart = {};
+    }
+
+    closeCartConfirmModal();
+    renderCart();
+}
+
+// Global cart count getter for layout/logout validation
+window.getPosCartItemCount = function() {
+    return Object.keys(cart).length;
+};
+
 function updateCartQty(id, delta) {
     if (!cart[id]) return;
     const newQty = cart[id].qty + delta;
     if (newQty <= 0) {
-        delete cart[id];
+        promptRemoveCartItem(id);
+        return;
     } else if (newQty > cart[id].maxStock) {
         alert('Cannot exceed available inventory (' + cart[id].maxStock + ' units).');
         return;
@@ -274,13 +418,11 @@ function updateCartQty(id, delta) {
 }
 
 function removeCartItem(id) {
-    delete cart[id];
-    renderCart();
+    promptRemoveCartItem(id);
 }
 
 function clearCart() {
-    cart = {};
-    renderCart();
+    promptClearCart();
 }
 
 function renderCart() {
@@ -319,7 +461,7 @@ function renderCart() {
                 <button type="button" onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 rounded bg-slate-200 dark:bg-dark-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold">&minus;</button>
                 <span class="w-6 text-center font-bold text-xs text-slate-900 dark:text-white">${item.qty}</span>
                 <button type="button" onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 rounded bg-slate-200 dark:bg-dark-700 hover:bg-slate-300 text-slate-700 dark:text-slate-200 text-xs font-bold">&plus;</button>
-                <button type="button" onclick="removeCartItem(${item.id})" class="ml-1 text-slate-400 hover:text-rose-500 text-xs p-1"><i class="fas fa-times"></i></button>
+                <button type="button" onclick="promptRemoveCartItem(${item.id})" class="ml-1 text-slate-400 hover:text-rose-500 text-xs p-1 cursor-pointer" title="Remove item"><i class="fas fa-times"></i></button>
             </div>
         </div>`;
     });
@@ -344,6 +486,13 @@ function calculateChange() {
     changeEl.textContent = '₱' + change.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+function syncCashierSelection(val) {
+    const topSelect = document.getElementById('posCashierSelect');
+    const cartSelect = document.getElementById('checkoutCashierSelect');
+    if (topSelect) topSelect.value = val;
+    if (cartSelect) cartSelect.value = val;
+}
+
 function processCheckout() {
     const keys = Object.keys(cart);
     if (keys.length === 0) return;
@@ -358,6 +507,7 @@ function processCheckout() {
     });
 
     const paymentMethodId = document.getElementById('paymentMethodSelect').value;
+    const cashierId = document.getElementById('checkoutCashierSelect')?.value || document.getElementById('posCashierSelect')?.value;
     const tendered = parseFloat(document.getElementById('amountTendered').value) || grandTotal;
 
     const checkoutBtn = document.getElementById('checkoutBtn');
@@ -372,6 +522,7 @@ function processCheckout() {
         },
         body: JSON.stringify({
             payment_method_id: paymentMethodId,
+            user_id: cashierId,
             amount_tendered: tendered,
             items: itemsPayload
         })
@@ -388,7 +539,7 @@ function processCheckout() {
             let receiptHtml = `
                 <div class="text-center font-bold text-sm border-b pb-2 mb-2">PAOLO PAOLO MATTING & ACCESSORIES</div>
                 <div>Date: ${data.date}</div>
-                <div>Cashier: ${data.cashier}</div>
+                <div>Cashier: <strong>${data.cashier}</strong> (${data.cashier_role || 'Staff'})</div>
                 <div>Payment Method: ${data.payment_method}</div>
                 <div class="border-t my-2"></div>
             `;
@@ -527,7 +678,10 @@ function nextPosGalleryImage() {
 }
 
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closePosGallery();
+    if (e.key === 'Escape') {
+        closePosGallery();
+        closeCartConfirmModal();
+    }
 });
 </script>
 @endpush
