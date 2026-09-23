@@ -61,6 +61,17 @@
 
     <style>
         html.dark { color-scheme: dark; }
+        
+        /* Select Dropdown Option High Contrast for Dark & Light Mode */
+        select option {
+            background-color: #ffffff;
+            color: #0f172a;
+        }
+        html.dark select option {
+            background-color: #0e1422;
+            color: #f8fafc;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             transition: background-color 0.25s ease, color 0.25s ease;

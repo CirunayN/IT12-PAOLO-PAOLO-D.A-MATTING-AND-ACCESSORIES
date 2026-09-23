@@ -11,12 +11,14 @@
             </h1>
         </div>
         <div class="flex items-center gap-2">
-            <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-dark-800 border border-slate-300 dark:border-slate-700">
-                <i class="fas fa-user-tag text-xs text-red-500"></i>
-                <label for="posCashierSelect" class="text-xs font-semibold text-slate-500 dark:text-slate-400">Cashier:</label>
-                <select id="posCashierSelect" onchange="syncCashierSelection(this.value)" class="bg-transparent text-xs font-bold text-slate-800 dark:text-slate-100 border-none focus:ring-0 cursor-pointer">
+            <div class="flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-slate-200/90 dark:bg-dark-800 border border-slate-300 dark:border-slate-700 shadow-sm">
+                <div class="w-6 h-6 rounded-lg bg-red-500/15 text-red-500 flex items-center justify-center text-xs flex-shrink-0">
+                    <i class="fas fa-user-tag"></i>
+                </div>
+                <label for="posCashierSelect" class="text-xs font-bold text-slate-500 dark:text-slate-400 select-none">Cashier:</label>
+                <select id="posCashierSelect" onchange="syncCashierSelection(this.value)" class="bg-transparent text-xs font-black text-slate-900 dark:text-white border-none focus:ring-0 cursor-pointer pr-1">
                     @foreach($users as $u)
-                    <option value="{{ $u->id }}" {{ auth()->id() == $u->id ? 'selected' : '' }}>
+                    <option value="{{ $u->id }}" class="bg-white dark:bg-[#0e1422] text-slate-900 dark:text-white py-1.5 font-medium" {{ auth()->id() == $u->id ? 'selected' : '' }}>
                         {{ $u->name }} ({{ $u->role ?? 'Staff' }})
                     </option>
                     @endforeach
@@ -165,7 +167,7 @@
                         </div>
                         <select id="checkoutCashierSelect" onchange="syncCashierSelection(this.value)" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 font-semibold focus:ring-2 focus:ring-red-500">
                             @foreach($users as $u)
-                            <option value="{{ $u->id }}" {{ auth()->id() == $u->id ? 'selected' : '' }}>
+                            <option value="{{ $u->id }}" class="bg-white dark:bg-[#0e1422] text-slate-900 dark:text-white py-1.5" {{ auth()->id() == $u->id ? 'selected' : '' }}>
                                 {{ $u->name }} ({{ $u->role ?? 'Staff' }})
                             </option>
                             @endforeach
@@ -179,7 +181,7 @@
                         </label>
                         <select id="paymentMethodSelect" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 font-semibold focus:ring-2 focus:ring-red-500">
                             @foreach($paymentMethods as $pm)
-                            <option value="{{ $pm->ID }}">{{ $pm->Name }}</option>
+                            <option value="{{ $pm->ID }}" class="bg-white dark:bg-[#0e1422] text-slate-900 dark:text-white py-1.5">{{ $pm->Name }}</option>
                             @endforeach
                         </select>
                     </div>
