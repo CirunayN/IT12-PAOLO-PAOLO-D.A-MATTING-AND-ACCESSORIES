@@ -29,10 +29,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- Category -->
             <div>
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                    Category <span class="text-rose-500">*</span>
-                </label>
-                <select name="Category_ID" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
+                <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                        Category <span class="text-rose-500">*</span>
+                    </label>
+                    <button type="button" onclick="openNewCategoryModal()" class="text-xs font-bold text-red-500 hover:text-red-400 flex items-center gap-1 transition-colors">
+                        <i class="fas fa-plus-circle"></i> New Category
+                    </button>
+                </div>
+                <select name="Category_ID" id="categorySelect" required class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500">
                     <option value="">Select Category</option>
                     @foreach($categories as $cat)
                     <option value="{{ $cat->ID }}" {{ old('Category_ID') == $cat->ID ? 'selected' : '' }}>{{ $cat->Name }}</option>
@@ -262,5 +267,103 @@ fileInput.addEventListener('change', (e) => {
         handleNewFiles(e.target.files);
     }
 });
+
+// Category Modal Functions
+function openNewCategoryModal() {
+    document.getElementById('newCategoryInput').value = '';
+    document.getElementById('newCategoryError').classList.add('hidden');
+    document.getElementById('newCategoryModal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('newCategoryInput').focus(), 50);
+}
+
+function closeNewCategoryModal() {
+    document.getElementById('newCategoryModal').classList.add('hidden');
+}
+
+function submitNewCategory() {
+    const input = document.getElementById('newCategoryInput');
+    const errEl = document.getElementById('newCategoryError');
+    const btn = document.getElementById('saveCategoryBtn');
+    const name = input.value.trim();
+
+    if (!name) {
+        errEl.textContent = 'Category name is required.';
+        errEl.classList.remove('hidden');
+        return;
+    }
+
+    errEl.classList.add('hidden');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+    fetch("{{ route('categories.store') }}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ Name: name })
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> Save Category';
+
+        if (data.success && data.category) {
+            const select = document.getElementById('categorySelect');
+            const opt = document.createElement('option');
+            opt.value = data.category.id;
+            opt.textContent = data.category.name;
+            opt.selected = true;
+            select.appendChild(opt);
+            closeNewCategoryModal();
+        } else {
+            errEl.textContent = data.message || (data.errors ? Object.values(data.errors).flat().join(' ') : 'Error creating category');
+            errEl.classList.remove('hidden');
+        }
+    })
+    .catch(err => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> Save Category';
+        errEl.textContent = 'Connection error. Please try again.';
+        errEl.classList.remove('hidden');
+    });
+}
 </script>
+
+<!-- Modal for Creating New Category -->
+<div id="newCategoryModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl space-y-4">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                <i class="fas fa-folder-plus text-red-500"></i>
+                Create New Category
+            </h3>
+            <button type="button" onclick="closeNewCategoryModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-2xl leading-none">&times;</button>
+        </div>
+
+        <div class="space-y-3">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                    Category Name <span class="text-rose-500">*</span>
+                </label>
+                <input type="text" id="newCategoryInput" placeholder="e.g. Roof Racks & Exterior"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
+                    onkeydown="if(event.key === 'Enter') { event.preventDefault(); submitNewCategory(); }">
+                <p id="newCategoryError" class="text-xs text-rose-500 mt-1 hidden"></p>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <button type="button" onclick="closeNewCategoryModal()" class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-200 font-bold text-xs hover:bg-slate-300 dark:hover:bg-dark-700">
+                Cancel
+            </button>
+            <button type="button" id="saveCategoryBtn" onclick="submitNewCategory()" class="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md shadow-red-600/25 flex items-center gap-1.5">
+                <i class="fas fa-check"></i>
+                <span>Save Category</span>
+            </button>
+        </div>
+    </div>
+</div>
 @endsection

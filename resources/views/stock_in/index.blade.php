@@ -50,21 +50,33 @@
 
     <!-- Filter -->
     <div class="glass-card rounded-2xl p-4 border shadow-sm">
-        <form method="GET" action="{{ route('stock-in.index') }}" class="flex flex-col sm:flex-row items-center gap-3">
-            <div class="flex-1 w-full">
+        <form method="GET" action="{{ route('stock-in.index') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+            <div class="sm:col-span-5">
                 <select name="product_id" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="">Filter by Product</option>
+                    <option value="">All Products</option>
                     @foreach($products as $prod)
                     <option value="{{ $prod->ID }}" {{ request('product_id') == $prod->ID ? 'selected' : '' }}>{{ $prod->Name }}</option>
                     @endforeach
                 </select>
             </div>
-            <button type="submit" class="px-5 py-2.5 rounded-xl bg-slate-800 dark:bg-dark-700 text-white font-bold text-sm">
-                Filter
-            </button>
-            <a href="{{ route('stock-in.index') }}" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300 font-bold text-sm">
-                Reset
-            </a>
+            <div class="sm:col-span-4">
+                <select name="user_id" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                    <option value="">All Receiving Staff</option>
+                    @foreach($users as $user)
+                    <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }} ({{ $user->role ?? 'Staff' }})
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="sm:col-span-3 flex items-center gap-2">
+                <button type="submit" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm transition-colors">
+                    Filter
+                </button>
+                <a href="{{ route('stock-in.index') }}" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors">
+                    Reset
+                </a>
+            </div>
         </form>
     </div>
 
@@ -77,6 +89,7 @@
                         <th class="p-4">Batch ID</th>
                         <th class="p-4">Date Received</th>
                         <th class="p-4">Product Name</th>
+                        <th class="p-4">Processed By</th>
                         <th class="p-4 text-right">Quantity Received</th>
                         <th class="p-4 text-right">Cost Price</th>
                         <th class="p-4 text-right">Retail Price</th>
@@ -93,6 +106,23 @@
                         <td class="p-4 font-bold text-slate-900 dark:text-white">
                             {{ $si->product->Name ?? 'N/A' }}
                         </td>
+                        <td class="p-4">
+                            @if($si->user)
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center text-xs font-black">
+                                    {{ strtoupper(substr($si->user->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <div class="font-bold text-xs text-slate-800 dark:text-slate-200">{{ $si->user->name }}</div>
+                                    <span class="inline-block text-[10px] font-bold px-1.5 py-0.2 rounded {{ $si->user->isAdmin() ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300' }}">
+                                        {{ $si->user->role ?? 'Staff' }}
+                                    </span>
+                                </div>
+                            </div>
+                            @else
+                            <span class="text-xs text-slate-400">System Admin</span>
+                            @endif
+                        </td>
                         <td class="p-4 text-right font-black text-emerald-600 dark:text-emerald-400 text-base">
                             +{{ number_format($si->Quantity, 0) }}
                         </td>
@@ -108,7 +138,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="p-8 text-center text-slate-400">No stock-in records found.</td>
+                        <td colspan="8" class="p-8 text-center text-slate-400">No stock-in records found.</td>
                     </tr>
                     @endforelse
                 </tbody>
