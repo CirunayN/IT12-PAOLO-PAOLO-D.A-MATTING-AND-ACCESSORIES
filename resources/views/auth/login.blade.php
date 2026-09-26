@@ -36,7 +36,7 @@
     <style>
         body {
             background-color: #080b11;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 15% 50%, rgba(220, 38, 38, 0.16) 0%, transparent 45%),
                 radial-gradient(circle at 85% 30%, rgba(245, 158, 11, 0.10) 0%, transparent 50%);
             font-family: 'Inter', sans-serif;
@@ -105,14 +105,6 @@
                         class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
                         placeholder="••••••••">
                 </div>
-            </div>
-
-            <!-- Remember Me -->
-            <div class="flex items-center justify-between text-xs pt-1">
-                <label class="flex items-center gap-2 cursor-pointer text-slate-400 hover:text-slate-300">
-                    <input type="checkbox" name="remember" class="rounded bg-slate-900 border-slate-700 text-red-600 focus:ring-red-500">
-                    <span>Remember this device</span>
-                </label>
             </div>
 
             <!-- Submit Button -->

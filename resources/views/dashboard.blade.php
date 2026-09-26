@@ -28,7 +28,7 @@
 
     <!-- 5-Column Stats Grid with Featured Main "Today's Sales" Hero Card -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 items-stretch">
-        
+
         <!-- MAIN FEATURED HERO CARD: Today's Sales (Spans 2 columns, larger typography & live badge) -->
         <div class="md:col-span-2 lg:col-span-2 glass-card rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/30 dark:border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-slate-50 to-slate-100 dark:from-emerald-950/40 dark:via-dark-900 dark:to-dark-850 shadow-lg shadow-emerald-500/5 relative overflow-hidden flex flex-col justify-between">
             <!-- Background Glow Accent -->
@@ -133,12 +133,12 @@
             <div>
                 <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-red-500/15 text-red-500 flex items-center justify-center">
+                        <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center">
                             <i class="fas fa-receipt text-xs"></i>
                         </div>
                         <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">Recent Sales</h3>
                     </div>
-                    <a href="{{ route('pos.index') }}" class="text-xs font-bold text-red-500 hover:text-red-400 transition-colors">
+                    <a href="{{ route('pos.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors">
                         New Sale &rarr;
                     </a>
                 </div>
@@ -158,7 +158,7 @@
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
                             @forelse($recentSales as $sale)
                             <tr class="hover:bg-slate-50 dark:hover:bg-dark-800/40 transition-colors">
-                                <td class="px-3 py-3 font-mono font-bold text-red-500 whitespace-nowrap">
+                                <td class="px-3 py-3 font-mono font-bold text-blue-500 whitespace-nowrap">
                                     #{{ $sale->ID }}
                                 </td>
                                 <td class="px-3 py-3 text-xs text-slate-600 dark:text-slate-300 whitespace-nowrap">
@@ -203,7 +203,7 @@
                         </div>
                         <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">Recent Stock Deliveries</h3>
                     </div>
-                    <a href="{{ route('stock-in.index') }}" class="text-xs font-bold text-red-500 hover:text-red-400 transition-colors">
+                    <a href="{{ route('stock-in.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors">
                         View All &rarr;
                     </a>
                 </div>
@@ -237,7 +237,7 @@
                                     <div class="font-bold text-xs text-slate-800 dark:text-slate-200">{{ $stockIn->user->name ?? 'Admin' }}</div>
                                     <span class="inline-block text-[10px] font-semibold text-slate-400">{{ $stockIn->user->role ?? 'Staff' }}</span>
                                 </td>
-                                <td class="px-3 py-3 text-right font-black text-red-500 whitespace-nowrap">
+                                <td class="px-3 py-3 text-right font-black text-green-500 whitespace-nowrap">
                                     +{{ number_format($stockIn->Quantity, 0) }}
                                 </td>
                                 <td class="px-3 py-3 text-right text-xs text-slate-500 dark:text-slate-400 font-mono whitespace-nowrap">
@@ -270,17 +270,17 @@
                 <i class="fas fa-tags text-purple-500"></i>
                 Product Categories
             </h3>
-            <a href="{{ route('products.index') }}" class="text-xs font-bold text-red-500 hover:text-red-400 transition-colors">
+            <a href="{{ route('products.index') }}" class="text-xs font-bold text-purple-500 hover:text-red-400 transition-colors">
                 Browse Catalog &rarr;
             </a>
         </div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
             @foreach($categories as $cat)
-            <a href="{{ route('products.index', ['category_id' => $cat->ID]) }}" class="p-4 rounded-2xl bg-slate-50 dark:bg-dark-800/60 border border-slate-200 dark:border-slate-700/60 hover:border-red-500/50 hover:shadow-md transition-all text-left group">
+            <a href="{{ route('products.index', ['category_id' => $cat->ID]) }}" class="p-4 rounded-2xl bg-slate-50 dark:bg-dark-800/60 border border-slate-200 dark:border-slate-700/60 hover:border-purple-500/50 hover:shadow-md transition-all text-left group">
                 <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xs mb-2 group-hover:bg-purple-500 group-hover:text-white transition-colors">
                     <i class="fas fa-folder"></i>
                 </div>
-                <div class="font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-red-500 transition-colors line-clamp-1">
+                <div class="font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-purple-500 transition-colors line-clamp-1">
                     {{ $cat->Name }}
                 </div>
                 <div class="text-xs text-slate-400 mt-1">
