@@ -86,7 +86,7 @@
             <div>
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Inventory Stock</span>
-                    <div class="w-10 h-10 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-base">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-base">
                         <i class="fas fa-cubes-stacked"></i>
                     </div>
                 </div>
