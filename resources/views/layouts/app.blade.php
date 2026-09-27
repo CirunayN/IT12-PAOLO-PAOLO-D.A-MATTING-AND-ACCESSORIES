@@ -51,9 +51,9 @@
         ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
         .glass-card { backdrop-filter: blur(12px); }
         .dark .glass-card { background: rgba(19,25,38,.85); border: 1px solid rgba(220,38,38,.22); }
-        .dark .glass-card:hover { border-color: rgba(239,68,68,.45); }
+        .dark .glass-card:hover { border-color: rgba(41, 38, 241, 0.45); }
         html:not(.dark) .glass-card { background:#fff; border:1px solid #e2e8f0; box-shadow:0 4px 15px -2px rgba(220,38,38,.05); }
-        html:not(.dark) .glass-card:hover { border-color:#dc2626; }
+        html:not(.dark) .glass-card:hover { border-color: rgba(41, 38, 241, 0.45); }
         .jdm-racing-border { border-top: 3px solid #dc2626; }
     </style>
 

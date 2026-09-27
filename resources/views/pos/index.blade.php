@@ -49,6 +49,30 @@
                     >
                 </div>
 
+
+                <!-- Product View Toggle -->
+                <div class="flex items-center gap-1 p-1 rounded-xl bg-slate-200 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 flex-shrink-0">
+                    <button
+                        type="button"
+                        id="gridViewBtn"
+                        onclick="setProductView('grid')"
+                        class="px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-bold transition-all"
+                        title="Grid View"
+                    >
+                        <i class="fas fa-grip"></i>
+                    </button>
+
+                    <button
+                        type="button"
+                        id="listViewBtn"
+                        onclick="setProductView('list')"
+                        class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 text-xs font-bold transition-all"
+                        title="Horizontal List View"
+                    >
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+
                 <div class="flex items-center gap-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
 
                     <button
@@ -75,8 +99,9 @@
 
             <!-- Product Cards Grid -->
             <div
-                class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 max-h-[680px] overflow-y-auto pr-1"
+                class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 max-h-[680px] overflow-y-auto pr-1 transition-all"
                 id="productGrid"
+                data-view="grid"
             >
 
                 @foreach($products as $p)
@@ -90,7 +115,7 @@
                 @endphp
 
                 <div
-                    class="product-item glass-card rounded-2xl p-3 border flex flex-col justify-between cursor-pointer transition-all hover:scale-[1.02] hover:border-red-500/50 relative overflow-hidden group {{ $qty <= 0 ? 'opacity-60 pointer-events-none' : '' }}"
+                    class="product-item product-card glass-card rounded-2xl p-3 border flex flex-col justify-between cursor-pointer transition-all hover:scale-[1.02] hover:border-red-500/50 relative overflow-hidden group {{ $qty <= 0 ? 'opacity-60 pointer-events-none' : '' }}"
                     data-id="{{ $p->ID }}"
                     data-name="{{ $p->Name }}"
                     data-price="{{ $price }}"
@@ -106,7 +131,7 @@
 
                     <div>
 
-                        <div class="w-full h-28 rounded-xl bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 overflow-hidden mb-2.5 relative flex items-center justify-center">
+                        <div class="product-image w-full h-28 rounded-xl bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 overflow-hidden mb-2.5 relative flex items-center justify-center">
 
                             @if($p->image_url)
 
@@ -181,7 +206,7 @@
                         </h4>
                     </div>
 
-                    <div class="mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
+                    <div class="product-footer mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
 
                         <div class="font-black font-display text-sm sm:text-base text-emerald-600 dark:text-emerald-400">
                             ₱{{ number_format($price, 2) }}
@@ -606,6 +631,86 @@
         </div>
     </div>
 </div>
+
+
+<style>
+    /* POS Product Horizontal List View */
+    #productGrid.list-view {
+        grid-template-columns: 1fr !important;
+    }
+
+    #productGrid.list-view .product-card {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 16px;
+        min-height: 120px;
+    }
+
+    #productGrid.list-view .product-card > div:first-child {
+        display: contents;
+    }
+
+    #productGrid.list-view .product-image {
+        width: 120px;
+        height: 100px;
+        margin-bottom: 0;
+        grid-column: 1;
+        grid-row: 1 / span 2;
+    }
+
+    #productGrid.list-view .product-card > div:first-child > div:nth-child(2) {
+        grid-column: 2;
+        grid-row: 1;
+        align-self: end;
+        margin-bottom: 4px;
+    }
+
+    #productGrid.list-view .product-card > div:first-child > h4 {
+        grid-column: 2;
+        grid-row: 2;
+        align-self: start;
+        font-size: 1rem;
+        line-height: 1.35rem;
+    }
+
+    #productGrid.list-view .product-footer {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+        border-top: 0;
+        padding-top: 0;
+        margin-top: 0;
+        gap: 12px;
+        min-width: 120px;
+    }
+
+    @media (max-width: 640px) {
+        #productGrid.list-view .product-card {
+            grid-template-columns: 90px minmax(0, 1fr);
+            gap: 12px;
+        }
+
+        #productGrid.list-view .product-image {
+            width: 90px;
+            height: 90px;
+        }
+
+        #productGrid.list-view .product-footer {
+            grid-column: 2;
+            grid-row: 3;
+            justify-content: space-between;
+            min-width: 0;
+            border-top: 1px solid rgb(226 232 240);
+            padding-top: 8px;
+            margin-top: 4px;
+        }
+
+        .dark #productGrid.list-view .product-footer {
+            border-top-color: rgb(51 65 85 / 0.6);
+        }
+    }
+</style>
+
 
 @endsection
 
@@ -1928,6 +2033,63 @@ function nextPosGalleryImage() {
     updatePosGalleryDisplay();
 }
 
+
+
+/*
+|--------------------------------------------------------------------------
+| PRODUCT VIEW TOGGLE
+|--------------------------------------------------------------------------
+*/
+
+function setProductView(view) {
+
+    const productGrid =
+        document.getElementById('productGrid');
+
+    const gridBtn =
+        document.getElementById('gridViewBtn');
+
+    const listBtn =
+        document.getElementById('listViewBtn');
+
+    if (!productGrid || !gridBtn || !listBtn) {
+        return;
+    }
+
+    productGrid.dataset.view = view;
+
+    if (view === 'list') {
+
+        productGrid.classList.add('list-view');
+        productGrid.classList.remove('grid-cols-2', 'sm:grid-cols-3');
+
+        listBtn.classList.add('bg-red-600', 'text-white');
+        listBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+
+        gridBtn.classList.remove('bg-red-600', 'text-white');
+        gridBtn.classList.add('text-slate-600', 'dark:text-slate-300');
+
+        localStorage.setItem('posProductView', 'list');
+
+    } else {
+
+        productGrid.classList.remove('list-view');
+        productGrid.classList.add('grid-cols-2', 'sm:grid-cols-3');
+
+        gridBtn.classList.add('bg-red-600', 'text-white');
+        gridBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+
+        listBtn.classList.remove('bg-red-600', 'text-white');
+        listBtn.classList.add('text-slate-600', 'dark:text-slate-300');
+
+        localStorage.setItem('posProductView', 'grid');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const savedView = localStorage.getItem('posProductView') || 'grid';
+    setProductView(savedView);
+});
 
 /*
 |--------------------------------------------------------------------------
