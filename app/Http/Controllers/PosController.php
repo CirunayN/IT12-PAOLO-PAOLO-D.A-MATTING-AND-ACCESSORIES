@@ -8,7 +8,6 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SoldItem;
 use App\Models\Status;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -19,43 +18,101 @@ class PosController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $paymentMethods = PaymentMethod::all();
-        $users = User::orderBy('name', 'asc')->get();
-        
-        // Exclude archived/disabled products from POS catalog
+
+        $paymentMethods = PaymentMethod::whereIn('Name', [
+            'Cash',
+            'GCash',
+        ])->orderBy('ID')->get();
+
         $archivedStatus = Status::where('Name', 'Archived')->first();
-        $query = Product::with(['category', 'status', 'stockIns', 'soldItems']);
+
+        $query = Product::with([
+            'category',
+            'status',
+            'stockIns',
+            'soldItems',
+        ]);
+
         if ($archivedStatus) {
             $query->where('Status_ID', '!=', $archivedStatus->ID);
         }
+
         $products = $query->get();
 
-        return view('pos.index', compact('categories', 'paymentMethods', 'products', 'users'));
+        return view(
+            'pos.index',
+            compact(
+                'categories',
+                'paymentMethods',
+                'products'
+            )
+        );
     }
 
     public function checkout(Request $request)
     {
         $validated = $request->validate([
-            'payment_method_id' => 'required|exists:tbl_payment_method,ID',
-            'user_id' => 'nullable|exists:users,id',
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|exists:tbl_product,ID',
-            'items.*.quantity' => 'required|numeric|min:1',
-            'amount_tendered' => 'nullable|numeric|min:0',
+            'payment_method_id' => [
+                'required',
+                'exists:tbl_payment_method,ID',
+            ],
+            'items' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'items.*.product_id' => [
+                'required',
+                'exists:tbl_product,ID',
+            ],
+            'items.*.quantity' => [
+                'required',
+                'numeric',
+                'min:1',
+            ],
+            'amount_tendered' => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
         ]);
 
-        return DB::transaction(function () use ($validated, $request) {
+        $paymentMethod = PaymentMethod::findOrFail(
+            $validated['payment_method_id']
+        );
+
+        if (!in_array(
+            strtolower($paymentMethod->Name),
+            ['cash', 'gcash'],
+            true
+        )) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only Cash and GCash are allowed as payment methods.',
+            ], 422);
+        }
+
+        return DB::transaction(function () use ($validated, $paymentMethod) {
             $total = 0;
             $itemsToSave = [];
 
             foreach ($validated['items'] as $item) {
                 $product = Product::findOrFail($item['product_id']);
                 $qty = (float) $item['quantity'];
-                
+
+                if ($qty < 1) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Product quantity must be at least 1.',
+                    ], 422);
+                }
+
                 if ($product->stock_quantity < $qty) {
                     return response()->json([
                         'success' => false,
-                        'message' => "Insufficient stock for {$product->Name}. Only {$product->stock_quantity} available."
+                        'message' =>
+                            "Insufficient stock for {$product->Name}. " .
+                            "Only {$product->stock_quantity} available.",
                     ], 422);
                 }
 
@@ -72,14 +129,34 @@ class PosController extends Controller
                 ];
             }
 
-            $cashierId = !empty($validated['user_id']) ? (int) $validated['user_id'] : (auth()->id() ?: 1);
-            $cashier = User::find($cashierId) ?? auth()->user();
+            $total = round($total, 2);
+            $amountTendered = round((float) $validated['amount_tendered'], 2);
+
+            if ($amountTendered < $total) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Amount received must be equal to or greater than the total amount.',
+                ], 422);
+            }
+
+            $change = round($amountTendered - $total, 2);
+            $cashier = auth()->user();
+            $cashierId = auth()->id();
+
+            if (!$cashier || !$cashierId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your login session has expired. Please log in again.',
+                ], 401);
+            }
 
             $sale = Sale::create([
                 'Date' => Carbon::now(),
                 'Total' => $total,
+                'Amount_Received' => $amountTendered,
+                'Change_Amount' => $change,
                 'User_ID' => $cashierId,
-                'Payment_Method_ID' => $validated['payment_method_id'],
+                'Payment_Method_ID' => $paymentMethod->ID,
             ]);
 
             foreach ($itemsToSave as $item) {
@@ -91,13 +168,15 @@ class PosController extends Controller
                 ]);
             }
 
-            $amountTendered = (float) ($validated['amount_tendered'] ?? $total);
-            $change = max(0, $amountTendered - $total);
-
             $cashierName = $cashier->name ?? 'Staff';
             $cashierRole = $cashier->role ?? 'Staff';
 
-            Log::info("Sale #INV-{$sale->ID}: Processed total ₱" . number_format($total, 2) . " by {$cashierName} ({$cashierRole})");
+            Log::info(
+                "Sale #INV-{$sale->ID}: " .
+                'Processed total ₱' .
+                number_format($total, 2) .
+                " by {$cashierName} ({$cashierRole})"
+            );
 
             return response()->json([
                 'success' => true,
@@ -109,7 +188,7 @@ class PosController extends Controller
                 'date' => $sale->Date->format('M d, Y h:i A'),
                 'cashier' => $cashierName,
                 'cashier_role' => $cashierRole,
-                'payment_method' => PaymentMethod::find($validated['payment_method_id'])->Name ?? 'Cash',
+                'payment_method' => $paymentMethod->Name,
                 'items' => $itemsToSave,
             ]);
         });
@@ -117,7 +196,24 @@ class PosController extends Controller
 
     public function receipt($id)
     {
-        $sale = Sale::with(['user', 'paymentMethod', 'soldItems.product'])->findOrFail($id);
-        return view('pos.receipt', compact('sale'));
+        $sale = Sale::with([
+            'user',
+            'paymentMethod',
+            'soldItems.product',
+        ])->findOrFail($id);
+
+        $user = auth()->user();
+
+        if (
+            !$user->isAdmin() &&
+            (int) $sale->User_ID !== (int) $user->id
+        ) {
+            abort(403, 'You can only view receipts for your own transactions.');
+        }
+
+        return view(
+            'pos.receipt',
+            compact('sale')
+        );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +16,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -34,14 +34,30 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return in_array(strtolower($this->role ?? ''), ['admin', 'owner']);
+        return in_array(
+            strtolower($this->role ?? ''),
+            ['admin', 'owner'],
+            true
+        );
     }
 
     public function isCashier(): bool
     {
-        return in_array(strtolower($this->role ?? ''), [
-            'cashier', 'admin', 'owner', 'packer', 'accessory installer', 'accessory_installer', 'production worker', 'production_worker'
-        ]);
+        return in_array(
+            strtolower($this->role ?? ''),
+            [
+                'employee',
+                'cashier',
+                'admin',
+                'owner',
+                'packer',
+                'accessory installer',
+                'accessory_installer',
+                'production worker',
+                'production_worker',
+            ],
+            true
+        );
     }
 
     public function sales()
