@@ -121,7 +121,7 @@
                 
                 <div class="text-left hidden sm:block">
                     <div class="font-jdm text-slate-900 dark:text-white text-base sm:text-lg tracking-wider group-hover:text-red-500 transition-colors">
-                        PAOLO PAOLA
+                        PAOLO PAOLO
                     </div>
                     <div class="text-[11px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5 flex items-center gap-1.5">
                         <span>D.A Matting &amp; Accessories</span>

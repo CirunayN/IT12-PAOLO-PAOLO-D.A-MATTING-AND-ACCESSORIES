@@ -107,13 +107,7 @@
                 </div>
             </div>
 
-            <!-- Remember Me -->
-            <div class="flex items-center justify-between text-xs pt-1">
-                <label class="flex items-center gap-2 cursor-pointer text-slate-400 hover:text-slate-300">
-                    <input type="checkbox" name="remember" class="rounded bg-slate-900 border-slate-700 text-red-600 focus:ring-red-500">
-                    <span>Remember this device</span>
-                </label>
-            </div>
+    
 
             <!-- Submit Button -->
             <button type="submit"
