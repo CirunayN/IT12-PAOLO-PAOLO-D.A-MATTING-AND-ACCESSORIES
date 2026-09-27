@@ -29,6 +29,13 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 11px;
             color: #111;
+            background: #fff;
+        }
+
+
+        .report-page {
+            width: 100%;
+            margin: 0 auto;
         }
 
 
@@ -86,6 +93,18 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 25px;
+            page-break-inside: auto;
+        }
+
+
+        .report-table thead {
+            display: table-header-group;
+        }
+
+
+        .report-table tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
         }
 
 
@@ -137,12 +156,38 @@
         @media print {
 
             .no-print {
-                display: none;
+                display: none !important;
             }
 
 
+            html,
             body {
+                width: 100%;
+                margin: 0;
                 padding: 0;
+                background: #fff;
+            }
+
+
+            .report-page {
+                width: 100%;
+                margin: 0;
+            }
+
+
+            .summary,
+            .report-table {
+                width: 100%;
+            }
+
+
+            .section-title {
+                page-break-after: avoid;
+            }
+
+
+            .footer {
+                page-break-inside: avoid;
             }
 
 
@@ -160,6 +205,7 @@
 
 <body>
 
+<div class="report-page">
 
 <button
     class="print-button no-print"
@@ -843,6 +889,23 @@
 
 </div>
 
+
+
+</div>
+
+<script>
+    window.addEventListener(
+        'load',
+        function () {
+            setTimeout(
+                function () {
+                    window.print();
+                },
+                250
+            );
+        }
+    );
+</script>
 
 </body>
 

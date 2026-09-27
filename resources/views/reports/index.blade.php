@@ -27,25 +27,17 @@
         </div>
 
 
-        <a
-            href="{{ route('reports.print', [
-                'scope' => $scope,
-                'employee_id' => $selectedEmployee?->id,
-                'period' => $period,
-                'month' => $month,
-                'year' => $year
-            ]) }}"
-            target="_blank"
+        <button
+            type="button"
+            onclick="printCurrentAdminReport()"
             class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center justify-center gap-2"
         >
-
             <i class="fas fa-print"></i>
 
             <span>
                 Print Report
             </span>
-
-        </a>
+        </button>
 
     </div>
 
@@ -108,6 +100,7 @@
 
                 <select
                     name="employee_id"
+                    id="adminEmployeeSelect"
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold"
                 >
 
@@ -192,6 +185,7 @@
                 <input
                     type="month"
                     name="month"
+                    id="adminReportMonth"
                     value="{{ $month }}"
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold"
                 >
@@ -212,6 +206,7 @@
                 <input
                     type="number"
                     name="year"
+                    id="adminReportYear"
                     value="{{ $year }}"
                     min="2000"
                     max="2100"
@@ -843,6 +838,117 @@ const adminYearContainer =
     document.getElementById(
         'adminYearContainer'
     );
+
+
+
+function printCurrentAdminReport() {
+
+    const scope =
+        document.getElementById(
+            'adminReportScope'
+        ).value;
+
+    const employeeSelect =
+        document.getElementById(
+            'adminEmployeeSelect'
+        );
+
+    const period =
+        document.getElementById(
+            'adminReportPeriod'
+        ).value;
+
+    const month =
+        document.getElementById(
+            'adminReportMonth'
+        ).value;
+
+    const year =
+        document.getElementById(
+            'adminReportYear'
+        ).value;
+
+
+    /*
+     * Employee report requires a selected employee.
+     */
+    if (
+        scope === 'employee' &&
+        !employeeSelect.value
+    ) {
+
+        alert(
+            'Please select an employee before printing an employee report.'
+        );
+
+        employeeSelect.focus();
+
+        return;
+    }
+
+
+    const params =
+        new URLSearchParams();
+
+    params.set(
+        'scope',
+        scope
+    );
+
+    params.set(
+        'period',
+        period
+    );
+
+
+    if (
+        scope === 'employee'
+    ) {
+
+        params.set(
+            'employee_id',
+            employeeSelect.value
+        );
+
+    }
+
+
+    if (
+        period === 'monthly'
+    ) {
+
+        params.set(
+            'month',
+            month
+        );
+
+    }
+
+
+    if (
+        period === 'yearly'
+    ) {
+
+        params.set(
+            'year',
+            year
+        );
+
+    }
+
+
+    const printUrl =
+        "{{ route('reports.print') }}" +
+        '?' +
+        params.toString();
+
+
+    window.open(
+        printUrl,
+        '_blank',
+        'noopener'
+    );
+}
 
 
 function updateAdminScope() {

@@ -30,13 +30,9 @@
         </div>
 
 
-        <a
-            href="{{ route('transactions.print', [
-                'period' => $period,
-                'month' => $month,
-                'year' => $year
-            ]) }}"
-            target="_blank"
+        <button
+            type="button"
+            onclick="printCurrentTransactionReport()"
             class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center justify-center gap-2"
         >
 
@@ -46,7 +42,7 @@
                 Print My Report
             </span>
 
-        </a>
+        </button>
 
     </div>
 
@@ -117,6 +113,7 @@
                 <input
                     type="month"
                     name="month"
+                    id="personalReportMonth"
                     value="{{ $month }}"
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white"
                 >
@@ -137,6 +134,7 @@
                 <input
                     type="number"
                     name="year"
+                    id="personalReportYear"
                     value="{{ $year }}"
                     min="2000"
                     max="2100"
@@ -415,6 +413,72 @@ const personalYearContainer =
     document.getElementById(
         'personalYearContainer'
     );
+
+
+
+function printCurrentTransactionReport() {
+
+    const period =
+        document.getElementById(
+            'personalReportPeriod'
+        ).value;
+
+    const month =
+        document.getElementById(
+            'personalReportMonth'
+        ).value;
+
+    const year =
+        document.getElementById(
+            'personalReportYear'
+        ).value;
+
+
+    const params =
+        new URLSearchParams();
+
+    params.set(
+        'period',
+        period
+    );
+
+
+    if (
+        period === 'monthly'
+    ) {
+
+        params.set(
+            'month',
+            month
+        );
+
+    }
+
+
+    if (
+        period === 'yearly'
+    ) {
+
+        params.set(
+            'year',
+            year
+        );
+
+    }
+
+
+    const printUrl =
+        "{{ route('transactions.print') }}" +
+        '?' +
+        params.toString();
+
+
+    window.open(
+        printUrl,
+        '_blank',
+        'noopener'
+    );
+}
 
 
 function updatePersonalReportFields() {
