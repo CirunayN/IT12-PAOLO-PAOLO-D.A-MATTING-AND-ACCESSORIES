@@ -151,29 +151,6 @@
 
                             @endif
 
-                            <div class="absolute top-2 right-2">
-
-                                @if($qty <= 0)
-
-                                <span class="text-[10px] font-black uppercase text-rose-500 bg-rose-950/80 backdrop-blur-sm px-1.5 py-0.5 rounded border border-rose-500/30">
-                                    Out of stock
-                                </span>
-
-                                @elseif($qty <= 5)
-
-                                <span class="text-[10px] font-bold text-amber-400 bg-amber-950/80 backdrop-blur-sm px-1.5 py-0.5 rounded border border-amber-500/30">
-                                    {{ $qty }} left
-                                </span>
-
-                                @else
-
-                                <span class="text-[10px] font-semibold text-emerald-400 bg-emerald-950/80 backdrop-blur-sm px-1.5 py-0.5 rounded border border-emerald-500/30">
-                                    {{ $qty }} stock
-                                </span>
-
-                                @endif
-                            </div>
-
                             @if($imagesCount > 0)
 
                             <button
@@ -204,6 +181,28 @@
                         <h4 class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-snug line-clamp-2">
                             {{ $p->Name }}
                         </h4>
+                    </div>
+
+                    <div class="mt-1.5">
+                        @if($qty <= 0)
+
+                            <span class="inline-block text-[10px] font-black uppercase text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/30">
+                                Out of stock
+                            </span>
+
+                        @elseif($qty <= 5)
+
+                            <span class="inline-block text-[10px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/30">
+                                {{ $qty }} left
+                            </span>
+
+                        @else
+
+                            <span class="inline-block text-[10px] font-semibold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/30">
+                                {{ $qty }} stock
+                            </span>
+
+                        @endif
                     </div>
 
                     <div class="product-footer mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/60 flex items-center justify-between">
