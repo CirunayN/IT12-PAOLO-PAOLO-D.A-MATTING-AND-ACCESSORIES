@@ -23,7 +23,12 @@ class EmployeeController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('employees.index', compact('employees'));
+        $pendingEmployees = PendingEmployeeRegistration::query()
+            ->where('created_by', auth()->id())
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('employees.index', compact('employees', 'pendingEmployees'));
     }
 
     public function create(): View
@@ -34,11 +39,7 @@ class EmployeeController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-            ],
+            'name' => ['required', 'string', 'max:255'],
             'username' => [
                 'required',
                 'string',
@@ -61,11 +62,16 @@ class EmployeeController extends Controller
                 'confirmed',
             ],
         ], [
-            'username.alpha_dash' => 'The username may only contain letters, numbers, dashes, and underscores.',
-            'password.min' => 'The password must contain at least 8 characters.',
-            'password.max' => 'The password must not exceed 16 characters.',
-            'password.regex' => 'The password may only contain uppercase letters, lowercase letters, and numbers.',
-            'password.confirmed' => 'The password confirmation does not match.',
+            'username.alpha_dash' =>
+                'The username may only contain letters, numbers, dashes, and underscores.',
+            'password.min' =>
+                'The password must contain at least 8 characters.',
+            'password.max' =>
+                'The password must not exceed 16 characters.',
+            'password.regex' =>
+                'The password may only contain uppercase letters, lowercase letters, and numbers.',
+            'password.confirmed' =>
+                'The password confirmation does not match.',
         ]);
 
         $email = strtolower(trim($validated['email']));
@@ -104,17 +110,50 @@ class EmployeeController extends Controller
             ]);
 
             return back()
-                ->withInput($request->except(['password', 'password_confirmation']))
+                ->withInput(
+                    $request->except([
+                        'password',
+                        'password_confirmation',
+                    ])
+                )
                 ->withErrors([
-                    'email' => 'Unable to send the Gmail confirmation code. Check the internet connection and mail settings, then try again.',
+                    'email' =>
+                        'Unable to send the Gmail confirmation code. ' .
+                        'Check the internet connection and mail settings, then try again.',
                 ]);
         }
 
-        $request->session()->put('pending_employee_registration_id', $pending->id);
+        $request->session()->put(
+            'pending_employee_registration_id',
+            $pending->id
+        );
 
         return redirect()
             ->route('employees.verify.form')
-            ->with('status', 'A 6-digit confirmation code was sent to the employee email. The employee will not be registered until the code is verified.');
+            ->with(
+                'status',
+                'A 6-digit confirmation code was sent. ' .
+                'If the employee cannot provide it now, return to Employees and press Verify later.'
+            );
+    }
+
+    public function resumeVerification(
+        Request $request,
+        PendingEmployeeRegistration $pending
+    ): RedirectResponse {
+        if ((int) $pending->created_by !== (int) auth()->id()) {
+            abort(
+                403,
+                'You can only verify employee registrations that you created.'
+            );
+        }
+
+        $request->session()->put(
+            'pending_employee_registration_id',
+            $pending->id
+        );
+
+        return redirect()->route('employees.verify.form');
     }
 
     public function verifyForm(Request $request): View|RedirectResponse
@@ -122,7 +161,12 @@ class EmployeeController extends Controller
         $pending = $this->getPendingForCurrentAdmin($request);
 
         if (!$pending) {
-            return redirect()->route('employees.create');
+            return redirect()
+                ->route('employees.index')
+                ->withErrors([
+                    'verification' =>
+                        'No pending employee verification was selected.',
+                ]);
         }
 
         return view('employees.verify', compact('pending'));
@@ -133,19 +177,23 @@ class EmployeeController extends Controller
         $pending = $this->getPendingForCurrentAdmin($request);
 
         if (!$pending) {
-            return redirect()->route('employees.create');
+            return redirect()
+                ->route('employees.index')
+                ->withErrors([
+                    'verification' =>
+                        'No pending employee verification was selected.',
+                ]);
         }
 
         $validated = $request->validate([
-            'code' => [
-                'required',
-                'digits:6',
-            ],
+            'code' => ['required', 'digits:6'],
         ]);
 
         if ($pending->expires_at->isPast()) {
             return back()->withErrors([
-                'code' => 'This confirmation code has expired. Send a new code.',
+                'code' =>
+                    'This confirmation code has expired. ' .
+                    'Press Send New Code, then enter the new code.',
             ]);
         }
 
@@ -180,11 +228,16 @@ class EmployeeController extends Controller
             $pending->delete();
         });
 
-        $request->session()->forget('pending_employee_registration_id');
+        $request->session()->forget(
+            'pending_employee_registration_id'
+        );
 
         return redirect()
             ->route('employees.index')
-            ->with('success', 'Employee email verified. The employee account has now been registered.');
+            ->with(
+                'success',
+                'Employee verified successfully. The account can now log in.'
+            );
     }
 
     public function resend(Request $request): RedirectResponse
@@ -192,7 +245,12 @@ class EmployeeController extends Controller
         $pending = $this->getPendingForCurrentAdmin($request);
 
         if (!$pending) {
-            return redirect()->route('employees.create');
+            return redirect()
+                ->route('employees.index')
+                ->withErrors([
+                    'verification' =>
+                        'No pending employee verification was selected.',
+                ]);
         }
 
         $code = (string) random_int(100000, 999999);
@@ -210,22 +268,34 @@ class EmployeeController extends Controller
                 )
             );
         } catch (Throwable $e) {
-            Log::error('Employee registration code resend failed.', [
-                'email' => $pending->email,
-                'error' => $e->getMessage(),
-            ]);
+            Log::error(
+                'Employee registration code resend failed.',
+                [
+                    'email' => $pending->email,
+                    'error' => $e->getMessage(),
+                ]
+            );
 
             return back()->withErrors([
-                'code' => 'Unable to resend the Gmail confirmation code. Check the internet connection and mail settings.',
+                'code' =>
+                    'Unable to resend the Gmail confirmation code. ' .
+                    'Check the internet connection and mail settings.',
             ]);
         }
 
-        return back()->with('status', 'A new 6-digit confirmation code was sent. The previous code is no longer valid.');
+        return back()->with(
+            'status',
+            'A new 6-digit confirmation code was sent. ' .
+            'The previous code is no longer valid.'
+        );
     }
 
-    private function getPendingForCurrentAdmin(Request $request): ?PendingEmployeeRegistration
-    {
-        $id = $request->session()->get('pending_employee_registration_id');
+    private function getPendingForCurrentAdmin(
+        Request $request
+    ): ?PendingEmployeeRegistration {
+        $id = $request->session()->get(
+            'pending_employee_registration_id'
+        );
 
         if (!$id) {
             return null;

@@ -8,6 +8,7 @@ use App\Models\Status;
 use App\Models\StockIn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
@@ -26,7 +27,10 @@ class ProductController extends Controller
         }
 
         if ($request->filled('search')) {
-            $query->where('Name', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('Name', 'like', '%' . $request->search . '%')
+                    ->orWhere('Description', 'like', '%' . $request->search . '%');
+            });
         }
 
         if ($request->filled('category_id')) {
@@ -45,61 +49,207 @@ class ProductController extends Controller
         $archivedCount = Product::where('Status_ID', $archivedStatus->ID)->count();
         $totalCount = Product::count();
 
-        return view('products.index', compact('products', 'categories', 'statuses', 'tab', 'activeCount', 'archivedCount', 'totalCount'));
+        return view('products.index', compact(
+            'products',
+            'categories',
+            'statuses',
+            'tab',
+            'activeCount',
+            'archivedCount',
+            'totalCount'
+        ));
     }
 
     public function create()
     {
-        $categories = Category::all();
+        $archivedStatus = Status::where('Name', 'Archived')->first();
+
+        $productQuery = Product::with(['category', 'status', 'stockIns', 'soldItems']);
+
+        if ($archivedStatus) {
+            $productQuery->where('Status_ID', '!=', $archivedStatus->ID);
+        }
+
+        $existingProducts = $productQuery->orderBy('Name', 'asc')->get();
+        $categories = Category::orderBy('Name', 'asc')->get();
         $statuses = Status::where('Name', '!=', 'Archived')->get();
-        return view('products.create', compact('categories', 'statuses'));
+
+        return view(
+            'products.create',
+            compact('existingProducts', 'categories', 'statuses')
+        );
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'Name' => 'required|string|max:255',
-            'Category_ID' => 'required|exists:tbl_category,ID',
-            'Status_ID' => 'required|exists:tbl_status,ID',
-            'images' => 'nullable|array|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp,gif|max:5120',
-            'initial_quantity' => 'nullable|numeric|min:0',
-            'cost_price' => 'nullable|numeric|min:0',
-            'retail_price' => 'nullable|numeric|min:0',
+            'product_mode' => 'required|in:existing,new',
+
+            'Existing_Product_ID' =>
+                'required_if:product_mode,existing|nullable|exists:tbl_product,ID',
+
+            'Name' =>
+                'required_if:product_mode,new|nullable|string|max:255|unique:tbl_product,Name',
+
+            'Description' =>
+                'nullable|string|max:2000',
+
+            'Category_ID' =>
+                'required_if:product_mode,new|nullable|exists:tbl_category,ID',
+
+            'Status_ID' =>
+                'required_if:product_mode,new|nullable|exists:tbl_status,ID',
+
+            'images' =>
+                'nullable|array|max:5',
+
+            'images.*' =>
+                'image|mimes:jpeg,png,jpg,webp,gif|max:5120',
+
+            'initial_quantity' =>
+                'required_if:product_mode,existing|nullable|numeric|min:0',
+
+            'cost_price' =>
+                'nullable|numeric|min:0',
+
+            'retail_price' =>
+                'nullable|numeric|min:0',
+
+            'has_expiration' =>
+                'nullable|boolean',
+
+            'expiration_date' =>
+                'nullable|required_if:has_expiration,1|date|after_or_equal:today',
+
+            'condition' =>
+                'nullable|in:Good,Damaged,Defective',
         ]);
 
-        $imagePaths = [];
-        if ($request->hasFile('images')) {
-            $destination = public_path('uploads/products');
-            if (!File::exists($destination)) {
-                File::makeDirectory($destination, 0777, true, true);
+        return DB::transaction(function () use ($request, $validated) {
+            /*
+             * EXISTING PRODUCT MODE
+             * ---------------------
+             * Do not duplicate tbl_product.
+             * Add a new stock-in/batch row, allowing a different
+             * cost, retail price, condition, and expiration.
+             */
+            if ($validated['product_mode'] === 'existing') {
+                $product = Product::findOrFail($validated['Existing_Product_ID']);
+
+                $quantity = (float) ($validated['initial_quantity'] ?? 0);
+
+                if ($quantity < 1) {
+                    return back()
+                        ->withErrors([
+                            'initial_quantity' =>
+                                'Quantity must be at least 1 when adding stock to an existing product.',
+                        ])
+                        ->withInput();
+                }
+
+                if (!array_key_exists('cost_price', $validated) || $validated['cost_price'] === null) {
+                    return back()
+                        ->withErrors([
+                            'cost_price' =>
+                                'Cost price is required when adding stock to an existing product.',
+                        ])
+                        ->withInput();
+                }
+
+                if (!array_key_exists('retail_price', $validated) || $validated['retail_price'] === null) {
+                    return back()
+                        ->withErrors([
+                            'retail_price' =>
+                                'Retail price is required when adding stock to an existing product.',
+                        ])
+                        ->withInput();
+                }
+
+                $hasExpiration = $request->boolean('has_expiration');
+
+                StockIn::create([
+                    'Product_ID' => $product->ID,
+                    'User_ID' => auth()->id(),
+                    'Quantity' => $quantity,
+                    'Remaining_Quantity' => $quantity,
+                    'Cost_Price' => $validated['cost_price'],
+                    'Retail_Price' => $validated['retail_price'],
+                    'Has_Expiration' => $hasExpiration,
+                    'Expiration_Date' => $hasExpiration
+                        ? ($validated['expiration_date'] ?? null)
+                        : null,
+                    'Condition' => $validated['condition'] ?? 'Good',
+                ]);
+
+                return redirect()
+                    ->route('products.index')
+                    ->with(
+                        'success',
+                        "New inventory batch added for '{$product->Name}'. " .
+                        "Different price/condition/expiration values are stored as a new stock row."
+                    );
             }
 
-            foreach (array_slice($request->file('images'), 0, 5) as $file) {
-                $filename = time() . '_' . Str::random(6) . '_' . Str::slug($request->Name) . '.' . $file->getClientOriginalExtension();
-                $file->move($destination, $filename);
-                $imagePaths[] = 'uploads/products/' . $filename;
+            /*
+             * NEW PRODUCT MODE
+             * ----------------
+             * Create a new product master row, then optionally
+             * create its first stock-in batch.
+             */
+            $imagePaths = [];
+
+            if ($request->hasFile('images')) {
+                $destination = public_path('uploads/products');
+
+                if (!File::exists($destination)) {
+                    File::makeDirectory($destination, 0777, true, true);
+                }
+
+                foreach (array_slice($request->file('images'), 0, 5) as $file) {
+                    $filename =
+                        time() . '_' .
+                        Str::random(6) . '_' .
+                        Str::slug($request->Name) . '.' .
+                        $file->getClientOriginalExtension();
+
+                    $file->move($destination, $filename);
+                    $imagePaths[] = 'uploads/products/' . $filename;
+                }
             }
-        }
 
-        $product = Product::create([
-            'Name' => $validated['Name'],
-            'Category_ID' => $validated['Category_ID'],
-            'Status_ID' => $validated['Status_ID'],
-            'Image' => $imagePaths[0] ?? null,
-            'Images' => $imagePaths,
-        ]);
-
-        if (!empty($validated['initial_quantity']) && $validated['initial_quantity'] > 0) {
-            StockIn::create([
-                'Product_ID' => $product->ID,
-                'Quantity' => $validated['initial_quantity'],
-                'Cost_Price' => $validated['cost_price'] ?? 0,
-                'Retail_Price' => $validated['retail_price'] ?? 0,
+            $product = Product::create([
+                'Name' => $validated['Name'],
+                'Description' => $validated['Description'] ?? null,
+                'Category_ID' => $validated['Category_ID'],
+                'Status_ID' => $validated['Status_ID'],
+                'Image' => $imagePaths[0] ?? null,
+                'Images' => $imagePaths,
             ]);
-        }
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully!');
+            $quantity = (float) ($validated['initial_quantity'] ?? 0);
+
+            if ($quantity > 0) {
+                $hasExpiration = $request->boolean('has_expiration');
+
+                StockIn::create([
+                    'Product_ID' => $product->ID,
+                    'User_ID' => auth()->id(),
+                    'Quantity' => $quantity,
+                    'Remaining_Quantity' => $quantity,
+                    'Cost_Price' => $validated['cost_price'] ?? 0,
+                    'Retail_Price' => $validated['retail_price'] ?? 0,
+                    'Has_Expiration' => $hasExpiration,
+                    'Expiration_Date' => $hasExpiration
+                        ? ($validated['expiration_date'] ?? null)
+                        : null,
+                    'Condition' => $validated['condition'] ?? 'Good',
+                ]);
+            }
+
+            return redirect()
+                ->route('products.index')
+                ->with('success', 'Product created successfully!');
+        });
     }
 
     public function edit($id)
@@ -107,6 +257,7 @@ class ProductController extends Controller
         $product = Product::with(['category', 'status'])->findOrFail($id);
         $categories = Category::all();
         $statuses = Status::all();
+
         return view('products.edit', compact('product', 'categories', 'statuses'));
     }
 
@@ -116,6 +267,7 @@ class ProductController extends Controller
 
         $validated = $request->validate([
             'Name' => 'required|string|max:255',
+            'Description' => 'nullable|string|max:2000',
             'Category_ID' => 'required|exists:tbl_category,ID',
             'Status_ID' => 'required|exists:tbl_status,ID',
             'images' => 'nullable|array|max:5',
@@ -124,14 +276,17 @@ class ProductController extends Controller
             'remove_images.*' => 'string',
         ]);
 
-        $currentImages = is_array($product->Images) ? $product->Images : ($product->Image ? [$product->Image] : []);
+        $currentImages = is_array($product->Images)
+            ? $product->Images
+            : ($product->Image ? [$product->Image] : []);
 
-        // Remove unlinked images
         if ($request->filled('remove_images') && is_array($request->remove_images)) {
             $filtered = [];
+
             foreach ($currentImages as $img) {
                 if (in_array($img, $request->remove_images)) {
                     $fullPath = public_path($img);
+
                     if (File::exists($fullPath)) {
                         @unlink($fullPath);
                     }
@@ -139,19 +294,26 @@ class ProductController extends Controller
                     $filtered[] = $img;
                 }
             }
+
             $currentImages = $filtered;
         }
 
-        // Add new images up to remaining slots out of 5
         if ($request->hasFile('images')) {
             $destination = public_path('uploads/products');
+
             if (!File::exists($destination)) {
                 File::makeDirectory($destination, 0777, true, true);
             }
 
             $availableSlots = max(0, 5 - count($currentImages));
+
             foreach (array_slice($request->file('images'), 0, $availableSlots) as $file) {
-                $filename = time() . '_' . Str::random(6) . '_' . Str::slug($request->Name) . '.' . $file->getClientOriginalExtension();
+                $filename =
+                    time() . '_' .
+                    Str::random(6) . '_' .
+                    Str::slug($request->Name) . '.' .
+                    $file->getClientOriginalExtension();
+
                 $file->move($destination, $filename);
                 $currentImages[] = 'uploads/products/' . $filename;
             }
@@ -161,13 +323,16 @@ class ProductController extends Controller
 
         $product->update([
             'Name' => $validated['Name'],
+            'Description' => $validated['Description'] ?? null,
             'Category_ID' => $validated['Category_ID'],
             'Status_ID' => $validated['Status_ID'],
             'Image' => $currentImages[0] ?? null,
             'Images' => $currentImages,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Product updated successfully!');
     }
 
     public function destroy($id)
@@ -176,10 +341,15 @@ class ProductController extends Controller
         $archivedStatus = Status::firstOrCreate(['Name' => 'Archived']);
 
         $product->update([
-            'Status_ID' => $archivedStatus->ID
+            'Status_ID' => $archivedStatus->ID,
         ]);
 
-        return redirect()->route('products.index')->with('success', "Product '{$product->Name}' has been archived and disabled from POS.");
+        return redirect()
+            ->route('products.index')
+            ->with(
+                'success',
+                "Product '{$product->Name}' has been archived and disabled from POS."
+            );
     }
 
     public function restore($id)
@@ -188,9 +358,14 @@ class ProductController extends Controller
         $activeStatus = Status::firstOrCreate(['Name' => 'Active']);
 
         $product->update([
-            'Status_ID' => $activeStatus->ID
+            'Status_ID' => $activeStatus->ID,
         ]);
 
-        return redirect()->route('products.index', ['tab' => 'archived'])->with('success', "Product '{$product->Name}' has been restored back to active catalog.");
+        return redirect()
+            ->route('products.index', ['tab' => 'archived'])
+            ->with(
+                'success',
+                "Product '{$product->Name}' has been restored back to active catalog."
+            );
     }
 }

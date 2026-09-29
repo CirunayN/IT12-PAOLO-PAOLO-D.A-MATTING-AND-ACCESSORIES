@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SoldItem;
 use App\Models\Status;
+use App\Models\StockIn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -100,19 +101,31 @@ class PosController extends Controller
                 $product = Product::findOrFail($item['product_id']);
                 $qty = (float) $item['quantity'];
 
-                if ($qty < 1) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Product quantity must be at least 1.',
-                    ], 422);
-                }
+                $batches = StockIn::where('Product_ID', $product->ID)
+                    ->where('Remaining_Quantity', '>', 0)
+                    ->where('Condition', 'Good')
+                    ->where(function ($query) {
+                        $query
+                            ->where('Has_Expiration', false)
+                            ->orWhereNull('Expiration_Date')
+                            ->orWhereDate(
+                                'Expiration_Date',
+                                '>=',
+                                today()->toDateString()
+                            );
+                    })
+                    ->orderBy('ID', 'asc')
+                    ->lockForUpdate()
+                    ->get();
 
-                if ($product->stock_quantity < $qty) {
+                $available = (float) $batches->sum('Remaining_Quantity');
+
+                if ($available < $qty) {
                     return response()->json([
                         'success' => false,
                         'message' =>
-                            "Insufficient stock for {$product->Name}. " .
-                            "Only {$product->stock_quantity} available.",
+                            "Insufficient sellable stock for {$product->Name}. " .
+                            "Only {$available} available.",
                     ], 422);
                 }
 
@@ -120,12 +133,34 @@ class PosController extends Controller
                 $lineTotal = round($price * $qty, 2);
                 $total += $lineTotal;
 
+                $remainingToAllocate = $qty;
+                $fifoAllocations = [];
+
+                foreach ($batches as $batch) {
+                    if ($remainingToAllocate <= 0) {
+                        break;
+                    }
+
+                    $availableInBatch = (float) $batch->Remaining_Quantity;
+                    $take = min($availableInBatch, $remainingToAllocate);
+
+                    if ($take > 0) {
+                        $fifoAllocations[] = [
+                            'batch' => $batch,
+                            'quantity' => $take,
+                        ];
+
+                        $remainingToAllocate -= $take;
+                    }
+                }
+
                 $itemsToSave[] = [
                     'product_id' => $product->ID,
                     'name' => $product->Name,
                     'quantity' => $qty,
                     'unit_price' => $price,
                     'total' => $lineTotal,
+                    'fifo_allocations' => $fifoAllocations,
                 ];
             }
 
@@ -166,17 +201,33 @@ class PosController extends Controller
                     'Total' => $item['total'],
                     'Sale_ID' => $sale->ID,
                 ]);
+
+                foreach ($item['fifo_allocations'] as $allocation) {
+                    $batch = $allocation['batch'];
+                    $quantityUsed = (float) $allocation['quantity'];
+
+                    $batch->Remaining_Quantity = max(
+                        0,
+                        (float) $batch->Remaining_Quantity - $quantityUsed
+                    );
+
+                    $batch->save();
+                }
             }
 
             $cashierName = $cashier->name ?? 'Staff';
             $cashierRole = $cashier->role ?? 'Staff';
 
             Log::info(
-                "Sale #INV-{$sale->ID}: " .
-                'Processed total ₱' .
+                "Sale #INV-{$sale->ID}: Processed total ₱" .
                 number_format($total, 2) .
-                " by {$cashierName} ({$cashierRole})"
+                " by {$cashierName} ({$cashierRole}) using FIFO inventory deduction"
             );
+
+            $responseItems = array_map(function ($item) {
+                unset($item['fifo_allocations']);
+                return $item;
+            }, $itemsToSave);
 
             return response()->json([
                 'success' => true,
@@ -189,7 +240,7 @@ class PosController extends Controller
                 'cashier' => $cashierName,
                 'cashier_role' => $cashierRole,
                 'payment_method' => $paymentMethod->Name,
-                'items' => $itemsToSave,
+                'items' => $responseItems,
             ]);
         });
     }
