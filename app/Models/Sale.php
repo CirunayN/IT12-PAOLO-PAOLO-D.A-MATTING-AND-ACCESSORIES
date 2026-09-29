@@ -18,6 +18,7 @@ class Sale extends Model
         'Total',
         'Amount_Received',
         'Change_Amount',
+        'GCash_Reference_Number',
         'User_ID',
         'Payment_Method_ID',
     ];

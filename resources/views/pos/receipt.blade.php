@@ -16,7 +16,8 @@
         .text-right { text-align: right; }
         .bold { font-weight: bold; }
         .divider { border-bottom: 1px dashed #000; margin: 6px 0; }
-        .row { display: flex; justify-content: space-between; }
+        .row { display: flex; justify-content: space-between; gap: 8px; }
+        .row span:last-child { text-align: right; overflow-wrap: anywhere; }
         @media print {
             .no-print { display: none; }
         }
@@ -43,9 +44,12 @@
     <div class="row"><span>Cashier:</span><span>{{ $sale->user->name ?? 'Staff' }} ({{ $sale->user->role ?? 'Staff' }})</span></div>
     <div class="row"><span>Payment:</span><span class="bold">{{ $sale->paymentMethod->Name ?? 'Cash' }}</span></div>
 
+    @if(strtolower($sale->paymentMethod->Name ?? '') === 'gcash' && $sale->GCash_Reference_Number)
+    <div class="row"><span>GCash Ref:</span><span class="bold">{{ $sale->GCash_Reference_Number }}</span></div>
+    @endif
+
     <div class="divider"></div>
 
-    <!-- Items Sold -->
     <div class="bold" style="margin-bottom: 4px;">ITEMS PURCHASED</div>
     @foreach($sale->soldItems as $item)
     <div style="margin-bottom: 4px;">
@@ -60,6 +64,11 @@
     <div class="divider"></div>
 
     <div class="row" style="font-size: 14px;"><span class="bold">TOTAL:</span><span class="bold">₱{{ number_format($sale->Total, 2) }}</span></div>
+
+    @if(strtolower($sale->paymentMethod->Name ?? '') === 'cash')
+    <div class="row"><span>Amount Received:</span><span>₱{{ number_format($sale->Amount_Received, 2) }}</span></div>
+    <div class="row"><span>Change:</span><span>₱{{ number_format($sale->Change_Amount, 2) }}</span></div>
+    @endif
 
     <div class="divider"></div>
 

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\SecurityCodeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends Controller
@@ -13,8 +15,10 @@ class PasswordController extends Controller
     /**
      * Update the currently logged-in user's password.
      */
-    public function update(Request $request): RedirectResponse
-    {
+    public function update(
+        Request $request,
+        SecurityCodeService $codes
+    ): RedirectResponse {
         $validated = $request->validateWithBag(
             'updatePassword',
             [
@@ -22,7 +26,6 @@ class PasswordController extends Controller
                     'required',
                     'current_password',
                 ],
-
                 'password' => [
                     'required',
                     'string',
@@ -33,93 +36,48 @@ class PasswordController extends Controller
                 ],
             ],
             [
-                'current_password.required' =>
-                    'Please enter your current password.',
-
-                'current_password.current_password' =>
-                    'The current password you entered is incorrect.',
-
-                'password.required' =>
-                    'Please enter your new password.',
-
-                'password.min' =>
-                    'The new password must contain at least 8 characters.',
-
-                'password.max' =>
-                    'The new password must not exceed 16 characters.',
-
-                'password.regex' =>
-                    'The password may only contain uppercase letters, lowercase letters, and numbers.',
-
-                'password.confirmed' =>
-                    'The new password and confirmation do not match.',
+                'current_password.required' => 'Please enter your current password.',
+                'current_password.current_password' => 'The current password you entered is incorrect.',
+                'password.required' => 'Please enter your new password.',
+                'password.min' => 'The new password must contain at least 8 characters.',
+                'password.max' => 'The new password must not exceed 16 characters.',
+                'password.regex' => 'The password may only contain uppercase letters, lowercase letters, and numbers.',
+                'password.confirmed' => 'The new password and confirmation do not match.',
             ]
         );
 
+        $user = $request->user();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Prevent using the same password
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            Hash::check(
-                $validated['password'],
-                $request->user()->password
-            )
-        ) {
-
-            return back()
-                ->withErrors(
-                    [
-                        'password' =>
-                            'Your new password must be different from your current password.',
-                    ],
-                    'updatePassword'
-                );
+        if (Hash::check($validated['password'], $user->password)) {
+            return back()->withErrors(
+                [
+                    'password' => 'Your new password must be different from your current password.',
+                ],
+                'updatePassword'
+            );
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Change Password
-        |--------------------------------------------------------------------------
-        */
-
-        $request->user()->update([
-            'password' =>
-                Hash::make(
-                    $validated['password']
-                ),
+        $user->update([
+            'password' => Hash::make($validated['password']),
         ]);
 
+        DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->delete();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Log User Out
-        |--------------------------------------------------------------------------
-        |
-        | After changing the password, invalidate the current session.
-        |
-        */
+        $newRecoveryCodes = $user->isAdmin()
+            ? $codes->rotateAdminRecoveryCodes($user)
+            : null;
 
         Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        $request
-            ->session()
-            ->invalidate();
+        if ($newRecoveryCodes) {
+            $request->session()->put('new_admin_recovery_codes', $newRecoveryCodes);
 
-        $request
-            ->session()
-            ->regenerateToken();
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Return to Login
-        |--------------------------------------------------------------------------
-        */
+            return redirect()->route('password.recovery-codes');
+        }
 
         return redirect()
             ->route('login')

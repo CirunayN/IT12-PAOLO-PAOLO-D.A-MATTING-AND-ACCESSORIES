@@ -76,14 +76,21 @@ class PosController extends Controller
                 'numeric',
                 'min:0',
             ],
+            'gcash_reference' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
         ]);
 
         $paymentMethod = PaymentMethod::findOrFail(
             $validated['payment_method_id']
         );
 
+        $paymentMethodName = strtolower(trim($paymentMethod->Name));
+
         if (!in_array(
-            strtolower($paymentMethod->Name),
+            $paymentMethodName,
             ['cash', 'gcash'],
             true
         )) {
@@ -93,7 +100,30 @@ class PosController extends Controller
             ], 422);
         }
 
-        return DB::transaction(function () use ($validated, $paymentMethod) {
+        $gcashReference = null;
+
+        if ($paymentMethodName === 'gcash') {
+            $gcashReference = trim((string) ($validated['gcash_reference'] ?? ''));
+
+            if ($gcashReference === '') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'GCash reference number is required for GCash payments.',
+                    'errors' => [
+                        'gcash_reference' => [
+                            'GCash reference number is required for GCash payments.',
+                        ],
+                    ],
+                ], 422);
+            }
+        }
+
+        return DB::transaction(function () use (
+            $validated,
+            $paymentMethod,
+            $paymentMethodName,
+            $gcashReference
+        ) {
             $total = 0;
             $itemsToSave = [];
 
@@ -167,14 +197,24 @@ class PosController extends Controller
             $total = round($total, 2);
             $amountTendered = round((float) $validated['amount_tendered'], 2);
 
-            if ($amountTendered < $total) {
+            if ($paymentMethodName === 'gcash') {
+                if (abs($amountTendered - $total) > 0.009) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'GCash payment amount must match the sale total exactly.',
+                    ], 422);
+                }
+            } elseif ($amountTendered < $total) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Amount received must be equal to or greater than the total amount.',
                 ], 422);
             }
 
-            $change = round($amountTendered - $total, 2);
+            $change = $paymentMethodName === 'gcash'
+                ? 0
+                : round($amountTendered - $total, 2);
+
             $cashier = auth()->user();
             $cashierId = auth()->id();
 
@@ -190,6 +230,7 @@ class PosController extends Controller
                 'Total' => $total,
                 'Amount_Received' => $amountTendered,
                 'Change_Amount' => $change,
+                'GCash_Reference_Number' => $gcashReference,
                 'User_ID' => $cashierId,
                 'Payment_Method_ID' => $paymentMethod->ID,
             ]);
@@ -240,6 +281,7 @@ class PosController extends Controller
                 'cashier' => $cashierName,
                 'cashier_role' => $cashierRole,
                 'payment_method' => $paymentMethod->Name,
+                'gcash_reference' => $gcashReference,
                 'items' => $responseItems,
             ]);
         });
