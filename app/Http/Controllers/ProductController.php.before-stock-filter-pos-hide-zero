@@ -41,42 +41,6 @@ class ProductController extends Controller
             $query->where('Status_ID', $request->status_id);
         }
 
-        // Filter by SELLABLE stock only: remaining > 0, Good condition,
-        // and either non-expiring or not yet expired.
-        if ($request->filled('stock_level')) {
-            $sellableStockSql = '(
-                SELECT COALESCE(SUM(si.Remaining_Quantity), 0)
-                FROM tbl_stock_in si
-                WHERE si.Product_ID = tbl_product.ID
-                  AND si.Remaining_Quantity > 0
-                  AND si.Condition = ?
-                  AND (
-                      si.Has_Expiration = 0
-                      OR si.Expiration_Date IS NULL
-                      OR DATE(si.Expiration_Date) >= ?
-                  )
-            )';
-
-            $stockBindings = ['Good', today()->toDateString()];
-
-            switch ($request->stock_level) {
-                case 'out':
-                    $query->whereRaw($sellableStockSql . ' <= 0', $stockBindings);
-                    break;
-
-                case 'low':
-                    $query->whereRaw(
-                        $sellableStockSql . ' > 0 AND ' . $sellableStockSql . ' <= 5',
-                        array_merge($stockBindings, $stockBindings)
-                    );
-                    break;
-
-                case 'available':
-                    $query->whereRaw($sellableStockSql . ' > 5', $stockBindings);
-                    break;
-            }
-        }
-
         $products = $query->orderBy('ID', 'desc')->paginate(15)->withQueryString();
         $categories = Category::all();
         $statuses = Status::all();

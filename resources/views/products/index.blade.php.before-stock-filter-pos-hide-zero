@@ -24,28 +24,28 @@
 
     <!-- Status Tabs: Active vs Archived -->
     <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
-        <a href="{{ route('products.index', ['tab' => 'active']) }}"
+        <a href="{{ route('products.index', ['tab' => 'active']) }}" 
             class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 {{ $tab === 'active' ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700' }}">
             <i class="fas fa-box-check"></i>
             <span>Active Catalog</span>
             <span class="px-2 py-0.5 rounded-full text-xs {{ $tab === 'active' ? 'bg-white/20 text-white' : 'bg-slate-300 dark:bg-dark-700 text-slate-700 dark:text-slate-200' }}">{{ $activeCount }}</span>
         </a>
 
-        <a href="{{ route('products.index', ['tab' => 'archived']) }}"
+        <a href="{{ route('products.index', ['tab' => 'archived']) }}" 
             class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 {{ $tab === 'archived' ? 'bg-amber-500 text-slate-900 shadow-sm' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700' }}">
             <i class="fas fa-box-archive"></i>
             <span>Archived / Disabled</span>
             <span class="px-2 py-0.5 rounded-full text-xs {{ $tab === 'archived' ? 'bg-black/20 text-slate-900' : 'bg-slate-300 dark:bg-dark-700 text-slate-700 dark:text-slate-200' }}">{{ $archivedCount }}</span>
         </a>
 
-
-        <a href="{{ route('stock-in.index') }}"
+        
+        <a href="{{ route('stock-in.index') }}" 
             class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700">
             <i class="fas fa-truck-ramp-box text-red-500"></i>
             <span>Stock-In Receiving Logs</span>
         </a>
 
-        <a href="{{ route('products.index', ['tab' => 'all']) }}"
+        <a href="{{ route('products.index', ['tab' => 'all']) }}" 
             class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 {{ $tab === 'all' ? 'bg-slate-800 text-white shadow-sm dark:bg-dark-700' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700' }}">
             <span>All Items</span>
             <span class="px-2 py-0.5 rounded-full text-xs {{ $tab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-300 dark:bg-dark-700 text-slate-700 dark:text-slate-200' }}">{{ $totalCount }}</span>
@@ -56,25 +56,17 @@
     <div class="glass-card rounded-2xl p-4 border shadow-sm">
         <form method="GET" action="{{ route('products.index') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
             <input type="hidden" name="tab" value="{{ $tab }}">
-            <div class="sm:col-span-4 relative">
+            <div class="sm:col-span-6 relative">
                 <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by product name..."
                     class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-            <div class="sm:col-span-3">
+            <div class="sm:col-span-4">
                 <select name="category_id" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
                     <option value="">All Categories</option>
                     @foreach($categories as $cat)
                     <option value="{{ $cat->ID }}" {{ request('category_id') == $cat->ID ? 'selected' : '' }}>{{ $cat->Name }}</option>
                     @endforeach
-                </select>
-            </div>
-            <div class="sm:col-span-3">
-                <select name="stock_level" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="">All Stock Levels</option>
-                    <option value="available" {{ request('stock_level') === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
-                    <option value="low" {{ request('stock_level') === 'low' ? 'selected' : '' }}>Low Stock (1-5 units)</option>
-                    <option value="out" {{ request('stock_level') === 'out' ? 'selected' : '' }}>Out of Stock (0)</option>
                 </select>
             </div>
             <div class="sm:col-span-2 flex items-center gap-2">
@@ -152,7 +144,7 @@
                             </div>
                         </td>
                         <td class="p-4">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-500/10 text-blue-500 border border-blue-500/20 whitespace-nowrap">
+                            <span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-red-500/10 text-red-500 border border-red-500/20">
                                 {{ $product->category->Name ?? 'General' }}
                             </span>
                         </td>
@@ -189,9 +181,9 @@
                                     <i class="fas fa-edit"></i>
                                 </a>
 
-                                <button type="button"
+                                <button type="button" 
                                     onclick="openArchiveModal('{{ $product->ID }}', '{{ addslashes($product->Name) }}')"
-                                    class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 hover:text-white text-slate-400 flex items-center justify-center text-xs transition-colors"
+                                    class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 hover:text-white text-slate-400 flex items-center justify-center text-xs transition-colors" 
                                     title="Archive / Disable Product">
                                     <i class="fas fa-trash-can"></i>
                                 </button>
