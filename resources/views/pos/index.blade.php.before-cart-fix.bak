@@ -146,9 +146,7 @@
 
                                 @if($imagesCount > 0)
                                 <button type="button"
-                                    data-gallery-images="{{ json_encode($allImages) }}"
-                                    data-gallery-title="{{ $p->Name }}"
-                                    onclick="openPosGalleryFromButton(this, event)"
+                                    onclick='openPosGallery({!! $imagesJson !!}, @js($p->Name), event)'
                                     class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/55 text-white text-[10px] transition-opacity"
                                     title="View product photos">
                                     <i class="fas fa-images"></i>
@@ -206,7 +204,7 @@
                         <td class="px-3 py-2 text-center">
                             <button type="button"
                                 {{ $qty <= 0 ? 'disabled' : '' }}
-                                onclick="addProductRowToCart(this)"
+                                onclick='addToCart({{ $p->ID }}, @js($p->Name), {{ $price }}, {{ $qty }})'
                                 class="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white text-[10px] font-black shadow-sm transition-all active:scale-95 whitespace-nowrap">
                                 <i class="fas fa-plus"></i>
                                 Add
@@ -649,34 +647,6 @@ function initFloatingCartDrag() {
     window.addEventListener('resize', clampFloatingCartToViewport);
 }
 
-function addProductRowToCart(button) {
-    const row = button.closest('.product-item');
-    if (!row) return;
-
-    addToCart(
-        row.dataset.id,
-        row.dataset.name || 'Product',
-        row.dataset.price,
-        row.dataset.stock
-    );
-}
-
-function openPosGalleryFromButton(button, event) {
-    if (event) event.stopPropagation();
-
-    let images = [];
-    try {
-        images = JSON.parse(button.dataset.galleryImages || '[]');
-    } catch (error) {
-        images = [];
-    }
-
-    openPosGallery(
-        images,
-        button.dataset.galleryTitle || 'Product Photos',
-        event
-    );
-}
 function addToCart(id, name, price, maxStock) {
     maxStock = Number(maxStock);
     if (maxStock <= 0) return;
