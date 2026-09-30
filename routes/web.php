@@ -4,10 +4,10 @@ use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\BackupController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\StockInController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -22,27 +22,9 @@ Route::get('/', function () {
         : redirect()->route('pos.index');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/settings/account', [AccountSettingsController::class, 'show'])
         ->name('settings.account');
-
-    Route::post('/settings/account/email/send-code', [AccountSettingsController::class, 'sendEmailChangeCode'])
-        ->middleware('throttle:3,1')
-        ->name('settings.email.send');
-
-    Route::get('/settings/account/email/verify', [AccountSettingsController::class, 'verifyEmailForm'])
-        ->name('settings.email.verify.form');
-
-    Route::post('/settings/account/email/verify', [AccountSettingsController::class, 'verifyEmail'])
-        ->middleware('throttle:10,1')
-        ->name('settings.email.verify');
-
-    Route::post('/settings/account/email/resend', [AccountSettingsController::class, 'resendEmailChangeCode'])
-        ->middleware('throttle:3,1')
-        ->name('settings.email.resend');
-
-    Route::post('/settings/account/email/cancel', [AccountSettingsController::class, 'cancelEmailChange'])
-        ->name('settings.email.cancel');
 
     Route::view('/settings/password', 'settings.password')
         ->name('settings.password');
@@ -64,6 +46,36 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
+
+        Route::get('/security', [SecurityController::class, 'index'])
+            ->name('security.index');
+
+        Route::post(
+            '/security/password-reset/{passwordResetRequest}/approve',
+            [SecurityController::class, 'approveReset']
+        )->name('security.reset.approve');
+
+        Route::delete(
+            '/security/password-reset/{passwordResetRequest}',
+            [SecurityController::class, 'denyReset']
+        )->name('security.reset.deny');
+
+        Route::post(
+            '/security/users',
+            [SecurityController::class, 'storeUser']
+        )->middleware('throttle:5,1')
+            ->name('security.users.store');
+
+        Route::patch(
+            '/security/users/{user}/access',
+            [SecurityController::class, 'toggleUser']
+        )->name('security.users.access');
+
+        Route::post(
+            '/security/recovery-codes/regenerate',
+            [SecurityController::class, 'regenerateRecoveryCodes']
+        )->middleware('throttle:3,1')
+            ->name('security.recovery.regenerate');
 
         Route::resource('products', ProductController::class)->except(['destroy']);
 
@@ -90,34 +102,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/reports/print', [ReportController::class, 'print'])
             ->name('reports.print');
-
-        Route::get('/employees', [EmployeeController::class, 'index'])
-            ->name('employees.index');
-
-        Route::get('/employees/create', [EmployeeController::class, 'create'])
-            ->name('employees.create');
-
-        Route::post('/employees', [EmployeeController::class, 'store'])
-            ->middleware('throttle:5,1')
-            ->name('employees.store');
-
-        Route::get(
-            '/employees/pending/{pending}/verify',
-            [EmployeeController::class, 'resumeVerification']
-        )
-            ->whereNumber('pending')
-            ->name('employees.pending.verify');
-
-        Route::get('/employees/verify', [EmployeeController::class, 'verifyForm'])
-            ->name('employees.verify.form');
-
-        Route::post('/employees/verify', [EmployeeController::class, 'verify'])
-            ->middleware('throttle:10,1')
-            ->name('employees.verify');
-
-        Route::post('/employees/resend-code', [EmployeeController::class, 'resend'])
-            ->middleware('throttle:3,1')
-            ->name('employees.resend');
 
         Route::get('/backup', [BackupController::class, 'index'])
             ->name('backup.index');

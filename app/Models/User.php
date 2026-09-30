@@ -16,6 +16,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'is_active',
         'email_verified_at',
     ];
 
@@ -28,6 +29,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'is_active' => 'boolean',
             'password' => 'hashed',
         ];
     }
@@ -63,5 +65,15 @@ class User extends Authenticatable
     public function sales()
     {
         return $this->hasMany(Sale::class, 'User_ID', 'id');
+    }
+
+    public function passwordResetRequests()
+    {
+        return $this->hasMany(PasswordResetRequest::class, 'user_id');
+    }
+
+    public function adminRecoveryCodes()
+    {
+        return $this->hasMany(AdminRecoveryCode::class, 'user_id');
     }
 }

@@ -2,12 +2,9 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -18,15 +15,18 @@ Route::middleware('guest')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | FORGOT PASSWORD - GMAIL CODE
+    | OFFLINE PASSWORD RECOVERY
     |--------------------------------------------------------------------------
+    | Employees request a reset and receive a one-day, one-time code only
+    | after administrator approval. Administrators use one of their 10
+    | recovery codes instead of requesting approval from themselves.
     */
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->middleware('throttle:3,1')
+        ->middleware('throttle:5,1')
         ->name('password.email');
 
     Route::get('forgot-password/verify-code', [PasswordResetLinkController::class, 'verifyForm'])
@@ -40,21 +40,14 @@ Route::middleware('guest')->group(function () {
         ->name('password.reset');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
+        ->middleware('throttle:10,1')
         ->name('password.store');
+
+    Route::get('password/new-recovery-codes', [NewPasswordController::class, 'recoveryCodes'])
+        ->name('password.recovery-codes');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
-
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
-
+Route::middleware(['auth', 'active'])->group(function () {
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
 

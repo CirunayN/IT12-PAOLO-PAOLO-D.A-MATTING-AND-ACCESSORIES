@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
 
     /**
      * Attempt login, then refuse the session when the account
-     * has not completed verification.
+     * has not completed verification or has been disabled.
      *
      * @throws ValidationException
      */
@@ -49,38 +49,19 @@ class LoginRequest extends FormRequest
 
             $attempts = (int) Cache::get($attemptsKey, 0) + 1;
 
-            Cache::put(
-                $attemptsKey,
-                $attempts,
-                now()->addDays(2)
-            );
+            Cache::put($attemptsKey, $attempts, now()->addDays(2));
 
             if ($attempts % 3 === 0) {
-                $currentTier =
-                    (int) Cache::get($tierKey, 0) + 1;
+                $currentTier = (int) Cache::get($tierKey, 0) + 1;
+                Cache::put($tierKey, $currentTier, now()->addDays(2));
 
-                Cache::put(
-                    $tierKey,
-                    $currentTier,
-                    now()->addDays(2)
-                );
-
-                $lockoutMinutes =
-                    $this->getLockoutMinutes(
-                        $currentTier
-                    );
-
-                $lockoutUntil =
-                    now()
-                        ->addMinutes($lockoutMinutes)
-                        ->timestamp;
+                $lockoutMinutes = $this->getLockoutMinutes($currentTier);
+                $lockoutUntil = now()->addMinutes($lockoutMinutes)->timestamp;
 
                 Cache::put(
                     $lockoutUntilKey,
                     $lockoutUntil,
-                    now()->addMinutes(
-                        $lockoutMinutes
-                    )
+                    now()->addMinutes($lockoutMinutes)
                 );
 
                 event(new Lockout($this));
@@ -92,8 +73,7 @@ class LoginRequest extends FormRequest
                 ]);
             }
 
-            $remaining =
-                3 - ($attempts % 3);
+            $remaining = 3 - ($attempts % 3);
 
             throw ValidationException::withMessages([
                 'username' =>
@@ -102,13 +82,19 @@ class LoginRequest extends FormRequest
             ]);
         }
 
-        /*
-         * The password is correct at this point.
-         * Do not allow an unverified user to keep the authenticated session.
-         */
         $user = Auth::user();
 
-        if (!$user || is_null($user->email_verified_at)) {
+        if (!$user || !$user->is_active) {
+            Auth::guard('web')->logout();
+
+            throw ValidationException::withMessages([
+                'username' =>
+                    'This account has been disabled by the administrator. ' .
+                    'Access is no longer allowed.',
+            ]);
+        }
+
+        if (is_null($user->email_verified_at)) {
             Auth::guard('web')->logout();
 
             throw ValidationException::withMessages([
@@ -123,27 +109,14 @@ class LoginRequest extends FormRequest
 
     public function ensureIsNotRateLimited(): void
     {
-        $lockoutUntilKey =
-            'login_lockout_until:' .
-            $this->throttleKey();
+        $lockoutUntilKey = 'login_lockout_until:' . $this->throttleKey();
+        $lockoutUntil = Cache::get($lockoutUntilKey);
 
-        $lockoutUntil =
-            Cache::get(
-                $lockoutUntilKey
-            );
-
-        if (
-            $lockoutUntil &&
-            now()->timestamp < $lockoutUntil
-        ) {
+        if ($lockoutUntil && now()->timestamp < $lockoutUntil) {
             event(new Lockout($this));
 
-            $seconds =
-                $lockoutUntil -
-                now()->timestamp;
-
-            $minutes =
-                ceil($seconds / 60);
+            $seconds = $lockoutUntil - now()->timestamp;
+            $minutes = ceil($seconds / 60);
 
             throw ValidationException::withMessages([
                 'username' =>
@@ -155,28 +128,15 @@ class LoginRequest extends FormRequest
 
     public function clearRateLimiting(): void
     {
-        $throttleKey =
-            $this->throttleKey();
+        $throttleKey = $this->throttleKey();
 
-        Cache::forget(
-            'login_attempts:' .
-            $throttleKey
-        );
-
-        Cache::forget(
-            'login_tier:' .
-            $throttleKey
-        );
-
-        Cache::forget(
-            'login_lockout_until:' .
-            $throttleKey
-        );
+        Cache::forget('login_attempts:' . $throttleKey);
+        Cache::forget('login_tier:' . $throttleKey);
+        Cache::forget('login_lockout_until:' . $throttleKey);
     }
 
-    protected function getLockoutMinutes(
-        int $tier
-    ): int {
+    protected function getLockoutMinutes(int $tier): int
+    {
         $tiers = [
             1 => 1,
             2 => 5,
@@ -188,26 +148,15 @@ class LoginRequest extends FormRequest
             return $tiers[$tier];
         }
 
-        $minutes =
-            20 * pow(
-                2,
-                $tier - 4
-            );
+        $minutes = 20 * pow(2, $tier - 4);
 
-        return (int) min(
-            1440,
-            $minutes
-        );
+        return (int) min(1440, $minutes);
     }
 
     public function throttleKey(): string
     {
         return Str::transliterate(
-            Str::lower(
-                $this->string('username')
-            ) .
-            '|' .
-            $this->ip()
+            Str::lower($this->string('username')) . '|' . $this->ip()
         );
     }
 }

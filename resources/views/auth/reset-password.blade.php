@@ -16,7 +16,7 @@
     <div class="text-center mb-6">
         <div class="w-14 h-14 mx-auto rounded-2xl bg-red-500/15 text-red-400 flex items-center justify-center text-xl mb-3"><i class="fas fa-key"></i></div>
         <h1 class="text-2xl font-black">Create New Password</h1>
-        <p class="text-xs text-slate-400 mt-2">Verified account: {{ $email }}</p>
+        <p class="text-xs text-slate-400 mt-2">Verified account: <strong class="text-slate-200">{{ $user->username }}</strong></p>
     </div>
 
     @if($errors->any())
@@ -27,21 +27,18 @@
 
     <form method="POST" action="{{ route('password.store') }}" class="space-y-4">
         @csrf
-
         <div>
             <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">New Password</label>
             <input type="password" name="password" required minlength="8" maxlength="16" pattern="[A-Za-z0-9]{8,16}" autocomplete="new-password"
                 class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:border-red-500"
                 placeholder="8-16 letters and numbers">
         </div>
-
         <div>
             <label class="block text-xs font-bold uppercase text-slate-400 mb-1.5">Confirm New Password</label>
             <input type="password" name="password_confirmation" required minlength="8" maxlength="16" pattern="[A-Za-z0-9]{8,16}" autocomplete="new-password"
                 class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:border-red-500"
                 placeholder="Re-enter new password">
         </div>
-
         <button type="submit" class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 font-bold">Reset Password</button>
     </form>
 </div>

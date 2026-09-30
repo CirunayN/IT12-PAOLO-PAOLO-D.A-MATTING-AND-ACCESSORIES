@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto space-y-6">
+<div class="max-w-7xl mx-auto space-y-6">
     <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
         <div>
             <h1 class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white flex items-center gap-3">
@@ -12,21 +12,29 @@
         </div>
     </div>
 
-    <div class="glass-card rounded-2xl p-3 border">
-        <div class="flex flex-wrap items-center gap-2">
-            <a href="{{ route('settings.account') }}"
-               class="px-4 py-2.5 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800 font-bold text-sm flex items-center gap-2">
-                <i class="fas fa-user-shield"></i>
-                Account
-            </a>
+    @include('settings.partials.tabs', ['active' => 'password'])
 
-            <a href="{{ route('settings.password') }}"
-               class="px-4 py-2.5 rounded-xl bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold text-sm flex items-center gap-2">
-                <i class="fas fa-key"></i>
-                Password
-            </a>
+    @if(auth()->user() && auth()->user()->isAdmin())
+        <div class="glass-card rounded-2xl p-5 border border-amber-500/25">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-life-ring"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-slate-900 dark:text-white">Administrator Recovery</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                            Manage your 10 offline recovery codes and employee password reset approvals in Security &amp; Access.
+                        </p>
+                    </div>
+                </div>
+                <a href="{{ route('security.index') }}"
+                    class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs whitespace-nowrap">
+                    Open Security
+                </a>
+            </div>
         </div>
-    </div>
+    @endif
 
     <div class="glass-card rounded-2xl p-6 sm:p-8 border shadow-lg">
         <div class="flex items-start gap-4 mb-6">
@@ -49,6 +57,9 @@
                 <li>Only uppercase letters A-Z, lowercase letters a-z, and numbers 0-9 are allowed.</li>
                 <li>Spaces and special characters are not allowed.</li>
                 <li>New password must be different from the current password.</li>
+                @if(auth()->user() && auth()->user()->isAdmin())
+                    <li>Changing the administrator password invalidates old recovery codes and generates a new set of 10.</li>
+                @endif
             </ul>
         </div>
 
@@ -103,7 +114,12 @@
                     <i class="fas fa-triangle-exclamation text-amber-500 mt-0.5"></i>
                     <div>
                         <div class="text-xs font-bold text-amber-600 dark:text-amber-400">You will be logged out</div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">After changing your password, you must sign in again using the new password.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                            After changing your password, you must sign in again using the new password.
+                            @if(auth()->user() && auth()->user()->isAdmin())
+                                You will first be shown the new set of 10 recovery codes.
+                            @endif
+                        </p>
                     </div>
                 </div>
             </div>
