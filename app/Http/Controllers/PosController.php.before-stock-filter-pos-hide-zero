@@ -38,21 +38,6 @@ class PosController extends Controller
             $query->where('Status_ID', '!=', $archivedStatus->ID);
         }
 
-        // Hide zero-stock products from the POS catalog.
-        // A product is shown only when it has at least one sellable batch:
-        // remaining > 0, Good condition, and not expired.
-        $query->whereHas('stockIns', function ($stockQuery) {
-            $stockQuery
-                ->where('Remaining_Quantity', '>', 0)
-                ->where('Condition', 'Good')
-                ->where(function ($expirationQuery) {
-                    $expirationQuery
-                        ->where('Has_Expiration', false)
-                        ->orWhereNull('Expiration_Date')
-                        ->orWhereDate('Expiration_Date', '>=', today()->toDateString());
-                });
-        });
-
         $products = $query->get();
 
         return view(
