@@ -180,26 +180,6 @@
             </div>
 
         </div>
-
-        <!-- FILTER ACTIONS: Direct Print Report + Live Update View -->
-        <div class="flex flex-wrap items-center justify-end gap-3 mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
-            <button
-                type="submit"
-                class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-sm flex items-center gap-2 transition-all cursor-pointer"
-            >
-                <i class="fas fa-eye text-slate-500"></i>
-                <span>Update On-Screen View</span>
-            </button>
-
-            <button
-                type="button"
-                onclick="printCurrentAdminReport()"
-                class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all cursor-pointer"
-            >
-                <i class="fas fa-print"></i>
-                <span>Print Report (PDF)</span>
-            </button>
-        </div>
     </form>
 
     <!-- CURRENT REPORT ACTIVE BANNER -->
