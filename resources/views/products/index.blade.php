@@ -44,12 +44,6 @@
             <i class="fas fa-truck-ramp-box text-red-500"></i>
             <span>Stock-In Receiving Logs</span>
         </a>
-
-        <a href="{{ route('products.index', ['tab' => 'all']) }}"
-            class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 {{ $tab === 'all' ? 'bg-slate-800 text-white shadow-sm dark:bg-dark-700' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700' }}">
-            <span>All Items</span>
-            <span class="px-2 py-0.5 rounded-full text-xs {{ $tab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-300 dark:bg-dark-700 text-slate-700 dark:text-slate-200' }}">{{ $totalCount }}</span>
-        </a>
     </div>
 
     <!-- Filter & Search Bar -->
