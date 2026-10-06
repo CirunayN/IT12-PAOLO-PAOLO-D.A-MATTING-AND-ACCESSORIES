@@ -33,7 +33,15 @@
         action="{{ route('reports.index') }}"
         class="glass-card rounded-2xl p-5 border shadow-sm"
     >
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-filter text-red-500 text-xs"></i>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Filter Criteria</span>
+            </div>
+            <span class="text-[11px] text-slate-400 font-medium">Select options to update view automatically</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
             <!-- REPORT SCOPE -->
             <div>
@@ -43,7 +51,7 @@
                 <select
                     name="scope"
                     id="adminReportScope"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     <option value="business" {{ $scope === 'business' ? 'selected' : '' }}>
                         Business Overview (All)
@@ -65,9 +73,9 @@
                 <select
                     name="employee_id"
                     id="adminEmployeeSelect"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
-                    <option value="">Select Employee</option>
+                    <option value="">All Employees</option>
                     @foreach($employees as $employee)
                     <option
                         value="{{ $employee->id }}"
@@ -87,7 +95,7 @@
                 <select
                     name="category_id"
                     id="adminCategorySelect"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     <option value="">All Categories</option>
                     @foreach($categories as $category)
@@ -109,7 +117,7 @@
                 <select
                     name="stock_status"
                     id="adminStockStatusSelect"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     <option value="">All Stock Levels</option>
                     <option value="available" {{ $selectedStockStatus === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
@@ -126,7 +134,7 @@
                 <select
                     name="period"
                     id="adminReportPeriod"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                     <option value="weekly" {{ $period === 'weekly' ? 'selected' : '' }}>Weekly</option>
                     <option value="monthly" {{ $period === 'monthly' ? 'selected' : '' }}>Monthly</option>
@@ -145,7 +153,7 @@
                     name="week"
                     id="adminReportWeek"
                     value="{{ $week }}"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
             </div>
 
@@ -159,7 +167,7 @@
                     name="month"
                     id="adminReportMonth"
                     value="{{ $month }}"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
             </div>
 
@@ -175,30 +183,10 @@
                     value="{{ $year }}"
                     min="2000"
                     max="2100"
-                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
             </div>
 
-        </div>
-
-        <!-- FILTER ACTIONS: Direct Print Report + Live Update View -->
-        <div class="flex flex-wrap items-center justify-end gap-3 mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
-            <button
-                type="submit"
-                class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-sm flex items-center gap-2 transition-all cursor-pointer"
-            >
-                <i class="fas fa-eye text-slate-500"></i>
-                <span>Update On-Screen View</span>
-            </button>
-
-            <button
-                type="button"
-                onclick="printCurrentAdminReport()"
-                class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all cursor-pointer"
-            >
-                <i class="fas fa-print"></i>
-                <span>Print Report (PDF)</span>
-            </button>
         </div>
     </form>
 
@@ -637,24 +625,42 @@ function printCurrentAdminReport() {
     window.open(printUrl, '_blank', 'noopener');
 }
 
-function updateAdminScope() {
+const filterForm = document.getElementById('adminReportFilterForm');
+
+function updateAdminScope(autoSubmit = false) {
     const scope = adminReportScope.value;
     adminEmployeeContainer.classList.toggle('hidden', scope !== 'employee');
     adminCategoryContainer.classList.toggle('hidden', scope !== 'inventory');
     adminStockStatusContainer.classList.toggle('hidden', scope !== 'inventory');
+    if (autoSubmit && filterForm) filterForm.submit();
 }
 
-function updateAdminPeriod() {
+function updateAdminPeriod(autoSubmit = false) {
     const period = adminReportPeriod.value;
     adminWeekContainer.classList.toggle('hidden', period !== 'weekly');
     adminMonthContainer.classList.toggle('hidden', period !== 'monthly');
     adminYearContainer.classList.toggle('hidden', period !== 'yearly');
+    if (autoSubmit && filterForm) filterForm.submit();
 }
 
-adminReportScope.addEventListener('change', updateAdminScope);
-adminReportPeriod.addEventListener('change', updateAdminPeriod);
+adminReportScope.addEventListener('change', () => updateAdminScope(true));
+adminReportPeriod.addEventListener('change', () => updateAdminPeriod(true));
 
-updateAdminScope();
-updateAdminPeriod();
+const empSelect = document.getElementById('adminEmployeeSelect');
+const catSelect = document.getElementById('adminCategorySelect');
+const statusSelect = document.getElementById('adminStockStatusSelect');
+const wkInput = document.getElementById('adminReportWeek');
+const moInput = document.getElementById('adminReportMonth');
+const yrInput = document.getElementById('adminReportYear');
+
+if (empSelect) empSelect.addEventListener('change', () => filterForm.submit());
+if (catSelect) catSelect.addEventListener('change', () => filterForm.submit());
+if (statusSelect) statusSelect.addEventListener('change', () => filterForm.submit());
+if (wkInput) wkInput.addEventListener('change', () => filterForm.submit());
+if (moInput) moInput.addEventListener('change', () => filterForm.submit());
+if (yrInput) yrInput.addEventListener('change', () => filterForm.submit());
+
+updateAdminScope(false);
+updateAdminPeriod(false);
 </script>
 @endsection
