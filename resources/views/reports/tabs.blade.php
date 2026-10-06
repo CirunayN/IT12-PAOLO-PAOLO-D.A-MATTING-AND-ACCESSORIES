@@ -2,7 +2,7 @@
     <a
         href="{{ route('dashboard') }}"
         class="px-3.5 py-2 rounded-lg text-xs font-bold transition-all
-            {{ request()->routeIs('dashboard')
+            {{ (request()->routeIs('dashboard') && request('tab') !== 'reports')
                 ? 'bg-white dark:bg-dark-700 text-red-600 dark:text-red-400 shadow-sm'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}"
     >
@@ -13,7 +13,7 @@
     <a
         href="{{ route('reports.index') }}"
         class="px-3.5 py-2 rounded-lg text-xs font-bold transition-all
-            {{ request()->routeIs('reports.*')
+            {{ (request()->routeIs('reports.*') || request('tab') === 'reports')
                 ? 'bg-white dark:bg-dark-700 text-red-600 dark:text-red-400 shadow-sm'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white' }}"
     >

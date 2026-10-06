@@ -60,7 +60,7 @@ class ReportController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    private function generateReport(
+    public function generateReport(
         Request $request,
         bool $paginate
     ): array {
