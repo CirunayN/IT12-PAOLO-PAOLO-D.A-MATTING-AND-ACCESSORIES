@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\StockIn;
 use App\Models\Status;
+use App\Models\StockIn;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class StockInController extends Controller
 {
@@ -43,10 +45,9 @@ class StockInController extends Controller
         }
 
         $products = $query->orderBy('Name', 'asc')->get();
-        $users = User::orderBy('name', 'asc')->get();
         $categories = Category::orderBy('Name', 'asc')->get();
 
-        return view('stock_in.create', compact('products', 'users', 'categories'));
+        return view('stock_in.create', compact('products', 'categories'));
     }
 
     public function store(Request $request)
@@ -57,7 +58,8 @@ class StockInController extends Controller
             'New_Product_Name' => 'required_if:product_mode,new|nullable|string|max:255|unique:tbl_product,Name',
             'New_Product_Description' => 'nullable|string|max:2000',
             'New_Category_ID' => 'required_if:product_mode,new|nullable|exists:tbl_category,ID',
-            'User_ID' => 'nullable|exists:users,id',
+            'images' => 'exclude_unless:product_mode,new|nullable|array|max:5',
+            'images.*' => 'exclude_unless:product_mode,new|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
             'Quantity' => 'required|numeric|min:1',
             'Cost_Price' => 'required|numeric|min:0',
             'Retail_Price' => 'required|numeric|min:0',
@@ -66,54 +68,69 @@ class StockInController extends Controller
             'Condition' => 'nullable|in:Good,Damaged,Defective',
         ]);
 
-        return DB::transaction(function () use ($request, $validated) {
-            $processorId = !empty($validated['User_ID'])
-                ? (int) $validated['User_ID']
-                : (auth()->id() ?: 1);
+        $imagePaths = [];
 
-            if ($validated['product_mode'] === 'new') {
-                $activeStatus = Status::firstOrCreate(['Name' => 'Active']);
+        try {
+            return DB::transaction(function () use ($request, $validated, &$imagePaths) {
+                $processor = $request->user();
 
-                $product = Product::create([
-                    'Name' => $validated['New_Product_Name'],
-                    'Description' => $validated['New_Product_Description'] ?? null,
-                    'Category_ID' => $validated['New_Category_ID'],
-                    'Status_ID' => $activeStatus->ID,
+                if ($validated['product_mode'] === 'new') {
+                    $activeStatus = Status::firstOrCreate(['Name' => 'Active']);
+
+                    foreach ($request->file('images', []) as $file) {
+                        $destination = public_path('uploads/products');
+                        File::ensureDirectoryExists($destination);
+                        $filename = Str::uuid().'.'.$file->extension();
+                        $file->move($destination, $filename);
+                        $imagePaths[] = 'uploads/products/'.$filename;
+                    }
+
+                    $product = Product::create([
+                        'Name' => $validated['New_Product_Name'],
+                        'Description' => $validated['New_Product_Description'] ?? null,
+                        'Category_ID' => $validated['New_Category_ID'],
+                        'Status_ID' => $activeStatus->ID,
+                        'Image' => $imagePaths[0] ?? null,
+                        'Images' => $imagePaths,
+                    ]);
+                } else {
+                    $product = Product::findOrFail($validated['Product_ID']);
+                }
+
+                $hasExpiration = $request->boolean('Has_Expiration');
+
+                $stockIn = StockIn::create([
+                    'Product_ID' => $product->ID,
+                    'User_ID' => $processor->id,
+                    'Quantity' => $validated['Quantity'],
+                    'Remaining_Quantity' => $validated['Quantity'],
+                    'Cost_Price' => $validated['Cost_Price'],
+                    'Retail_Price' => $validated['Retail_Price'],
+                    'Has_Expiration' => $hasExpiration,
+                    'Expiration_Date' => $hasExpiration
+                        ? ($validated['Expiration_Date'] ?? null)
+                        : null,
+                    'Condition' => $validated['Condition'] ?? 'Good',
                 ]);
-            } else {
-                $product = Product::findOrFail($validated['Product_ID']);
-            }
 
-            $hasExpiration = $request->boolean('Has_Expiration');
+                $processorName = $processor->name ?? 'Staff';
+                $processorRole = $processor->role ?? 'Staff';
 
-            $stockIn = StockIn::create([
-                'Product_ID' => $product->ID,
-                'User_ID' => $processorId,
-                'Quantity' => $validated['Quantity'],
-                'Remaining_Quantity' => $validated['Quantity'],
-                'Cost_Price' => $validated['Cost_Price'],
-                'Retail_Price' => $validated['Retail_Price'],
-                'Has_Expiration' => $hasExpiration,
-                'Expiration_Date' => $hasExpiration
-                    ? ($validated['Expiration_Date'] ?? null)
-                    : null,
-                'Condition' => $validated['Condition'] ?? 'Good',
-            ]);
+                Log::info(
+                    "Stock-In #{$stockIn->ID}: Received {$stockIn->Quantity} units of ".
+                    "'{$product->Name}' processed by {$processorName} ({$processorRole})"
+                );
 
-            $processor = User::find($processorId);
-            $processorName = $processor->name ?? 'Staff';
-            $processorRole = $processor->role ?? 'Staff';
+                return redirect()->route('stock-in.index')->with(
+                    'success',
+                    "Stock-In batch #SI-{$stockIn->ID} recorded successfully ".
+                    "(+{$stockIn->Quantity} units of {$product->Name})!"
+                );
+            });
+        } catch (\Throwable $exception) {
+            File::delete(array_map(fn ($path) => public_path($path), $imagePaths));
 
-            Log::info(
-                "Stock-In #{$stockIn->ID}: Received {$stockIn->Quantity} units of " .
-                "'{$product->Name}' processed by {$processorName} ({$processorRole})"
-            );
-
-            return redirect()->route('stock-in.index')->with(
-                'success',
-                "Stock-In batch #SI-{$stockIn->ID} recorded successfully " .
-                "(+{$stockIn->Quantity} units of {$product->Name})!"
-            );
-        });
+            throw $exception;
+        }
     }
 }

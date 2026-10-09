@@ -18,7 +18,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('code_hash')->nullable();
-            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+            $approvedBy = $table->foreignId('approved_by')->nullable()->constrained('users');
+
+            // SQL Server rejects two cascading paths from users to this table.
+            if (Schema::getConnection()->getDriverName() === 'sqlsrv') {
+                $approvedBy->noActionOnDelete();
+            } else {
+                $approvedBy->nullOnDelete();
+            }
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('expires_at')->nullable();
             $table->timestamp('used_at')->nullable();

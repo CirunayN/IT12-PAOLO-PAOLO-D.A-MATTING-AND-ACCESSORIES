@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\SqlServerSnapshotService;
+use App\Services\BackupDirectoryBrowser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +11,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 use PDO;
+use InvalidArgumentException;
+use Illuminate\Validation\ValidationException;
 
 class BackupController extends Controller
 {
@@ -97,7 +101,7 @@ class BackupController extends Controller
         if (File::exists($backupDir)) {
             $allFiles = File::files($backupDir);
             foreach ($allFiles as $file) {
-                if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak'])) {
+                if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak', 'json'])) {
                     $bytes = $file->getSize();
                     $size = $bytes >= 1048576 
                         ? number_format($bytes / 1048576, 2) . ' MB' 
@@ -122,7 +126,7 @@ class BackupController extends Controller
         if (File::exists($archiveDir)) {
             $allArchived = File::files($archiveDir);
             foreach ($allArchived as $file) {
-                if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak'])) {
+                if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak', 'json'])) {
                     $bytes = $file->getSize();
                     $size = $bytes >= 1048576 
                         ? number_format($bytes / 1048576, 2) . ' MB' 
@@ -149,7 +153,8 @@ class BackupController extends Controller
         $settings = $this->getSettings();
         $backupDir = $this->getBackupDirectory($settings);
 
-        $filename = 'backup_p7db_' . date('Y-m-d_His') . '.sql';
+        $extension = DB::connection()->getDriverName() === 'sqlsrv' ? 'json' : 'sql';
+        $filename = 'backup_p7db_' . date('Y-m-d_His') . '.' . $extension;
         $fullPath = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $filename;
 
         $success = $this->performDatabaseDump($fullPath);
@@ -204,7 +209,7 @@ class BackupController extends Controller
                 ->post($url, [
                     'secret' => $secret,
                     'filename' => $filename,
-                    'mimeType' => 'application/sql',
+                    'mimeType' => str_ends_with($filename, '.json') ? 'application/json' : 'application/sql',
                     'content' => $content,
                 ]);
 
@@ -236,6 +241,11 @@ class BackupController extends Controller
     protected function performDatabaseDump(string $targetFile): bool
     {
         try {
+            if (DB::connection()->getDriverName() === 'sqlsrv') {
+                app(SqlServerSnapshotService::class)->write(DB::connection(), $targetFile);
+                return true;
+            }
+
             $pdo = DB::connection()->getPdo();
             $driver = DB::connection()->getDriverName();
 
@@ -318,7 +328,7 @@ class BackupController extends Controller
         $threshold = Carbon::now()->subDays($days)->timestamp;
 
         foreach (File::files($dir) as $file) {
-            if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak'])) {
+            if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak', 'json'])) {
                 if ($file->getMTime() < $threshold) {
                     @unlink($file->getPathname());
                 }
@@ -334,16 +344,17 @@ class BackupController extends Controller
         $path = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
         $archiveDir = $this->getArchiveDirectory($settings);
         $archivePath = rtrim($archiveDir, '\\/') . DIRECTORY_SEPARATOR . $clean;
+        $contentType = str_ends_with(strtolower($clean), '.json') ? 'application/json' : 'application/sql';
 
         if (File::exists($path)) {
             return response()->download($path, $clean, [
-                'Content-Type' => 'application/sql',
+                'Content-Type' => $contentType,
             ]);
         }
 
         if (File::exists($archivePath)) {
             return response()->download($archivePath, $clean, [
-                'Content-Type' => 'application/sql',
+                'Content-Type' => $contentType,
             ]);
         }
 
@@ -409,7 +420,7 @@ class BackupController extends Controller
     public function restoreBackup(Request $request)
     {
         $request->validate([
-            'backup_file' => 'nullable|file',
+            'backup_file' => 'nullable|file|extensions:sql,json',
             'existing_file' => 'nullable|string',
         ]);
 
@@ -420,7 +431,8 @@ class BackupController extends Controller
 
         if ($request->hasFile('backup_file')) {
             $file = $request->file('backup_file');
-            $filename = 'uploaded_restore_' . date('Ymd_His') . '.sql';
+            $filename = 'uploaded_restore_' . date('Ymd_His') . '.' . strtolower($file->getClientOriginalExtension());
+            File::ensureDirectoryExists(storage_path('app/temp'));
             $file->move(storage_path('app/temp'), $filename);
             $targetFile = storage_path('app/temp/' . $filename);
         } elseif ($request->filled('existing_file')) {
@@ -439,16 +451,31 @@ class BackupController extends Controller
         }
 
         try {
-            $sql = File::get($targetFile);
-            DB::unprepared($sql);
+            if (DB::connection()->getDriverName() === 'sqlsrv') {
+                app(SqlServerSnapshotService::class)->restoreFile(DB::connection(), $targetFile);
+            } else {
+                $sql = File::get($targetFile);
+                DB::unprepared($sql);
+            }
 
             if (str_contains($targetFile, 'temp')) {
                 @unlink($targetFile);
             }
 
             return redirect()->route('backup.index')->with('success', 'Database restored successfully from backup!');
-        } catch (\Exception $e) {
-            return redirect()->route('backup.index')->with('error', 'Restore error: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            return redirect()->route('backup.index')->with('error', 'Restore error: ' . ($e->getPrevious() ?? $e)->getMessage());
+        }
+    }
+
+    public function browseFolders(Request $request, BackupDirectoryBrowser $browser)
+    {
+        $validated = $request->validate(['path' => 'nullable|string|max:255']);
+
+        try {
+            return response()->json($browser->browse($validated['path'] ?? null));
+        } catch (InvalidArgumentException $exception) {
+            return response()->json(['message' => $exception->getMessage()], 422);
         }
     }
 
@@ -465,6 +492,14 @@ class BackupController extends Controller
         ]);
 
         $settings = $this->getSettings();
+        $selectedPath = trim($validated['storage_path'] ?? '');
+        if ($selectedPath !== '' && $selectedPath !== ($settings['storage_path'] ?? '')) {
+            try {
+                $validated['storage_path'] = app(BackupDirectoryBrowser::class)->select($selectedPath);
+            } catch (InvalidArgumentException $exception) {
+                throw ValidationException::withMessages(['storage_path' => $exception->getMessage()]);
+            }
+        }
         $settings['backup_mode'] = $validated['backup_mode'];
         $settings['frequency'] = $validated['frequency'];
         $settings['retention'] = $validated['retention'];

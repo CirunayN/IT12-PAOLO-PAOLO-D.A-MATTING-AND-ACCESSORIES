@@ -31,9 +31,9 @@
             </div>
         </div>
         <div class="flex items-center gap-2">
-            @if(str_starts_with($backupDir, 'E:'))
+            @if(realpath($backupDir) === realpath($settings['storage_path'] ?? ''))
                 <span class="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
-                    <i class="fas fa-plug text-[10px]"></i> External Drive (E:) Active
+                    <i class="fas fa-folder-open text-[10px]"></i> Selected Folder Active
                 </span>
             @else
                 <span class="px-3 py-1 rounded-lg text-xs font-bold bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center gap-1.5">
@@ -102,12 +102,20 @@
                         </select>
                     </div>
 
-                    <!-- Storage Path (e.g. E:\ drive) -->
+                    <!-- Backup folder -->
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">External Drive / Folder Path</label>
-                        <input type="text" name="storage_path" value="{{ $settings['storage_path'] ?? 'E:\\PaoloPaolo_Backups' }}"
-                            class="w-full py-2 px-3 bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-xs text-slate-800 dark:text-slate-200 focus:ring-1 focus:ring-red-500">
-                        <p class="text-[11px] text-slate-400 mt-1">E.g., <code class="text-red-500">E:\PaoloPaolo_Backups</code> (external drive) or local path.</p>
+                        <label for="backupStoragePath" class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Backup Folder</label>
+                        <input type="text" name="storage_path" id="backupStoragePath" readonly
+                            value="{{ old('storage_path', $settings['storage_path'] ?? 'E:\\PaoloPaolo_Backups') }}"
+                            class="w-full py-2 px-3 bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-xs text-slate-800 dark:text-slate-200">
+                        <button type="button" id="chooseBackupFolderButton" data-initial-folder="{{ $backupDir }}" onclick="openBackupFolderPicker()"
+                            class="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors">
+                            <i class="fas fa-folder-open"></i> Choose Folder
+                        </button>
+                        <p class="text-[11px] text-slate-400 mt-1">Choose a local folder or an external drive, then save settings.</p>
+                        @error('storage_path')
+                            <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- CLOUD / ONLINE BACKUP (Google Drive / Cloud) -->
@@ -146,15 +154,15 @@
             <div class="glass-card rounded-2xl p-5 sm:p-6 border shadow-sm space-y-4">
                 <div class="border-b border-slate-200 dark:border-slate-800 pb-3">
                     <h3 class="font-display font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
-                        <i class="fas fa-upload text-amber-500"></i> Restore from .SQL File
+                        <i class="fas fa-upload text-amber-500"></i> Restore Database Backup
                     </h3>
                 </div>
 
                 <form method="POST" action="{{ route('backup.restore') }}" enctype="multipart/form-data" onsubmit="return confirm('WARNING: Restoring will overwrite current database records with the backup file. Proceed?');" class="space-y-3">
                     @csrf
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Upload SQL Backup File</label>
-                        <input type="file" name="backup_file" accept=".sql" required
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Upload Backup File</label>
+                        <input type="file" name="backup_file" accept="{{ config('database.default') === 'sqlsrv' ? '.json' : '.sql' }}" required
                             class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-500/10 file:text-red-500 hover:file:bg-red-500/20 cursor-pointer">
                     </div>
                     <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs shadow-md transition-all">
@@ -223,7 +231,7 @@
                                 <td class="p-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
                                         <!-- Download -->
-                                        <a href="{{ route('backup.download', $file['name']) }}" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-red-600 hover:text-white text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Download SQL File">
+                                        <a href="{{ route('backup.download', $file['name']) }}" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-red-600 hover:text-white text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs transition-colors cursor-pointer" title="Download Backup File">
                                             <i class="fas fa-download"></i>
                                         </a>
 
@@ -324,6 +332,36 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+<div id="backupFolderPicker" role="dialog" aria-modal="true" aria-labelledby="backupFolderPickerTitle"
+    class="fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="w-full max-w-xl rounded-2xl bg-white dark:bg-dark-850 border border-slate-200 dark:border-slate-700 shadow-2xl p-5 sm:p-6 space-y-4">
+        <div class="flex items-start justify-between gap-3">
+            <div>
+                <h3 id="backupFolderPickerTitle" class="font-display font-black text-lg text-slate-900 dark:text-white">Choose Backup Folder</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Open a folder, then select Use This Folder.</p>
+            </div>
+            <button type="button" onclick="closeBackupFolderPicker()" aria-label="Close folder picker"
+                class="w-8 h-8 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-dark-800 text-xl">&times;</button>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" id="backupFolderDrives" onclick="loadBackupFolders()"
+                class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-200 text-xs font-bold">Drives</button>
+            <button type="button" id="backupFolderUp" onclick="loadBackupFolders(backupFolderState.parent)" disabled
+                class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-200 text-xs font-bold disabled:opacity-40">Up One Folder</button>
+        </div>
+        <p id="backupFolderLocation" class="rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-slate-700 p-3 font-mono text-xs text-slate-700 dark:text-slate-200 break-all">Choose a drive</p>
+        <input type="search" id="backupFolderSearch" placeholder="Filter folders..." aria-label="Filter folders"
+            oninput="renderBackupFolders()" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
+        <p id="backupFolderStatus" role="status" class="text-xs text-slate-500 dark:text-slate-400"></p>
+        <ul id="backupFolderList" aria-label="Folders" class="max-h-72 overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-800"></ul>
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
+            <button type="button" onclick="closeBackupFolderPicker()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-200 font-bold text-xs">Cancel</button>
+            <button type="button" id="useBackupFolderButton" onclick="selectBackupFolder()" disabled
+                class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed">Use This Folder</button>
+        </div>
     </div>
 </div>
 
@@ -548,6 +586,121 @@
 
 @push('scripts')
 <script>
+    const backupFolderModal = document.getElementById('backupFolderPicker');
+    const backupFolderInput = document.getElementById('backupStoragePath');
+    const backupFolderStatus = document.getElementById('backupFolderStatus');
+    const backupFolderSearch = document.getElementById('backupFolderSearch');
+    let backupFolderState = { path: null, parent: null, can_select: false, folders: [] };
+    let backupFolderRequest = null;
+
+    function openBackupFolderPicker() {
+        backupFolderModal.classList.remove('hidden');
+        backupFolderModal.classList.add('flex');
+        backupFolderSearch.focus();
+        const initial = backupFolderInput.dataset.selected === 'true'
+            ? backupFolderInput.value
+            : document.getElementById('chooseBackupFolderButton').dataset.initialFolder;
+        loadBackupFolders(initial);
+    }
+
+    function closeBackupFolderPicker() {
+        if (backupFolderModal.classList.contains('hidden')) return;
+        if (backupFolderRequest) backupFolderRequest.abort();
+        backupFolderModal.classList.add('hidden');
+        backupFolderModal.classList.remove('flex');
+        document.getElementById('chooseBackupFolderButton').focus();
+    }
+
+    async function loadBackupFolders(path = null) {
+        if (backupFolderRequest) backupFolderRequest.abort();
+        const request = new AbortController();
+        backupFolderRequest = request;
+        backupFolderState = { path: null, parent: null, can_select: false, folders: [] };
+        document.getElementById('useBackupFolderButton').disabled = true;
+        document.getElementById('backupFolderUp').disabled = true;
+        document.getElementById('backupFolderList').replaceChildren();
+        backupFolderStatus.textContent = 'Loading folders...';
+        backupFolderSearch.value = '';
+
+        const url = new URL(@json(route('backup.folders')), window.location.origin);
+        if (path) url.searchParams.set('path', path);
+        try {
+            const response = await fetch(url, {
+                headers: { Accept: 'application/json' },
+                credentials: 'same-origin',
+                signal: request.signal
+            });
+            const data = await response.json();
+            if (backupFolderRequest !== request) return;
+            if (!response.ok) throw new Error(data.message || 'Unable to open this folder.');
+            backupFolderState = data;
+            document.getElementById('backupFolderLocation').textContent = data.path || 'Choose a drive';
+            document.getElementById('backupFolderUp').disabled = !data.parent;
+            document.getElementById('useBackupFolderButton').disabled = !data.can_select;
+            backupFolderStatus.textContent = data.path && !data.can_select
+                ? 'Backups cannot be saved here. Choose another folder.'
+                : data.path ? 'Select this folder or open a subfolder.' : 'Choose a drive to browse its folders.';
+            renderBackupFolders();
+        } catch (error) {
+            if (error.name !== 'AbortError' && backupFolderRequest === request) {
+                backupFolderStatus.textContent = error.message;
+            }
+        }
+    }
+
+    function renderBackupFolders() {
+        const list = document.getElementById('backupFolderList');
+        list.replaceChildren();
+        const search = backupFolderSearch.value.trim().toLowerCase();
+        const folders = backupFolderState.folders.filter(folder => folder.name.toLowerCase().includes(search));
+        folders.forEach(folder => {
+            const row = document.createElement('li');
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'w-full flex items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-dark-800';
+            const icon = document.createElement('i');
+            icon.className = backupFolderState.path ? 'fas fa-folder text-amber-500' : 'fas fa-hard-drive text-red-500';
+            icon.setAttribute('aria-hidden', 'true');
+            const name = document.createElement('span');
+            name.className = 'break-all';
+            name.textContent = folder.name;
+            button.append(icon, name);
+            button.addEventListener('click', () => loadBackupFolders(folder.path));
+            row.appendChild(button);
+            list.appendChild(row);
+        });
+        if (!folders.length) {
+            const empty = document.createElement('li');
+            empty.className = 'p-4 text-xs text-slate-500 dark:text-slate-400';
+            empty.textContent = search ? 'No matching folders.' : 'No subfolders in this folder.';
+            list.appendChild(empty);
+        }
+    }
+
+    function selectBackupFolder() {
+        if (!backupFolderState.path || !backupFolderState.can_select) return;
+        backupFolderInput.value = backupFolderState.path;
+        backupFolderInput.dataset.selected = 'true';
+        closeBackupFolderPicker();
+    }
+
+    backupFolderModal.addEventListener('click', event => {
+        if (event.target === backupFolderModal) closeBackupFolderPicker();
+    });
+    backupFolderModal.addEventListener('keydown', event => {
+        if (event.key !== 'Tab') return;
+        const controls = [...backupFolderModal.querySelectorAll('button:not([disabled]), input')];
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+
     function switchBackupTab(tab) {
         const activeBtn = document.getElementById('tabActiveBtn');
         const archiveBtn = document.getElementById('tabArchiveBtn');
@@ -649,6 +802,7 @@
 
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            closeBackupFolderPicker();
             closeArchiveBackupModal();
             closeRecoverBackupModal();
             closePurgeBackupModal();
