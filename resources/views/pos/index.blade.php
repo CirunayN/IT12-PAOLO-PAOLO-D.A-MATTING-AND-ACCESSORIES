@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="space-y-4">
-    <div class="flex flex-col xl:flex-row xl:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+    <!-- Top Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
             <h1 class="text-2xl font-black font-display text-slate-900 dark:text-white flex items-center gap-3">
                 <i class="fas fa-cash-register text-red-500"></i>
@@ -10,7 +11,7 @@
             </h1>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2.5">
+        <div class="flex items-center gap-2.5">
             <div class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-slate-200/90 dark:bg-dark-800 border border-slate-300 dark:border-slate-700 shadow-sm">
                 <div class="w-6 h-6 rounded-lg bg-red-500/15 text-red-500 flex items-center justify-center text-xs">
                     <i class="fas fa-user-tag"></i>
@@ -22,338 +23,325 @@
                 </span>
             </div>
 
-            <button type="button" id="openCartBtn" onclick="showFloatingCart()"
-                class="relative inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs shadow-lg shadow-red-600/20 transition-all">
+            <!-- Mobile-only jump to cart button (< lg) -->
+            <button type="button" id="mobileCartJumpBtn" onclick="scrollToMobileCart()"
+                class="lg:hidden relative inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs shadow-md shadow-red-600/20 transition-all cursor-pointer">
                 <i class="fas fa-basket-shopping"></i>
-                Cart
-                <span id="topCartCount"
-                    class="min-w-5 h-5 px-1.5 rounded-full bg-white text-red-600 text-[10px] font-black flex items-center justify-center">
-                    0
-                </span>
-                <span id="topCartTotal" class="hidden sm:inline text-[11px] opacity-90">₱0.00</span>
+                <span>Cart</span>
+                <span id="mobileCartCount" class="min-w-5 h-5 px-1.5 rounded-full bg-white text-red-600 text-[10px] font-black flex items-center justify-center">0</span>
             </button>
         </div>
     </div>
 
-    <div class="glass-card rounded-2xl border overflow-hidden">
-        <div class="p-3 sm:p-4 border-b border-slate-200 dark:border-slate-800 space-y-3">
-            <div class="flex flex-col md:flex-row md:items-center gap-3">
-                <div class="relative flex-1 min-w-0">
-                    <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                    <input type="text"
-                        id="posSearch"
-                        placeholder="Search product name, description or category..."
-                        class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
-                </div>
+    <!-- 2-Column POS Workspace: Catalog on Left, Permanently Docked Cart on Right -->
+    <div class="flex flex-col lg:flex-row items-start gap-5">
 
-                <div class="text-[11px] text-slate-500 dark:text-slate-400 font-semibold whitespace-nowrap">
-                    <i class="fas fa-table-list mr-1 text-red-500"></i>
-                    Compact Data Grid
-                </div>
-            </div>
+        <!-- LEFT COLUMN: Product Catalog, Searchable Category & Pagination -->
+        <div class="w-full lg:flex-1 min-w-0 glass-card rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col shadow-sm">
+            
+            <!-- Controls Bar: Category Dropdown + Search Input -->
+            <div class="p-3 sm:p-4 border-b border-slate-200 dark:border-slate-800 space-y-3 bg-slate-50/50 dark:bg-dark-850/50">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                    
+                    <!-- Searchable Category Dropdown -->
+                    <div class="relative min-w-[210px] sm:w-64" id="posCategoryDropdownWrap">
+                        <button type="button" id="posCategoryDropdownBtn" onclick="togglePosCategoryDropdown(event)"
+                            class="w-full flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-white dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-bold text-slate-800 dark:text-slate-100 hover:border-red-500/60 shadow-sm transition-all cursor-pointer">
+                            <span class="flex items-center gap-2 truncate">
+                                <i class="fas fa-layer-group text-red-500"></i>
+                                <span id="posCategorySelectedName" class="truncate">All Categories</span>
+                            </span>
+                            <i id="posCategoryChevron" class="fas fa-chevron-down text-slate-400 text-[10px] transition-transform duration-200"></i>
+                        </button>
 
-            <div class="flex items-center gap-2 w-full overflow-x-auto pb-1">
-                <button type="button"
-                    onclick="filterCategory('ALL', this)"
-                    class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-red-600 text-white shadow-sm">
-                    All
-                </button>
+                        <!-- Searchable Category Dropdown Menu -->
+                        <div id="posCategoryDropdownMenu"
+                            class="hidden absolute left-0 top-full mt-1.5 w-72 rounded-2xl bg-white dark:bg-dark-850 border border-slate-200 dark:border-slate-700 shadow-2xl z-30 p-2 space-y-2">
+                            <!-- Category Search Box -->
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" id="posCategorySearchInput"
+                                    placeholder="Search categories..."
+                                    oninput="filterCategoryOptions(this.value)"
+                                    class="w-full pl-8 pr-3 py-1.5 rounded-lg bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-red-500">
+                            </div>
 
-                @foreach($categories as $c)
-                <button type="button"
-                    onclick="filterCategory('{{ $c->ID }}', this)"
-                    class="cat-filter-btn px-3 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300">
-                    {{ $c->Name }}
-                </button>
-                @endforeach
-            </div>
-        </div>
-
-        <div class="overflow-auto max-h-[680px]" id="productGridWrap">
-            <table class="w-full min-w-[850px] border-collapse text-left">
-                <thead class="sticky top-0 z-10 bg-slate-100/95 dark:bg-dark-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-                    <tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                        <th class="w-[64px] px-3 py-2.5 font-black">Image</th>
-                        <th class="px-3 py-2.5 font-black">Product</th>
-                        <th class="w-[160px] px-3 py-2.5 font-black">Category</th>
-                        <th class="w-[120px] px-3 py-2.5 font-black text-center">Stock</th>
-                        <th class="w-[130px] px-3 py-2.5 font-black text-right">Price</th>
-                        <th class="w-[84px] px-3 py-2.5 font-black text-center">Info</th>
-                        <th class="w-[105px] px-3 py-2.5 font-black text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="productGrid" class="divide-y divide-slate-200 dark:divide-slate-800">
-                    @foreach($products as $p)
-                    @php
-                        $qty = (float) $p->stock_quantity;
-                        $price = (float) $p->retail_price;
-                        $allImages = $p->all_image_urls;
-                        $imagesCount = count($allImages);
-                        $imagesJson = json_encode($allImages);
-
-                        $sellableBatches = $p->stockIns
-                            ->filter(function ($batch) {
-                                $remaining = (float) ($batch->Remaining_Quantity ?? 0);
-                                $condition = $batch->Condition ?? 'Good';
-
-                                $expirationOkay =
-                                    !$batch->Has_Expiration ||
-                                    !$batch->Expiration_Date ||
-                                    $batch->Expiration_Date->gte(today());
-
-                                return $remaining > 0 &&
-                                    $condition === 'Good' &&
-                                    $expirationOkay;
-                            })
-                            ->sortBy('ID')
-                            ->values();
-
-                        $nextExpiry = $sellableBatches
-                            ->filter(function ($batch) {
-                                return $batch->Has_Expiration &&
-                                    $batch->Expiration_Date;
-                            })
-                            ->sortBy('Expiration_Date')
-                            ->first();
-
-                        $oldestBatch = $sellableBatches->first();
-                    @endphp
-
-                    <tr class="product-item group hover:bg-red-500/[0.035] dark:hover:bg-red-500/[0.055] transition-colors {{ $qty <= 0 ? 'opacity-60' : '' }}"
-                        data-id="{{ $p->ID }}"
-                        data-name="{{ $p->Name }}"
-                        data-description="{{ $p->Description ?? '' }}"
-                        data-price="{{ $price }}"
-                        data-stock="{{ $qty }}"
-                        data-category="{{ $p->Category_ID }}"
-                        data-category-name="{{ $p->category->Name ?? 'General' }}"
-                        data-next-expiration="{{ $nextExpiry?->Expiration_Date?->format('M d, Y') ?? 'No expiration' }}"
-                        data-batch-count="{{ $sellableBatches->count() }}"
-                        data-oldest-batch="{{ $oldestBatch?->created_at?->format('M d, Y') ?? 'N/A' }}">
-
-                        <td class="px-3 py-2">
-                            <div class="relative w-11 h-11 rounded-lg overflow-hidden bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center">
-                                @if($p->image_url)
-                                <img src="{{ $p->image_url }}"
-                                    alt="{{ $p->Name }}"
-                                    class="w-full h-full object-cover">
-                                @else
-                                <i class="fas fa-box text-slate-400 opacity-60"></i>
-                                @endif
-
-                                @if($imagesCount > 0)
-                                <button type="button"
-                                    data-gallery-images="{{ json_encode($allImages) }}"
-                                    data-gallery-title="{{ $p->Name }}"
-                                    onclick="openPosGalleryFromButton(this, event)"
-                                    class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/55 text-white text-[10px] transition-opacity"
-                                    title="View product photos">
-                                    <i class="fas fa-images"></i>
+                            <!-- Category Options List -->
+                            <div id="posCategoryOptionsList" class="max-h-52 overflow-y-auto space-y-0.5 pr-1">
+                                <button type="button" onclick="selectPosCategory('ALL', 'All Categories', event)"
+                                    class="pos-cat-opt w-full text-left px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-between hover:bg-red-50 dark:hover:bg-red-500/10 text-slate-700 dark:text-slate-200 cursor-pointer"
+                                    data-id="ALL" data-name="all categories">
+                                    <span>All Categories</span>
+                                    <span class="text-[10px] text-slate-400">All ({{ count($products) }})</span>
                                 </button>
-                                @endif
+                                @foreach($categories as $c)
+                                <button type="button" onclick="selectPosCategory('{{ $c->ID }}', '{{ addslashes($c->Name) }}', event)"
+                                    class="pos-cat-opt w-full text-left px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-between hover:bg-red-50 dark:hover:bg-red-500/10 text-slate-700 dark:text-slate-200 cursor-pointer"
+                                    data-id="{{ $c->ID }}" data-name="{{ strtolower($c->Name) }}">
+                                    <span class="truncate">{{ $c->Name }}</span>
+                                </button>
+                                @endforeach
                             </div>
-                        </td>
-
-                        <td class="px-3 py-2 min-w-0">
-                            <div class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-tight">
-                                {{ $p->Name }}
-                            </div>
-                            @if($p->Description)
-                            <div class="mt-0.5 text-[10px] text-slate-400 truncate max-w-[420px]" title="{{ $p->Description }}">
-                                {{ $p->Description }}
-                            </div>
-                            @endif
-                        </td>
-
-                        <td class="px-3 py-2">
-                            <span class="inline-flex px-2 py-1 rounded-lg text-[10px] font-bold bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                                {{ $p->category->Name ?? 'General' }}
-                            </span>
-                        </td>
-
-                        <td class="px-3 py-2 text-center">
-                            @if($qty <= 0)
-                            <span class="inline-flex px-2 py-1 rounded-lg text-[10px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25">
-                                Out
-                            </span>
-                            @elseif($qty <= 5)
-                            <span class="inline-flex px-2 py-1 rounded-lg text-[10px] font-black text-amber-500 bg-amber-500/10 border border-amber-500/25">
-                                {{ number_format($qty, 0) }} left
-                            </span>
-                            @else
-                            <span class="font-black text-xs text-emerald-600 dark:text-emerald-400">
-                                {{ number_format($qty, 0) }}
-                            </span>
-                            @endif
-                        </td>
-
-                        <td class="px-3 py-2 text-right font-display font-black text-sm text-emerald-600 dark:text-emerald-400 whitespace-nowrap">
-                            ₱{{ number_format($price, 2) }}
-                        </td>
-
-                        <td class="px-3 py-2 text-center">
-                            <button type="button"
-                                onclick="openProductInfo(this.closest('.product-item'), event)"
-                                class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 transition-all"
-                                title="Product details">
-                                <i class="fas fa-circle-info text-xs"></i>
-                            </button>
-                        </td>
-
-                        <td class="px-3 py-2 text-center">
-                            <button type="button"
-                                {{ $qty <= 0 ? 'disabled' : '' }}
-                                onclick="addProductRowToCart(this)"
-                                class="inline-flex items-center justify-center gap-1.5 px-3 h-8 rounded-lg bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white text-[10px] font-black shadow-sm transition-all active:scale-95 whitespace-nowrap">
-                                <i class="fas fa-plus"></i>
-                                Add
-                            </button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-            <div id="noProductsMessage" class="hidden text-center py-14 text-slate-400 text-sm">
-                <i class="fas fa-magnifying-glass text-2xl mb-2 opacity-50"></i>
-                <p>No products match the current search/filter.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- Modeless floating cart: no backdrop, so the cashier can keep using the product grid. --}}
-<div id="floatingCart"
-    class="fixed z-[60] hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-dark-850/95 backdrop-blur-xl shadow-2xl overflow-hidden"
-    style="width:min(430px, calc(100vw - 24px)); right:24px; top:112px; max-height:calc(100vh - 132px);">
-
-    <div id="floatingCartHeader"
-        class="flex items-center justify-between gap-3 px-4 py-3 bg-slate-100 dark:bg-dark-900 border-b border-slate-200 dark:border-slate-800 cursor-move select-none touch-none">
-        <div class="flex items-center gap-2 min-w-0">
-            <span class="text-slate-400"><i class="fas fa-grip-vertical"></i></span>
-            <div class="min-w-0">
-                <div class="font-display font-black text-sm text-slate-900 dark:text-white flex items-center gap-2">
-                    <i class="fas fa-basket-shopping text-red-500"></i>
-                    Customer Cart
-                </div>
-                <div id="floatingCartHeaderSummary" class="text-[10px] text-slate-500 dark:text-slate-400 truncate">
-                    0 items • ₱0.00
-                </div>
-            </div>
-        </div>
-
-        <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" onclick="toggleCartMinimize(event)"
-                class="w-8 h-8 rounded-lg hover:bg-slate-200 dark:hover:bg-dark-800 text-slate-500 dark:text-slate-300"
-                title="Minimize cart">
-                <i id="cartMinimizeIcon" class="fas fa-minus"></i>
-            </button>
-            <button type="button" onclick="hideFloatingCart(event)"
-                class="w-8 h-8 rounded-lg hover:bg-rose-500/10 text-slate-500 hover:text-rose-500 dark:text-slate-300"
-                title="Hide cart">
-                <i class="fas fa-xmark"></i>
-            </button>
-        </div>
-    </div>
-
-    <div id="floatingCartMinimized" class="hidden px-4 py-3">
-        <button type="button" onclick="toggleCartMinimize(event)"
-            class="w-full flex items-center justify-between gap-3 text-left">
-            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">
-                <i class="fas fa-basket-shopping text-red-500 mr-2"></i>
-                <span id="minimizedCartItems">0 items</span>
-            </span>
-            <span id="minimizedCartTotal" class="font-display font-black text-sm text-emerald-600 dark:text-emerald-400">₱0.00</span>
-        </button>
-    </div>
-
-    <div id="floatingCartBody" class="overflow-y-auto" style="max-height:calc(100vh - 190px);">
-        <div class="p-4 space-y-4">
-            <div class="flex items-center justify-between">
-                <div class="text-[10px] uppercase tracking-wider font-black text-slate-400">Selected Items</div>
-                <button type="button" onclick="promptClearCart()"
-                    class="text-[10px] font-black text-rose-500 hover:text-rose-400">
-                    <i class="fas fa-trash-can mr-1"></i>
-                    Clear Cart
-                </button>
-            </div>
-
-            <div id="cartContainer" class="space-y-2 max-h-[245px] overflow-y-auto pr-1">
-                <div class="text-center py-8 text-slate-400 text-xs">
-                    <i class="fas fa-cart-arrow-down text-3xl mb-2 opacity-50"></i>
-                    <p>No items in cart yet.</p>
-                </div>
-            </div>
-
-            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-3">
-                <div class="flex items-center justify-between text-xs">
-                    <span class="text-slate-500 dark:text-slate-400">Total Items</span>
-                    <strong id="cartTotalItems" class="text-slate-800 dark:text-slate-200">0</strong>
-                </div>
-
-                <div class="flex items-center justify-between text-base">
-                    <span class="font-bold text-slate-700 dark:text-slate-300">Grand Total</span>
-                    <strong id="cartGrandTotal"
-                        class="font-display font-black text-xl text-emerald-600 dark:text-emerald-400">
-                        ₱0.00
-                    </strong>
-                </div>
-
-                <div>
-                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                        Payment Method
-                    </label>
-                    <select id="paymentMethodSelect" onchange="handlePaymentMethodChange()"
-                        class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
-                        @foreach($paymentMethods as $method)
-                        <option value="{{ $method->ID }}" data-name="{{ strtolower($method->Name) }}">{{ $method->Name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div id="gcashReferenceWrap" class="hidden">
-                    <label class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                        GCash Reference Number <span class="text-rose-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <i class="fas fa-hashtag absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                        <input type="text" id="gcashReference"
-                            inputmode="numeric" autocomplete="off" maxlength="30"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                            class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-black tracking-wide text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
-                            placeholder="Enter GCash reference no.">
+                        </div>
                     </div>
-                    <p class="mt-1 text-[9px] text-slate-400">Required only when GCash is selected.</p>
+
+                    <!-- Live Product Search Bar (Compact Data Grid text removed) -->
+                    <div class="relative flex-1 min-w-0">
+                        <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                        <input type="text" id="posSearch"
+                            placeholder="Search product name or description..."
+                            class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    </div>
+
+                    <button type="button" id="posClearSearchBtn" onclick="resetPosFilters()"
+                        class="hidden px-3.5 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 text-xs font-bold transition-colors cursor-pointer flex-shrink-0"
+                        title="Clear search and category filter">
+                        <i class="fas fa-rotate-left mr-1"></i> Reset
+                    </button>
                 </div>
+            </div>
 
-                <div>
-                    <label id="amountTenderedLabel" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                        Amount Received (₱)
-                    </label>
-                    <input type="number" id="amountTendered"
-                        min="0" step="0.01" inputmode="decimal"
-                        oninput="calculateChange()"
-                        class="w-full px-3 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-base font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
-                        placeholder="0.00">
+            <!-- Compact Product Table: Optimized row heights so more products fit on screen -->
+            <div class="overflow-x-auto flex-1 min-h-[460px]" id="productGridWrap">
+                <table class="w-full min-w-[680px] border-collapse text-left">
+                    <thead class="sticky top-0 z-10 bg-slate-100/95 dark:bg-dark-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+                        <tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                            <th class="w-[52px] px-2.5 py-2 font-black">Image</th>
+                            <th class="px-2.5 py-2 font-black">Product</th>
+                            <th class="w-[120px] px-2.5 py-2 font-black">Category</th>
+                            <th class="w-[85px] px-2.5 py-2 font-black text-center">Stock</th>
+                            <th class="w-[100px] px-2.5 py-2 font-black text-right">Price</th>
+                            <th class="w-[56px] px-2.5 py-2 font-black text-center">Info</th>
+                            <th class="w-[75px] px-2.5 py-2 font-black text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productGrid" class="divide-y divide-slate-100 dark:divide-slate-800/80">
+                        @foreach($products as $p)
+                        @php
+                            $qty = (float) $p->stock_quantity;
+                            $price = (float) $p->retail_price;
+                            $allImages = $p->all_image_urls;
+                            $imagesCount = count($allImages);
+
+                            $sellableBatches = $p->stockIns
+                                ->filter(function ($batch) {
+                                    $remaining = (float) ($batch->Remaining_Quantity ?? 0);
+                                    $condition = $batch->Condition ?? 'Good';
+                                    $expirationOkay = !$batch->Has_Expiration || !$batch->Expiration_Date || $batch->Expiration_Date->gte(today());
+                                    return $remaining > 0 && $condition === 'Good' && $expirationOkay;
+                                })
+                                ->sortBy('ID')
+                                ->values();
+
+                            $nextExpiry = $sellableBatches
+                                ->filter(fn ($b) => $b->Has_Expiration && $b->Expiration_Date)
+                                ->sortBy('Expiration_Date')
+                                ->first();
+
+                            $oldestBatch = $sellableBatches->first();
+                        @endphp
+
+                        <tr class="product-item group hover:bg-red-500/[0.04] dark:hover:bg-red-500/[0.06] transition-colors {{ $qty <= 0 ? 'opacity-50' : '' }}"
+                            data-id="{{ $p->ID }}"
+                            data-name="{{ $p->Name }}"
+                            data-description="{{ $p->Description ?? '' }}"
+                            data-price="{{ $price }}"
+                            data-stock="{{ $qty }}"
+                            data-category="{{ $p->Category_ID }}"
+                            data-category-name="{{ $p->category->Name ?? 'General' }}"
+                            data-next-expiration="{{ $nextExpiry?->Expiration_Date?->format('M d, Y') ?? 'No expiration' }}"
+                            data-batch-count="{{ $sellableBatches->count() }}"
+                            data-oldest-batch="{{ $oldestBatch?->created_at?->format('M d, Y') ?? 'N/A' }}">
+
+                            <td class="px-2.5 py-1.5">
+                                <div class="relative w-9 h-9 rounded-lg overflow-hidden bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center flex-shrink-0">
+                                    @if($p->image_url)
+                                    <img src="{{ $p->image_url }}" alt="{{ $p->Name }}" class="w-full h-full object-cover">
+                                    @else
+                                    <i class="fas fa-box text-slate-400 opacity-60 text-xs"></i>
+                                    @endif
+
+                                    @if($imagesCount > 0)
+                                    <button type="button"
+                                        data-gallery-images="{{ json_encode($allImages) }}"
+                                        data-gallery-title="{{ $p->Name }}"
+                                        onclick="openPosGalleryFromButton(this, event)"
+                                        class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/60 text-white text-[9px] transition-opacity flex items-center justify-center cursor-pointer"
+                                        title="View product photos">
+                                        <i class="fas fa-images"></i>
+                                    </button>
+                                    @endif
+                                </div>
+                            </td>
+
+                            <td class="px-2.5 py-1.5 min-w-0">
+                                <div class="font-bold text-xs text-slate-900 dark:text-white leading-tight truncate max-w-[280px]" title="{{ $p->Name }}">
+                                    {{ $p->Name }}
+                                </div>
+                                @if($p->Description)
+                                <div class="text-[10px] text-slate-400 truncate max-w-[280px]" title="{{ $p->Description }}">
+                                    {{ $p->Description }}
+                                </div>
+                                @endif
+                            </td>
+
+                            <td class="px-2.5 py-1.5">
+                                <span class="inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 truncate max-w-[110px]">
+                                    {{ $p->category->Name ?? 'General' }}
+                                </span>
+                            </td>
+
+                            <td class="px-2.5 py-1.5 text-center whitespace-nowrap">
+                                @if($qty <= 0)
+                                <span class="inline-flex px-1.5 py-0.5 rounded text-[9px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25">
+                                    Out
+                                </span>
+                                @elseif($qty <= 5)
+                                <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-black text-amber-500 bg-amber-500/10 border border-amber-500/25">
+                                    {{ number_format($qty, 0) }} left
+                                </span>
+                                @else
+                                <span class="font-black text-xs text-emerald-600 dark:text-emerald-400">
+                                    {{ number_format($qty, 0) }}
+                                </span>
+                                @endif
+                            </td>
+
+                            <td class="px-2.5 py-1.5 text-right font-display font-black text-xs sm:text-sm text-slate-900 dark:text-white whitespace-nowrap">
+                                ₱{{ number_format($price, 2) }}
+                            </td>
+
+                            <td class="px-2.5 py-1.5 text-center">
+                                <button type="button"
+                                    onclick="openProductInfo(this.closest('.product-item'), event)"
+                                    class="w-6 h-6 rounded-md bg-slate-200/80 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 transition-all cursor-pointer inline-flex items-center justify-center"
+                                    title="Product details">
+                                    <i class="fas fa-circle-info text-[10px]"></i>
+                                </button>
+                            </td>
+
+                            <td class="px-2.5 py-1.5 text-center">
+                                <button type="button"
+                                    {{ $qty <= 0 ? 'disabled' : '' }}
+                                    onclick="addProductRowToCart(this)"
+                                    class="inline-flex items-center justify-center gap-1 px-2.5 h-7 rounded-lg bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white text-[10px] font-black shadow-sm transition-all active:scale-95 whitespace-nowrap cursor-pointer">
+                                    <i class="fas fa-plus text-[9px]"></i>
+                                    <span>Add</span>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+                <div id="noProductsMessage" class="hidden text-center py-14 text-slate-400 text-sm">
+                    <i class="fas fa-magnifying-glass text-2xl mb-2 opacity-50"></i>
+                    <p>No products match the current search or category.</p>
                 </div>
+            </div>
 
-                <div class="p-3 rounded-xl bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
-                    <span class="text-[10px] font-black text-slate-500 dark:text-slate-400">Change Due</span>
-                    <strong id="changeDue" class="text-base font-black text-emerald-500">₱0.00</strong>
+            <!-- Pagination Bar: Numbering + Prev/Next + Range Indicator -->
+            <div id="posPaginationBar" class="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-900/70 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+                <div id="posPaginationCount" class="text-slate-500 dark:text-slate-400 font-semibold text-[11px]">
+                    Showing 1 to 10 of {{ count($products) }} items
                 </div>
-
-                <button type="button" id="checkoutBtn"
-                    onclick="processCheckout()" disabled
-                    class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-black text-sm shadow-lg shadow-red-600/20 transition-all flex items-center justify-center gap-2">
-                    <i class="fas fa-check-circle"></i>
-                    Charge &amp; Save Sale
-                </button>
-
-                <p class="text-[9px] text-center text-slate-400">
-                    FIFO inventory deduction remains active.
-                </p>
+                <div class="flex items-center gap-1.5" id="posPaginationControls">
+                    <!-- Injected dynamically by JavaScript -->
+                </div>
             </div>
         </div>
+
+        <!-- RIGHT COLUMN: Permanently Docked Customer Cart (Static on desktop, always visible) -->
+        <div id="posCartSidebar" class="w-full lg:w-[400px] xl:w-[430px] flex-shrink-0 lg:sticky lg:top-24">
+            <div class="glass-card rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-dark-850/95 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col">
+                <!-- Cart Header -->
+                <div class="flex items-center justify-between gap-3 px-4 py-3 bg-slate-100 dark:bg-dark-900 border-b border-slate-200 dark:border-slate-800">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <div class="font-display font-black text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                            <i class="fas fa-basket-shopping text-red-500"></i>
+                            Customer Cart
+                        </div>
+                        <span id="dockedCartBadge" class="px-2 py-0.5 rounded-full bg-red-500/10 text-red-500 font-black text-[10px]">0 items</span>
+                    </div>
+
+                    <button type="button" onclick="promptClearCart()"
+                        class="text-[10px] font-black text-rose-500 hover:text-rose-400 transition-colors flex items-center gap-1 cursor-pointer">
+                        <i class="fas fa-trash-can text-[10px]"></i> Clear
+                    </button>
+                </div>
+
+                <!-- Cart Body -->
+                <div class="p-3.5 sm:p-4 space-y-3.5">
+                    <!-- Selected Items Scrollable List -->
+                    <div id="cartContainer" class="space-y-2 max-h-[250px] overflow-y-auto pr-1">
+                        <div class="text-center py-8 text-slate-400 text-xs">
+                            <i class="fas fa-cart-arrow-down text-3xl mb-2 opacity-50"></i>
+                            <p>No items in cart yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary & Checkout -->
+                    <div class="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2.5">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-slate-500 dark:text-slate-400">Total Items</span>
+                            <strong id="cartTotalItems" class="text-slate-800 dark:text-slate-200">0</strong>
+                        </div>
+
+                        <div class="flex items-center justify-between text-base">
+                            <span class="font-bold text-slate-700 dark:text-slate-300">Grand Total</span>
+                            <strong id="cartGrandTotal" class="font-display font-black text-xl text-emerald-600 dark:text-emerald-400">₱0.00</strong>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                                Payment Method
+                            </label>
+                            <select id="paymentMethodSelect" onchange="handlePaymentMethodChange()"
+                                class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white cursor-pointer">
+                                @foreach($paymentMethods as $method)
+                                <option value="{{ $method->ID }}" data-name="{{ strtolower($method->Name) }}">{{ $method->Name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div id="gcashReferenceWrap" class="hidden">
+                            <label class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                                GCash Reference Number <span class="text-rose-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <i class="fas fa-hashtag absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" id="gcashReference" inputmode="numeric" maxlength="30"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
+                                    placeholder="Enter GCash reference no.">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label id="amountTenderedLabel" class="block text-[10px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                                Amount Received (₱)
+                            </label>
+                            <input type="number" id="amountTendered" min="0" step="0.01" inputmode="decimal"
+                                oninput="calculateChange()"
+                                class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
+                                placeholder="0.00">
+                        </div>
+
+                        <div class="p-2.5 rounded-xl bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+                            <span class="text-[10px] font-black text-slate-500 dark:text-slate-400">Change Due</span>
+                            <strong id="changeDue" class="text-sm font-black text-emerald-500">₱0.00</strong>
+                        </div>
+
+                        <button type="button" id="checkoutBtn" onclick="processCheckout()" disabled
+                            class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white font-black text-xs shadow-md shadow-red-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fas fa-check-circle"></i>
+                            Charge &amp; Save Sale
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -539,112 +527,67 @@ function isGcashSelected() {
     return getSelectedPaymentName() === 'gcash';
 }
 
-function showFloatingCart() {
-    const panel = document.getElementById('floatingCart');
-    panel.classList.remove('hidden');
-    clampFloatingCartToViewport();
+function scrollToMobileCart() {
+    const sidebar = document.getElementById('posCartSidebar');
+    if (sidebar) {
+        sidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
-function hideFloatingCart(event) {
+function togglePosCategoryDropdown(event) {
     if (event) event.stopPropagation();
-    document.getElementById('floatingCart').classList.add('hidden');
+    const menu = document.getElementById('posCategoryDropdownMenu');
+    const chevron = document.getElementById('posCategoryChevron');
+    if (!menu) return;
+
+    const isHidden = menu.classList.contains('hidden');
+    menu.classList.toggle('hidden', !isHidden);
+    if (chevron) chevron.classList.toggle('rotate-180', isHidden);
+
+    if (isHidden) {
+        const input = document.getElementById('posCategorySearchInput');
+        if (input) {
+            input.value = '';
+            filterCategoryOptions('');
+            setTimeout(() => input.focus(), 60);
+        }
+    }
 }
 
-function toggleCartMinimize(event) {
+function selectPosCategory(catId, catName, event) {
     if (event) event.stopPropagation();
+    activeCategory = String(catId);
 
-    cartIsMinimized = !cartIsMinimized;
+    const label = document.getElementById('posCategorySelectedName');
+    if (label) label.textContent = catName;
 
-    const body = document.getElementById('floatingCartBody');
-    const minimized = document.getElementById('floatingCartMinimized');
-    const icon = document.getElementById('cartMinimizeIcon');
-    const panel = document.getElementById('floatingCart');
+    const menu = document.getElementById('posCategoryDropdownMenu');
+    if (menu) menu.classList.add('hidden');
 
-    body.classList.toggle('hidden', cartIsMinimized);
-    minimized.classList.toggle('hidden', !cartIsMinimized);
-    icon.className = cartIsMinimized ? 'fas fa-up-right-and-down-left-from-center' : 'fas fa-minus';
-    panel.style.width = cartIsMinimized
-        ? 'min(330px, calc(100vw - 24px))'
-        : 'min(430px, calc(100vw - 24px))';
+    const chevron = document.getElementById('posCategoryChevron');
+    if (chevron) chevron.classList.remove('rotate-180');
 
-    clampFloatingCartToViewport();
+    posCurrentPage = 1;
+    applyProductFilters();
 }
 
-function clampFloatingCartToViewport() {
-    const panel = document.getElementById('floatingCart');
-    if (!panel || panel.classList.contains('hidden')) return;
-
-    const rect = panel.getBoundingClientRect();
-    const margin = 8;
-    let left = rect.left;
-    let top = rect.top;
-
-    if (rect.right > window.innerWidth - margin) {
-        left = Math.max(margin, window.innerWidth - rect.width - margin);
-    }
-    if (rect.bottom > window.innerHeight - margin) {
-        top = Math.max(margin, window.innerHeight - rect.height - margin);
-    }
-    if (left < margin) left = margin;
-    if (top < margin) top = margin;
-
-    panel.style.right = 'auto';
-    panel.style.left = left + 'px';
-    panel.style.top = top + 'px';
-}
-
-function initFloatingCartDrag() {
-    const panel = document.getElementById('floatingCart');
-    const handle = document.getElementById('floatingCartHeader');
-    if (!panel || !handle) return;
-
-    let dragging = false;
-    let pointerId = null;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    handle.addEventListener('pointerdown', function (event) {
-        if (event.target.closest('button')) return;
-
-        const rect = panel.getBoundingClientRect();
-        dragging = true;
-        pointerId = event.pointerId;
-        offsetX = event.clientX - rect.left;
-        offsetY = event.clientY - rect.top;
-
-        panel.style.right = 'auto';
-        panel.style.left = rect.left + 'px';
-        panel.style.top = rect.top + 'px';
-        handle.setPointerCapture(pointerId);
-        event.preventDefault();
+function filterCategoryOptions(query) {
+    query = (query || '').trim().toLowerCase();
+    document.querySelectorAll('.pos-cat-opt').forEach(btn => {
+        const name = (btn.dataset.name || '').toLowerCase();
+        btn.classList.toggle('hidden', query !== '' && !name.includes(query));
     });
-
-    handle.addEventListener('pointermove', function (event) {
-        if (!dragging || event.pointerId !== pointerId) return;
-
-        const rect = panel.getBoundingClientRect();
-        const margin = 8;
-        const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
-        const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
-
-        const left = Math.min(Math.max(margin, event.clientX - offsetX), maxLeft);
-        const top = Math.min(Math.max(margin, event.clientY - offsetY), maxTop);
-
-        panel.style.left = left + 'px';
-        panel.style.top = top + 'px';
-    });
-
-    function stopDragging(event) {
-        if (!dragging || event.pointerId !== pointerId) return;
-        dragging = false;
-        try { handle.releasePointerCapture(pointerId); } catch (e) {}
-        pointerId = null;
-    }
-
-    handle.addEventListener('pointerup', stopDragging);
-    handle.addEventListener('pointercancel', stopDragging);
-    window.addEventListener('resize', clampFloatingCartToViewport);
 }
+
+document.addEventListener('click', function (event) {
+    const wrap = document.getElementById('posCategoryDropdownWrap');
+    if (wrap && !wrap.contains(event.target)) {
+        const menu = document.getElementById('posCategoryDropdownMenu');
+        const chevron = document.getElementById('posCategoryChevron');
+        if (menu) menu.classList.add('hidden');
+        if (chevron) chevron.classList.remove('rotate-180');
+    }
+});
 
 function addProductRowToCart(button) {
     const row = button.closest('.product-item');
@@ -737,13 +680,27 @@ function renderCart() {
     const totalQty = getCartTotalQty();
     const grandTotal = getCartGrandTotal();
 
-    document.getElementById('cartTotalItems').textContent = totalQty;
-    document.getElementById('cartGrandTotal').textContent = money(grandTotal);
-    document.getElementById('topCartCount').textContent = totalQty;
-    document.getElementById('topCartTotal').textContent = money(grandTotal);
-    document.getElementById('floatingCartHeaderSummary').textContent = `${totalQty} item${totalQty === 1 ? '' : 's'} • ${money(grandTotal)}`;
-    document.getElementById('minimizedCartItems').textContent = `${totalQty} item${totalQty === 1 ? '' : 's'}`;
-    document.getElementById('minimizedCartTotal').textContent = money(grandTotal);
+    const elTotal = document.getElementById('cartTotalItems');
+    if (elTotal) elTotal.textContent = totalQty;
+
+    const elGrand = document.getElementById('cartGrandTotal');
+    if (elGrand) elGrand.textContent = money(grandTotal);
+
+    const elBadge = document.getElementById('dockedCartBadge');
+    if (elBadge) elBadge.textContent = `${totalQty} item${totalQty === 1 ? '' : 's'}`;
+
+    const elMobile = document.getElementById('mobileCartCount');
+    if (elMobile) elMobile.textContent = totalQty;
+
+    const elTopCount = document.getElementById('topCartCount');
+    if (elTopCount) elTopCount.textContent = totalQty;
+
+    const elTopTotal = document.getElementById('topCartTotal');
+    if (elTopTotal) elTopTotal.textContent = money(grandTotal);
+
+    window.getPosCartItemCount = function () {
+        return totalQty;
+    };
 
     if (keys.length === 0) {
         container.innerHTML = `
@@ -1041,35 +998,119 @@ function closeReceiptModal() {
     window.location.reload();
 }
 
-function applyProductFilters() {
-    const q = document.getElementById('posSearch').value.trim().toLowerCase();
-    let visibleCount = 0;
+let posCurrentPage = 1;
+const posPerPage = 10;
+let posMatchingRows = [];
 
-    document.querySelectorAll('.product-item').forEach(row => {
+function applyProductFilters() {
+    const q = (document.getElementById('posSearch')?.value || '').trim().toLowerCase();
+    const rows = Array.from(document.querySelectorAll('.product-item'));
+    posMatchingRows = [];
+
+    rows.forEach(row => {
         const name = (row.dataset.name || '').toLowerCase();
         const description = (row.dataset.description || '').toLowerCase();
         const categoryName = (row.dataset.categoryName || '').toLowerCase();
         const categoryMatch = activeCategory === 'ALL' || row.dataset.category === activeCategory;
         const searchMatch = !q || name.includes(q) || description.includes(q) || categoryName.includes(q);
-        const visible = categoryMatch && searchMatch;
 
-        row.classList.toggle('hidden', !visible);
-        if (visible) visibleCount++;
+        if (categoryMatch && searchMatch) {
+            posMatchingRows.push(row);
+        }
+        row.classList.add('hidden');
     });
 
-    document.getElementById('noProductsMessage').classList.toggle('hidden', visibleCount !== 0);
+    const total = posMatchingRows.length;
+    const totalPages = Math.max(1, Math.ceil(total / posPerPage));
+    if (posCurrentPage > totalPages) posCurrentPage = 1;
+
+    // Display only the 10 products for the current page
+    const startIdx = (posCurrentPage - 1) * posPerPage;
+    const endIdx = startIdx + posPerPage;
+    posMatchingRows.slice(startIdx, endIdx).forEach(row => {
+        row.classList.remove('hidden');
+    });
+
+    const noProdMsg = document.getElementById('noProductsMessage');
+    if (noProdMsg) noProdMsg.classList.toggle('hidden', total > 0);
+
+    const clearBtn = document.getElementById('posClearSearchBtn');
+    if (clearBtn) clearBtn.classList.toggle('hidden', q === '' && activeCategory === 'ALL');
+
+    renderPosPagination(total, totalPages);
 }
 
-function filterCategory(catId, button) {
-    activeCategory = String(catId);
+function renderPosPagination(total, totalPages) {
+    const countEl = document.getElementById('posPaginationCount');
+    const controlsEl = document.getElementById('posPaginationControls');
+    if (!countEl || !controlsEl) return;
 
-    document.querySelectorAll('.cat-filter-btn').forEach(btn => {
-        btn.classList.remove('bg-red-600', 'text-white');
-        btn.classList.add('bg-slate-200', 'dark:bg-dark-800', 'text-slate-700', 'dark:text-slate-300');
-    });
+    if (total === 0) {
+        countEl.textContent = '0 items found';
+        controlsEl.innerHTML = '';
+        return;
+    }
 
-    button.classList.remove('bg-slate-200', 'dark:bg-dark-800', 'text-slate-700', 'dark:text-slate-300');
-    button.classList.add('bg-red-600', 'text-white');
+    const start = (posCurrentPage - 1) * posPerPage + 1;
+    const end = Math.min(posCurrentPage * posPerPage, total);
+    countEl.textContent = `Showing ${start} to ${end} of ${total} items`;
+
+    let html = '';
+
+    // Prev Button
+    html += `
+        <button type="button" onclick="goToPosPage(${posCurrentPage - 1})"
+            ${posCurrentPage === 1 ? 'disabled' : ''}
+            class="px-2.5 py-1 rounded-lg border text-xs font-bold transition-all ${posCurrentPage === 1 ? 'opacity-40 cursor-not-allowed border-slate-200 dark:border-slate-800 text-slate-400' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700 cursor-pointer'}">
+            <i class="fas fa-chevron-left text-[10px]"></i> Prev
+        </button>
+    `;
+
+    // Numbered Buttons (with ellipsis for > 7 pages)
+    for (let p = 1; p <= totalPages; p++) {
+        if (totalPages > 7) {
+            if (p !== 1 && p !== totalPages && Math.abs(p - posCurrentPage) > 1) {
+                if (p === 2 || p === totalPages - 1) {
+                    html += `<span class="px-1 text-slate-400 text-xs select-none">...</span>`;
+                }
+                continue;
+            }
+        }
+        const isActive = p === posCurrentPage;
+        html += `
+            <button type="button" onclick="goToPosPage(${p})"
+                class="min-w-7 h-7 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${isActive ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700'}">
+                ${p}
+            </button>
+        `;
+    }
+
+    // Next Button
+    html += `
+        <button type="button" onclick="goToPosPage(${posCurrentPage + 1})"
+            ${posCurrentPage === totalPages ? 'disabled' : ''}
+            class="px-2.5 py-1 rounded-lg border text-xs font-bold transition-all ${posCurrentPage === totalPages ? 'opacity-40 cursor-not-allowed border-slate-200 dark:border-slate-800 text-slate-400' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700 cursor-pointer'}">
+            Next <i class="fas fa-chevron-right text-[10px]"></i>
+        </button>
+    `;
+
+    controlsEl.innerHTML = html;
+}
+
+function goToPosPage(page) {
+    const totalPages = Math.max(1, Math.ceil(posMatchingRows.length / posPerPage));
+    if (page < 1 || page > totalPages) return;
+    posCurrentPage = page;
+    applyProductFilters();
+}
+
+function resetPosFilters() {
+    const input = document.getElementById('posSearch');
+    if (input) input.value = '';
+    activeCategory = 'ALL';
+    const label = document.getElementById('posCategorySelectedName');
+    if (label) label.textContent = 'All Categories';
+    posCurrentPage = 1;
     applyProductFilters();
 }
 
@@ -1161,10 +1202,16 @@ function nextPosGalleryImage() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('posSearch').addEventListener('input', applyProductFilters);
-    initFloatingCartDrag();
+    const searchInput = document.getElementById('posSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            posCurrentPage = 1;
+            applyProductFilters();
+        });
+    }
     handlePaymentMethodChange();
     renderCart();
+    applyProductFilters();
 });
 
 document.addEventListener('keydown', function (event) {
