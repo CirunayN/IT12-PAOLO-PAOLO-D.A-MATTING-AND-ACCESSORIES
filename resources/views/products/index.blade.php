@@ -49,36 +49,51 @@
 
     <!-- Filter & Search Bar -->
     <div class="glass-card rounded-2xl p-4 border shadow-sm">
-        <form method="GET" action="{{ route('products.index') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+        <form id="inventoryFilterForm" method="GET" action="{{ route('products.index') }}" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
             <input type="hidden" name="tab" value="{{ $tab }}">
-            <div class="sm:col-span-4 relative">
+
+            <!-- Search input -->
+            <div class="sm:col-span-5 relative">
                 <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by product name..."
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search product name or description... (Press Enter)"
                     class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
+
+            <!-- Auto-updating Category Dropdown -->
             <div class="sm:col-span-3">
-                <select name="category_id" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                <select name="category_id" onchange="this.form.submit()"
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 cursor-pointer focus:ring-2 focus:ring-red-500">
                     <option value="">All Categories</option>
                     @foreach($categories as $cat)
                     <option value="{{ $cat->ID }}" {{ request('category_id') == $cat->ID ? 'selected' : '' }}>{{ $cat->Name }}</option>
                     @endforeach
                 </select>
             </div>
+
+            <!-- Auto-updating Stock Level Dropdown -->
             <div class="sm:col-span-3">
-                <select name="stock_level" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                <select name="stock_level" onchange="this.form.submit()"
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 cursor-pointer focus:ring-2 focus:ring-red-500">
                     <option value="">All Stock Levels</option>
                     <option value="available" {{ request('stock_level') === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
                     <option value="low" {{ request('stock_level') === 'low' ? 'selected' : '' }}>Low Stock (1-5 units)</option>
-                    <option value="out" {{ request('stock_level') === 'out' ? 'selected' : '' }}>Out of Stock (0)</option>
+                    <option value="out" {{ request('stock_level') === 'out' ? 'selected' : '' }}>Out of Stock (0 units)</option>
                 </select>
             </div>
-            <div class="sm:col-span-2 flex items-center gap-2">
-                <button type="submit" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm">
-                    Filter
-                </button>
-                <a href="{{ route('products.index', ['tab' => $tab]) }}" class="px-3 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 text-sm">
-                    Reset
+
+            <!-- Reset Action (Shown whenever any filter is applied) -->
+            <div class="sm:col-span-1 flex items-center justify-end">
+                @if(request()->filled('search') || request()->filled('category_id') || request()->filled('stock_level'))
+                <a href="{{ route('products.index', ['tab' => $tab]) }}" title="Reset all filters"
+                   class="w-full py-2.5 px-3 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white dark:bg-rose-500/20 dark:hover:bg-rose-500 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors text-center">
+                    <i class="fas fa-rotate-left"></i>
+                    <span>Reset</span>
                 </a>
+                @else
+                <div class="hidden sm:block text-[11px] text-slate-400 font-semibold text-center w-full" title="Select a category or stock level to automatically filter">
+                    <i class="fas fa-bolt text-amber-500"></i> Auto
+                </div>
+                @endif
             </div>
         </form>
     </div>
