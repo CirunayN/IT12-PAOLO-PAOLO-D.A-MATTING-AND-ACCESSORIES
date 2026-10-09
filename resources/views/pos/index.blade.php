@@ -101,18 +101,17 @@
                 </div>
             </div>
 
-            <!-- Compact Product Table: Optimized row heights so more products fit on screen -->
-            <div class="overflow-x-auto flex-1 min-h-[460px]" id="productGridWrap">
-                <table class="w-full min-w-[680px] border-collapse text-left">
+            <!-- Compact Product Table: Fits screen with no horizontal scrollbar -->
+            <div class="flex-1 min-h-[460px]" id="productGridWrap">
+                <table class="w-full border-collapse text-left">
                     <thead class="sticky top-0 z-10 bg-slate-100/95 dark:bg-dark-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
                         <tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                            <th class="w-[52px] px-2.5 py-2 font-black">Image</th>
+                            <th class="w-12 px-2.5 py-2 font-black">Image</th>
                             <th class="px-2.5 py-2 font-black">Product</th>
-                            <th class="w-[120px] px-2.5 py-2 font-black">Category</th>
-                            <th class="w-[85px] px-2.5 py-2 font-black text-center">Stock</th>
-                            <th class="w-[100px] px-2.5 py-2 font-black text-right">Price</th>
-                            <th class="w-[56px] px-2.5 py-2 font-black text-center">Info</th>
-                            <th class="w-[75px] px-2.5 py-2 font-black text-center">Action</th>
+                            <th class="w-20 px-2.5 py-2 font-black text-center">Stock</th>
+                            <th class="w-24 px-2.5 py-2 font-black text-right">Price</th>
+                            <th class="w-12 px-2.5 py-2 font-black text-center">Info</th>
+                            <th class="w-16 px-2.5 py-2 font-black text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody id="productGrid" class="divide-y divide-slate-100 dark:divide-slate-800/80">
@@ -153,7 +152,7 @@
                             data-batch-count="{{ $sellableBatches->count() }}"
                             data-oldest-batch="{{ $oldestBatch?->created_at?->format('M d, Y') ?? 'N/A' }}">
 
-                            <td class="px-2.5 py-1.5">
+                            <td class="w-12 px-2.5 py-1.5">
                                 <div class="relative w-9 h-9 rounded-lg overflow-hidden bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center flex-shrink-0">
                                     @if($p->image_url)
                                     <img src="{{ $p->image_url }}" alt="{{ $p->Name }}" class="w-full h-full object-cover">
@@ -175,7 +174,7 @@
                             </td>
 
                             <td class="px-2.5 py-1.5 min-w-0">
-                                <div class="font-bold text-xs text-slate-900 dark:text-white leading-tight truncate max-w-[280px]" title="{{ $p->Name }}">
+                                <div class="font-bold text-xs text-slate-900 dark:text-white leading-tight truncate" title="{{ $p->Name }}">
                                     {{ $p->Name }}
                                 </div>
                                 @if($p->Description)
@@ -185,13 +184,7 @@
                                 @endif
                             </td>
 
-                            <td class="px-2.5 py-1.5">
-                                <span class="inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 truncate max-w-[110px]">
-                                    {{ $p->category->Name ?? 'General' }}
-                                </span>
-                            </td>
-
-                            <td class="px-2.5 py-1.5 text-center whitespace-nowrap">
+                            <td class="w-20 px-2.5 py-1.5 text-center whitespace-nowrap">
                                 @if($qty <= 0)
                                 <span class="inline-flex px-1.5 py-0.5 rounded text-[9px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25">
                                     Out
@@ -207,20 +200,20 @@
                                 @endif
                             </td>
 
-                            <td class="px-2.5 py-1.5 text-right font-display font-black text-xs sm:text-sm text-slate-900 dark:text-white whitespace-nowrap">
+                            <td class="w-24 px-2.5 py-1.5 text-right font-display font-black text-xs sm:text-sm text-slate-900 dark:text-white whitespace-nowrap">
                                 ₱{{ number_format($price, 2) }}
                             </td>
 
-                            <td class="px-2.5 py-1.5 text-center">
+                            <td class="w-12 px-2.5 py-1.5 text-center">
                                 <button type="button"
                                     onclick="openProductInfo(this.closest('.product-item'), event)"
                                     class="w-6 h-6 rounded-md bg-slate-200/80 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 transition-all cursor-pointer inline-flex items-center justify-center"
-                                    title="Product details">
+                                    title="Product details &amp; category">
                                     <i class="fas fa-circle-info text-[10px]"></i>
                                 </button>
                             </td>
 
-                            <td class="px-2.5 py-1.5 text-center">
+                            <td class="w-16 px-2.5 py-1.5 text-center">
                                 <button type="button"
                                     {{ $qty <= 0 ? 'disabled' : '' }}
                                     onclick="addProductRowToCart(this)"
@@ -240,19 +233,19 @@
                 </div>
             </div>
 
-            <!-- Pagination Bar: Numbering + Prev/Next + Range Indicator -->
-            <div id="posPaginationBar" class="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-900/70 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
-                <div id="posPaginationCount" class="text-slate-500 dark:text-slate-400 font-semibold text-[11px]">
+            <!-- Pagination Bar: Centered Controls (Prev 1 2 Next) -->
+            <div id="posPaginationBar" class="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-900/70 flex flex-col sm:flex-row items-center justify-center relative gap-2 text-xs">
+                <div id="posPaginationCount" class="sm:absolute sm:left-4 text-slate-500 dark:text-slate-400 font-semibold text-[11px]">
                     Showing 1 to 10 of {{ count($products) }} items
                 </div>
-                <div class="flex items-center gap-1.5" id="posPaginationControls">
+                <div class="flex items-center justify-center gap-1.5 mx-auto" id="posPaginationControls">
                     <!-- Injected dynamically by JavaScript -->
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT COLUMN: Permanently Docked Customer Cart (Static on desktop, always visible) -->
-        <div id="posCartSidebar" class="w-full lg:w-[400px] xl:w-[430px] flex-shrink-0 lg:sticky lg:top-24">
+        <!-- RIGHT COLUMN: Permanently Docked Customer Cart (Slimmer width so catalog is fully visible) -->
+        <div id="posCartSidebar" class="w-full lg:w-[320px] xl:w-[340px] flex-shrink-0 lg:sticky lg:top-24">
             <div class="glass-card rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-dark-850/95 backdrop-blur-xl shadow-xl overflow-hidden flex flex-col">
                 <!-- Cart Header -->
                 <div class="flex items-center justify-between gap-3 px-4 py-3 bg-slate-100 dark:bg-dark-900 border-b border-slate-200 dark:border-slate-800">
@@ -350,7 +343,12 @@
     <div class="glass-card max-w-lg w-full rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-2xl space-y-5">
         <div class="flex items-start justify-between gap-4">
             <div>
-                <div id="productInfoCategory" class="text-xs font-bold text-red-500 mb-1">General</div>
+                <div class="mb-1.5 flex items-center gap-2">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-red-500/10 text-red-500 font-bold text-xs border border-red-500/20">
+                        <i class="fas fa-layer-group text-[10px]"></i>
+                        <span id="productInfoCategory">General</span>
+                    </span>
+                </div>
                 <h3 id="productInfoName" class="text-xl font-black text-slate-900 dark:text-white">Product</h3>
             </div>
             <button type="button" onclick="closeProductInfo()"
