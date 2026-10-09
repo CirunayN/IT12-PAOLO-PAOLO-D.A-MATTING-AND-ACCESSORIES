@@ -10,6 +10,11 @@
 
     @include('shared.offline-assets')
 
+    <script>
+        try {
+            document.documentElement.classList.toggle('sidebar-collapsed', localStorage.getItem('paolo_sidebar_collapsed') === 'true');
+        } catch (_) {}
+    </script>
 
     <style>
         html.dark { color-scheme: dark; }
@@ -39,92 +44,97 @@
 <div id="navDrawerBackdrop" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm hidden lg:hidden transition-opacity duration-300"></div>
 
 <!-- Sidebar Navigation (Static on desktop >= lg, sliding drawer on mobile < lg) -->
-<aside id="navDrawer" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-[#0d121c] border-r border-slate-200 dark:border-slate-800/80 shadow-2xl lg:shadow-none -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
-    <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-dark-850/50">
-        <a href="{{ auth()->user() && auth()->user()->isAdmin() ? route('dashboard') : route('pos.index') }}" class="flex items-center gap-3 group">
-            <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo" class="w-12 h-12 object-contain drop-shadow">
-            <div>
-                <h3 class="font-jdm text-slate-900 dark:text-white text-base group-hover:text-red-500 transition-colors">PAOLO PAOLO</h3>
-                <p class="text-[11px] font-bold text-red-500 uppercase tracking-wider">D.A Matting &amp; Accessories</p>
+<aside id="navDrawer" class="fixed inset-y-0 left-0 z-50 bg-white dark:bg-[#0d121c] border-r border-slate-200 dark:border-slate-800/80 shadow-2xl lg:shadow-none -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
+    <div class="sidebar-brand-header px-3 py-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2 bg-slate-50/50 dark:bg-dark-850/50">
+        <a href="{{ auth()->user() && auth()->user()->isAdmin() ? route('dashboard') : route('pos.index') }}" aria-label="Paolo Paolo Home" title="Home" class="sidebar-brand-link flex items-center gap-2 group min-w-0">
+            <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo" class="w-10 h-10 object-contain drop-shadow shrink-0">
+            <div class="sidebar-label min-w-0">
+                <h3 class="font-jdm text-slate-900 dark:text-white text-[13px] leading-snug group-hover:text-red-500 transition-colors">PAOLO PAOLO</h3>
+                <p class="text-[9px] leading-snug font-bold text-red-500 uppercase tracking-wider">D.A Matting &amp; Accessories</p>
             </div>
         </a>
-        <button type="button" id="closeDrawerBtn" class="lg:hidden w-9 h-9 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-800 flex items-center justify-center text-lg">
+        <button type="button" id="closeDrawerBtn" aria-label="Close navigation" class="lg:hidden shrink-0 w-7 h-7 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-800 flex items-center justify-center text-lg">
             <i class="fas fa-times"></i>
         </button>
     </div>
 
-    <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
-        <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-2 pb-1">Store Navigation</div>
+    <nav class="sidebar-navigation flex-1 p-3 space-y-1.5 overflow-y-auto" aria-label="Store navigation">
+        <div class="sidebar-section text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-2 pb-1">Store Navigation</div>
 
         @if(auth()->user() && auth()->user()->isAdmin())
-            <a href="{{ route('dashboard') }}"
-               class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+            <a href="{{ route('dashboard') }}" title="Dashboard &amp; Reports" aria-label="Dashboard &amp; Reports"
+               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
                 <i class="fas fa-chart-pie w-5 text-center text-base {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'text-red-500' : 'text-slate-400' }}"></i>
-                <span class="font-display">Dashboard &amp; Reports</span>
+                <span class="sidebar-label font-display">Dashboard &amp; Reports</span>
             </a>
         @endif
 
-        <a href="{{ route('pos.index') }}"
-           class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('pos.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+        <a href="{{ route('pos.index') }}" title="POS Terminal" aria-label="POS Terminal"
+           class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('pos.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
             <i class="fas fa-cash-register w-5 text-center text-base {{ request()->routeIs('pos.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-            <span class="font-display">POS Terminal</span>
+            <span class="sidebar-label font-display">POS Terminal</span>
         </a>
 
-        <a href="{{ route('transactions.index') }}"
-           class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('transactions.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+        <a href="{{ route('transactions.index') }}" title="Transactions" aria-label="Transactions"
+           class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('transactions.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
             <i class="fas fa-receipt w-5 text-center text-base {{ request()->routeIs('transactions.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-            <span class="font-display">Transactions</span>
+            <span class="sidebar-label font-display">Transactions</span>
         </a>
 
         @if(auth()->user() && auth()->user()->isAdmin())
-            <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-4 pb-1">Admin Controls</div>
+            <div class="sidebar-section text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-4 pb-1">Admin Controls</div>
 
-            <a href="{{ route('products.index') }}"
-               class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+            <a href="{{ route('products.index') }}" title="Inventory &amp; Restock" aria-label="Inventory &amp; Restock"
+               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
                 <i class="fas fa-boxes-stacked w-5 text-center text-base {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-                <span class="font-display">Inventory &amp; Restock</span>
+                <span class="sidebar-label font-display">Inventory &amp; Restock</span>
             </a>
 
-            <a href="{{ route('backup.index') }}"
-               class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('backup.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+            <a href="{{ route('backup.index') }}" title="Database Backup" aria-label="Database Backup"
+               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('backup.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
                 <i class="fas fa-hard-drive w-5 text-center text-base {{ request()->routeIs('backup.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-                <span class="font-display">Database Backup</span>
+                <span class="sidebar-label font-display">Database Backup</span>
             </a>
         @endif
     </nav>
 
-    <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-850/70">
-        <div class="flex items-center justify-between gap-3">
-            <div class="min-w-0">
+    <div class="sidebar-footer p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-850/70">
+        <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}" class="flex items-center justify-between gap-3">
+            @csrf
+            <div class="sidebar-user-details min-w-0">
                 <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ auth()->user()->name ?? 'User' }}</p>
                 <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}</p>
             </div>
-            <button type="button" onclick="closeDrawer(); openLogoutModal(event);"
-                    class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+            <button type="button" onclick="closeDrawer(); openLogoutModal(event);" title="Logout" aria-label="Logout"
+                    class="sidebar-logout-button px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
                 <i class="fas fa-power-off"></i>
-                <span>Logout</span>
+                <span class="sidebar-label">Logout</span>
             </button>
-        </div>
+        </form>
     </div>
 </aside>
 
 <!-- Main Page Wrapper (Offset by sidebar width on desktop >= lg) -->
-<div class="lg:pl-72 flex flex-col min-h-screen flex-1">
+<div class="app-page flex flex-col min-h-screen flex-1">
 
     <header class="h-20 bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3 sm:gap-4">
+            <button type="button" id="sidebarCollapseBtn" aria-label="Collapse sidebar" title="Collapse sidebar" aria-controls="navDrawer" aria-expanded="true"
+                    class="hidden lg:flex w-9 h-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/50">
+                <svg id="sidebarCollapseIcon" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
             <!-- Mobile Menu Toggle Button (visible only < lg) -->
-            <button type="button" id="menuToggleBtn" title="Open navigation menu"
+            <button type="button" id="menuToggleBtn" title="Open navigation menu" aria-label="Open navigation menu"
                     class="lg:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 font-bold text-xs shadow-sm transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/50">
                 <i class="fas fa-bars text-sm text-red-500"></i>
-                <span class="font-display tracking-wide">Menu</span>
+                <span class="font-display tracking-wide hidden sm:inline">Menu</span>
             </button>
 
             <!-- Brand Logo for Mobile (< lg) -->
             <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" title="Home"
                 class="lg:hidden flex items-center gap-2.5 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
                 <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-10 h-10 object-contain drop-shadow-lg flex-shrink-0">
-                <div class="text-left">
+                <div class="text-left hidden sm:block">
                     <div class="font-jdm text-slate-900 dark:text-white text-sm tracking-wider">PAOLO PAOLO</div>
                     <div class="text-[9px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5">D.A Matting</div>
                 </div>
@@ -169,13 +179,6 @@
                     </div>
                 </a>
 
-                <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="button" onclick="openLogoutModal(event)" title="Log out"
-                            class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 text-slate-600 dark:text-slate-300 hover:text-white border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base transition-colors cursor-pointer">
-                        <i class="fas fa-power-off"></i>
-                    </button>
-                </form>
             </div>
         </div>
     </header>
@@ -238,6 +241,23 @@
     const drawer = document.getElementById('navDrawer');
     const backdrop = document.getElementById('navDrawerBackdrop');
     const closeBtn = document.getElementById('closeDrawerBtn');
+    const sidebarCollapseBtn = document.getElementById('sidebarCollapseBtn');
+
+    function updateSidebarToggle() {
+        const collapsed = document.documentElement.classList.contains('sidebar-collapsed');
+        const label = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+        sidebarCollapseBtn.setAttribute('aria-expanded', String(!collapsed));
+        sidebarCollapseBtn.setAttribute('aria-label', label);
+        sidebarCollapseBtn.title = label;
+        document.getElementById('sidebarCollapseIcon').classList.toggle('rotate-180', collapsed);
+    }
+
+    updateSidebarToggle();
+    sidebarCollapseBtn.addEventListener('click', () => {
+        const collapsed = document.documentElement.classList.toggle('sidebar-collapsed');
+        try { localStorage.setItem('paolo_sidebar_collapsed', String(collapsed)); } catch (_) {}
+        updateSidebarToggle();
+    });
 
     function openDrawer() {
         drawer.classList.remove('-translate-x-full');

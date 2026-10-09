@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
 use App\Models\Sale;
 use Illuminate\Http\Request;
@@ -53,11 +52,10 @@ class DashboardController extends Controller
         }
         $stockAlerts = $products->filter(fn ($product) => $product->dashboard_stock <= 5)
             ->sortBy('dashboard_stock')->values();
-        $categories = Category::withCount('products')->get();
         return view('dashboard', compact(
             'startDate', 'endDate', 'periodLabel', 'todaySalesTotal', 'todaySalesCount',
             'totalSalesAllTime', 'totalTransactions', 'totalProductsCount', 'lowStockCount',
-            'outOfStockCount', 'totalStockUnits', 'inventoryValue', 'recentSales', 'stockAlerts', 'categories'
+            'outOfStockCount', 'totalStockUnits', 'inventoryValue', 'recentSales', 'stockAlerts'
         ));
     }
 }

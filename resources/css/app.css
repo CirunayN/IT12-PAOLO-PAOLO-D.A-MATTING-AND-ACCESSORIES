@@ -86,6 +86,50 @@ body.scenic-auth .auth-card {
 
 body.scenic-app #navDrawer {
     isolation: isolate;
+    width: 14rem;
+    transition-property: width, transform;
+}
+
+#navDrawer .sidebar-nav-link > i {
+    flex-shrink: 0;
+}
+
+.app-page {
+    min-width: 0;
+}
+
+@media (min-width: 1024px) {
+    html { --sidebar-width: 14rem; }
+    html.sidebar-collapsed { --sidebar-width: 4.5rem; }
+    body.scenic-app #navDrawer { width: var(--sidebar-width); }
+    .app-page {
+        padding-left: var(--sidebar-width);
+        transition: padding-left .3s ease-in-out;
+    }
+    html.sidebar-collapsed #navDrawer .sidebar-label,
+    html.sidebar-collapsed #navDrawer .sidebar-section,
+    html.sidebar-collapsed #navDrawer .sidebar-user-details {
+        display: none;
+    }
+    html.sidebar-collapsed #navDrawer .sidebar-brand-header,
+    html.sidebar-collapsed #navDrawer .sidebar-brand-link {
+        justify-content: center;
+    }
+    html.sidebar-collapsed #navDrawer .sidebar-navigation,
+    html.sidebar-collapsed #navDrawer .sidebar-footer {
+        padding: .5rem;
+    }
+    html.sidebar-collapsed #navDrawer .sidebar-nav-link,
+    html.sidebar-collapsed #navDrawer .sidebar-logout-button {
+        justify-content: center;
+        gap: 0;
+    }
+    html.sidebar-collapsed #navDrawer .sidebar-logout-button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.scenic-app #navDrawer,
+    .app-page { transition: none; }
 }
 
 body.scenic-app #navDrawer::before {

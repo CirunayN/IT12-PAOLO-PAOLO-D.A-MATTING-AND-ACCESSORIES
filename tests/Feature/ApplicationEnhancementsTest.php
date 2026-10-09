@@ -250,7 +250,7 @@ class ApplicationEnhancementsTest extends TestCase
     public function test_topbar_actions_are_hidden_on_their_own_pages(): void
     {
         $this->actingAs($this->admin)->get(route('dashboard'))->assertOk()->assertSee('topbarPosLink')->assertSee('topbarRestockLink');
-        $this->get(route('pos.index'))->assertOk()->assertDontSee('topbarPosLink')->assertSee('posLayoutRatio')->assertSee('posWorkspace');
+        $this->get(route('pos.index'))->assertOk()->assertDontSee('topbarPosLink')->assertDontSee('posLayoutRatio')->assertSee('posWorkspace');
         foreach (['products.index', 'stock-in.index', 'stock-in.create'] as $route) {
             $this->get(route($route))->assertOk()->assertDontSee('topbarRestockLink');
         }

@@ -34,11 +34,6 @@
     </div>
 
     <!-- 2-Column POS Workspace: Catalog on Left, Permanently Docked Cart on Right -->
-    <div class="hidden lg:flex items-center gap-3 text-xs font-semibold text-slate-500">
-        <label for="posLayoutRatio">Layout</label>
-        <input id="posLayoutRatio" type="range" min="55" max="80" step="5" value="70" class="w-36 accent-red-600">
-        <output id="posLayoutLabel" for="posLayoutRatio">Products 70% / Cart 30%</output>
-    </div>
     <div id="posWorkspace">
 
         <!-- LEFT COLUMN: Product Catalog, Searchable Category & Pagination -->
@@ -527,21 +522,6 @@ function getSelectedPaymentName() {
 
 function isGcashSelected() {
     return getSelectedPaymentName() === 'gcash';
-}
-
-function initializePosLayout() {
-    const slider = document.getElementById('posLayoutRatio');
-    const apply = ratio => {
-        ratio = Math.min(80, Math.max(55, Number(ratio) || 70));
-        slider.value = ratio;
-        document.getElementById('posWorkspace').style.setProperty('--pos-columns', 'minmax(0, ' + ratio + 'fr) minmax(300px, ' + (100-ratio) + 'fr)');
-        document.getElementById('posLayoutLabel').textContent = 'Products ' + ratio + '% / Cart ' + (100-ratio) + '%';
-        try { localStorage.setItem('posProductRatio', ratio); } catch (_) {}
-    };
-    let saved = 70;
-    try { saved = localStorage.getItem('posProductRatio') || 70; } catch (_) {}
-    apply(saved);
-    slider.addEventListener('input', () => apply(slider.value));
 }
 
 function scrollToMobileCart() {
@@ -1226,7 +1206,6 @@ document.addEventListener('DOMContentLoaded', function () {
             applyProductFilters();
         });
     }
-    initializePosLayout();
     handlePaymentMethodChange();
     renderCart();
     applyProductFilters();
@@ -1249,7 +1228,7 @@ document.addEventListener('keydown', function (event) {
 #productGridWrap { overflow-x:auto; }
 #productGridWrap table { min-width:520px; }
 @media (min-width:1024px) {
-    #posWorkspace { grid-template-columns:var(--pos-columns,minmax(0,7fr) minmax(300px,3fr)); }
+    #posWorkspace { grid-template-columns:minmax(0,7fr) minmax(0,3fr); }
     #posCartSidebar { position:sticky; top:90px; }
 }
 </style>

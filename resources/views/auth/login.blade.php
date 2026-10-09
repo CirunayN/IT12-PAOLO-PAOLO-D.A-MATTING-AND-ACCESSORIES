@@ -63,9 +63,9 @@
                 <div class="relative">
                     <i class="fas fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                     <input type="text" name="username" required autofocus
-                        value="{{ old('username', 'admin') }}"
+                        value="{{ old('username') }}"
                         class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
-                        placeholder="admin or cashier">
+                        placeholder="Username">
                 </div>
             </div>
 
@@ -76,7 +76,7 @@
                     <i class="fas fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
                     <input type="password" name="password" required
                         class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/80 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-colors"
-                        placeholder="••••••••">
+                        placeholder="Password">
                 </div>
             </div>
 

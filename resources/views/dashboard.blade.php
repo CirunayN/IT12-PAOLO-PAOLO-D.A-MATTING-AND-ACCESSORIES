@@ -197,20 +197,5 @@
         @include('dashboard.stock-alerts')
     </div>
 
-    <!-- Category Overview Cards -->
-    <div class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm">
-        <div class="flex items-center justify-between mb-4 pb-2 border-b border-slate-200 dark:border-slate-800">
-            <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fas fa-tags text-purple-500"></i>
-                Product Categories
-            </h3>
-            <button type="button" onclick="openCategoryManager()" class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:text-red-500 transition-colors">View / Manage Categories &rarr;</button>
-        </div>
-        <div class="flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
-            <span><strong data-category-counter="active">{{ $categories->where('Is_Archived', false)->count() }}</strong> Active Categories</span>
-            <span><strong data-category-counter="archived">{{ $categories->where('Is_Archived', true)->count() }}</strong> Archived Categories</span>
-        </div>
-    </div>
-
 </div>
 @endsection
