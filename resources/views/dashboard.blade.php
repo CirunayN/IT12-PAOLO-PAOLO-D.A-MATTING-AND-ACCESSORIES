@@ -96,9 +96,12 @@
                     {{ number_format($totalStockUnits, 0) }} <span class="text-sm font-normal text-slate-400">Units</span>
                 </div>
             </div>
-            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between">
-                <span class="truncate flex items-center gap-1.5"><i class="fas fa-tag text-red-500"></i>₱{{ number_format($inventoryValue, 2) }}</span>
-                <span class="text-red-500 font-bold flex items-center gap-1 text-[11px] group-hover:translate-x-0.5 transition-transform">Manage &rarr;</span>
+            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between gap-2 min-w-0">
+                <span class="truncate min-w-0 flex-1 flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-semibold text-[11px]" title="Inventory Value: ₱{{ number_format($inventoryValue, 2) }}">
+                    <i class="fas fa-tag text-red-500 flex-shrink-0 text-[10px]"></i>
+                    <span class="truncate">₱{{ number_format($inventoryValue, 2) }}</span>
+                </span>
+                <span class="text-red-500 font-bold flex items-center gap-1 text-[11px] whitespace-nowrap shrink-0 group-hover:translate-x-0.5 transition-transform">Manage &rarr;</span>
             </div>
         </a>
 
@@ -117,17 +120,17 @@
                     </div>
                 </a>
             </div>
-            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs flex items-center gap-2 flex-wrap">
+            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs flex items-center gap-1.5 w-full">
                 <a href="{{ route('products.index', ['stock_level' => 'low']) }}"
-                   class="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-500 font-bold flex items-center gap-1.5 transition-all hover:scale-105 border border-amber-500/25"
+                   class="flex-1 min-w-0 py-1 px-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-500 font-bold flex items-center justify-center gap-1 transition-all hover:scale-[1.02] border border-amber-500/25 text-[11px] whitespace-nowrap"
                    title="Click to view Low Stock items in Inventory">
-                    <i class="fas fa-triangle-exclamation text-[10px]"></i>
+                    <i class="fas fa-triangle-exclamation text-[10px] shrink-0"></i>
                     <span>{{ $lowStockCount }} Low</span>
                 </a>
                 <a href="{{ route('products.index', ['stock_level' => 'out']) }}"
-                   class="px-2.5 py-1 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 font-bold flex items-center gap-1.5 transition-all hover:scale-105 border border-rose-500/25"
+                   class="flex-1 min-w-0 py-1 px-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-500 font-bold flex items-center justify-center gap-1 transition-all hover:scale-[1.02] border border-rose-500/25 text-[11px] whitespace-nowrap"
                    title="Click to view Out of Stock items in Inventory">
-                    <i class="fas fa-circle-xmark text-[10px]"></i>
+                    <i class="fas fa-circle-xmark text-[10px] shrink-0"></i>
                     <span>{{ $outOfStockCount }} Empty</span>
                 </a>
             </div>
