@@ -96,6 +96,10 @@ class PosController extends Controller
                 'string',
                 'max:100',
             ],
+            'user_id' => [
+                'nullable',
+                'exists:users,id',
+            ],
         ]);
 
         $paymentMethod = PaymentMethod::findOrFail(
@@ -231,7 +235,13 @@ class PosController extends Controller
                 : round($amountTendered - $total, 2);
 
             $cashier = auth()->user();
-            $cashierId = auth()->id();
+            if (!empty($validated['user_id'])) {
+                $overrideUser = \App\Models\User::find($validated['user_id']);
+                if ($overrideUser) {
+                    $cashier = $overrideUser;
+                }
+            }
+            $cashierId = $cashier?->id ?? auth()->id();
 
             if (!$cashier || !$cashierId) {
                 return response()->json([
