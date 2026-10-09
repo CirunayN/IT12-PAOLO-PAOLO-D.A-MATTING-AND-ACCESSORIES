@@ -112,6 +112,9 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('/backup/settings', [BackupController::class, 'updateSettings'])
             ->name('backup.settings');
 
+        Route::get('/backup/folders', [BackupController::class, 'browseFolders'])
+            ->name('backup.folders');
+
         Route::get('/backup/download/{filename}', [BackupController::class, 'downloadBackup'])
             ->name('backup.download');
 

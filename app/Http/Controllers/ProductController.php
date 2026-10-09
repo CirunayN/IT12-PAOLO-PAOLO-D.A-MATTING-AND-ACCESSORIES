@@ -44,35 +44,29 @@ class ProductController extends Controller
         // Filter by SELLABLE stock only: remaining > 0, Good condition,
         // and either non-expiring or not yet expired.
         if ($request->filled('stock_level')) {
-            $sellableStockSql = '(
-                SELECT COALESCE(SUM(si.Remaining_Quantity), 0)
-                FROM tbl_stock_in si
-                WHERE si.Product_ID = tbl_product.ID
-                  AND si.Remaining_Quantity > 0
-                  AND si.Condition = ?
-                  AND (
-                      si.Has_Expiration = 0
-                      OR si.Expiration_Date IS NULL
-                      OR DATE(si.Expiration_Date) >= ?
-                  )
-            )';
-
-            $stockBindings = ['Good', today()->toDateString()];
+            $sellableStock = fn () => StockIn::query()
+                ->selectRaw('COALESCE(SUM(Remaining_Quantity), 0)')
+                ->whereColumn('Product_ID', 'tbl_product.ID')
+                ->where('Remaining_Quantity', '>', 0)
+                ->where('Condition', 'Good')
+                ->where(function ($stockQuery) {
+                    $stockQuery->where('Has_Expiration', false)
+                        ->orWhereNull('Expiration_Date')
+                        ->orWhereDate('Expiration_Date', '>=', today()->toDateString());
+                });
 
             switch ($request->stock_level) {
                 case 'out':
-                    $query->whereRaw($sellableStockSql . ' <= 0', $stockBindings);
+                    $query->where($sellableStock(), '<=', 0);
                     break;
 
                 case 'low':
-                    $query->whereRaw(
-                        $sellableStockSql . ' > 0 AND ' . $sellableStockSql . ' <= 5',
-                        array_merge($stockBindings, $stockBindings)
-                    );
+                    $query->where($sellableStock(), '>', 0)
+                        ->where($sellableStock(), '<=', 5);
                     break;
 
                 case 'available':
-                    $query->whereRaw($sellableStockSql . ' > 5', $stockBindings);
+                    $query->where($sellableStock(), '>', 5);
                     break;
             }
         }

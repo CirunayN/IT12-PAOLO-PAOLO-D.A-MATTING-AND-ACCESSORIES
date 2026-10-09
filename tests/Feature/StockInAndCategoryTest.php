@@ -58,11 +58,12 @@ class StockInAndCategoryTest extends TestCase
         $response->assertJsonValidationErrors(['Name']);
     }
 
-    public function test_stock_in_records_selected_processed_by_user(): void
+    public function test_stock_in_records_signed_in_user_even_when_another_processor_is_submitted(): void
     {
         $admin = User::factory()->create([
             'username' => 'admin',
             'role' => 'Admin',
+            'is_active' => true,
         ]);
 
         $installer = User::factory()->create([
@@ -81,6 +82,7 @@ class StockInAndCategoryTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin)->post(route('stock-in.store'), [
+            'product_mode' => 'existing',
             'Product_ID' => $product->ID,
             'User_ID' => $installer->id,
             'Quantity' => 40,
@@ -93,15 +95,14 @@ class StockInAndCategoryTest extends TestCase
 
         $this->assertDatabaseHas('tbl_stock_in', [
             'Product_ID' => $product->ID,
-            'User_ID' => $installer->id,
+            'User_ID' => $admin->id,
             'Quantity' => 40,
             'Cost_Price' => 150.00,
             'Retail_Price' => 250.00,
         ]);
 
         $stockIn = StockIn::latest('ID')->first();
-        $this->assertEquals($installer->id, $stockIn->user->id);
-        $this->assertEquals('Pedro Installer', $stockIn->user->name);
+        $this->assertEquals($admin->id, $stockIn->user->id);
     }
 
     public function test_pos_checkout_records_selected_cashier_user(): void

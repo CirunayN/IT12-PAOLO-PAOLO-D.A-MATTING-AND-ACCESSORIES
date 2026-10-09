@@ -14,12 +14,6 @@
         </div>
 
         <div class="flex items-center gap-3">
-            <a href="{{ route('products.create') }}"
-                class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
-                <i class="fas fa-plus"></i>
-                <span>Add Product</span>
-            </a>
-
             <a href="{{ route('stock-in.create') }}"
                 class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all">
                 <i class="fas fa-truck-ramp-box"></i>

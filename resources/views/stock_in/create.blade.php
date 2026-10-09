@@ -34,6 +34,7 @@
 
     <form method="POST"
         action="{{ route('stock-in.store') }}"
+        enctype="multipart/form-data"
         class="glass-card rounded-2xl p-6 sm:p-8 border shadow-lg space-y-6">
         @csrf
 
@@ -270,6 +271,25 @@
                         @endforeach
                     </select>
                 </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="newProductImages" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                            <i class="fas fa-images text-red-500 mr-1.5"></i>
+                            Product Photos
+                        </label>
+                        <span class="text-xs font-bold text-slate-400"><span id="newProductImageCount">0</span> / 5</span>
+                    </div>
+                    <input type="file" name="images[]" id="newProductImages" multiple disabled
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        aria-describedby="newProductImagesHelp newProductImagesError"
+                        class="block w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-dark-800 text-sm text-slate-600 dark:text-slate-300 file:mr-4 file:border-0 file:bg-red-600 file:px-4 file:py-3 file:text-xs file:font-bold file:text-white hover:file:bg-red-500">
+                    <p id="newProductImagesHelp" class="text-[11px] text-slate-400">
+                        Add up to 5 photos (JPG, PNG, WebP or GIF), 5 MB each. The first photo is the main product image.
+                    </p>
+                    <p id="newProductImagesError" role="alert" class="hidden text-xs text-rose-500"></p>
+                    <div id="newProductImagePreviews" class="hidden grid grid-cols-2 sm:grid-cols-5 gap-3"></div>
+                </div>
             </div>
         </div>
 
@@ -405,15 +425,10 @@
                 <span class="text-xs text-slate-400">Audit trail</span>
             </div>
 
-            <select name="User_ID" id="processedBySelect"
-                class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-dark-850 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500">
-                @foreach($users as $user)
-                <option value="{{ $user->id }}"
-                    {{ old('User_ID', auth()->id()) == $user->id ? 'selected' : '' }}>
-                    {{ $user->name }} ({{ $user->role ?? 'Staff' }}) &mdash; {{ $user->username }}
-                </option>
-                @endforeach
-            </select>
+            <div class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-dark-850 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
+                {{ auth()->user()->name }} ({{ auth()->user()->role ?? 'Staff' }}) &mdash; {{ auth()->user()->username }}
+            </div>
+            <p class="text-[11px] text-slate-400">Automatically recorded as the signed-in user.</p>
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
@@ -444,6 +459,70 @@ const dropdownContainer = document.getElementById('productDropdownContainer');
 const newProductPanel = document.getElementById('newProductPanel');
 const existingModeBtn = document.getElementById('existingProductModeBtn');
 const newModeBtn = document.getElementById('newProductModeBtn');
+const productImagesInput = document.getElementById('newProductImages');
+const productImagePreviews = document.getElementById('newProductImagePreviews');
+const productImagesError = document.getElementById('newProductImagesError');
+let productImages = [];
+let productImageUrls = [];
+
+function renderProductImagePreviews() {
+    productImageUrls.forEach(url => URL.revokeObjectURL(url));
+    productImageUrls = [];
+    productImagePreviews.replaceChildren();
+
+    const transfer = new DataTransfer();
+    productImages.forEach(file => transfer.items.add(file));
+    productImagesInput.files = transfer.files;
+    document.getElementById('newProductImageCount').textContent = productImages.length;
+    productImagePreviews.classList.toggle('hidden', productImages.length === 0);
+
+    productImages.forEach((file, index) => {
+        const card = document.createElement('div');
+        card.className = 'relative rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-dark-800 p-2';
+
+        const photo = document.createElement('img');
+        const url = URL.createObjectURL(file);
+        productImageUrls.push(url);
+        photo.src = url;
+        photo.alt = file.name;
+        photo.className = 'w-full aspect-square object-cover rounded-lg';
+
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'absolute top-1 right-1 w-6 h-6 rounded-full bg-rose-600 text-white font-bold';
+        remove.textContent = '\u00d7';
+        remove.setAttribute('aria-label', 'Remove ' + file.name);
+        remove.addEventListener('click', () => {
+            productImages.splice(index, 1);
+            productImagesError.classList.add('hidden');
+            renderProductImagePreviews();
+        });
+
+        const filename = document.createElement('p');
+        filename.className = 'text-[10px] truncate text-slate-400 mt-1';
+        filename.textContent = file.name;
+        card.append(photo, remove, filename);
+        productImagePreviews.appendChild(card);
+    });
+}
+
+productImagesInput.addEventListener('change', () => {
+    const errors = new Set();
+    for (const file of productImagesInput.files) {
+        if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
+            errors.add('Choose JPG, PNG, WebP or GIF images.');
+        } else if (file.size > 5 * 1024 * 1024) {
+            errors.add('Each photo must be 5 MB or smaller.');
+        } else if (productImages.length >= 5) {
+            errors.add('You can upload up to 5 photos.');
+        } else {
+            productImages.push(file);
+        }
+    }
+    productImagesError.textContent = [...errors].join(' ');
+    productImagesError.classList.toggle('hidden', errors.size === 0);
+    renderProductImagePreviews();
+});
 
 const qtyInput = document.getElementById('qtyInput');
 const costInput = document.getElementById('costPriceInput');
@@ -454,6 +533,7 @@ const totalRevenueDisplay = document.getElementById('totalRevenueDisplay');
 const marginBadge = document.getElementById('marginBadge');
 
 function styleModeButtons(mode) {
+    productImagesInput.disabled = mode !== 'new';
     const activeClasses = ['bg-red-600', 'text-white', 'shadow-sm'];
     const inactiveClasses = ['text-slate-600', 'dark:text-slate-300'];
 

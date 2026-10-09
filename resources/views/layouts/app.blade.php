@@ -81,10 +81,10 @@
     </div>
 
     <div class="flex items-center gap-2.5 sm:gap-3.5">
-        <a href="{{ route('pos.index') }}"
+        <a href="{{ route('pos.index') }}" title="POS Terminal" aria-label="POS Terminal"
            class="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-600/25 transition-all transform hover:-translate-y-0.5">
             <i class="fas fa-cash-register text-base"></i>
-            <span class="font-display">POS Terminal</span>
+            <span class="font-display hidden sm:inline">POS Terminal</span>
         </a>
 
         <button type="button" id="themeToggleBtn" title="Toggle Light / Dark Mode"
@@ -93,12 +93,16 @@
         </button>
 
         <div class="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-300 dark:border-slate-800">
-            <div class="hidden md:block text-right">
-                <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
-                <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ auth()->user() && auth()->user()->isAdmin() ? 'text-amber-500' : 'text-red-500' }}">
-                    {{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}
-                </span>
-            </div>
+            <a href="{{ route('settings.account') }}" id="accountSettingsLink" title="Open Settings" aria-label="Open Settings"
+               class="flex items-center justify-center rounded-xl px-2 py-2 text-right transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/50 {{ request()->routeIs('settings.*') || request()->routeIs('security.*') ? 'bg-red-500/10' : 'hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-user-gear text-lg text-slate-500 dark:text-slate-300 md:hidden" aria-hidden="true"></i>
+                <div class="hidden md:block">
+                    <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
+                    <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ auth()->user() && auth()->user()->isAdmin() ? 'text-amber-500' : 'text-red-500' }}">
+                        {{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}
+                    </span>
+                </div>
+            </a>
 
             <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -150,13 +154,6 @@
             <span class="font-display">My Transactions</span>
         </a>
 
-        <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-4 pb-1">Settings</div>
-
-        <a href="{{ route('settings.account') }}"
-           class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ (request()->routeIs('settings.*') || request()->routeIs('security.*')) ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-            <i class="fas fa-gear w-6 text-center text-lg {{ (request()->routeIs('settings.*') || request()->routeIs('security.*')) ? 'text-red-500' : 'text-slate-400' }}"></i>
-            <span class="font-display">Settings</span>
-        </a>
         @if(auth()->user() && auth()->user()->isAdmin())
             <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-4 pb-1">Admin Controls</div>
 
