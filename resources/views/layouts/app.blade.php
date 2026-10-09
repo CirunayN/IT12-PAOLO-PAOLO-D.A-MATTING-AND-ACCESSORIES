@@ -62,161 +62,168 @@
 
 <body class="min-h-screen antialiased flex flex-col bg-slate-100 text-slate-800 dark:bg-[#080b11] dark:text-slate-100 text-base selection:bg-red-600 selection:text-white">
 
-<header class="h-20 bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-40 px-4 sm:px-8 flex items-center justify-between shadow-sm">
-    <div class="flex items-center gap-3 sm:gap-4">
-        <button type="button" id="menuToggleBtn" title="Open navigation menu"
-                class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 font-bold text-sm shadow-sm transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/50">
-            <i class="fas fa-bars text-base text-red-500"></i>
-            <span class="font-display tracking-wide hidden xs:inline">Menu</span>
-        </button>
+<!-- Mobile Navigation Drawer Backdrop -->
+<div id="navDrawerBackdrop" class="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm hidden lg:hidden transition-opacity duration-300"></div>
 
-            <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" title="Home"
-                class="flex items-center gap-3 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
-                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
-                
-                <div class="text-left hidden sm:block">
-                    <div class="font-jdm text-slate-900 dark:text-white text-base sm:text-lg tracking-wider group-hover:text-red-500 transition-colors">
-                        PAOLO PAOLA
-                    </div>
-                    <div class="text-[11px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5 flex items-center gap-1.5">
-                        <span>D.A Matting &amp; Accessories</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-    <div class="flex items-center gap-2.5 sm:gap-3.5">
-        <a href="{{ route('pos.index') }}" title="POS Terminal" aria-label="POS Terminal"
-           class="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-600/25 transition-all transform hover:-translate-y-0.5">
-            <i class="fas fa-cash-register text-base"></i>
-            <span class="font-display hidden sm:inline">POS Terminal</span>
-        </a>
-
-        <button type="button" id="themeToggleBtn" title="Toggle Light / Dark Mode"
-                class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base sm:text-lg transition-colors cursor-pointer">
-            <i id="themeIcon" class="fas fa-sun"></i>
-        </button>
-
-        <div class="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-300 dark:border-slate-800">
-            <a href="{{ route('settings.account') }}" id="accountSettingsLink" title="Open Settings" aria-label="Open Settings"
-               class="flex items-center justify-center rounded-xl px-2 py-2 text-right transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/50 {{ request()->routeIs('settings.*') || request()->routeIs('security.*') ? 'bg-red-500/10' : 'hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-user-gear text-lg text-slate-500 dark:text-slate-300 md:hidden" aria-hidden="true"></i>
-                <div class="hidden md:block">
-                    <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
-                    <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ auth()->user() && auth()->user()->isAdmin() ? 'text-amber-500' : 'text-red-500' }}">
-                        {{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}
-                    </span>
-                </div>
-            </a>
-
-            <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="button" onclick="openLogoutModal(event)" title="Log out"
-                        class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 text-slate-600 dark:text-slate-300 hover:text-white border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base transition-colors cursor-pointer">
-                    <i class="fas fa-power-off"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-</header>
-
-<div id="navDrawerBackdrop" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden transition-opacity duration-300"></div>
-
-<aside id="navDrawer" class="fixed inset-y-0 left-0 z-50 w-80 sm:w-96 bg-white dark:bg-[#0d121c] border-r border-slate-200 dark:border-slate-800/80 shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+<!-- Sidebar Navigation (Static on desktop >= lg, sliding drawer on mobile < lg) -->
+<aside id="navDrawer" class="fixed inset-y-0 left-0 z-50 w-72 bg-white dark:bg-[#0d121c] border-r border-slate-200 dark:border-slate-800/80 shadow-2xl lg:shadow-none -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out flex flex-col">
     <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-dark-850/50">
         <a href="{{ auth()->user() && auth()->user()->isAdmin() ? route('dashboard') : route('pos.index') }}" class="flex items-center gap-3 group">
             <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo" class="w-12 h-12 object-contain drop-shadow">
             <div>
                 <h3 class="font-jdm text-slate-900 dark:text-white text-base group-hover:text-red-500 transition-colors">PAOLO PAOLO</h3>
-                <p class="text-[11px] font-bold text-red-500 uppercase">D.A Matting &amp; Accessories</p>
+                <p class="text-[11px] font-bold text-red-500 uppercase tracking-wider">D.A Matting &amp; Accessories</p>
             </div>
         </a>
-        <button type="button" id="closeDrawerBtn" class="w-9 h-9 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-800 flex items-center justify-center text-lg">
+        <button type="button" id="closeDrawerBtn" class="lg:hidden w-9 h-9 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-dark-800 flex items-center justify-center text-lg">
             <i class="fas fa-times"></i>
         </button>
     </div>
 
-    <nav class="flex-1 p-5 space-y-2 overflow-y-auto">
+    <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
         <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-2 pb-1">Store Navigation</div>
 
         @if(auth()->user() && auth()->user()->isAdmin())
             <a href="{{ route('dashboard') }}"
-               class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-chart-pie w-6 text-center text-lg {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'text-red-500' : 'text-slate-400' }}"></i>
+               class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-chart-pie w-5 text-center text-base {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'text-red-500' : 'text-slate-400' }}"></i>
                 <span class="font-display">Dashboard &amp; Reports</span>
             </a>
         @endif
 
         <a href="{{ route('pos.index') }}"
-           class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('pos.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-            <i class="fas fa-cash-register w-6 text-center text-lg {{ request()->routeIs('pos.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
+           class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('pos.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+            <i class="fas fa-cash-register w-5 text-center text-base {{ request()->routeIs('pos.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
             <span class="font-display">POS Terminal</span>
         </a>
 
         <a href="{{ route('transactions.index') }}"
-           class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('transactions.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-            <i class="fas fa-receipt w-6 text-center text-lg {{ request()->routeIs('transactions.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-            <span class="font-display">My Transactions</span>
+           class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('transactions.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+            <i class="fas fa-receipt w-5 text-center text-base {{ request()->routeIs('transactions.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
+            <span class="font-display">Transactions</span>
         </a>
 
         @if(auth()->user() && auth()->user()->isAdmin())
             <div class="text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-4 pb-1">Admin Controls</div>
 
             <a href="{{ route('products.index') }}"
-               class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-boxes-stacked w-6 text-center text-lg {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
+               class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-boxes-stacked w-5 text-center text-base {{ request()->routeIs('products.*') || request()->routeIs('stock-in.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
                 <span class="font-display">Inventory &amp; Restock</span>
             </a>
-<a href="{{ route('backup.index') }}"
-               class="flex items-center gap-3.5 px-4 py-3 rounded-xl text-sm sm:text-base font-semibold transition-all {{ request()->routeIs('backup.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-hard-drive w-6 text-center text-lg {{ request()->routeIs('backup.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
+
+            <a href="{{ route('backup.index') }}"
+               class="flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('backup.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-hard-drive w-5 text-center text-base {{ request()->routeIs('backup.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
                 <span class="font-display">Database Backup</span>
             </a>
         @endif
     </nav>
 
-    <div class="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-850/70">
+    <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-850/70">
         <div class="flex items-center justify-between gap-3">
             <div class="min-w-0">
                 <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ auth()->user()->name ?? 'User' }}</p>
                 <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}</p>
             </div>
             <button type="button" onclick="closeDrawer(); openLogoutModal(event);"
-                    class="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+                    class="px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
                 <i class="fas fa-power-off"></i>
-                <span>Log Out</span>
+                <span>Logout</span>
             </button>
         </div>
     </div>
 </aside>
 
-<div class="max-w-7xl mx-auto w-full px-4 sm:px-8 pt-4">
-    @if(session('success'))
-        <div class="p-4 mb-4 rounded-2xl bg-emerald-100 dark:bg-emerald-950/70 border border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300 flex items-center justify-between shadow-md">
-            <div class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400 text-xl"></i><span class="text-base font-medium">{{ session('success') }}</span></div>
-            <button onclick="this.parentElement.remove()" class="text-emerald-600 dark:text-emerald-400/60 hover:text-emerald-800 text-lg">&times;</button>
+<!-- Main Page Wrapper (Offset by sidebar width on desktop >= lg) -->
+<div class="lg:pl-72 flex flex-col min-h-screen flex-1">
+
+    <header class="h-20 bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-3 sm:gap-4">
+            <!-- Mobile Menu Toggle Button (visible only < lg) -->
+            <button type="button" id="menuToggleBtn" title="Open navigation menu"
+                    class="lg:hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-700 font-bold text-xs shadow-sm transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/50">
+                <i class="fas fa-bars text-sm text-red-500"></i>
+                <span class="font-display tracking-wide">Menu</span>
+            </button>
+
+            <!-- Brand Logo for Mobile (< lg) -->
+            <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" title="Home"
+                class="lg:hidden flex items-center gap-2.5 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
+                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-10 h-10 object-contain drop-shadow-lg flex-shrink-0">
+                <div class="text-left">
+                    <div class="font-jdm text-slate-900 dark:text-white text-sm tracking-wider">PAOLO PAOLO</div>
+                    <div class="text-[9px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5">D.A Matting</div>
+                </div>
+            </a>
+
+            <!-- Desktop Breadcrumb / System Status Badge (>= lg) -->
+            <div class="hidden lg:flex items-center gap-3">
+                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    Paolo Paolo System &bull; <span class="text-slate-900 dark:text-white font-black">{{ auth()->user() && auth()->user()->isAdmin() ? 'Administration' : 'Cashier Station' }}</span>
+                </div>
+            </div>
         </div>
-    @endif
 
-    @if(session('error'))
-        <div class="p-4 mb-4 rounded-2xl bg-rose-100 dark:bg-rose-950/70 border border-rose-300 dark:border-rose-500/30 text-rose-800 dark:text-rose-300 flex items-center justify-between shadow-md">
-            <div class="flex items-center gap-3"><i class="fas fa-exclamation-circle text-rose-600 dark:text-rose-400 text-xl"></i><span class="text-base font-medium">{{ session('error') }}</span></div>
-            <button onclick="this.parentElement.remove()" class="text-rose-600 dark:text-rose-400/60 hover:text-rose-800 text-lg">&times;</button>
+        <div class="flex items-center gap-2.5 sm:gap-3.5">
+            <button type="button" id="themeToggleBtn" title="Toggle Light / Dark Mode"
+                    class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base sm:text-lg transition-colors cursor-pointer">
+                <i id="themeIcon" class="fas fa-sun"></i>
+            </button>
+
+            <div class="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-300 dark:border-slate-800">
+                <a href="{{ route('settings.account') }}" id="accountSettingsLink" title="Open Settings" aria-label="Open Settings"
+                   class="flex items-center justify-center rounded-xl px-2 py-2 text-right transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/50 {{ request()->routeIs('settings.*') || request()->routeIs('security.*') ? 'bg-red-500/10' : 'hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                    <i class="fas fa-user-gear text-lg text-slate-500 dark:text-slate-300 md:hidden" aria-hidden="true"></i>
+                    <div class="hidden md:block">
+                        <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
+                        <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ auth()->user() && auth()->user()->isAdmin() ? 'text-amber-500' : 'text-red-500' }}">
+                            {{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}
+                        </span>
+                    </div>
+                </a>
+
+                <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="button" onclick="openLogoutModal(event)" title="Log out"
+                            class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 text-slate-600 dark:text-slate-300 hover:text-white border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base transition-colors cursor-pointer">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-    @endif
-</div>
+    </header>
 
-<main class="flex-1 max-w-[1700px] w-full mx-auto px-4 sm:px-8 py-5">
-    @yield('content')
-</main>
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-8 pt-4">
+        @if(session('success'))
+            <div class="p-4 mb-4 rounded-2xl bg-emerald-100 dark:bg-emerald-950/70 border border-emerald-300 dark:border-emerald-500/30 text-emerald-800 dark:text-emerald-300 flex items-center justify-between shadow-md">
+                <div class="flex items-center gap-3"><i class="fas fa-check-circle text-emerald-600 dark:text-emerald-400 text-xl"></i><span class="text-base font-medium">{{ session('success') }}</span></div>
+                <button onclick="this.parentElement.remove()" class="text-emerald-600 dark:text-emerald-400/60 hover:text-emerald-800 text-lg">&times;</button>
+            </div>
+        @endif
 
-<footer class="py-4 px-6 border-t border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 text-center flex flex-col sm:flex-row items-center justify-between gap-2">
-    <div class="flex items-center justify-center gap-2">
-        <img src="{{ asset('images/wadwad_paolo_logo.png') }}" class="w-5 h-5 object-contain inline-block" alt="Paolo Paolo">
-        <span>&copy; {{ date('Y') }} <strong class="text-slate-700 dark:text-slate-200 font-jdm">Paolo Paolo</strong> &bull; D.A Matting &amp; Accessories.</span>
+        @if(session('error'))
+            <div class="p-4 mb-4 rounded-2xl bg-rose-100 dark:bg-rose-950/70 border border-rose-300 dark:border-rose-500/30 text-rose-800 dark:text-rose-300 flex items-center justify-between shadow-md">
+                <div class="flex items-center gap-3"><i class="fas fa-exclamation-circle text-rose-600 dark:text-rose-400 text-xl"></i><span class="text-base font-medium">{{ session('error') }}</span></div>
+                <button onclick="this.parentElement.remove()" class="text-rose-600 dark:text-rose-400/60 hover:text-rose-800 text-lg">&times;</button>
+            </div>
+        @endif
     </div>
-    <div class="text-[11px] text-slate-400"><span>Contacts: <strong>09267994701</strong> / <strong>09105508162</strong></span></div>
-</footer>
+
+    <main class="flex-1 max-w-[1700px] w-full mx-auto px-4 sm:px-8 py-5">
+        @yield('content')
+    </main>
+
+    <footer class="py-4 px-6 border-t border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 text-center flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div class="flex items-center justify-center gap-2">
+            <img src="{{ asset('images/wadwad_paolo_logo.png') }}" class="w-5 h-5 object-contain inline-block" alt="Paolo Paolo">
+            <span>&copy; {{ date('Y') }} <strong class="text-slate-700 dark:text-slate-200 font-jdm">Paolo Paolo</strong> &bull; D.A Matting &amp; Accessories.</span>
+        </div>
+        <div class="text-[11px] text-slate-400"><span>Contacts: <strong>09267994701</strong> / <strong>09105508162</strong></span></div>
+    </footer>
+
+</div>
 
 <script>
     const themeBtn = document.getElementById('themeToggleBtn');
