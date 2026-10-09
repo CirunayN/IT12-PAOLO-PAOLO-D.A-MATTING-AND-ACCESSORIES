@@ -8,9 +8,6 @@
                 <i class="fas fa-cash-register text-red-500"></i>
                 POS Cashier Terminal
             </h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Select products from the data grid. The cart opens as a movable window and can be minimized or hidden without losing items.
-            </p>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5">

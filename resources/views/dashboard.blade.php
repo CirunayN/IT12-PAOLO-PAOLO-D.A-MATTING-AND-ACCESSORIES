@@ -10,9 +10,6 @@
                 <i class="fas fa-chart-pie text-red-500"></i>
                 Dashboard &amp; Reports
             </h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Real-time overview of daily sales, inventory levels, catalog metrics, and recent activities.
-            </p>
             @include('reports.tabs')
         </div>
         <div class="flex items-center gap-3">

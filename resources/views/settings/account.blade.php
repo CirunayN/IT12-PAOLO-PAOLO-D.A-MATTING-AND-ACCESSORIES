@@ -8,7 +8,6 @@
                 <i class="fas fa-gear text-red-500"></i>
                 Settings
             </h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage your local account and security settings.</p>
         </div>
     </div>
 
@@ -21,9 +20,6 @@
             </div>
             <div>
                 <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Account Information</h2>
-                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    These details identify your account inside the local system. Password recovery is handled through the offline security process.
-                </p>
             </div>
         </div>
 

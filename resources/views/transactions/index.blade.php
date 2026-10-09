@@ -17,16 +17,6 @@
 
             </h1>
 
-
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-
-                Transaction history processed by
-                <strong>
-                    {{ auth()->user()->name }}
-                </strong>.
-
-            </p>
-
         </div>
 
 
