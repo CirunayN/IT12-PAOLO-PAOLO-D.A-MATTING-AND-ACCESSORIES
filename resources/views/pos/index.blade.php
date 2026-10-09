@@ -105,12 +105,12 @@
             <div class="flex-1 min-h-[460px] overflow-hidden" id="productGridWrap">
                 <table class="w-full table-fixed border-collapse text-left">
                     <thead class="sticky top-0 z-10 bg-slate-100/95 dark:bg-dark-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-                        <tr class="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                            <th class="w-11 px-2 py-2 font-black">Image</th>
-                            <th class="px-2 py-2 font-black">Product</th>
-                            <th class="w-16 px-1.5 py-2 font-black text-center">Stock</th>
-                            <th class="w-24 px-1.5 py-2 font-black text-right">Price</th>
-                            <th class="w-14 px-1.5 py-2 font-black text-center">Action</th>
+                        <tr class="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                            <th class="w-14 px-3 py-2.5 font-black">Image</th>
+                            <th class="px-3 py-2.5 font-black">Product</th>
+                            <th class="w-20 px-2 py-2.5 font-black text-center">Stock</th>
+                            <th class="w-28 px-2 py-2.5 font-black text-right">Price</th>
+                            <th class="w-20 px-2 py-2.5 font-black text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody id="productGrid" class="divide-y divide-slate-100 dark:divide-slate-800/80">
@@ -151,12 +151,12 @@
                             data-batch-count="{{ $sellableBatches->count() }}"
                             data-oldest-batch="{{ $oldestBatch?->created_at?->format('M d, Y') ?? 'N/A' }}">
 
-                            <td class="w-11 px-2 py-1.5">
-                                <div class="relative w-8 h-8 rounded-lg overflow-hidden bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center flex-shrink-0">
+                            <td class="w-14 px-3 py-2.5">
+                                <div class="relative w-11 h-11 rounded-xl overflow-hidden bg-slate-100 dark:bg-dark-900 border border-slate-200 dark:border-slate-700/80 flex items-center justify-center flex-shrink-0 shadow-sm">
                                     @if($p->image_url)
-                                    <img src="{{ $p->image_url }}" alt="{{ $p->Name }}" class="w-full h-full object-cover">
+                                    <img src="{{ $p->image_url }}" alt="{{ $p->Name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200">
                                     @else
-                                    <i class="fas fa-box text-slate-400 opacity-60 text-xs"></i>
+                                    <i class="fas fa-box text-slate-400 opacity-60 text-sm"></i>
                                     @endif
 
                                     @if($imagesCount > 0)
@@ -164,7 +164,7 @@
                                         data-gallery-images="{{ json_encode($allImages) }}"
                                         data-gallery-title="{{ $p->Name }}"
                                         onclick="openPosGalleryFromButton(this, event)"
-                                        class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/60 text-white text-[9px] transition-opacity flex items-center justify-center cursor-pointer"
+                                        class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-black/60 text-white text-[10px] transition-opacity flex items-center justify-center cursor-pointer"
                                         title="View product photos">
                                         <i class="fas fa-images"></i>
                                     </button>
@@ -172,52 +172,52 @@
                                 </div>
                             </td>
 
-                            <td class="px-2 py-1.5 min-w-0">
-                                <div class="flex items-start justify-between gap-1.5">
-                                    <div class="font-bold text-xs text-slate-900 dark:text-white leading-snug line-clamp-2 break-words" title="{{ $p->Name }}">
+                            <td class="px-3 py-2.5 min-w-0">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="font-bold text-[13px] text-slate-900 dark:text-white leading-snug line-clamp-2 break-words" title="{{ $p->Name }}">
                                         {{ $p->Name }}
                                     </div>
                                     <button type="button"
                                         onclick="openProductInfo(this.closest('.product-item'), event)"
-                                        class="w-5 h-5 rounded-md hover:bg-slate-200 dark:hover:bg-dark-700 text-slate-400 hover:text-red-500 transition-colors shrink-0 inline-flex items-center justify-center cursor-pointer"
+                                        class="w-6 h-6 rounded-lg hover:bg-slate-200 dark:hover:bg-dark-700 text-slate-400 hover:text-red-500 transition-colors shrink-0 inline-flex items-center justify-center cursor-pointer mt-0.5"
                                         title="View product details &amp; category">
-                                        <i class="fas fa-circle-info text-[11px]"></i>
+                                        <i class="fas fa-circle-info text-xs"></i>
                                     </button>
                                 </div>
                                 @if($p->Description)
-                                <div class="text-[10px] text-slate-400 truncate mt-0.5" title="{{ $p->Description }}">
+                                <div class="text-[11px] text-slate-400 truncate mt-0.5 max-w-[320px]" title="{{ $p->Description }}">
                                     {{ $p->Description }}
                                 </div>
                                 @endif
                             </td>
 
-                            <td class="w-16 px-1.5 py-1.5 text-center whitespace-nowrap">
+                            <td class="w-20 px-2 py-2.5 text-center whitespace-nowrap">
                                 @if($qty <= 0)
-                                <span class="inline-flex px-1.5 py-0.5 rounded text-[9px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25">
+                                <span class="inline-flex px-2 py-0.5 rounded-md text-[10px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25">
                                     Out
                                 </span>
                                 @elseif($qty <= 5)
-                                <span class="inline-flex px-1.5 py-0.5 rounded text-[10px] font-black text-amber-500 bg-amber-500/10 border border-amber-500/25">
+                                <span class="inline-flex px-2 py-0.5 rounded-md text-[11px] font-black text-amber-500 bg-amber-500/10 border border-amber-500/25">
                                     {{ number_format($qty, 0) }} left
                                 </span>
                                 @else
-                                <span class="font-black text-xs text-emerald-600 dark:text-emerald-400">
+                                <span class="font-black text-sm text-emerald-600 dark:text-emerald-400">
                                     {{ number_format($qty, 0) }}
                                 </span>
                                 @endif
                             </td>
 
-                            <td class="w-24 px-1.5 py-1.5 text-right font-display font-black text-xs sm:text-sm text-slate-900 dark:text-white whitespace-nowrap">
+                            <td class="w-28 px-2 py-2.5 text-right font-display font-black text-sm sm:text-base text-slate-900 dark:text-white whitespace-nowrap">
                                 ₱{{ number_format($price, 2) }}
                             </td>
 
-                            <td class="w-14 px-1.5 py-1.5 text-center">
+                            <td class="w-20 px-2 py-2.5 text-center">
                                 <button type="button"
                                     {{ $qty <= 0 ? 'disabled' : '' }}
                                     onclick="addProductRowToCart(this)"
-                                    class="inline-flex items-center justify-center gap-1 w-full h-7 rounded-lg bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white text-[10px] font-black shadow-sm transition-all active:scale-95 whitespace-nowrap cursor-pointer"
+                                    class="inline-flex items-center justify-center gap-1.5 w-full h-8 rounded-xl bg-red-600 hover:bg-red-500 disabled:bg-slate-400 disabled:cursor-not-allowed text-white text-xs font-black shadow-sm transition-all active:scale-95 whitespace-nowrap cursor-pointer"
                                     title="Add to cart">
-                                    <i class="fas fa-plus text-[9px]"></i>
+                                    <i class="fas fa-plus text-[10px]"></i>
                                     <span>Add</span>
                                 </button>
                             </td>
