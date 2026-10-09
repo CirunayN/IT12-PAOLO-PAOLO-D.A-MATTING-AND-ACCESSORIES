@@ -35,12 +35,29 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/my-transactions/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
 
+    Route::get('/my-transactions/export-csv', [TransactionController::class, 'exportCsv'])
+        ->name('transactions.export_csv');
+
     Route::middleware(['role:Admin,Cashier,Employee'])->group(function () {
         Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
         Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');
         Route::get('/pos/receipt/{id}', [PosController::class, 'receipt'])
             ->whereNumber('id')
             ->name('pos.receipt');
+
+        Route::resource('products', ProductController::class)->except(['destroy']);
+
+        Route::post('/categories', [CategoryController::class, 'store'])
+            ->name('categories.store');
+
+        Route::get('/stock-in', [StockInController::class, 'index'])
+            ->name('stock-in.index');
+
+        Route::get('/stock-in/create', [StockInController::class, 'create'])
+            ->name('stock-in.create');
+
+        Route::post('/stock-in', [StockInController::class, 'store'])
+            ->name('stock-in.store');
     });
 
     Route::middleware(['role:Admin'])->group(function () {
@@ -76,20 +93,6 @@ Route::middleware(['auth', 'active'])->group(function () {
             [SecurityController::class, 'regenerateRecoveryCodes']
         )->middleware('throttle:3,1')
             ->name('security.recovery.regenerate');
-
-        Route::resource('products', ProductController::class)->except(['destroy']);
-
-        Route::post('/categories', [CategoryController::class, 'store'])
-            ->name('categories.store');
-
-        Route::get('/stock-in', [StockInController::class, 'index'])
-            ->name('stock-in.index');
-
-        Route::get('/stock-in/create', [StockInController::class, 'create'])
-            ->name('stock-in.create');
-
-        Route::post('/stock-in', [StockInController::class, 'store'])
-            ->name('stock-in.store');
 
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])
             ->name('products.destroy');
