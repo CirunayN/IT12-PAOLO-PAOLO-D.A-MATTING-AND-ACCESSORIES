@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class StockInController extends Controller
 {
@@ -34,6 +35,15 @@ class StockInController extends Controller
         return view('stock_in.index', compact('stockIns', 'products', 'users'));
     }
 
+    public function print(Request $request)
+    {
+        $query = StockIn::with(['product.category', 'user']);
+        if ($request->filled('product_id')) $query->where('Product_ID', $request->product_id);
+        if ($request->filled('user_id')) $query->where('User_ID', $request->user_id);
+        $stockIns = $query->orderBy('ID', 'desc')->get();
+        return app(\App\Services\PrintableReport::class)->respond($request, 'stock_in.print', compact('stockIns'));
+    }
+
     public function create()
     {
         $archivedStatus = Status::where('Name', 'Archived')->first();
@@ -45,7 +55,7 @@ class StockInController extends Controller
         }
 
         $products = $query->orderBy('Name', 'asc')->get();
-        $categories = Category::orderBy('Name', 'asc')->get();
+        $categories = Category::active()->orderBy('Name', 'asc')->get();
 
         return view('stock_in.create', compact('products', 'categories'));
     }
@@ -57,7 +67,7 @@ class StockInController extends Controller
             'Product_ID' => 'required_if:product_mode,existing|nullable|exists:tbl_product,ID',
             'New_Product_Name' => 'required_if:product_mode,new|nullable|string|max:255|unique:tbl_product,Name',
             'New_Product_Description' => 'nullable|string|max:2000',
-            'New_Category_ID' => 'required_if:product_mode,new|nullable|exists:tbl_category,ID',
+            'New_Category_ID' => ['required_if:product_mode,new', 'nullable', Rule::exists('tbl_category', 'ID')->where('Is_Archived', false)],
             'images' => 'exclude_unless:product_mode,new|nullable|array|max:5',
             'images.*' => 'exclude_unless:product_mode,new|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
             'Quantity' => 'required|numeric|min:1',

@@ -65,7 +65,7 @@
                 </div>
                 <button type="button" onclick="printAdminRecoveryCodes()"
                     class="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-bold">
-                    <i class="fas fa-print mr-1"></i> Print Codes Only
+                    <i class="fas fa-print mr-1"></i> Print / Download Codes
                 </button>
             </div>
 
@@ -407,8 +407,9 @@
 </div>
 
 @push('scripts')
+@include('shared.recovery-code-output')
 <script>
-function printAdminRecoveryCodes() {
+function printAdminRecoveryCodes(output = null) {
     const codeElements = document.querySelectorAll('.recovery-code-value');
     const codes = Array.from(codeElements)
         .map(element => element.dataset.code || element.textContent.trim())
@@ -418,6 +419,9 @@ function printAdminRecoveryCodes() {
         alert('No newly generated recovery codes are available to print.');
         return;
     }
+
+    if (output === null) { openReportOutput(null, selected => printAdminRecoveryCodes(selected)); return; }
+    if (output === 'pdf') { downloadRecoveryCodes(codes); return; }
 
     const printWindow = window.open('', '_blank', 'width=700,height=900');
 

@@ -1,0 +1,4 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>@yield('title')</title><style>
+body{font:12px Arial,sans-serif;color:#111;padding:20px;}h1{font-size:22px;margin-bottom:4px;}table{width:100%;border-collapse:collapse;table-layout:fixed;}th,td{border:1px solid #cbd5e1;padding:7px;text-align:left;overflow-wrap:anywhere;}th{background:#f1f5f9;}tr{page-break-inside:avoid;} .number{text-align:right;}@media print{body{padding:0;} .no-print{display:none!important;}@page{size:A4 landscape;margin:10mm;}}
+@if($downloadPdf ?? false)body,table{font-family:'DejaVu Sans',sans-serif;}@endif
+</style></head><body>@include('shared.print-actions')<h1>PAOLO PAOLO</h1><p>D.A. Matting &amp; Accessories · @yield('title')</p><p>Generated {{ now()->timezone('Asia/Manila')->format('M d, Y h:i A') }} · {{ auth()->user()->name }}</p>@yield('report') </body></html>

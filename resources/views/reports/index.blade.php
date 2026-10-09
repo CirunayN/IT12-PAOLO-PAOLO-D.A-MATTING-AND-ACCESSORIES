@@ -77,6 +77,9 @@
                     </option>
                     @endforeach
                 </select>
+                <p class="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+                    {{ $employees->isEmpty() ? 'No employees have recorded sales yet.' : 'Choose an employee to load their sales report.' }}
+                </p>
             </div>
 
             <!-- CATEGORY FILTER (FOR INVENTORY SCOPE) -->
@@ -180,6 +183,11 @@
             </div>
 
         </div>
+        <noscript>
+            <button type="submit" class="mt-4 px-4 py-2 rounded-xl bg-red-600 text-white text-sm font-bold">
+                Apply Filters
+            </button>
+        </noscript>
     </form>
 
     <!-- CURRENT REPORT ACTIVE BANNER -->
@@ -563,7 +571,9 @@
 </div>
 
 <script>
+const adminReportFilterForm = document.getElementById('adminReportFilterForm');
 const adminReportScope = document.getElementById('adminReportScope');
+const adminEmployeeSelect = document.getElementById('adminEmployeeSelect');
 const adminEmployeeContainer = document.getElementById('adminEmployeeContainer');
 const adminCategoryContainer = document.getElementById('adminCategoryContainer');
 const adminStockStatusContainer = document.getElementById('adminStockStatusContainer');
@@ -571,6 +581,9 @@ const adminReportPeriod = document.getElementById('adminReportPeriod');
 const adminWeekContainer = document.getElementById('adminWeekContainer');
 const adminMonthContainer = document.getElementById('adminMonthContainer');
 const adminYearContainer = document.getElementById('adminYearContainer');
+const adminReportYear = document.getElementById('adminReportYear');
+let adminReportSubmitTimer;
+let adminReportSubmitting = false;
 
 function printCurrentAdminReport() {
     const scope = document.getElementById('adminReportScope').value;
@@ -614,25 +627,63 @@ function printCurrentAdminReport() {
     }
 
     const printUrl = "{{ route('reports.print') }}" + '?' + params.toString();
-    window.open(printUrl, '_blank', 'noopener');
+    openReportOutput(printUrl);
+}
+
+function setAdminFilterVisibility(container, visible) {
+    container.classList.toggle('hidden', !visible);
+    container.querySelectorAll('input, select').forEach(control => {
+        control.disabled = !visible;
+    });
 }
 
 function updateAdminScope() {
     const scope = adminReportScope.value;
-    adminEmployeeContainer.classList.toggle('hidden', scope !== 'employee');
-    adminCategoryContainer.classList.toggle('hidden', scope !== 'inventory');
-    adminStockStatusContainer.classList.toggle('hidden', scope !== 'inventory');
+    setAdminFilterVisibility(adminEmployeeContainer, scope === 'employee');
+    setAdminFilterVisibility(adminCategoryContainer, scope === 'inventory');
+    setAdminFilterVisibility(adminStockStatusContainer, scope === 'inventory');
+    adminEmployeeSelect.required = scope === 'employee';
 }
 
 function updateAdminPeriod() {
     const period = adminReportPeriod.value;
-    adminWeekContainer.classList.toggle('hidden', period !== 'weekly');
-    adminMonthContainer.classList.toggle('hidden', period !== 'monthly');
-    adminYearContainer.classList.toggle('hidden', period !== 'yearly');
+    setAdminFilterVisibility(adminWeekContainer, period === 'weekly');
+    setAdminFilterVisibility(adminMonthContainer, period === 'monthly');
+    setAdminFilterVisibility(adminYearContainer, period === 'yearly');
+    document.getElementById('adminReportWeek').required = period === 'weekly';
+    document.getElementById('adminReportMonth').required = period === 'monthly';
+    adminReportYear.required = period === 'yearly';
 }
 
-adminReportScope.addEventListener('change', updateAdminScope);
-adminReportPeriod.addEventListener('change', updateAdminPeriod);
+function applyAdminReportFilters() {
+    clearTimeout(adminReportSubmitTimer);
+    updateAdminScope();
+    updateAdminPeriod();
+
+    if (adminReportScope.value === 'employee' && !adminEmployeeSelect.value) {
+        adminEmployeeSelect.focus();
+        return;
+    }
+
+    if (adminReportSubmitting || !adminReportFilterForm.reportValidity()) {
+        return;
+    }
+
+    adminReportSubmitting = true;
+    adminReportFilterForm.requestSubmit();
+}
+
+adminReportFilterForm.addEventListener('change', applyAdminReportFilters);
+adminReportYear.addEventListener('input', () => {
+    clearTimeout(adminReportSubmitTimer);
+    if (adminReportYear.checkValidity()) {
+        adminReportSubmitTimer = setTimeout(applyAdminReportFilters, 600);
+    }
+});
+window.addEventListener('pageshow', () => {
+    adminReportSubmitting = false;
+    clearTimeout(adminReportSubmitTimer);
+});
 
 updateAdminScope();
 updateAdminPeriod();

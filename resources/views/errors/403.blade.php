@@ -5,31 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>403 Forbidden | PAOLO PAOLO D.A Matting &amp; Accessories</title>
 
-    <!-- Google Fonts & Font Awesome -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Cabinet+Grotesk:wght@800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: { 950: '#06090e', 900: '#0a0f18', 850: '#0e1422', 800: '#141c2e', 700: '#1c2840' }
-                    },
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        display: ['"Cabinet Grotesk"', 'sans-serif'],
-                        jdm: ['"Orbitron"', 'sans-serif'],
-                    }
-                }
-            }
+    @include('shared.offline-assets')
+    <style>
+        :root {
+            --font-sans: 'Plus Jakarta Sans';
+            --font-display: 'Outfit';
+            --font-jdm: 'Orbitron';
+            --dark-950: 6 9 14;
+            --dark-900: 10 15 24;
+            --dark-850: 14 20 34;
+            --dark-800: 20 28 46;
+            --dark-700: 28 40 64;
         }
-    </script>
+    </style>
+
 </head>
 <body class="bg-slate-100 dark:bg-dark-950 text-slate-800 dark:text-slate-100 min-h-screen flex items-center justify-center p-4 font-sans selection:bg-red-600 selection:text-white transition-colors duration-300">
 

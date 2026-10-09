@@ -123,6 +123,7 @@ class NewPasswordController extends Controller
             return redirect()->route('login');
         }
 
+        $request->session()->put('recovery_codes_export_until', time() + 600);
         return view('auth.admin-recovery-codes', compact('codes'));
     }
 }

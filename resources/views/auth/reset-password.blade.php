@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reset Password | Paolo Paolo</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    @include('shared.offline-assets')
     <style>body{background:#080b11;font-family:Arial,sans-serif}.auth-card{background:rgba(14,18,28,.94);border:1px solid rgba(220,38,38,.3)}</style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 text-slate-100">
+<body class="scenic-auth min-h-screen flex items-center justify-center p-4 text-slate-100">
 <div class="w-full max-w-md auth-card rounded-3xl p-8 relative overflow-hidden">
     <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-amber-500 to-red-600"></div>
 

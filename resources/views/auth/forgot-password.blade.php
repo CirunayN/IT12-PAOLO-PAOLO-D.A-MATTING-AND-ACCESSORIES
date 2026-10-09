@@ -5,15 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Offline Password Recovery | Paolo Paolo</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    @include('shared.offline-assets')
     <style>
         body{background-color:#080b11;background-image:radial-gradient(circle at 15% 50%,rgba(220,38,38,.16) 0%,transparent 45%),radial-gradient(circle at 85% 30%,rgba(245,158,11,.10) 0%,transparent 50%);font-family:'Inter',sans-serif}
         .font-jdm{font-family:'Dela Gothic One','Outfit',sans-serif}.auth-card{background:rgba(14,18,28,.90);backdrop-filter:blur(25px);border:1px solid rgba(220,38,38,.25);box-shadow:0 25px 50px -12px rgba(0,0,0,.8)}
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 text-slate-100">
+<body class="scenic-auth min-h-screen flex items-center justify-center p-4 text-slate-100">
 <div class="w-full max-w-md auth-card rounded-3xl p-8 sm:p-10 relative overflow-hidden">
     <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-600 via-amber-500 to-red-600"></div>
 

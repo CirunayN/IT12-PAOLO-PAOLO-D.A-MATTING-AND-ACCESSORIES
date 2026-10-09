@@ -236,7 +236,7 @@ class TransactionController extends Controller
                 ->sum('Total');
 
 
-        return view(
+        return app(\App\Services\PrintableReport::class)->respond($request,
             'transactions.print',
             [
                 'user' =>

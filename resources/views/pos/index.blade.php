@@ -35,7 +35,13 @@
         </div>
     </div>
 
-    <div class="glass-card rounded-2xl border overflow-hidden">
+    <div class="hidden lg:flex items-center gap-3 text-xs font-semibold text-slate-500">
+        <label for="posLayoutRatio">Layout</label>
+        <input id="posLayoutRatio" type="range" min="55" max="80" step="5" value="70" class="w-36 accent-red-600">
+        <output id="posLayoutLabel" for="posLayoutRatio">Products 70% / Cart 30%</output>
+    </div>
+    <div id="posWorkspace">
+    <section id="posProducts" class="glass-card rounded-2xl border overflow-hidden min-w-0">
         <div class="p-3 sm:p-4 border-b border-slate-200 dark:border-slate-800 space-y-3">
             <div class="flex flex-col md:flex-row md:items-center gap-3">
                 <div class="relative flex-1 min-w-0">
@@ -219,18 +225,11 @@
                 <p>No products match the current search/filter.</p>
             </div>
         </div>
-    </div>
-</div>
-
-{{-- Modeless floating cart: no backdrop, so the cashier can keep using the product grid. --}}
-<div id="floatingCart"
-    class="fixed z-[60] hidden rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-dark-850/95 backdrop-blur-xl shadow-2xl overflow-hidden"
-    style="width:min(430px, calc(100vw - 24px)); right:24px; top:112px; max-height:calc(100vh - 132px);">
-
+    </section>
+    <aside id="floatingCart" class="rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-dark-850 shadow-lg overflow-hidden min-w-0">
     <div id="floatingCartHeader"
-        class="flex items-center justify-between gap-3 px-4 py-3 bg-slate-100 dark:bg-dark-900 border-b border-slate-200 dark:border-slate-800 cursor-move select-none touch-none">
+        class="flex items-center justify-between gap-3 px-4 py-3 bg-slate-100 dark:bg-dark-900 border-b border-slate-200 dark:border-slate-800">
         <div class="flex items-center gap-2 min-w-0">
-            <span class="text-slate-400"><i class="fas fa-grip-vertical"></i></span>
             <div class="min-w-0">
                 <div class="font-display font-black text-sm text-slate-900 dark:text-white flex items-center gap-2">
                     <i class="fas fa-basket-shopping text-red-500"></i>
@@ -242,32 +241,9 @@
             </div>
         </div>
 
-        <div class="flex items-center gap-1 flex-shrink-0">
-            <button type="button" onclick="toggleCartMinimize(event)"
-                class="w-8 h-8 rounded-lg hover:bg-slate-200 dark:hover:bg-dark-800 text-slate-500 dark:text-slate-300"
-                title="Minimize cart">
-                <i id="cartMinimizeIcon" class="fas fa-minus"></i>
-            </button>
-            <button type="button" onclick="hideFloatingCart(event)"
-                class="w-8 h-8 rounded-lg hover:bg-rose-500/10 text-slate-500 hover:text-rose-500 dark:text-slate-300"
-                title="Hide cart">
-                <i class="fas fa-xmark"></i>
-            </button>
-        </div>
     </div>
 
-    <div id="floatingCartMinimized" class="hidden px-4 py-3">
-        <button type="button" onclick="toggleCartMinimize(event)"
-            class="w-full flex items-center justify-between gap-3 text-left">
-            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">
-                <i class="fas fa-basket-shopping text-red-500 mr-2"></i>
-                <span id="minimizedCartItems">0 items</span>
-            </span>
-            <span id="minimizedCartTotal" class="font-display font-black text-sm text-emerald-600 dark:text-emerald-400">₱0.00</span>
-        </button>
-    </div>
-
-    <div id="floatingCartBody" class="overflow-y-auto" style="max-height:calc(100vh - 190px);">
+    <div id="floatingCartBody" class="overflow-y-auto">
         <div class="p-4 space-y-4">
             <div class="flex items-center justify-between">
                 <div class="text-[10px] uppercase tracking-wider font-black text-slate-400">Selected Items</div>
@@ -354,6 +330,8 @@
                 </p>
             </div>
         </div>
+    </div>
+    </aside>
     </div>
 </div>
 
@@ -503,7 +481,6 @@ let lastCompletedSaleId = null;
 let pendingCartRemoval = null;
 let currentPosImages = [];
 let currentPosIndex = 0;
-let cartIsMinimized = false;
 
 function escapeHtml(value) {
     return String(value ?? '')
@@ -540,110 +517,21 @@ function isGcashSelected() {
 }
 
 function showFloatingCart() {
-    const panel = document.getElementById('floatingCart');
-    panel.classList.remove('hidden');
-    clampFloatingCartToViewport();
+    if (window.innerWidth < 1024) document.getElementById('floatingCart').scrollIntoView({behavior: 'smooth', block: 'start'});
 }
-
-function hideFloatingCart(event) {
-    if (event) event.stopPropagation();
-    document.getElementById('floatingCart').classList.add('hidden');
-}
-
-function toggleCartMinimize(event) {
-    if (event) event.stopPropagation();
-
-    cartIsMinimized = !cartIsMinimized;
-
-    const body = document.getElementById('floatingCartBody');
-    const minimized = document.getElementById('floatingCartMinimized');
-    const icon = document.getElementById('cartMinimizeIcon');
-    const panel = document.getElementById('floatingCart');
-
-    body.classList.toggle('hidden', cartIsMinimized);
-    minimized.classList.toggle('hidden', !cartIsMinimized);
-    icon.className = cartIsMinimized ? 'fas fa-up-right-and-down-left-from-center' : 'fas fa-minus';
-    panel.style.width = cartIsMinimized
-        ? 'min(330px, calc(100vw - 24px))'
-        : 'min(430px, calc(100vw - 24px))';
-
-    clampFloatingCartToViewport();
-}
-
-function clampFloatingCartToViewport() {
-    const panel = document.getElementById('floatingCart');
-    if (!panel || panel.classList.contains('hidden')) return;
-
-    const rect = panel.getBoundingClientRect();
-    const margin = 8;
-    let left = rect.left;
-    let top = rect.top;
-
-    if (rect.right > window.innerWidth - margin) {
-        left = Math.max(margin, window.innerWidth - rect.width - margin);
-    }
-    if (rect.bottom > window.innerHeight - margin) {
-        top = Math.max(margin, window.innerHeight - rect.height - margin);
-    }
-    if (left < margin) left = margin;
-    if (top < margin) top = margin;
-
-    panel.style.right = 'auto';
-    panel.style.left = left + 'px';
-    panel.style.top = top + 'px';
-}
-
-function initFloatingCartDrag() {
-    const panel = document.getElementById('floatingCart');
-    const handle = document.getElementById('floatingCartHeader');
-    if (!panel || !handle) return;
-
-    let dragging = false;
-    let pointerId = null;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    handle.addEventListener('pointerdown', function (event) {
-        if (event.target.closest('button')) return;
-
-        const rect = panel.getBoundingClientRect();
-        dragging = true;
-        pointerId = event.pointerId;
-        offsetX = event.clientX - rect.left;
-        offsetY = event.clientY - rect.top;
-
-        panel.style.right = 'auto';
-        panel.style.left = rect.left + 'px';
-        panel.style.top = rect.top + 'px';
-        handle.setPointerCapture(pointerId);
-        event.preventDefault();
-    });
-
-    handle.addEventListener('pointermove', function (event) {
-        if (!dragging || event.pointerId !== pointerId) return;
-
-        const rect = panel.getBoundingClientRect();
-        const margin = 8;
-        const maxLeft = Math.max(margin, window.innerWidth - rect.width - margin);
-        const maxTop = Math.max(margin, window.innerHeight - rect.height - margin);
-
-        const left = Math.min(Math.max(margin, event.clientX - offsetX), maxLeft);
-        const top = Math.min(Math.max(margin, event.clientY - offsetY), maxTop);
-
-        panel.style.left = left + 'px';
-        panel.style.top = top + 'px';
-    });
-
-    function stopDragging(event) {
-        if (!dragging || event.pointerId !== pointerId) return;
-        dragging = false;
-        try { handle.releasePointerCapture(pointerId); } catch (e) {}
-        pointerId = null;
-    }
-
-    handle.addEventListener('pointerup', stopDragging);
-    handle.addEventListener('pointercancel', stopDragging);
-    window.addEventListener('resize', clampFloatingCartToViewport);
+function initializePosLayout() {
+    const slider = document.getElementById('posLayoutRatio');
+    const apply = ratio => {
+        ratio = Math.min(80, Math.max(55, Number(ratio) || 70));
+        slider.value = ratio;
+        document.getElementById('posWorkspace').style.setProperty('--pos-columns', 'minmax(0, ' + ratio + 'fr) minmax(300px, ' + (100-ratio) + 'fr)');
+        document.getElementById('posLayoutLabel').textContent = 'Products ' + ratio + '% / Cart ' + (100-ratio) + '%';
+        try { localStorage.setItem('posProductRatio', ratio); } catch (_) {}
+    };
+    let saved = 70;
+    try { saved = localStorage.getItem('posProductRatio') || 70; } catch (_) {}
+    apply(saved);
+    slider.addEventListener('input', () => apply(slider.value));
 }
 
 function addProductRowToCart(button) {
@@ -742,8 +630,6 @@ function renderCart() {
     document.getElementById('topCartCount').textContent = totalQty;
     document.getElementById('topCartTotal').textContent = money(grandTotal);
     document.getElementById('floatingCartHeaderSummary').textContent = `${totalQty} item${totalQty === 1 ? '' : 's'} • ${money(grandTotal)}`;
-    document.getElementById('minimizedCartItems').textContent = `${totalQty} item${totalQty === 1 ? '' : 's'}`;
-    document.getElementById('minimizedCartTotal').textContent = money(grandTotal);
 
     if (keys.length === 0) {
         container.innerHTML = `
@@ -1162,7 +1048,7 @@ function nextPosGalleryImage() {
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('posSearch').addEventListener('input', applyProductFilters);
-    initFloatingCartDrag();
+    initializePosLayout();
     handlePaymentMethodChange();
     renderCart();
 });
@@ -1175,4 +1061,17 @@ document.addEventListener('keydown', function (event) {
     }
 });
 </script>
+@endpush
+
+@push('styles')
+<style>
+#posWorkspace { display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+#floatingCart { scroll-margin-top:90px; }
+#floatingCartBody { max-height:none; }
+@media (min-width:1024px) {
+    #posWorkspace { grid-template-columns:var(--pos-columns, minmax(0,7fr) minmax(300px,3fr)); }
+    #floatingCart { position:sticky; top:90px; }
+    #floatingCartBody { max-height:calc(100vh - 160px); }
+}
+</style>
 @endpush

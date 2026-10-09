@@ -76,6 +76,22 @@ class SqlServerSnapshotService
         foreach ($snapshot['tables'] as $name => $data) {
             $table = $currentTables[strtolower($name)];
             $columns = $connection->getSchemaBuilder()->getColumnListing($table);
+            // Backups made before category archiving restore those categories as active.
+            if (strtolower($table) === 'tbl_category' && is_array($data)
+                && is_array($data['columns'] ?? null) && is_array($data['rows'] ?? null)
+                && array_values(array_diff($columns, $data['columns'])) === ['Is_Archived']
+                && !array_diff($data['columns'], $columns)) {
+                foreach ($data['rows'] as &$row) {
+                    if (is_array($row)) {
+                        if (array_key_exists('Is_Archived', $row)) {
+                            throw new InvalidArgumentException('Invalid legacy category backup row.');
+                        }
+                        $row['Is_Archived'] = false;
+                    }
+                }
+                unset($row);
+                $data['columns'][] = 'Is_Archived';
+            }
             if (!is_array($data) || !is_array($data['columns'] ?? null) || !is_array($data['rows'] ?? null)
                 || $data['columns'] === []
                 || count(array_filter($data['columns'], 'is_string')) !== count($data['columns'])

@@ -39,17 +39,18 @@
 
     <!-- FILTER -->
     <form
+        id="personalReportFilterForm"
         method="GET"
         action="{{ route('transactions.index') }}"
         class="glass-card rounded-2xl p-5 border"
     >
 
-        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             <!-- PERIOD -->
             <div>
 
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label for="personalReportPeriod" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
 
                     Report Period
 
@@ -91,9 +92,9 @@
 
 
             <!-- MONTH -->
-            <div id="personalMonthContainer">
+            <div id="personalMonthContainer" @class(['hidden' => $period !== 'monthly'])>
 
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label for="personalReportMonth" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
 
                     Month
 
@@ -105,6 +106,8 @@
                     name="month"
                     id="personalReportMonth"
                     value="{{ $month }}"
+                    @required($period === 'monthly')
+                    @disabled($period !== 'monthly')
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white"
                 >
 
@@ -112,9 +115,9 @@
 
 
             <!-- YEAR -->
-            <div id="personalYearContainer">
+            <div id="personalYearContainer" @class(['hidden' => $period !== 'yearly'])>
 
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
+                <label for="personalReportYear" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
 
                     Year
 
@@ -128,13 +131,15 @@
                     value="{{ $year }}"
                     min="2000"
                     max="2100"
+                    @required($period === 'yearly')
+                    @disabled($period !== 'yearly')
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white"
                 >
 
             </div>
 
 
-            <!-- GENERATE -->
+            <noscript>
             <div class="flex items-end">
 
                 <button
@@ -149,6 +154,7 @@
                 </button>
 
             </div>
+            </noscript>
 
         </div>
 
@@ -165,7 +171,7 @@
         </span>
 
 
-        <strong class="ml-2 text-red-500">
+        <strong class="ml-2 text-black dark:text-white">
 
             {{ $periodLabel }}
 
@@ -305,7 +311,7 @@
 
                     <tr class="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-dark-800/40">
 
-                        <td class="px-4 py-3 font-bold text-red-500">
+                        <td class="px-4 py-3 font-bold text-black dark:text-white">
 
                             INV-{{ $sale->ID }}
 
@@ -463,62 +469,52 @@ function printCurrentTransactionReport() {
         params.toString();
 
 
-    window.open(
-        printUrl,
-        '_blank',
-        'noopener'
-    );
+    openReportOutput(printUrl);
 }
 
+
+const personalReportFilterForm = document.getElementById('personalReportFilterForm');
+const personalReportMonth = document.getElementById('personalReportMonth');
+const personalReportYear = document.getElementById('personalReportYear');
+let personalReportSubmitTimer;
+let personalReportSubmitting = false;
 
 function updatePersonalReportFields() {
-
-    const period =
-        personalReportPeriod.value;
-
-
-    if (period === 'monthly') {
-
-        personalMonthContainer
-            .classList
-            .remove('hidden');
-
-        personalYearContainer
-            .classList
-            .add('hidden');
-
-    } else if (
-        period === 'yearly'
-    ) {
-
-        personalMonthContainer
-            .classList
-            .add('hidden');
-
-        personalYearContainer
-            .classList
-            .remove('hidden');
-
-    } else {
-
-        personalMonthContainer
-            .classList
-            .add('hidden');
-
-        personalYearContainer
-            .classList
-            .add('hidden');
-
-    }
-
+    const monthly = personalReportPeriod.value === 'monthly';
+    const yearly = personalReportPeriod.value === 'yearly';
+    personalMonthContainer.classList.toggle('hidden', !monthly);
+    personalYearContainer.classList.toggle('hidden', !yearly);
+    personalReportMonth.disabled = !monthly;
+    personalReportMonth.required = monthly;
+    personalReportYear.disabled = !yearly;
+    personalReportYear.required = yearly;
 }
 
+function applyPersonalReportFilters() {
+    clearTimeout(personalReportSubmitTimer);
+    updatePersonalReportFields();
 
-personalReportPeriod.addEventListener(
-    'change',
-    updatePersonalReportFields
-);
+    if (personalReportSubmitting || !personalReportFilterForm.reportValidity()) {
+        return;
+    }
 
+    personalReportSubmitting = true;
+    personalReportFilterForm.requestSubmit();
+}
+
+personalReportFilterForm.addEventListener('change', applyPersonalReportFilters);
+personalReportYear.addEventListener('input', () => {
+    clearTimeout(personalReportSubmitTimer);
+    if (personalReportYear.checkValidity()) {
+        personalReportSubmitTimer = setTimeout(applyPersonalReportFilters, 600);
+    }
+});
+window.addEventListener('pageshow', () => {
+    personalReportSubmitting = false;
+    clearTimeout(personalReportSubmitTimer);
+    personalReportFilterForm.reset();
+    updatePersonalReportFields();
+});
 
 updatePersonalReportFields();
 

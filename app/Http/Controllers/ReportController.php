@@ -35,7 +35,7 @@ class ReportController extends Controller
     {
         $data = $this->generateReport($request, false);
 
-        return view('reports.print', $data);
+        return app(\App\Services\PrintableReport::class)->respond($request, 'reports.print', $data);
     }
 
     /*

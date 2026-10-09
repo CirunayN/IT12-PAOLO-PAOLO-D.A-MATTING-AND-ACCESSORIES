@@ -8,6 +8,8 @@ use App\Models\Status;
 use App\Models\StockIn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -15,6 +17,33 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        [$query, $tab, $archivedStatus] = $this->inventoryQuery($request);
+
+        $products = $query->paginate(15)->withQueryString();
+        $categories = Category::orderBy('Name')->get();
+        $statuses = Status::all();
+
+        $activeCount = Product::where('Status_ID', '!=', $archivedStatus->ID)->count();
+        $archivedCount = Product::where('Status_ID', $archivedStatus->ID)->count();
+        $totalCount = Product::count();
+
+        return view('products.index', compact(
+            'products',
+            'categories',
+            'statuses',
+            'tab',
+            'activeCount',
+            'archivedCount',
+            'totalCount'
+        ));
+    }
+
+    private function inventoryQuery(Request $request): array
+    {
+        $request->validate(['sort' => ['nullable', Rule::in([
+            'newest', 'oldest', 'name_asc', 'name_desc',
+            'stock_asc', 'stock_desc', 'price_asc', 'price_desc',
+        ])]]);
         $query = Product::with(['category', 'status', 'stockIns', 'soldItems']);
 
         $tab = $request->get('tab', 'active');
@@ -43,19 +72,23 @@ class ProductController extends Controller
 
         // Filter by SELLABLE stock only: remaining > 0, Good condition,
         // and either non-expiring or not yet expired.
-        if ($request->filled('stock_level')) {
-            $sellableStock = fn () => StockIn::query()
-                ->selectRaw('COALESCE(SUM(Remaining_Quantity), 0)')
-                ->whereColumn('Product_ID', 'tbl_product.ID')
-                ->where('Remaining_Quantity', '>', 0)
-                ->where('Condition', 'Good')
-                ->where(function ($stockQuery) {
-                    $stockQuery->where('Has_Expiration', false)
-                        ->orWhereNull('Expiration_Date')
-                        ->orWhereDate('Expiration_Date', '>=', today()->toDateString());
-                });
+        $sellableBatches = fn () => StockIn::query()
+            ->whereColumn('Product_ID', 'tbl_product.ID')
+            ->where('Remaining_Quantity', '>', 0)
+            ->where('Condition', 'Good')
+            ->where(function ($stockQuery) {
+                $stockQuery->where('Has_Expiration', false)
+                    ->orWhereNull('Expiration_Date')
+                    ->orWhereDate('Expiration_Date', '>=', today()->toDateString());
+            });
+        $sellableStock = fn () => $sellableBatches()->selectRaw('COALESCE(SUM(Remaining_Quantity), 0)');
 
+        if ($request->filled('stock_level')) {
             switch ($request->stock_level) {
+                case 'attention':
+                    $query->where($sellableStock(), '<=', 5);
+                    break;
+
                 case 'out':
                     $query->where($sellableStock(), '<=', 0);
                     break;
@@ -71,23 +104,31 @@ class ProductController extends Controller
             }
         }
 
-        $products = $query->orderBy('ID', 'desc')->paginate(15)->withQueryString();
-        $categories = Category::all();
-        $statuses = Status::all();
+        switch ($request->input('sort', 'newest')) {
+            case 'name_asc':
+            case 'name_desc':
+                $query->orderBy('Name', $request->sort === 'name_asc' ? 'asc' : 'desc');
+                break;
+            case 'stock_asc':
+            case 'stock_desc':
+                $query->orderBy($sellableStock(), $request->sort === 'stock_asc' ? 'asc' : 'desc');
+                break;
+            case 'price_asc':
+            case 'price_desc':
+                // Match the retail price shown in inventory: the newest sellable batch.
+                $query->orderBy($sellableBatches()->select('Retail_Price')->orderBy('ID', 'desc')->limit(1), $request->sort === 'price_asc' ? 'asc' : 'desc');
+                break;
+        }
+        $query->orderBy('ID', $request->sort === 'oldest' ? 'asc' : 'desc');
 
-        $activeCount = Product::where('Status_ID', '!=', $archivedStatus->ID)->count();
-        $archivedCount = Product::where('Status_ID', $archivedStatus->ID)->count();
-        $totalCount = Product::count();
+        return [$query, $tab, $archivedStatus];
+    }
 
-        return view('products.index', compact(
-            'products',
-            'categories',
-            'statuses',
-            'tab',
-            'activeCount',
-            'archivedCount',
-            'totalCount'
-        ));
+    public function print(Request $request)
+    {
+        [$query, $tab] = $this->inventoryQuery($request);
+        $products = $query->get();
+        return app(\App\Services\PrintableReport::class)->respond($request, 'products.print', compact('products', 'tab'));
     }
 
     public function create()
@@ -101,7 +142,7 @@ class ProductController extends Controller
         }
 
         $existingProducts = $productQuery->orderBy('Name', 'asc')->get();
-        $categories = Category::orderBy('Name', 'asc')->get();
+        $categories = Category::active()->orderBy('Name', 'asc')->get();
         $statuses = Status::where('Name', '!=', 'Archived')->get();
 
         return view(
@@ -125,7 +166,7 @@ class ProductController extends Controller
                 'nullable|string|max:2000',
 
             'Category_ID' =>
-                'required_if:product_mode,new|nullable|exists:tbl_category,ID',
+                ['required_if:product_mode,new', 'nullable', Rule::exists('tbl_category', 'ID')->where('Is_Archived', false)],
 
             'Status_ID' =>
                 'required_if:product_mode,new|nullable|exists:tbl_status,ID',
@@ -284,8 +325,8 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = Product::with(['category', 'status'])->findOrFail($id);
-        $categories = Category::all();
+        $product = Product::with(['category', 'status', 'stockIns' => fn ($query) => $query->with('user')->orderBy('ID', 'desc')])->findOrFail($id);
+        $categories = Category::where(fn ($query) => $query->active()->orWhere('ID', $product->Category_ID))->orderBy('Name')->get();
         $statuses = Status::all();
 
         return view('products.edit', compact('product', 'categories', 'statuses'));
@@ -293,76 +334,116 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $existingProduct = Product::findOrFail($id);
 
         $validated = $request->validate([
             'Name' => 'required|string|max:255',
             'Description' => 'nullable|string|max:2000',
-            'Category_ID' => 'required|exists:tbl_category,ID',
+            'Category_ID' => ['required', Rule::exists('tbl_category', 'ID')->where(fn ($query) =>
+                $query->where(fn ($categories) => $categories->where('Is_Archived', false)->orWhere('ID', $existingProduct->Category_ID)))],
             'Status_ID' => 'required|exists:tbl_status,ID',
             'images' => 'nullable|array|max:5',
             'images.*' => 'image|mimes:jpeg,png,jpg,webp,gif|max:5120',
             'remove_images' => 'nullable|array',
             'remove_images.*' => 'string',
+            'batches' => 'sometimes|array',
+            'batches.*' => 'array:ID,Quantity,Cost_Price,Retail_Price,Has_Expiration,Expiration_Date,Condition',
+            'batches.*.ID' => ['required', 'integer', 'distinct', Rule::exists('tbl_stock_in', 'ID')->where('Product_ID', $id)],
+            'batches.*.Quantity' => 'required|numeric|decimal:0,2|min:0|max:99999999.99',
+            'batches.*.Cost_Price' => 'required|numeric|decimal:0,2|min:0|max:99999999.99',
+            'batches.*.Retail_Price' => 'required|numeric|decimal:0,2|min:0|max:99999999.99',
+            'batches.*.Has_Expiration' => 'required|boolean',
+            // Existing batches may already be expired; their dates must remain editable.
+            'batches.*.Expiration_Date' => 'nullable|required_if:batches.*.Has_Expiration,true,1|date_format:Y-m-d',
+            'batches.*.Condition' => 'required|in:Good,Damaged,Defective',
         ]);
 
-        $currentImages = is_array($product->Images)
-            ? $product->Images
-            : ($product->Image ? [$product->Image] : []);
+        $newImagePaths = [];
+        $removedImagePaths = [];
 
-        if ($request->filled('remove_images') && is_array($request->remove_images)) {
-            $filtered = [];
+        try {
+            DB::transaction(function () use ($request, $id, $validated, &$newImagePaths, &$removedImagePaths) {
+                $product = Product::whereKey($id)->lockForUpdate()->firstOrFail();
+                $batchInputs = $validated['batches'] ?? [];
+                $batches = $product->stockIns()
+                    ->whereIn('ID', array_column($batchInputs, 'ID'))
+                    ->orderBy('ID')->lockForUpdate()->get()->keyBy('ID');
+                $batchChanges = [];
 
-            foreach ($currentImages as $img) {
-                if (in_array($img, $request->remove_images)) {
-                    $fullPath = public_path($img);
-
-                    if (File::exists($fullPath)) {
-                        @unlink($fullPath);
+                foreach ($batchInputs as $key => $input) {
+                    $batch = $batches->get($input['ID']);
+                    if (!$batch) {
+                        throw ValidationException::withMessages([
+                            "batches.$key.ID" => 'This stock batch no longer belongs to this product.',
+                        ]);
                     }
-                } else {
-                    $filtered[] = $img;
+
+                    // Preserve FIFO allocations, including any sale made since the edit form opened.
+                    $usedQuantity = max(0, round((float) $batch->Quantity - (float) $batch->Remaining_Quantity, 2));
+                    $quantity = round((float) $input['Quantity'], 2);
+                    if ($quantity < $usedQuantity) {
+                        throw ValidationException::withMessages([
+                            "batches.$key.Quantity" => "Batch #SI-{$batch->ID} already has {$usedQuantity} units sold or used. Received quantity cannot be lower than this.",
+                        ]);
+                    }
+
+                    $hasExpiration = (bool) $input['Has_Expiration'];
+                    $batchChanges[] = [$batch, [
+                        'Quantity' => $quantity,
+                        'Remaining_Quantity' => round($quantity - $usedQuantity, 2),
+                        'Cost_Price' => $input['Cost_Price'],
+                        'Retail_Price' => $input['Retail_Price'],
+                        'Has_Expiration' => $hasExpiration,
+                        'Expiration_Date' => $hasExpiration ? $input['Expiration_Date'] : null,
+                        'Condition' => $input['Condition'],
+                    ]];
                 }
-            }
 
-            $currentImages = $filtered;
+                $currentImages = is_array($product->Images) && count($product->Images) > 0
+                    ? $product->Images
+                    : ($product->Image ? [$product->Image] : []);
+                $removedImagePaths = array_values(array_intersect($currentImages, $validated['remove_images'] ?? []));
+                $currentImages = array_values(array_diff($currentImages, $removedImagePaths));
+                $uploads = $request->file('images', []);
+
+                if (count($currentImages) + count($uploads) > 5) {
+                    throw ValidationException::withMessages([
+                        'images' => 'A product can have up to 5 photos. Remove an existing photo before adding another.',
+                    ]);
+                }
+
+                foreach ($uploads as $file) {
+                    $destination = public_path('uploads/products');
+                    File::ensureDirectoryExists($destination);
+                    $filename = Str::uuid().'.'.$file->extension();
+                    $file->move($destination, $filename);
+                    $newImagePaths[] = 'uploads/products/'.$filename;
+                    $currentImages[] = 'uploads/products/'.$filename;
+                }
+
+                $product->update([
+                    'Name' => $validated['Name'],
+                    'Description' => $validated['Description'] ?? null,
+                    'Category_ID' => $validated['Category_ID'],
+                    'Status_ID' => $validated['Status_ID'],
+                    'Image' => $currentImages[0] ?? null,
+                    'Images' => $currentImages,
+                ]);
+
+                foreach ($batchChanges as [$batch, $changes]) {
+                    $batch->update($changes);
+                }
+            });
+        } catch (\Throwable $exception) {
+            File::delete(array_map(fn ($path) => public_path($path), $newImagePaths));
+            throw $exception;
         }
 
-        if ($request->hasFile('images')) {
-            $destination = public_path('uploads/products');
+        // Delete old photos only after both the product and its batches have saved.
+        File::delete(array_map(fn ($path) => public_path($path), $removedImagePaths));
 
-            if (!File::exists($destination)) {
-                File::makeDirectory($destination, 0777, true, true);
-            }
-
-            $availableSlots = max(0, 5 - count($currentImages));
-
-            foreach (array_slice($request->file('images'), 0, $availableSlots) as $file) {
-                $filename =
-                    time() . '_' .
-                    Str::random(6) . '_' .
-                    Str::slug($request->Name) . '.' .
-                    $file->getClientOriginalExtension();
-
-                $file->move($destination, $filename);
-                $currentImages[] = 'uploads/products/' . $filename;
-            }
-        }
-
-        $currentImages = array_values($currentImages);
-
-        $product->update([
-            'Name' => $validated['Name'],
-            'Description' => $validated['Description'] ?? null,
-            'Category_ID' => $validated['Category_ID'],
-            'Status_ID' => $validated['Status_ID'],
-            'Image' => $currentImages[0] ?? null,
-            'Images' => $currentImages,
-        ]);
-
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Product updated successfully!');
+        return redirect()->route('products.index')
+            ->with('success', 'Product and stock batch details updated successfully!');
     }
 
     public function destroy($id)

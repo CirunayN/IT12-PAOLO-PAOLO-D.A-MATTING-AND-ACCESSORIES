@@ -1,3 +1,110 @@
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+/* These names match the existing page styles; all font files are served locally. */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('../../node_modules/@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Dela Gothic One';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../../node_modules/@fontsource/dela-gothic-one/files/dela-gothic-one-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url('../../node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Orbitron';
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+    src: url('../../node_modules/@fontsource-variable/orbitron/files/orbitron-latin-wght-normal.woff2') format('woff2');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Decorative local images fade into the page; text and controls stay opaque. */
+body.scenic-app,
+body.scenic-auth {
+    position: relative;
+    isolation: isolate;
+}
+
+body.scenic-app::before,
+body.scenic-auth::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+}
+
+body.scenic-app::before {
+    height: clamp(380px, 55vw, 680px);
+    background-image: linear-gradient(to bottom, rgba(241, 245, 249, .78), rgba(241, 245, 249, .88) 45%, #f1f5f9 100%), url('/images/scenery/background.jpg');
+}
+
+html.dark body.scenic-app::before {
+    background-image: linear-gradient(to bottom, rgba(8, 11, 17, .84), rgba(8, 11, 17, .92) 45%, #080b11 100%), url('/images/scenery/background.jpg');
+}
+
+body.scenic-auth::before {
+    background-position: center;
+    background-image: linear-gradient(to bottom, rgba(8, 11, 17, .72), rgba(8, 11, 17, .92)), url('/images/scenery/background.jpg');
+}
+
+html.dark body.scenic-app .glass-card,
+body.scenic-auth .login-card,
+body.scenic-auth .auth-card {
+    background-color: rgba(14, 18, 28, .97);
+}
+
+body.scenic-app #navDrawer {
+    isolation: isolate;
+}
+
+body.scenic-app #navDrawer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255, 255, 255, .96), rgba(255, 255, 255, .83)), url('/images/scenery/sidebar.jpg') center / cover no-repeat;
+}
+
+html.dark body.scenic-app #navDrawer::before {
+    background-image: linear-gradient(90deg, rgba(13, 18, 28, .97), rgba(13, 18, 28, .84)), url('/images/scenery/sidebar.jpg');
+}
+
+@media print {
+    body.scenic-app::before,
+    body.scenic-auth::before,
+    body.scenic-app #navDrawer::before {
+        display: none;
+    }
+}

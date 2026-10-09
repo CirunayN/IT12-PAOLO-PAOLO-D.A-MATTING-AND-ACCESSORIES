@@ -11,10 +11,10 @@
         </div>
 
         <div class="flex items-center gap-2.5 flex-wrap">
-            <a href="{{ route('reports.print', ['scope' => 'inventory', 'period' => 'monthly']) }}" target="_blank" rel="noopener"
+            <a href="{{ route('stock-in.print', request()->except(['page', 'output'])) }}" onclick="event.preventDefault(); openReportOutput(this.href)"
                 class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
                 <i class="fas fa-print text-blue-500"></i>
-                <span>Print Receiving PDF</span>
+                <span>Print / Download Receiving</span>
             </a>
 
             <a href="{{ route('stock-in.create') }}"
@@ -46,7 +46,7 @@
     </div>
 
     <div class="glass-card rounded-2xl p-4 border shadow-sm">
-        <form method="GET" action="{{ route('stock-in.index') }}"
+        <form data-auto-filter method="GET" action="{{ route('stock-in.index') }}"
             class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
 
             <div class="sm:col-span-5">
@@ -76,10 +76,10 @@
             </div>
 
             <div class="sm:col-span-3 flex items-center gap-2">
-                <button type="submit"
+                <noscript><button type="submit"
                     class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm transition-colors">
                     Filter
-                </button>
+                </button></noscript>
 
                 <a href="{{ route('stock-in.index') }}"
                     class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors">

@@ -91,6 +91,12 @@
                         </select>
                     </div>
 
+                    <div>
+                        <label for="backupTime" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Automatic Backup Time (Philippine time)</label>
+                        <input id="backupTime" type="time" name="backup_time" required value="{{ old('backup_time', $settings['backup_time']) }}" class="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm">
+                        <p class="text-xs text-slate-500 mt-2">Keep the app and computer running at this time. A missed backup runs when the app next starts after the selected time.</p>
+                        @error('backup_time')<p class="text-xs text-rose-500">{{ $message }}</p>@enderror
+                    </div>
                     <!-- Retention Rule -->
                     <div>
                         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">Auto-Cleanup Retention</label>
@@ -112,6 +118,7 @@
                             class="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition-colors">
                             <i class="fas fa-folder-open"></i> Choose Folder
                         </button>
+                        <p id="nativeFolderStatus" role="status" class="text-xs text-slate-500 mt-2"></p>
                         <p class="text-[11px] text-slate-400 mt-1">Choose a local folder or an external drive, then save settings.</p>
                         @error('storage_path')
                             <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
@@ -332,36 +339,6 @@
             </div>
         </div>
 
-    </div>
-</div>
-
-<div id="backupFolderPicker" role="dialog" aria-modal="true" aria-labelledby="backupFolderPickerTitle"
-    class="fixed inset-0 z-[60] bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="w-full max-w-xl rounded-2xl bg-white dark:bg-dark-850 border border-slate-200 dark:border-slate-700 shadow-2xl p-5 sm:p-6 space-y-4">
-        <div class="flex items-start justify-between gap-3">
-            <div>
-                <h3 id="backupFolderPickerTitle" class="font-display font-black text-lg text-slate-900 dark:text-white">Choose Backup Folder</h3>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Open a folder, then select Use This Folder.</p>
-            </div>
-            <button type="button" onclick="closeBackupFolderPicker()" aria-label="Close folder picker"
-                class="w-8 h-8 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-dark-800 text-xl">&times;</button>
-        </div>
-        <div class="flex items-center gap-2">
-            <button type="button" id="backupFolderDrives" onclick="loadBackupFolders()"
-                class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-200 text-xs font-bold">Drives</button>
-            <button type="button" id="backupFolderUp" onclick="loadBackupFolders(backupFolderState.parent)" disabled
-                class="px-3 py-2 rounded-lg bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-200 text-xs font-bold disabled:opacity-40">Up One Folder</button>
-        </div>
-        <p id="backupFolderLocation" class="rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-slate-700 p-3 font-mono text-xs text-slate-700 dark:text-slate-200 break-all">Choose a drive</p>
-        <input type="search" id="backupFolderSearch" placeholder="Filter folders..." aria-label="Filter folders"
-            oninput="renderBackupFolders()" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-900 dark:text-white">
-        <p id="backupFolderStatus" role="status" class="text-xs text-slate-500 dark:text-slate-400"></p>
-        <ul id="backupFolderList" aria-label="Folders" class="max-h-72 overflow-y-auto rounded-xl border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-800"></ul>
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-700">
-            <button type="button" onclick="closeBackupFolderPicker()" class="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-200 font-bold text-xs">Cancel</button>
-            <button type="button" id="useBackupFolderButton" onclick="selectBackupFolder()" disabled
-                class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed">Use This Folder</button>
-        </div>
     </div>
 </div>
 
@@ -586,120 +563,23 @@
 
 @push('scripts')
 <script>
-    const backupFolderModal = document.getElementById('backupFolderPicker');
-    const backupFolderInput = document.getElementById('backupStoragePath');
-    const backupFolderStatus = document.getElementById('backupFolderStatus');
-    const backupFolderSearch = document.getElementById('backupFolderSearch');
-    let backupFolderState = { path: null, parent: null, can_select: false, folders: [] };
-    let backupFolderRequest = null;
-
-    function openBackupFolderPicker() {
-        backupFolderModal.classList.remove('hidden');
-        backupFolderModal.classList.add('flex');
-        backupFolderSearch.focus();
-        const initial = backupFolderInput.dataset.selected === 'true'
-            ? backupFolderInput.value
-            : document.getElementById('chooseBackupFolderButton').dataset.initialFolder;
-        loadBackupFolders(initial);
-    }
-
-    function closeBackupFolderPicker() {
-        if (backupFolderModal.classList.contains('hidden')) return;
-        if (backupFolderRequest) backupFolderRequest.abort();
-        backupFolderModal.classList.add('hidden');
-        backupFolderModal.classList.remove('flex');
-        document.getElementById('chooseBackupFolderButton').focus();
-    }
-
-    async function loadBackupFolders(path = null) {
-        if (backupFolderRequest) backupFolderRequest.abort();
-        const request = new AbortController();
-        backupFolderRequest = request;
-        backupFolderState = { path: null, parent: null, can_select: false, folders: [] };
-        document.getElementById('useBackupFolderButton').disabled = true;
-        document.getElementById('backupFolderUp').disabled = true;
-        document.getElementById('backupFolderList').replaceChildren();
-        backupFolderStatus.textContent = 'Loading folders...';
-        backupFolderSearch.value = '';
-
-        const url = new URL(@json(route('backup.folders')), window.location.origin);
-        if (path) url.searchParams.set('path', path);
+    async function openBackupFolderPicker() {
+        const button = document.getElementById('chooseBackupFolderButton');
+        const status = document.getElementById('nativeFolderStatus');
+        button.disabled = true;
+        status.textContent = 'Select a folder in the Windows folder chooser.';
         try {
-            const response = await fetch(url, {
-                headers: { Accept: 'application/json' },
-                credentials: 'same-origin',
-                signal: request.signal
+            const response = await fetch(@json(route('backup.folder-picker')), {
+                method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content},
+                body: JSON.stringify({initial_directory: document.getElementById('backupStoragePath').value || button.dataset.initialFolder})
             });
             const data = await response.json();
-            if (backupFolderRequest !== request) return;
-            if (!response.ok) throw new Error(data.message || 'Unable to open this folder.');
-            backupFolderState = data;
-            document.getElementById('backupFolderLocation').textContent = data.path || 'Choose a drive';
-            document.getElementById('backupFolderUp').disabled = !data.parent;
-            document.getElementById('useBackupFolderButton').disabled = !data.can_select;
-            backupFolderStatus.textContent = data.path && !data.can_select
-                ? 'Backups cannot be saved here. Choose another folder.'
-                : data.path ? 'Select this folder or open a subfolder.' : 'Choose a drive to browse its folders.';
-            renderBackupFolders();
-        } catch (error) {
-            if (error.name !== 'AbortError' && backupFolderRequest === request) {
-                backupFolderStatus.textContent = error.message;
-            }
-        }
+            if (!response.ok) throw new Error(data.message || 'Unable to open the folder chooser.');
+            if (!data.cancelled) document.getElementById('backupStoragePath').value = data.path;
+            status.textContent = data.cancelled ? 'Selection cancelled.' : 'Folder selected. Save settings to use it.';
+        } catch (error) { status.textContent = error.message; }
+        finally { button.disabled = false; }
     }
-
-    function renderBackupFolders() {
-        const list = document.getElementById('backupFolderList');
-        list.replaceChildren();
-        const search = backupFolderSearch.value.trim().toLowerCase();
-        const folders = backupFolderState.folders.filter(folder => folder.name.toLowerCase().includes(search));
-        folders.forEach(folder => {
-            const row = document.createElement('li');
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'w-full flex items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-dark-800';
-            const icon = document.createElement('i');
-            icon.className = backupFolderState.path ? 'fas fa-folder text-amber-500' : 'fas fa-hard-drive text-red-500';
-            icon.setAttribute('aria-hidden', 'true');
-            const name = document.createElement('span');
-            name.className = 'break-all';
-            name.textContent = folder.name;
-            button.append(icon, name);
-            button.addEventListener('click', () => loadBackupFolders(folder.path));
-            row.appendChild(button);
-            list.appendChild(row);
-        });
-        if (!folders.length) {
-            const empty = document.createElement('li');
-            empty.className = 'p-4 text-xs text-slate-500 dark:text-slate-400';
-            empty.textContent = search ? 'No matching folders.' : 'No subfolders in this folder.';
-            list.appendChild(empty);
-        }
-    }
-
-    function selectBackupFolder() {
-        if (!backupFolderState.path || !backupFolderState.can_select) return;
-        backupFolderInput.value = backupFolderState.path;
-        backupFolderInput.dataset.selected = 'true';
-        closeBackupFolderPicker();
-    }
-
-    backupFolderModal.addEventListener('click', event => {
-        if (event.target === backupFolderModal) closeBackupFolderPicker();
-    });
-    backupFolderModal.addEventListener('keydown', event => {
-        if (event.key !== 'Tab') return;
-        const controls = [...backupFolderModal.querySelectorAll('button:not([disabled]), input')];
-        const first = controls[0];
-        const last = controls[controls.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first.focus();
-        }
-    });
 
     function switchBackupTab(tab) {
         const activeBtn = document.getElementById('tabActiveBtn');

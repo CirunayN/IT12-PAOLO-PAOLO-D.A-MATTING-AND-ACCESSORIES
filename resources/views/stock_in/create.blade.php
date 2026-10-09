@@ -260,7 +260,8 @@
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                         Category <span class="text-rose-500">*</span>
                     </label>
-                    <select name="New_Category_ID"
+                    <button type="button" onclick="openCategoryCreator()" class="mb-2 text-xs font-bold text-red-500">+ New Category</button>
+                    <select name="New_Category_ID" data-category-select="product"
                         class="w-full px-4 py-3 rounded-xl bg-white dark:bg-dark-800 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500">
                         <option value="">Select Category</option>
                         @foreach($categories as $cat)
@@ -280,10 +281,13 @@
                         </label>
                         <span class="text-xs font-bold text-slate-400"><span id="newProductImageCount">0</span> / 5</span>
                     </div>
+                    <button id="productImageDropzone" type="button" class="w-full rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 p-6 text-center text-sm font-bold" onclick="document.getElementById('newProductImages').click()">
+                        <i class="fas fa-cloud-arrow-up text-red-500 block text-2xl mb-2"></i> Drag and drop product photos here, or choose files
+                    </button>
                     <input type="file" name="images[]" id="newProductImages" multiple disabled
                         accept="image/jpeg,image/png,image/webp,image/gif"
                         aria-describedby="newProductImagesHelp newProductImagesError"
-                        class="block w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-dark-800 text-sm text-slate-600 dark:text-slate-300 file:mr-4 file:border-0 file:bg-red-600 file:px-4 file:py-3 file:text-xs file:font-bold file:text-white hover:file:bg-red-500">
+                        class="hidden">
                     <p id="newProductImagesHelp" class="text-[11px] text-slate-400">
                         Add up to 5 photos (JPG, PNG, WebP or GIF), 5 MB each. The first photo is the main product image.
                     </p>
@@ -506,9 +510,9 @@ function renderProductImagePreviews() {
     });
 }
 
-productImagesInput.addEventListener('change', () => {
+function addProductImages(files) {
     const errors = new Set();
-    for (const file of productImagesInput.files) {
+    for (const file of files) {
         if (!['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(file.type)) {
             errors.add('Choose JPG, PNG, WebP or GIF images.');
         } else if (file.size > 5 * 1024 * 1024) {
@@ -522,6 +526,14 @@ productImagesInput.addEventListener('change', () => {
     productImagesError.textContent = [...errors].join(' ');
     productImagesError.classList.toggle('hidden', errors.size === 0);
     renderProductImagePreviews();
+}
+productImagesInput.addEventListener('change', () => addProductImages(productImagesInput.files));
+const imageDropzone = document.getElementById('productImageDropzone');
+imageDropzone.addEventListener('dragover', event => { event.preventDefault(); imageDropzone.classList.add('border-red-500'); });
+imageDropzone.addEventListener('dragleave', () => imageDropzone.classList.remove('border-red-500'));
+imageDropzone.addEventListener('drop', event => {
+    event.preventDefault(); imageDropzone.classList.remove('border-red-500');
+    if (!productImagesInput.disabled) addProductImages(event.dataTransfer.files);
 });
 
 const qtyInput = document.getElementById('qtyInput');

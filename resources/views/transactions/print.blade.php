@@ -203,6 +203,7 @@
 
     </style>
 
+@if($downloadPdf ?? false)<style>@page {margin:0;} body {width:auto!important;padding:15mm!important;} body,table {font-family:'DejaVu Sans',sans-serif;}.report-page{width:100%;padding:0;} .information,.signature-area{display:block;}</style>@endif
 </head>
 
 
@@ -211,13 +212,8 @@
 <div class="report-page">
 
 
-<button
-    type="button"
-    onclick="window.print()"
-    class="print-button no-print"
->
-    Print Report
-</button>
+@include('shared.print-actions')
+
 
 
 <div class="header">
@@ -267,7 +263,7 @@
             Generated:
         </strong>
 
-        {{ now()->format('F d, Y h:i A') }}
+        {{ now()->timezone('Asia/Manila')->format('F d, Y h:i A') }}
     </p>
 
 </div>
@@ -448,19 +444,7 @@
 
 </div>
 
-<script>
-    window.addEventListener(
-        'load',
-        function () {
-            setTimeout(
-                function () {
-                    window.print();
-                },
-                250
-            );
-        }
-    );
-</script>
+
 
 </body>
 

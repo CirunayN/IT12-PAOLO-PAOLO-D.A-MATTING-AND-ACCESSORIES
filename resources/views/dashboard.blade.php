@@ -12,22 +12,20 @@
             </h1>
             @include('reports.tabs')
         </div>
-        <div class="flex items-center gap-3">
-            <a href="{{ route('pos.index') }}" class="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all">
-                <i class="fas fa-cash-register"></i>
-                <span>Open POS</span>
-            </a>
-            <a href="{{ route('stock-in.create') }}" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
-                <i class="fas fa-truck-ramp-box text-red-500"></i>
-                <span>Receive Stock</span>
-            </a>
-        </div>
+
     </div>
 
-    <!-- 5-Column Stats Grid with Featured Main "Today's Sales" Hero Card -->
+    <form data-auto-filter method="GET" action="{{ route('dashboard') }}" class="glass-card rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label for="dashboardStart" class="block text-xs font-bold mb-1">From Date</label><input id="dashboardStart" type="date" name="start_date" value="{{ $startDate }}" required class="w-full rounded-xl px-3 py-2.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-dark-900"></div>
+        <div><label for="dashboardEnd" class="block text-xs font-bold mb-1">To Date</label><input id="dashboardEnd" type="date" name="end_date" value="{{ $endDate }}" min="{{ $startDate }}" required class="w-full rounded-xl px-3 py-2.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-dark-900"></div>
+        <noscript><button type="submit">Apply Dates</button></noscript>
+    </form>
+    <script>document.getElementById('dashboardStart').addEventListener('change', () => { const end = document.getElementById('dashboardEnd'), start = document.getElementById('dashboardStart').value; end.min = start; if (end.value < start) end.value = start; });</script>
+
+    <!-- 5-Column Stats Grid with Featured Main "Sales in Selected Period" Hero Card -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 items-stretch">
 
-        <!-- MAIN FEATURED HERO CARD: Today's Sales (Spans 2 columns, larger typography & live badge) -->
+        <!-- MAIN FEATURED HERO CARD: Sales in Selected Period (Spans 2 columns, larger typography & live badge) -->
         <div class="md:col-span-2 lg:col-span-2 glass-card rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/30 dark:border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-slate-50 to-slate-100 dark:from-emerald-950/40 dark:via-dark-900 dark:to-dark-850 shadow-lg shadow-emerald-500/5 relative overflow-hidden flex flex-col justify-between">
             <!-- Background Glow Accent -->
             <div class="absolute -right-8 -bottom-8 w-40 h-40 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -36,7 +34,7 @@
                 <div class="flex items-center justify-between mb-4">
                     <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        Today's Sales
+                        Sales in Selected Period
                     </span>
                     <a href="{{ route('pos.index') }}" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1">
                         <span>Terminal</span>
@@ -54,9 +52,9 @@
                     <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xs">
                         <i class="fas fa-receipt"></i>
                     </div>
-                    <span><strong>{{ $todaySalesCount }}</strong> completed {{ Str::plural('transaction', $todaySalesCount) }} today</span>
+                    <span><strong>{{ $todaySalesCount }}</strong> completed {{ Str::plural('transaction', $todaySalesCount) }}</span>
                 </div>
-                <span class="text-slate-400 font-semibold">{{ date('F d, Y') }}</span>
+                <span class="text-slate-400 font-semibold">{{ $periodLabel }}</span>
             </div>
         </div>
 
@@ -64,7 +62,7 @@
         <div class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Sales</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">All-Time Sales</span>
                     <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-base">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -99,10 +97,10 @@
         </div>
 
         <!-- STAT CARD 4: Products & Alerts -->
-        <div class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md flex flex-col justify-between">
+        <a id="totalItemsCard" href="{{ route('products.index') }}" class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Catalog Items</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Items</span>
                     <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-base">
                         <i class="fas fa-boxes-packing"></i>
                     </div>
@@ -113,13 +111,13 @@
             </div>
             <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs flex items-center gap-3">
                 <span class="text-amber-500 font-bold flex items-center gap-1">
-                    <i class="fas fa-triangle-exclamation text-[10px]"></i> {{ $lowStockCount }} Low
+                    <i class="fas fa-triangle-exclamation text-[10px]"></i> {{ $lowStockCount }} Low on Stock
                 </span>
                 <span class="text-rose-500 font-bold flex items-center gap-1">
-                    <i class="fas fa-circle-xmark text-[10px]"></i> {{ $outOfStockCount }} Empty
+                    <i class="fas fa-circle-xmark text-[10px]"></i> {{ $outOfStockCount }} Out of Stock
                 </span>
             </div>
-        </div>
+        </a>
 
     </div>
 
@@ -191,74 +189,7 @@
             </div>
         </div>
 
-        <!-- Recent Stock Deliveries (7 cols) -->
-        <div class="lg:col-span-7 glass-card rounded-3xl p-5 sm:p-6 border shadow-sm flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
-                    <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center">
-                            <i class="fas fa-truck-ramp-box text-xs"></i>
-                        </div>
-                        <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">Recent Stock Deliveries</h3>
-                    </div>
-                    <a href="{{ route('stock-in.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors">
-                        View All &rarr;
-                    </a>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead>
-                            <tr class="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
-                                <th class="px-3 py-2.5 font-bold whitespace-nowrap">Batch ID</th>
-                                <th class="px-3 py-2.5 font-bold min-w-[170px]">Product Name</th>
-                                <th class="px-3 py-2.5 font-bold whitespace-nowrap">Received By</th>
-                                <th class="px-3 py-2.5 font-bold text-right whitespace-nowrap">Qty</th>
-                                <th class="px-3 py-2.5 font-bold text-right whitespace-nowrap">Unit Cost</th>
-                                <th class="px-3 py-2.5 font-bold text-right whitespace-nowrap">Retail</th>
-                                <th class="px-3 py-2.5 font-bold text-right whitespace-nowrap">Date</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
-                            @forelse($recentStockIns as $stockIn)
-                            <tr class="hover:bg-slate-50 dark:hover:bg-dark-800/40 transition-colors">
-                                <td class="px-3 py-3 font-mono font-bold text-blue-500 whitespace-nowrap">
-                                    #SI-{{ $stockIn->ID }}
-                                </td>
-                                <td class="px-3 py-3 font-medium text-slate-800 dark:text-slate-200 max-w-[200px]">
-                                    <div class="truncate text-xs font-bold" title="{{ $stockIn->product->Name ?? 'Product' }}">
-                                        {{ $stockIn->product->Name ?? 'Product' }}
-                                    </div>
-                                    <div class="text-[10px] text-slate-400">{{ $stockIn->product->category->Name ?? 'Accessory' }}</div>
-                                </td>
-                                <td class="px-3 py-3 whitespace-nowrap">
-                                    <div class="font-bold text-xs text-slate-800 dark:text-slate-200">{{ $stockIn->user->name ?? 'Admin' }}</div>
-                                    <span class="inline-block text-[10px] font-semibold text-slate-400">{{ $stockIn->user->role ?? 'Staff' }}</span>
-                                </td>
-                                <td class="px-3 py-3 text-right font-black text-green-500 whitespace-nowrap">
-                                    +{{ number_format($stockIn->Quantity, 0) }}
-                                </td>
-                                <td class="px-3 py-3 text-right text-xs text-slate-500 dark:text-slate-400 font-mono whitespace-nowrap">
-                                    ₱{{ number_format($stockIn->Cost_Price, 2) }}
-                                </td>
-                                <td class="px-3 py-3 text-right text-xs font-bold text-slate-900 dark:text-white font-mono whitespace-nowrap">
-                                    ₱{{ number_format($stockIn->Retail_Price, 2) }}
-                                </td>
-                                <td class="px-3 py-3 text-right text-xs text-slate-400 whitespace-nowrap">
-                                    {{ $stockIn->created_at ? $stockIn->created_at->format('M d') : '-' }}
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="7" class="px-3 py-8 text-center text-slate-400 text-xs">No stock-in records found.</td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
+        @include('dashboard.stock-alerts')
     </div>
 
     <!-- Category Overview Cards -->
@@ -268,24 +199,11 @@
                 <i class="fas fa-tags text-purple-500"></i>
                 Product Categories
             </h3>
-            <a href="{{ route('products.index') }}" class="text-xs font-bold text-purple-500 hover:text-red-400 transition-colors">
-                Browse Catalog &rarr;
-            </a>
+            <button type="button" onclick="openCategoryManager()" class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:text-red-500 transition-colors">View / Manage Categories &rarr;</button>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5">
-            @foreach($categories as $cat)
-            <a href="{{ route('products.index', ['category_id' => $cat->ID]) }}" class="p-4 rounded-2xl bg-slate-50 dark:bg-dark-800/60 border border-slate-200 dark:border-slate-700/60 hover:border-purple-500/50 hover:shadow-md transition-all text-left group">
-                <div class="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-xs mb-2 group-hover:bg-purple-500 group-hover:text-white transition-colors">
-                    <i class="fas fa-folder"></i>
-                </div>
-                <div class="font-bold text-sm text-slate-800 dark:text-slate-200 group-hover:text-purple-500 transition-colors line-clamp-1">
-                    {{ $cat->Name }}
-                </div>
-                <div class="text-xs text-slate-400 mt-1">
-                    {{ $cat->products_count }} Products
-                </div>
-            </a>
-            @endforeach
+        <div class="flex flex-wrap gap-4 text-sm text-slate-600 dark:text-slate-300">
+            <span><strong data-category-counter="active">{{ $categories->where('Is_Archived', false)->count() }}</strong> Active Categories</span>
+            <span><strong data-category-counter="archived">{{ $categories->where('Is_Archived', true)->count() }}</strong> Archived Categories</span>
         </div>
     </div>
 

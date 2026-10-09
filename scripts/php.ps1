@@ -6,7 +6,8 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectDirectory = Split-Path -Parent $PSScriptRoot
 $driverDirectory = Join-Path $projectDirectory 'storage\app\sqlserver-setup\drivers-5.13.3\Windows'
-$configurationDirectory = Join-Path $projectDirectory 'storage\app\sqlserver-setup\php-conf'
+$configurationRoot = Join-Path $projectDirectory 'storage\app\sqlserver-setup\php-conf'
+$configurationDirectory = Join-Path $configurationRoot ('runtime-' + $PID)
 $phpExecutable = (Get-Command php.exe -ErrorAction Stop).Source
 $phpDetails = @'
 <?php
@@ -32,5 +33,7 @@ try {
     $phpExitCode = $LASTEXITCODE
 } finally {
     $env:PHP_INI_SCAN_DIR = $previousScanDirectory
+    Remove-Item -LiteralPath (Join-Path $configurationDirectory 'sqlserver.ini') -ErrorAction SilentlyContinue
+    if (Test-Path -LiteralPath $configurationDirectory) { [System.IO.Directory]::Delete($configurationDirectory) }
 }
 exit $phpExitCode

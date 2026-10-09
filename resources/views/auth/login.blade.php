@@ -5,34 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | Paolo Paolo</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                        jdm: ['Dela Gothic One', 'Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                        },
-                        amber: {
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    @include('shared.offline-assets')
     <style>
         body {
             background-color: #080b11;
@@ -50,7 +23,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 text-slate-100">
+<body class="scenic-auth min-h-screen flex items-center justify-center p-4 text-slate-100">
 
     <div class="w-full max-w-md login-card rounded-3xl p-8 sm:p-10 relative overflow-hidden">
         <!-- Japanese Sunburst Red Top Trim -->
@@ -107,8 +80,12 @@
                 </div>
             </div>
 
-    
-
+            <div class="flex justify-end">
+                <a id="forgotPasswordLink" href="{{ route('password.request') }}"
+                   class="text-sm font-semibold text-red-300 hover:text-white underline underline-offset-4 rounded focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-4 focus:ring-offset-slate-900">
+                    Forgot password?
+                </a>
+            </div>
             <!-- Submit Button -->
             <button type="submit"
                 class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold font-display text-sm tracking-wide shadow-lg shadow-red-600/30 transition-all transform hover:-translate-y-0.5 cursor-pointer mt-2">

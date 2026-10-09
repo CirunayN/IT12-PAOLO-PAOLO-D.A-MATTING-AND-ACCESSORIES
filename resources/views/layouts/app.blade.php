@@ -8,35 +8,8 @@
     <title>{{ $title ?? 'Paolo Paolo | D.A Matting & Accessories' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @include('shared.offline-assets')
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                        jdm: ['Dela Gothic One', 'Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#fef2f2', 100: '#fee2e2', 200: '#fecaca', 300: '#fca5a5',
-                            400: '#f87171', 500: '#ef4444', 600: '#dc2626', 700: '#b91c1c',
-                            800: '#991b1b', 900: '#7f1d1d',
-                        },
-                        amber: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
-                        dark: { 900: '#080b11', 850: '#0d121c', 800: '#131926', 700: '#1d2538', 600: '#2d3a54' }
-                    }
-                }
-            }
-        }
-    </script>
 
     <style>
         html.dark { color-scheme: dark; }
@@ -60,7 +33,7 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen antialiased flex flex-col bg-slate-100 text-slate-800 dark:bg-[#080b11] dark:text-slate-100 text-base selection:bg-red-600 selection:text-white">
+<body class="scenic-app min-h-screen antialiased flex flex-col bg-slate-100 text-slate-800 dark:bg-[#080b11] dark:text-slate-100 text-base selection:bg-red-600 selection:text-white">
 
 <header class="h-20 bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-40 px-4 sm:px-8 flex items-center justify-between shadow-sm">
     <div class="flex items-center gap-3 sm:gap-4">
@@ -73,10 +46,10 @@
             <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" title="Home"
                 class="flex items-center gap-3 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
                 <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
-                
+
                 <div class="text-left hidden sm:block">
                     <div class="font-jdm text-slate-900 dark:text-white text-base sm:text-lg tracking-wider group-hover:text-red-500 transition-colors">
-                        PAOLO PAOLA
+                        PAOLO PAOLO
                     </div>
                     <div class="text-[11px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5 flex items-center gap-1.5">
                         <span>D.A Matting &amp; Accessories</span>
@@ -86,11 +59,18 @@
         </div>
 
     <div class="flex items-center gap-2.5 sm:gap-3.5">
-        <a href="{{ route('pos.index') }}" title="POS Terminal" aria-label="POS Terminal"
-           class="flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-bold text-xs sm:text-sm shadow-md shadow-red-600/25 transition-all transform hover:-translate-y-0.5">
-            <i class="fas fa-cash-register text-base"></i>
-            <span class="font-display hidden sm:inline">POS Terminal</span>
+        @unless(request()->routeIs('pos.*'))
+        <a id="topbarPosLink" href="{{ route('pos.index') }}" title="Open POS" aria-label="Open POS"
+           class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm shadow-md transition-all">
+            <i class="fas fa-cash-register"></i><span class="hidden sm:inline">Open POS</span>
         </a>
+        @endunless
+        @if(auth()->user()?->isAdmin() && !request()->routeIs('products.*', 'stock-in.*'))
+        <a id="topbarRestockLink" href="{{ route('stock-in.create') }}" title="Receive Stock" aria-label="Receive Stock"
+           class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-800 dark:text-white font-bold text-xs sm:text-sm border border-slate-300 dark:border-slate-700">
+            <i class="fas fa-truck-ramp-box text-red-500"></i><span class="hidden sm:inline">Receive Stock</span>
+        </a>
+        @endif
 
         <button type="button" id="themeToggleBtn" title="Toggle Light / Dark Mode"
                 class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base sm:text-lg transition-colors cursor-pointer">
@@ -370,6 +350,10 @@
     </div>
 </div>
 
+@if(auth()->user()?->isAdmin())
+    @include('shared.category-manager')
+@endif
+@include('shared.report-output')
 @stack('scripts')
 </body>
 </html>

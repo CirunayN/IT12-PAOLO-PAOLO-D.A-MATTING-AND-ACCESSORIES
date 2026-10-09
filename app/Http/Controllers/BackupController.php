@@ -40,6 +40,8 @@ class BackupController extends Controller
         return [
             'backup_mode' => 'automatic',
             'frequency' => '1_day',
+            'backup_time' => '18:00',
+            'last_automatic_backup_at' => null,
             'retention' => '1_month',
             'storage_path' => $this->defaultBackupDir,
             'last_backup_at' => null,
@@ -55,7 +57,7 @@ class BackupController extends Controller
         if (!File::exists($dir)) {
             File::makeDirectory($dir, 0777, true, true);
         }
-        File::put($this->settingsFile, json_encode($settings, JSON_PRETTY_PRINT));
+        File::replace($this->settingsFile, json_encode($settings, JSON_PRETTY_PRINT | JSON_THROW_ON_ERROR));
     }
 
     protected function getBackupDirectory(array $settings): string
@@ -148,39 +150,75 @@ class BackupController extends Controller
         return view('backup.index', compact('settings', 'files', 'archivedFiles', 'backupDir', 'archiveDir'));
     }
 
+    private function withBackupLock(callable $action)
+    {
+        File::ensureDirectoryExists(storage_path('app'));
+        $lock = fopen(storage_path('app/database-backup.lock'), 'c');
+        if (!$lock) throw new \RuntimeException('Unable to open the backup lock.');
+        try {
+            if (!flock($lock, LOCK_EX | LOCK_NB)) return null;
+            return $action();
+        } finally {
+            flock($lock, LOCK_UN);
+            fclose($lock);
+        }
+    }
+
     public function createBackup()
+    {
+        try {
+            $result = $this->withBackupLock(fn () => $this->writeBackup(false, Carbon::now('Asia/Manila')));
+            if ($result === null) return redirect()->route('backup.index')->with('error', 'A backup is already running.');
+            return redirect()->route('backup.index')->with('success', $result);
+        } catch (\Throwable $exception) {
+            Log::error('Database backup failed.', ['message' => $exception->getMessage()]);
+            return redirect()->route('backup.index')->with('error', 'Backup failed. Check the destination folder and application log.');
+        }
+    }
+
+    public function runScheduledBackup(?Carbon $now = null): bool
+    {
+        $now ??= Carbon::now('Asia/Manila');
+        try {
+            return (bool) $this->withBackupLock(function () use ($now) {
+                if (!app(\App\Services\BackupSchedule::class)->isDue($this->getSettings(), $now)) return false;
+                $this->writeBackup(true, $now);
+                return true;
+            });
+        } catch (\Throwable $exception) {
+            Log::error('Automatic database backup failed; it will be retried.', ['message' => $exception->getMessage()]);
+            return false;
+        }
+    }
+
+    private function writeBackup(bool $automatic, Carbon $now): string
     {
         $settings = $this->getSettings();
         $backupDir = $this->getBackupDirectory($settings);
-
         $extension = DB::connection()->getDriverName() === 'sqlsrv' ? 'json' : 'sql';
-        $filename = 'backup_p7db_' . date('Y-m-d_His') . '.' . $extension;
-        $fullPath = rtrim($backupDir, '\\/') . DIRECTORY_SEPARATOR . $filename;
-
-        $success = $this->performDatabaseDump($fullPath);
-
-        if ($success && File::exists($fullPath)) {
-            $settings['last_backup_at'] = date('Y-m-d H:i:s');
-            $this->saveSettings($settings);
-
-            $this->cleanupOldBackups($settings, $backupDir);
-
-            $msg = "Database backup '{$filename}' created successfully in {$backupDir}!";
-
-            if (!empty($settings['gdrive_enabled'])) {
-                $uploaded = $this->uploadToGoogleDrive($fullPath, $filename);
-
-                if ($uploaded) {
-                    $msg .= " Google Drive upload completed successfully.";
-                } else {
-                    $msg .= " However, the Google Drive upload failed. The local backup is still available.";
-                }
+        $filename = 'backup_p7db_'.$now->format('Y-m-d_His').'_' . bin2hex(random_bytes(4)).'.'.$extension;
+        $fullPath = rtrim($backupDir, '\\/').DIRECTORY_SEPARATOR.$filename;
+        $temporary = $fullPath.'.partial';
+        try {
+            if (!$this->performDatabaseDump($temporary) || !File::exists($temporary) || File::size($temporary) === 0) {
+                throw new \RuntimeException('Database dump did not complete.');
             }
-
-            return redirect()->route('backup.index')->with('success', $msg);
+            File::move($temporary, $fullPath);
+        } finally {
+            if (File::exists($temporary)) File::delete($temporary);
         }
-
-        return redirect()->route('backup.index')->with('error', "Failed to create database backup. Please verify directory permissions.");
+        // Re-read to retain settings changed while the snapshot was being written.
+        $current = $this->getSettings();
+        $current['last_backup_at'] = $now->toIso8601String();
+        if ($automatic) $current['last_automatic_backup_at'] = $now->toIso8601String();
+        $this->saveSettings($current);
+        $this->cleanupOldBackups($settings, $backupDir);
+        $message = "Database backup '{$filename}' created successfully in {$backupDir}!";
+        if (!empty($settings['gdrive_enabled'])) {
+            $message .= $this->uploadToGoogleDrive($fullPath, $filename)
+                ? ' Google Drive upload completed.' : ' Google Drive upload failed; the local backup is available.';
+        }
+        return $message;
     }
 
     protected function uploadToGoogleDrive(string $filePath, string $filename): bool
@@ -328,7 +366,7 @@ class BackupController extends Controller
         $threshold = Carbon::now()->subDays($days)->timestamp;
 
         foreach (File::files($dir) as $file) {
-            if (in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak', 'json'])) {
+            if (str_starts_with($file->getFilename(), 'backup_p7db_') && in_array(strtolower($file->getExtension()), ['sql', 'gz', 'bak', 'json'])) {
                 if ($file->getMTime() < $threshold) {
                     @unlink($file->getPathname());
                 }
@@ -479,11 +517,25 @@ class BackupController extends Controller
         }
     }
 
+    public function pickFolder(Request $request, \App\Services\NativeBackupFolderPicker $picker, BackupDirectoryBrowser $browser)
+    {
+        abort_unless(in_array($request->ip(), ['127.0.0.1', '::1']), 403, 'Choose the folder on the server computer.');
+        $validated = $request->validate(['initial_directory' => 'nullable|string|max:255']);
+        set_time_limit(310);
+        try {
+            $path = $picker->choose($validated['initial_directory'] ?? null);
+            return response()->json(['cancelled' => $path === null, 'path' => $path === null ? null : $browser->select($path)]);
+        } catch (\Throwable $exception) {
+            return response()->json(['message' => $exception->getMessage()], 422);
+        }
+    }
+
     public function updateSettings(Request $request)
     {
         $validated = $request->validate([
             'backup_mode' => 'required|in:automatic,manual',
             'frequency' => 'required|in:1_day,1_week,1_month',
+            'backup_time' => 'sometimes|required|date_format:H:i',
             'retention' => 'required|in:1_week,1_month,1_year,keep_all',
             'storage_path' => 'nullable|string|max:255',
             'gdrive_enabled' => 'nullable|boolean',
@@ -502,14 +554,21 @@ class BackupController extends Controller
         }
         $settings['backup_mode'] = $validated['backup_mode'];
         $settings['frequency'] = $validated['frequency'];
+        $settings['backup_time'] = $validated['backup_time'] ?? $settings['backup_time'];
         $settings['retention'] = $validated['retention'];
         $settings['storage_path'] = !empty($validated['storage_path']) ? $validated['storage_path'] : $this->defaultBackupDir;
         $settings['gdrive_enabled'] = !empty($request->gdrive_enabled);
         $settings['gdrive_folder_id'] = $validated['gdrive_folder_id'] ?? '';
         $settings['gdrive_email'] = $validated['gdrive_email'] ?? '';
 
-        $this->saveSettings($settings);
-
+        $saved = $this->withBackupLock(function () use ($settings) {
+            $latest = $this->getSettings();
+            $settings['last_backup_at'] = $latest['last_backup_at'];
+            $settings['last_automatic_backup_at'] = $latest['last_automatic_backup_at'];
+            $this->saveSettings($settings);
+            return true;
+        });
+        if (!$saved) return redirect()->route('backup.index')->with('error', 'A backup is running. Save settings after it finishes.');
         return redirect()->route('backup.index')->with('success', 'Backup settings updated successfully!');
     }
 }

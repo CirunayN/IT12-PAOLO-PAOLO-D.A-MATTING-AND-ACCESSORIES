@@ -236,7 +236,7 @@
                         </label>
 
                         <button type="button"
-                            onclick="openNewCategoryModal()"
+                            onclick="openCategoryCreator()"
                             class="text-xs font-bold text-red-500 hover:text-red-400 flex items-center gap-1">
                             <i class="fas fa-plus-circle"></i>
                             New Category
@@ -244,7 +244,7 @@
                     </div>
 
                     <select name="Category_ID"
-                        id="categorySelect"
+                        id="categorySelect" data-category-select="product"
                         class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
                         <option value="">Select Category</option>
 
@@ -463,52 +463,6 @@
 </div>
 
 <!-- NEW CATEGORY MODAL -->
-<div id="newCategoryModal"
-    class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
-
-    <div class="glass-card rounded-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 shadow-2xl space-y-4">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
-            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
-                <i class="fas fa-folder-plus text-red-500"></i>
-                Create New Category
-            </h3>
-
-            <button type="button"
-                onclick="closeNewCategoryModal()"
-                class="text-slate-400 hover:text-white text-2xl">
-                &times;
-            </button>
-        </div>
-
-        <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-                Category Name
-            </label>
-
-            <input type="text"
-                id="newCategoryInput"
-                class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm">
-
-            <p id="newCategoryError"
-                class="text-xs text-rose-500 mt-1 hidden"></p>
-        </div>
-
-        <div class="flex justify-end gap-3">
-            <button type="button"
-                onclick="closeNewCategoryModal()"
-                class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-dark-800 text-xs font-bold">
-                Cancel
-            </button>
-
-            <button type="button"
-                id="saveCategoryBtn"
-                onclick="submitNewCategory()"
-                class="px-5 py-2 rounded-xl bg-red-600 text-white text-xs font-bold">
-                Save Category
-            </button>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')
@@ -769,80 +723,6 @@ fileInput.addEventListener('change', e => {
         handleNewFiles(e.target.files);
     }
 });
-
-/* CATEGORY MODAL */
-function openNewCategoryModal() {
-    const modal = document.getElementById('newCategoryModal');
-
-    document.getElementById('newCategoryInput').value = '';
-    document.getElementById('newCategoryError').classList.add('hidden');
-
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
-
-function closeNewCategoryModal() {
-    const modal = document.getElementById('newCategoryModal');
-
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-
-function submitNewCategory() {
-    const input = document.getElementById('newCategoryInput');
-    const error = document.getElementById('newCategoryError');
-    const button = document.getElementById('saveCategoryBtn');
-    const name = input.value.trim();
-
-    if (!name) {
-        error.textContent = 'Category name is required.';
-        error.classList.remove('hidden');
-        return;
-    }
-
-    button.disabled = true;
-    button.textContent = 'Saving...';
-
-    fetch("{{ route('categories.store') }}", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ Name: name })
-    })
-    .then(response => response.json())
-    .then(data => {
-        button.disabled = false;
-        button.textContent = 'Save Category';
-
-        if (data.success && data.category) {
-            const select = document.getElementById('categorySelect');
-            const option = document.createElement('option');
-
-            option.value = data.category.id;
-            option.textContent = data.category.name;
-            option.selected = true;
-
-            select.appendChild(option);
-            closeNewCategoryModal();
-        } else {
-            error.textContent =
-                data.message ||
-                'Unable to create category.';
-
-            error.classList.remove('hidden');
-        }
-    })
-    .catch(() => {
-        button.disabled = false;
-        button.textContent = 'Save Category';
-
-        error.textContent = 'Connection error.';
-        error.classList.remove('hidden');
-    });
-}
 
 document.addEventListener('click', e => {
     if (

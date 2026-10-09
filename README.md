@@ -16,6 +16,23 @@ Open http://127.0.0.1:8000. Keep the launcher running while using the app; press
 
 You can also use `composer start`. The launcher loads the Microsoft SQL Server PHP extensions from this project's private storage directory, so it does not require changing the global PHP installation.
 
+## Offline use
+
+Once PHP, its SQL Server drivers, and the local database are installed, double-click `start.bat` to use the app without internet. The application serves its styles, fonts, icons, images, and JavaScript from this project. Login and password recovery, inventory, stock receiving, POS, reports, and local backups use the local server and SQL Express database. Google Drive backup uploads require internet.
+
+The compiled UI files are included in `public/assets/build`; keep this folder when copying or deploying the application. Normal startup does not need npm, Node.js, a Vite server, Bootstrap/Tailwind CDN access, or Google Fonts. The app uses Tailwind rather than Bootstrap, and Tailwind is compiled into a local stylesheet. Third-party asset licenses are included in the bundle's `licenses` folder.
+
+After changing a Blade template, Tailwind configuration, or frontend source, developers can rebuild the included assets:
+
+```powershell
+npm ci --ignore-scripts
+npm run build
+```
+
+Package installation needs internet the first time. The finished build works offline and is committed with the application. The local asset links include a build timestamp so browsers load updated styles after a rebuild.
+
+Asset references: [Tailwind compilation](https://v3.tailwindcss.com/docs/installation), [Font Awesome self-hosting](https://docs.fontawesome.com/web/setup/host-yourself/webfonts), [Fontsource self-hosted fonts](https://fontsource.org/docs/getting-started/install).
+
 ## Set up another Windows computer
 
 Install PHP 8.3, 8.4, or 8.5, Composer, SQL Server Express, and Microsoft ODBC Driver 17.8+ or 18. Configure the SQL Server instance to start automatically as a Windows service and grant your Windows account access to the app database.
@@ -89,3 +106,31 @@ Remove-Item Env:SQLSERVER_TEST_DATABASE
 The existing general test suite still includes tests for older registration, verification, and profile routes that the app no longer exposes.
 
 Microsoft references: [PHP driver installation](https://learn.microsoft.com/en-us/sql/connect/php/loading-the-php-sql-driver), [Windows authentication](https://learn.microsoft.com/en-us/sql/connect/php/how-to-connect-using-windows-authentication).
+
+## Dashboard, inventory and reports
+
+Dashboard From/To dates apply immediately to sales and recent transactions. Stock totals and the Low / Out of Stock list show current sellable inventory. Total Items opens Inventory. Inventory and receiving filters apply on selection; typing a search applies after a short pause. Inventory ordering offers newest/oldest, name, sellable stock and current retail price in either direction. Print and PDF exports keep the chosen order.
+
+Login includes Forgot password for the existing offline recovery flow. The main page and navigation use the supplied landscape and sidebar images from local `public/images/scenery` files, with theme-aware fade overlays and opaque content cards to keep text readable. Decorative backgrounds are hidden when printing.
+
+POS starts with a 70% product grid and 30% cart. The Layout slider saves the chosen split in the browser. On smaller screens the cart follows the grid. Open POS and Receive Stock are in the top bar and hide on their respective pages.
+
+Receive New Shipment supports creating products, adding categories and dropping up to five product photos. Edit Product includes each stock batch's received quantity, cost, retail price, expiration and condition. Quantity corrections preserve units already sold and the original processor.
+
+Print actions outside POS offer Print or Download PDF. Inventory and receiving exports include all records matching the selected filters, including records beyond the current page. PDF generation uses installed local libraries and works offline.
+
+## Scheduled backups and folder selection
+
+Manage Categories in Inventory or View / Manage Categories on Dashboard opens a modal with Active and Archived lists. Administrators can add, rename, archive and restore categories. Archiving preserves existing products and history; archived categories remain available in inventory filters but cannot be assigned to new products. An existing product can keep its archived category when editing other details. Backups from before category archiving restore those categories as active.
+
+Start with `start.bat` or `composer start` so the server and background backup scheduler run together. In Database Backup, choose Automatic, the frequency and a time in Philippine time, then Save Settings. The scheduler checks every minute. Keep the computer and app running; a missed backup runs on the next check after the selected time. Manual backups do not change the automatic schedule. Failed snapshots are retried; only completed snapshots update backup history. Retention only deletes this application's `backup_p7db_` files.
+
+Choose Folder opens the native Windows folder dialog on the server computer. Access the app through `127.0.0.1` or `localhost` for this feature, select a folder and Save Settings. Cloud uploads require internet when enabled. Worker logs are in `storage/logs/backup-worker.log` and `backup-worker-error.log`.
+
+Feature validation against a disposable SQL Server database:
+
+```powershell
+$env:SQLSERVER_TEST_DATABASE = 'it12_sqlserver_test'
+.\scripts\php.ps1 vendor/phpunit/phpunit/phpunit --filter 'ApplicationEnhancementsTest|BackupScheduleTest|SqlServerDatabaseTest'
+Remove-Item Env:SQLSERVER_TEST_DATABASE
+```

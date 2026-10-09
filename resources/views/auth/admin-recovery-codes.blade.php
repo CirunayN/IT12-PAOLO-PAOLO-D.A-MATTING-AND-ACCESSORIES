@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>New Admin Recovery Codes | Paolo Paolo</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    @include('shared.offline-assets')
     <style>
         body{background:#080b11;font-family:Arial,sans-serif}.auth-card{background:rgba(14,18,28,.96);border:1px solid rgba(245,158,11,.35)}
         @media print{body{background:#fff!important;color:#000!important}.no-print{display:none!important}.auth-card{border:0!important;background:#fff!important;box-shadow:none!important}.code{color:#000!important;border-color:#bbb!important;background:#fff!important}}
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 text-slate-100">
+<body class="scenic-auth min-h-screen flex items-center justify-center p-4 text-slate-100">
 <div class="w-full max-w-2xl auth-card rounded-3xl p-8 relative overflow-hidden">
     <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-red-600 to-amber-500"></div>
 
@@ -36,13 +35,15 @@
     </div>
 
     <div class="no-print flex flex-col sm:flex-row gap-3 mt-6">
-        <button type="button" onclick="window.print()" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-sm">
-            <i class="fas fa-print mr-1"></i> Print / Save Codes
+        <button type="button" onclick="openReportOutput(null, output => output === 'pdf' ? downloadRecoveryCodes(@js($codes)) : window.print())" class="flex-1 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-sm">
+            <i class="fas fa-print mr-1"></i> Print / Download Codes
         </button>
         <a href="{{ route('login') }}" class="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-500 font-bold text-sm text-center">
             Continue to Login
         </a>
     </div>
 </div>
+@include('shared.report-output')
+@include('shared.recovery-code-output')
 </body>
 </html>

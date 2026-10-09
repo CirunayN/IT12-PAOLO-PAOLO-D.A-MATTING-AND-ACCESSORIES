@@ -22,6 +22,9 @@ Route::get('/', function () {
         : redirect()->route('pos.index');
 });
 
+Route::post('/recovery-codes/download', [\App\Http\Controllers\RecoveryCodeExportController::class, 'download'])
+    ->middleware('throttle:10,1')->name('recovery-codes.download');
+
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/settings/account', [AccountSettingsController::class, 'show'])
         ->name('settings.account');
@@ -77,13 +80,21 @@ Route::middleware(['auth', 'active'])->group(function () {
         )->middleware('throttle:3,1')
             ->name('security.recovery.regenerate');
 
+        Route::get('/products/print', [ProductController::class, 'print'])->name('products.print');
+
         Route::resource('products', ProductController::class)->except(['destroy']);
 
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::put('/categories/{category}', [CategoryController::class, 'update'])->whereNumber('category')->name('categories.update');
+        Route::post('/categories/{category}/archive', [CategoryController::class, 'archive'])->whereNumber('category')->name('categories.archive');
+        Route::post('/categories/{category}/restore', [CategoryController::class, 'restore'])->whereNumber('category')->name('categories.restore');
         Route::post('/categories', [CategoryController::class, 'store'])
             ->name('categories.store');
 
         Route::get('/stock-in', [StockInController::class, 'index'])
             ->name('stock-in.index');
+
+        Route::get('/stock-in/print', [StockInController::class, 'print'])->name('stock-in.print');
 
         Route::get('/stock-in/create', [StockInController::class, 'create'])
             ->name('stock-in.create');
@@ -111,6 +122,8 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         Route::post('/backup/settings', [BackupController::class, 'updateSettings'])
             ->name('backup.settings');
+
+        Route::post('/backup/folder-picker', [BackupController::class, 'pickFolder'])->name('backup.folder-picker');
 
         Route::get('/backup/folders', [BackupController::class, 'browseFolders'])
             ->name('backup.folders');
