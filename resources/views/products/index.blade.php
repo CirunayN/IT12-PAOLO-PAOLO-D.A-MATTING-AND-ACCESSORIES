@@ -10,32 +10,21 @@
                 Inventory
             </h1>
         </div>
-<<<<<<< HEAD
-        <div class="flex items-center gap-3">
-            <a href="{{ route('stock-in.create') }}" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all">
-                <i class="fas fa-truck-ramp-box"></i>
-                <span>Receive New Shipment</span>
-=======
         <div class="flex items-center gap-2.5 flex-wrap">
             <a href="{{ route('reports.print', ['scope' => 'inventory', 'period' => 'overall']) }}" target="_blank" rel="noopener"
                 class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
                 <i class="fas fa-print text-blue-500"></i>
                 <span>Print Inventory PDF</span>
             </a>
-            <a href="{{ route('products.create') }}" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all">
-                <i class="fas fa-plus"></i>
-                <span>Add Product</span>
-            </a>
-            <a href="{{ route('stock-in.create') }}" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
-                <i class="fas fa-truck-ramp-box text-red-500"></i>
-                <span>Receive Stock</span>
->>>>>>> 662669a8547ff1c15dc141656cfa691afb833a27
+            <a href="{{ route('stock-in.create') }}" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm shadow-md shadow-red-600/25 flex items-center gap-2 transition-all">
+                <i class="fas fa-truck-ramp-box"></i>
+                <span>Receive New Shipment</span>
             </a>
         </div>
     </div>
 
     <!-- Status Tabs: Active vs Archived -->
-    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+    <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
         <a href="{{ route('products.index', ['tab' => 'active']) }}"
             class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 {{ $tab === 'active' ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-dark-700' }}">
             <i class="fas fa-box-check"></i>
