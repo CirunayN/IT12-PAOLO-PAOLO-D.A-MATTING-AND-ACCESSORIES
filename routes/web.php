@@ -38,6 +38,9 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/my-transactions/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
 
+    Route::get('/my-transactions/export-csv', [TransactionController::class, 'exportCsv'])
+        ->name('transactions.export_csv');
+
     Route::middleware(['role:Admin,Cashier,Employee'])->group(function () {
         Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
         Route::post('/pos/checkout', [PosController::class, 'checkout'])->name('pos.checkout');

@@ -10,7 +10,11 @@ return new class extends Migration
     {
         if (Schema::hasTable('tbl_Product') && !Schema::hasColumn('tbl_Product', 'Images')) {
             Schema::table('tbl_Product', function (Blueprint $table) {
-                $table->json('Images')->nullable()->after('Image');
+                if (Schema::hasColumn('tbl_Product', 'Image')) {
+                    $table->json('Images')->nullable()->after('Image');
+                } else {
+                    $table->json('Images')->nullable();
+                }
             });
         }
     }

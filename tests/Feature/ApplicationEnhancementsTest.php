@@ -146,6 +146,73 @@ class ApplicationEnhancementsTest extends TestCase
         }
     }
 
+    public function test_transaction_filters_and_exports_share_the_same_month_and_cashier_scope(): void
+    {
+        $cash = PaymentMethod::create(['Name' => 'Cash']);
+        $gcash = PaymentMethod::create(['Name' => 'GCash']);
+        $cashier = User::factory()->create(['role' => 'Cashier']);
+        $makeSale = fn ($date, $user, $payment, $total, $reference = null) => Sale::create([
+            'Date' => $date, 'User_ID' => $user->id, 'Payment_Method_ID' => $payment->ID,
+            'Total' => $total, 'GCash_Reference_Number' => $reference,
+        ]);
+        $target = $makeSale('2026-10-31 23:59:59', $cashier, $gcash, 125, 'GCASH-MERGE-104');
+        $makeSale('2026-11-01 00:00:00', $cashier, $gcash, 250, 'GCASH-NEXT-MONTH');
+        $makeSale('2026-10-20 12:00:00', $cashier, $cash, 50);
+        $makeSale('2026-10-20 12:00:00', $this->admin, $gcash, 75, 'GCASH-OTHER-USER');
+        $filters = ['period' => 'monthly', 'month' => '2026-10', 'payment_method' => 'GCash', 'cashier_id' => $cashier->id];
+        $this->actingAs($this->admin)->get(route('transactions.index', $filters))
+            ->assertOk()->assertViewHas('totalTransactions', 1)->assertViewHas('totalSales', 125.0)
+            ->assertViewHas('sales', fn ($sales) => $sales->pluck('ID')->all() === [$target->ID]);
+        $this->get(route('transactions.print', $filters))->assertOk()
+            ->assertViewHas('sales', fn ($sales) => $sales->pluck('ID')->all() === [$target->ID]);
+        $this->get(route('transactions.index', array_replace($filters, ['search' => 'INV-'.$target->ID])))
+            ->assertOk()->assertViewHas('totalTransactions', 1);
+        $csv = $this->get(route('transactions.export_csv', $filters))->assertOk()->streamedContent();
+        $this->assertStringContainsString('GCASH-MERGE-104', $csv);
+        $this->assertStringNotContainsString('GCASH-NEXT-MONTH', $csv);
+        $this->assertStringNotContainsString('GCASH-OTHER-USER', $csv);
+    }
+
+    public function test_cashiers_cannot_read_other_cashiers_transactions_or_assign_them_a_sale(): void
+    {
+        $cash = PaymentMethod::create(['Name' => 'Cash']);
+        $cashier = User::factory()->create(['role' => 'Cashier']);
+        Sale::create(['Date' => now(), 'Total' => 100, 'User_ID' => $cashier->id, 'Payment_Method_ID' => $cash->ID]);
+        Sale::create(['Date' => now(), 'Total' => 200, 'User_ID' => $this->admin->id, 'Payment_Method_ID' => $cash->ID]);
+        $filters = ['period' => 'overall', 'cashier_id' => $this->admin->id];
+        $this->actingAs($cashier)->get(route('transactions.index', $filters))
+            ->assertOk()->assertViewHas('totalSales', 100.0)->assertViewHas('totalTransactions', 1);
+        $this->get(route('transactions.print', $filters))->assertOk()->assertViewHas('totalSales', 100.0);
+        $remaining = $this->batch->fresh()->Remaining_Quantity;
+        $this->postJson(route('pos.checkout'), [
+            'payment_method_id' => $cash->ID, 'user_id' => $this->admin->id, 'amount_tendered' => 100,
+            'items' => [['product_id' => $this->product->ID, 'quantity' => 1]],
+        ])->assertForbidden();
+        $this->assertEquals($remaining, $this->batch->fresh()->Remaining_Quantity);
+        $this->assertSame(2, Sale::count());
+    }
+
+    public function test_admin_checkout_assignment_requires_an_active_cashier(): void
+    {
+        $cash = PaymentMethod::create(['Name' => 'Cash']);
+        $cashier = User::factory()->create(['role' => 'Cashier']);
+        $payload = ['payment_method_id' => $cash->ID, 'user_id' => $cashier->id, 'amount_tendered' => 100,
+            'items' => [['product_id' => $this->product->ID, 'quantity' => 1]]];
+        $this->actingAs($this->admin)->postJson(route('pos.checkout'), $payload)->assertOk()->assertJsonPath('success', true);
+        $this->assertEquals($cashier->id, Sale::first()->User_ID);
+        $cashier->update(['is_active' => false]);
+        $this->postJson(route('pos.checkout'), $payload)->assertUnprocessable()->assertJsonValidationErrors('user_id');
+        $this->assertSame(1, Sale::count());
+    }
+
+    public function test_transaction_filters_reject_invalid_sql_server_values(): void
+    {
+        $this->actingAs($this->admin)->getJson(route('transactions.index', ['cashier_id' => 'broken']))
+            ->assertUnprocessable()->assertJsonValidationErrors('cashier_id');
+        $this->getJson(route('transactions.index', ['month' => '2026-13']))
+            ->assertUnprocessable()->assertJsonValidationErrors('month');
+    }
+
     public function test_inventory_order_uses_sellable_quantities_and_current_prices_and_exports_keep_it(): void
     {
         $create = fn ($name) => Product::create(['Name' => $name, 'Category_ID' => $this->product->Category_ID, 'Status_ID' => $this->product->Status_ID]);

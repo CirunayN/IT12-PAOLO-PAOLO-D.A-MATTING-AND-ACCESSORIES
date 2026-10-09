@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class PosController extends Controller
 {
@@ -96,7 +97,16 @@ class PosController extends Controller
                 'string',
                 'max:100',
             ],
+            'user_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('users', 'id')->where('is_active', true),
+            ],
         ]);
+
+        if (!empty($validated['user_id']) && (int) $validated['user_id'] !== (int) auth()->id()) {
+            abort_unless(auth()->user()?->isAdmin(), 403);
+        }
 
         $paymentMethod = PaymentMethod::findOrFail(
             $validated['payment_method_id']
@@ -231,7 +241,13 @@ class PosController extends Controller
                 : round($amountTendered - $total, 2);
 
             $cashier = auth()->user();
-            $cashierId = auth()->id();
+            if (!empty($validated['user_id'])) {
+                $overrideUser = \App\Models\User::find($validated['user_id']);
+                if ($overrideUser) {
+                    $cashier = $overrideUser;
+                }
+            }
+            $cashierId = $cashier?->id ?? auth()->id();
 
             if (!$cashier || !$cashierId) {
                 return response()->json([

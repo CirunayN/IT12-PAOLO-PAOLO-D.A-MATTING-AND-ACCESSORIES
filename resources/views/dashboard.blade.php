@@ -59,7 +59,9 @@
         </div>
 
         <!-- STAT CARD 2: Total Sales Revenue -->
-        <div class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md flex flex-col justify-between">
+        <a href="{{ route('transactions.index', ['period' => 'overall']) }}"
+           title="View all sales transactions"
+           class="glass-card group rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md hover:border-blue-500/40 flex flex-col justify-between cursor-pointer">
             <div>
                 <div class="flex items-center justify-between mb-3">
                     <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">All-Time Sales</span>
@@ -67,57 +69,60 @@
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
-                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
+                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
                     ₱{{ number_format($totalSalesAllTime, 2) }}
                 </div>
             </div>
-            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                <i class="fas fa-file-invoice text-blue-500"></i>
-                <span><strong>{{ $totalTransactions }}</strong> total sales records</span>
+            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between">
+                <span class="flex items-center gap-1.5"><i class="fas fa-file-invoice text-blue-500"></i><strong>{{ $totalTransactions }}</strong> sales</span>
+                <span class="text-blue-500 font-bold flex items-center gap-1 text-[11px] group-hover:translate-x-0.5 transition-transform">View &rarr;</span>
             </div>
-        </div>
+        </a>
 
         <!-- STAT CARD 3: Inventory Units & Value -->
-        <div class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md flex flex-col justify-between">
+        <a href="{{ route('products.index') }}"
+           title="View inventory catalog"
+           class="glass-card group rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md hover:border-red-500/40 flex flex-col justify-between cursor-pointer">
             <div>
                 <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Inventory Stock</span>
-                    <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-base">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 group-hover:text-red-500 transition-colors">Inventory Stock</span>
+                    <div class="w-10 h-10 rounded-2xl bg-red-500/10 text-red-500 flex items-center justify-center text-base group-hover:scale-110 transition-transform">
                         <i class="fas fa-cubes-stacked"></i>
                     </div>
                 </div>
-                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
+                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white group-hover:text-red-500 transition-colors">
                     {{ number_format($totalStockUnits, 0) }} <span class="text-sm font-normal text-slate-400">Units</span>
                 </div>
             </div>
-            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-                <i class="fas fa-tag text-red-500"></i>
-                <span class="truncate">Valued at ₱{{ number_format($inventoryValue, 2) }}</span>
-            </div>
-        </div>
-
-        <!-- STAT CARD 4: Products & Alerts -->
-        <a id="totalItemsCard" href="{{ route('products.index') }}" class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md flex flex-col justify-between">
-            <div>
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Items</span>
-                    <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center text-base">
-                        <i class="fas fa-boxes-packing"></i>
-                    </div>
-                </div>
-                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white">
-                    {{ $totalProductsCount }} <span class="text-sm font-normal text-slate-400">Products</span>
-                </div>
-            </div>
-            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs flex items-center gap-3">
-                <span class="text-amber-500 font-bold flex items-center gap-1">
-                    <i class="fas fa-triangle-exclamation text-[10px]"></i> {{ $lowStockCount }} Low on Stock
+            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between gap-2 min-w-0">
+                <span class="truncate min-w-0 flex-1 flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-semibold text-[11px]" title="Inventory Value: ₱{{ number_format($inventoryValue, 2) }}">
+                    <i class="fas fa-tag text-red-500 flex-shrink-0 text-[10px]"></i>
+                    <span class="truncate">₱{{ number_format($inventoryValue, 2) }}</span>
                 </span>
-                <span class="text-rose-500 font-bold flex items-center gap-1">
-                    <i class="fas fa-circle-xmark text-[10px]"></i> {{ $outOfStockCount }} Out of Stock
-                </span>
+                <span class="text-red-500 font-bold flex items-center gap-1 text-[11px] whitespace-nowrap shrink-0 group-hover:translate-x-0.5 transition-transform">Manage &rarr;</span>
             </div>
         </a>
+
+        <!-- STAT CARD 4: Products & Alerts -->
+        <div class="glass-card rounded-3xl p-5 sm:p-6 border shadow-sm flex flex-col justify-between">
+            <a id="totalItemsCard" href="{{ route('products.index') }}" class="block group" title="View all inventory items">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Items</span>
+                    <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center"><i class="fas fa-boxes-packing"></i></div>
+                </div>
+                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white group-hover:text-purple-500">
+                    {{ $totalProductsCount }} <span class="text-sm font-normal text-slate-400">Products</span>
+                </div>
+            </a>
+            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs flex flex-wrap items-center gap-2">
+                <a href="{{ route('products.index', ['stock_level' => 'low']) }}" class="flex-1 rounded-xl px-2 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold hover:underline">
+                    <i class="fas fa-triangle-exclamation"></i> {{ $lowStockCount }} Low on Stock
+                </a>
+                <a href="{{ route('products.index', ['stock_level' => 'out']) }}" class="flex-1 rounded-xl px-2 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold hover:underline">
+                    <i class="fas fa-circle-xmark"></i> {{ $outOfStockCount }} Out of Stock
+                </a>
+            </div>
+        </div>
 
     </div>
 
