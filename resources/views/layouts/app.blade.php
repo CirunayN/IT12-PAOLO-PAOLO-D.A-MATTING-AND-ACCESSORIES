@@ -70,15 +70,20 @@
             <span class="font-display tracking-wide hidden xs:inline">Menu</span>
         </button>
 
-        <a href="{{ auth()->user() && auth()->user()->isAdmin() ? route('dashboard') : route('pos.index') }}" title="Home"
-           class="flex items-center gap-3 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
-            <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
-            <div class="text-left hidden sm:block">
-                <div class="font-jdm text-slate-900 dark:text-white text-base sm:text-lg tracking-wider group-hover:text-red-500 transition-colors">PAOLO PAOLO</div>
-                <div class="text-[11px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5">D.A Matting &amp; Accessories</div>
-            </div>
-        </a>
-    </div>
+            <a href="{{ (auth()->user() && auth()->user()->isAdmin()) ? route('dashboard') : route('pos.index') }}" title="Home"
+                class="flex items-center gap-3 group p-1 rounded-2xl hover:bg-slate-100 dark:hover:bg-dark-800/60 transition-all cursor-pointer focus:outline-none">
+                <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo Logo" class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg group-hover:scale-105 transition-transform flex-shrink-0">
+                
+                <div class="text-left hidden sm:block">
+                    <div class="font-jdm text-slate-900 dark:text-white text-base sm:text-lg tracking-wider group-hover:text-red-500 transition-colors">
+                        PAOLO PAOLA
+                    </div>
+                    <div class="text-[11px] font-black text-red-600 dark:text-red-400 tracking-wider uppercase -mt-0.5 flex items-center gap-1.5">
+                        <span>D.A Matting &amp; Accessories</span>
+                    </div>
+                </div>
+            </a>
+        </div>
 
     <div class="flex items-center gap-2.5 sm:gap-3.5">
         <a href="{{ route('pos.index') }}" title="POS Terminal" aria-label="POS Terminal"
