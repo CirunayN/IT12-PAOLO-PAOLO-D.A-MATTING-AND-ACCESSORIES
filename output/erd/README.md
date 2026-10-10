@@ -1,59 +1,41 @@
-# Updated database ERD - 10 October 2026
+# Simplified black-and-white ERD - 10 October 2026
 
-Source: `backup_p7db_2026-10-10_051707_a825b96d.json` (snapshot timestamp `2026-10-09T21:17:09+00:00`).
+Source: `backup_p7db_2026-10-10_051707_a825b96d.json`, snapshot timestamp `2026-10-09T21:17:09+00:00`.
 
-Coverage: **21 tables, 144 columns, 13 migration-declared foreign keys and 3 application-only references**.
-Each backup table and column is represented exactly once in the complete Mermaid source and data dictionary.
-The PDF has three A3 landscape pages; `users` is repeated between pages 1 and 2 for readability.
+The current draw.io file and PNG/SVG images use white table boxes, black text and black connectors. The first page shows all **21 tables**, all **144 columns**, all **13 migration-declared foreign keys** and **3 application references** together. Three additional detail pages make individual areas easier to read.
 
-## Deliverables
+## Current deliverables
 
-- `updated-erd-2026-10-10.drawio`: three native, editable draw.io pages. Each table, field and connector can be edited; no embedded diagram images. Open this file in draw.io or diagrams.net.
-- `drawio-preview.png`: preview captured from the official draw.io editor after opening the file.
-- `../pdf/updated-erd-2026-10-10.pdf`: printable three-page vector ERD.
-- `01-business-erd.svg`: core inventory and sales diagram; accompanying PNG is its rendered PDF preview.
-- `02-security-erd.svg`: accounts, recovery, registration and sessions; accompanying PNG is its rendered PDF preview.
-- `03-framework-tables.svg`: independent Laravel infrastructure tables; accompanying PNG is its rendered PDF preview.
-- `updated-erd.mmd`: editable Mermaid ER diagram containing all 21 tables.
-- `business-erd.mmd`, `security-erd.mmd`, `framework-tables.mmd`: smaller Mermaid diagrams.
-- `data-dictionary.csv`: every column, SQL Server type, nullability, keys and relationship target.
-- `schema-metadata.json`: schema-only metadata, migration names, snapshot hash and row counts. No record values.
+- `main-business-erd.drawio`: a separate, single-page ERD for documentation, showing the eight main business tables, 43 selected fields and eight foreign-key relationships.
+- `main-business-erd.png` / `.svg`: the main business ERD as a high-resolution image or vector image.
+- `main-business-drawio-preview.png`: the main business ERD displayed in draw.io.
+- `updated-erd-2026-10-10.drawio`: native, editable tables, fields and relationship lines across four pages; the complete overview opens first.
+- `00-all-tables-erd.png` / `.svg`: the complete ERD, with all 21 tables and 144 fields on one page.
+- `01-business-erd.png` / `.svg`: the main inventory and sales ERD, with eight tables.
+- `02-security-erd.png` / `.svg`: accounts, registration, password recovery and sessions.
+- `03-framework-tables.png` / `.svg`: cache, queues and migrations.
+- `drawio-preview.png`: the current ERD displayed in the official draw.io editor.
+- `data-dictionary.csv` and `schema-metadata.json`: the complete source schema, including all 144 columns, types, nullability and key definitions.
 
-## Source and interpretation
+The complete overview includes every source column, including creation/update timestamps. The three simplified detail pages omit routine timestamps from business/account tables, while retaining keys and important business fields, including batch quantities, prices, expiration and condition. SQL types and record counts are omitted from the diagrams; the dictionary and metadata retain the complete schema details. Earlier Mermaid sources and the previously generated detailed PDF are unchanged; use the current draw.io file or PNG/SVG images for this black-and-white version.
 
-The JSON snapshot includes table names, column names and records, but no SQL DDL, types, indexes or foreign-key definitions.
-Column coverage was checked against the backup. Types, primary/unique/foreign keys, nullability and delete actions were
-reconstructed from the repository's 19 migration files, whose names exactly match the snapshot's migration history,
-using Laravel's SQL Server grammar. This is a migration-derived schema document, not a live SQL Server catalog audit.
-Manually altered production constraints cannot be proved from this snapshot alone.
+## Notation
 
-Solid diagram links are migration-declared foreign keys. Purple dashed links are application references only;
-they do not imply an SQL constraint. In the Mermaid sources, solid/dashed connectors use this same documented convention.
-Cardinality symbols: `||` exactly one, `o|` zero or one, `o<` zero or many. The diagrams describe schema cardinality,
-not minimum record counts imposed by application validation. `PK` means primary key, `FK` foreign key, `UK` unique key,
-and `Y` in the final table column means NULL is allowed. Key columns are displayed first; original column order is not implied.
+- `PK`: primary key. `FK`: database foreign key. `UK`: unique key.
+- Solid black lines: migration-declared foreign keys.
+- Dashed black lines: application references without a database foreign-key constraint.
+- Two bars: exactly one. Circle plus bar: zero or one. Circle plus crow's foot: zero or many.
 
-## Important current relationships
+Cardinality follows the schema, rather than minimum record counts enforced by application validation. Receiving batches can have no receiving user. Email-change codes allow at most one row per user. Password-reset requests separately reference their requesting user and optional approving admin.
 
-- One category/status can have zero or many products. Each product requires one category and one status.
-- One product can have zero or many receiving batches and sale lines.
-- One sale requires one cashier and one payment method. It can have zero or many stored sale lines at schema level.
-- A receiving batch may have no user (`User_ID` is nullable, delete action SET NULL).
-- `Expiration_Date`, `Has_Expiration`, `Condition`, `Remaining_Quantity`, cost and retail price belong to the receiving batch.
-- There is no sale-line-to-stock-batch allocation table or FK. FIFO balance is stored in `Remaining_Quantity`.
-- Products have `Image` and `Images`; the latter is JSON stored as `nvarchar(max)`. These contain image paths,
-  while uploaded file bytes are outside the database snapshot.
-- Categories support `Is_Archived`; user accounts support `username` and `is_active`.
-- `email_change_codes.user_id` is UNIQUE, making the user's pending email code a zero-or-one relationship.
-- `password_reset_requests` has two distinct user FKs: the requester and the optional approving admin.
-  For SQL Server, `approved_by` uses NO ACTION on delete; requester `user_id` uses CASCADE.
-- `sessions.user_id` is nullable and indexed but has no FK constraint. Reset-code/token emails reference users by
-  application convention only; token email is a primary key, while multiple reset-code rows per email are allowed.
-- Cache and queue tables have no declared FK relationships. Settings / backup schedules are not database tables in this snapshot.
+## Database details preserved
 
-## Regeneration
+Expiration, condition, remaining stock and cost/retail prices belong to `tbl_Stock_in`, rather than the product master. Products retain `Image` and `Images` path fields. There is no sale-line-to-stock-batch foreign key or allocation table in this snapshot; no such relationship is invented. Cache and queue tables have no declared foreign keys. Service/labor and backup-settings tables are not present in the backup.
 
-Run `scripts/generate-backup-erd.py` with the snapshot path using a Python runtime that provides `reportlab`.
-If migrations or snapshot columns change, update the explicit schema definitions before regeneration.
-Render the PDF with Poppler (`pdftoppm`) to update its PNG previews.
-Run `scripts/generate-drawio-erd.py` after the schema metadata is generated to recreate the native draw.io file.
+The backup provides table/column names and records, but no SQL DDL. Types, constraints and cardinalities were reconstructed from the repository's 19 matching migrations. This remains a migration-derived schema document, not a live SQL Server catalog audit. No record values are included in the diagrams.
+
+## Regenerate the simplified version
+
+Run `scripts/generate-simple-erd.py` using Python with Pillow. It reads the saved schema metadata, regenerates the native draw.io file and all four PNG/SVG pages, and checks table/field coverage, relationship coverage, overlapping table boxes, text widths and connector placement. It does not change the application or database.
+
+Use `scripts/generate-simple-erd.py --business-only` to regenerate only the separate main business ERD. It includes Users, Categories, Product Status, Payment Methods, Products, Stock Batches, Sales and Sold Items. Authentication/recovery, sessions, cache, queues and migrations remain documented in the complete version.

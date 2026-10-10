@@ -1,0 +1,505 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3680" height="1980" viewBox="0 0 3680 1980">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="1840.0" y="45.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="27" font-weight="bold" fill="#000000">Entity Relationship Diagram - All 21 Database Tables</text>
+<line x1="260.0" y1="355" x2="260.0" y2="450" stroke="#000000" stroke-width="1.5"/>
+<line x1="260.0" y1="450" x2="716.0" y2="450" stroke="#000000" stroke-width="1.5"/>
+<line x1="716.0" y1="450" x2="716.0" y2="490" stroke="#000000" stroke-width="1.5"/>
+<line x1="780.0" y1="328" x2="780.0" y2="400" stroke="#000000" stroke-width="1.5"/>
+<line x1="780.0" y1="400" x2="844.0" y2="400" stroke="#000000" stroke-width="1.5"/>
+<line x1="844.0" y1="400" x2="844.0" y2="490" stroke="#000000" stroke-width="1.5"/>
+<line x1="1300.0" y1="328" x2="1300.0" y2="490" stroke="#000000" stroke-width="1.5"/>
+<line x1="1700" y1="553.5" x2="1600" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1600" y1="553.5" x2="1600" y2="580.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1600" y1="580.5" x2="1460" y2="580.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1700" y1="553.5" x2="1580" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1580" y1="553.5" x2="1580" y2="930" stroke="#000000" stroke-width="1.5"/>
+<line x1="1580" y1="930" x2="65" y2="930" stroke="#000000" stroke-width="1.5"/>
+<line x1="65" y1="930" x2="65" y2="1077.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="65" y1="1077.5" x2="100" y2="1077.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="780.0" y1="793" x2="780.0" y2="1050.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="780.0" y1="1050.5" x2="420" y2="1050.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="940" y1="553.5" x2="1000" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1000" y1="553.5" x2="1000" y2="1140.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1000" y1="1140.5" x2="1140" y2="1140.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1300.0" y1="820" x2="1300.0" y2="1050" stroke="#000000" stroke-width="1.5"/>
+<line x1="2020" y1="553.5" x2="2080" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2080" y1="553.5" x2="2080" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2080" y1="250.5" x2="2200" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2020" y1="553.5" x2="2050" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2050" y1="553.5" x2="2050" y2="120" stroke="#000000" stroke-width="1.5"/>
+<line x1="2050" y1="120" x2="2630" y2="120" stroke="#000000" stroke-width="1.5"/>
+<line x1="2630" y1="120" x2="2630" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2630" y1="250.5" x2="2730" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2020" y1="553.5" x2="2035" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2035" y1="553.5" x2="2035" y2="80" stroke="#000000" stroke-width="1.5"/>
+<line x1="2035" y1="80" x2="3210" y2="80" stroke="#000000" stroke-width="1.5"/>
+<line x1="3210" y1="80" x2="3210" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="3210" y1="250.5" x2="3250" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2020" y1="553.5" x2="2650" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2650" y1="553.5" x2="2650" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2650" y1="740.5" x2="2730" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2020" y1="553.5" x2="2110" y2="553.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2110" y1="553.5" x2="2110" y2="600" stroke="#000000" stroke-width="1.5"/>
+<line x1="2110" y1="600" x2="2600" y2="600" stroke="#000000" stroke-width="1.5"/>
+<line x1="2600" y1="600" x2="2600" y2="767.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2600" y1="767.5" x2="2730" y2="767.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1956.0" y1="847" x2="1956.0" y2="1370" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="1956.0" y1="1370" x2="3210" y2="1370" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="3210" y1="1370" x2="3210" y2="890.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="3210" y1="890.5" x2="3250" y2="890.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="2020" y1="634.5" x2="2150" y2="634.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="2150" y1="634.5" x2="2150" y2="740.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="2150" y1="740.5" x2="2200" y2="740.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="2020" y1="634.5" x2="2060" y2="634.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="2060" y1="634.5" x2="2060" y2="1183.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<line x1="2060" y1="1183.5" x2="2200" y2="1183.5" stroke="#000000" stroke-width="1.5" stroke-dasharray="6 4"/>
+<rect x="100" y="160" width="320" height="195" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="100" y1="200" x2="420" y2="200" stroke="#000000" stroke-width="1.5"/>
+<text x="260.0" y="180.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Category</text>
+<text x="112" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="165" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="112" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Name</text>
+<text x="112" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Is_Archived</text>
+<text x="112" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="112" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="620" y="160" width="320" height="168" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="620" y1="200" x2="940" y2="200" stroke="#000000" stroke-width="1.5"/>
+<text x="780.0" y="180.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Status</text>
+<text x="632" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="685" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="632" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Name</text>
+<text x="632" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="632" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="1140" y="160" width="320" height="168" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140" y1="200" x2="1460" y2="200" stroke="#000000" stroke-width="1.5"/>
+<text x="1300.0" y="180.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Payment_Method</text>
+<text x="1152" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="1205" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="1152" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Name</text>
+<text x="1152" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="1152" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="620" y="490" width="320" height="303" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="620" y1="530" x2="940" y2="530" stroke="#000000" stroke-width="1.5"/>
+<text x="780.0" y="510.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Product</text>
+<text x="632" y="553.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="685" y="553.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="632" y="580.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="685" y="580.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Category_ID</text>
+<text x="632" y="607.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="685" y="607.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Status_ID</text>
+<text x="632" y="634.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="634.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Name</text>
+<text x="632" y="661.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="661.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Description</text>
+<text x="632" y="688.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="688.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Images</text>
+<text x="632" y="715.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="715.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Image</text>
+<text x="632" y="742.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="742.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="632" y="769.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="769.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="100" y="960" width="320" height="384" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="100" y1="1000" x2="420" y2="1000" stroke="#000000" stroke-width="1.5"/>
+<text x="260.0" y="980.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Stock_in</text>
+<text x="112" y="1023.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="165" y="1023.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="112" y="1050.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="165" y="1050.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Product_ID</text>
+<text x="112" y="1077.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="165" y="1077.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">User_ID</text>
+<text x="112" y="1104.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1104.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Quantity</text>
+<text x="112" y="1131.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1131.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Remaining_Quantity</text>
+<text x="112" y="1158.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1158.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Cost_Price</text>
+<text x="112" y="1185.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1185.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Retail_Price</text>
+<text x="112" y="1212.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1212.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Has_Expiration</text>
+<text x="112" y="1239.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1239.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Expiration_Date</text>
+<text x="112" y="1266.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1266.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Condition</text>
+<text x="112" y="1293.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1293.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="112" y="1320.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1320.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="1140" y="490" width="320" height="330" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140" y1="530" x2="1460" y2="530" stroke="#000000" stroke-width="1.5"/>
+<text x="1300.0" y="510.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Sale</text>
+<text x="1152" y="553.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="1205" y="553.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="1152" y="580.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="1205" y="580.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">User_ID</text>
+<text x="1152" y="607.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="1205" y="607.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Payment_Method_ID</text>
+<text x="1152" y="634.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="634.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Date</text>
+<text x="1152" y="661.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="661.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Total</text>
+<text x="1152" y="688.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="688.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Amount_Received</text>
+<text x="1152" y="715.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="715.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Change_Amount</text>
+<text x="1152" y="742.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="742.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">GCash_Reference_Number</text>
+<text x="1152" y="769.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="769.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="1152" y="796.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="796.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="1140" y="1050" width="320" height="249" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140" y1="1090" x2="1460" y2="1090" stroke="#000000" stroke-width="1.5"/>
+<text x="1300.0" y="1070.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">tbl_Sold_Item</text>
+<text x="1152" y="1113.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="1205" y="1113.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ID</text>
+<text x="1152" y="1140.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="1205" y="1140.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Product_ID</text>
+<text x="1152" y="1167.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="1205" y="1167.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Sale_ID</text>
+<text x="1152" y="1194.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1194.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Quantity</text>
+<text x="1152" y="1221.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1221.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">Total</text>
+<text x="1152" y="1248.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1248.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="1152" y="1275.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1275.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="1700" y="490" width="320" height="357" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1700" y1="530" x2="2020" y2="530" stroke="#000000" stroke-width="1.5"/>
+<text x="1860.0" y="510.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">users</text>
+<text x="1712" y="553.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="1765" y="553.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="1712" y="580.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="580.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">name</text>
+<text x="1712" y="607.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">UK</text>
+<text x="1765" y="607.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">username</text>
+<text x="1712" y="634.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">UK</text>
+<text x="1765" y="634.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">email</text>
+<text x="1712" y="661.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="661.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">role</text>
+<text x="1712" y="688.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="688.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">is_active</text>
+<text x="1712" y="715.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="715.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">email_verified_at</text>
+<text x="1712" y="742.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="742.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">password</text>
+<text x="1712" y="769.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="769.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">remember_token</text>
+<text x="1712" y="796.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="796.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="1712" y="823.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="823.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="2200" y="160" width="320" height="222" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200" y1="200" x2="2520" y2="200" stroke="#000000" stroke-width="1.5"/>
+<text x="2360.0" y="180.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">admin_recovery_codes</text>
+<text x="2212" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2265" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="2212" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="2265" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">user_id</text>
+<text x="2212" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">code_hash</text>
+<text x="2212" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">used_at</text>
+<text x="2212" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="2212" y="358.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="358.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="2730" y="160" width="320" height="249" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730" y1="200" x2="3050" y2="200" stroke="#000000" stroke-width="1.5"/>
+<text x="2890.0" y="180.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">email_change_codes</text>
+<text x="2742" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2795" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="2742" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK/UK</text>
+<text x="2795" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">user_id</text>
+<text x="2742" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">new_email</text>
+<text x="2742" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">code_hash</text>
+<text x="2742" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">expires_at</text>
+<text x="2742" y="358.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="358.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="2742" y="385.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="385.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="3250" y="160" width="320" height="357" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250" y1="200" x2="3570" y2="200" stroke="#000000" stroke-width="1.5"/>
+<text x="3410.0" y="180.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">pending_employee_registrations</text>
+<text x="3262" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="3315" y="223.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="3262" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="3315" y="250.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_by</text>
+<text x="3262" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="277.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">name</text>
+<text x="3262" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">UK</text>
+<text x="3315" y="304.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">username</text>
+<text x="3262" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">UK</text>
+<text x="3315" y="331.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">email</text>
+<text x="3262" y="358.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="358.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">password_hash</text>
+<text x="3262" y="385.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="385.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">role</text>
+<text x="3262" y="412.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="412.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">code_hash</text>
+<text x="3262" y="439.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="439.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">expires_at</text>
+<text x="3262" y="466.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="466.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="3262" y="493.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="493.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="2200" y="650" width="320" height="222" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200" y1="690" x2="2520" y2="690" stroke="#000000" stroke-width="1.5"/>
+<text x="2360.0" y="670.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">password_reset_codes</text>
+<text x="2212" y="713.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2265" y="713.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="2212" y="740.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="740.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">email</text>
+<text x="2212" y="767.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="767.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">code_hash</text>
+<text x="2212" y="794.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="794.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">expires_at</text>
+<text x="2212" y="821.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="821.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="2212" y="848.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="848.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="2730" y="650" width="320" height="330" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730" y1="690" x2="3050" y2="690" stroke="#000000" stroke-width="1.5"/>
+<text x="2890.0" y="670.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">password_reset_requests</text>
+<text x="2742" y="713.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2795" y="713.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="2742" y="740.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="2795" y="740.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">user_id</text>
+<text x="2742" y="767.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">FK</text>
+<text x="2795" y="767.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">approved_by</text>
+<text x="2742" y="794.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="794.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">code_hash</text>
+<text x="2742" y="821.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="821.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">approved_at</text>
+<text x="2742" y="848.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="848.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">expires_at</text>
+<text x="2742" y="875.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="875.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">used_at</text>
+<text x="2742" y="902.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="902.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">completed_at</text>
+<text x="2742" y="929.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="929.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="2742" y="956.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="956.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">updated_at</text>
+<rect x="3250" y="800" width="320" height="222" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250" y1="840" x2="3570" y2="840" stroke="#000000" stroke-width="1.5"/>
+<text x="3410.0" y="820.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">sessions</text>
+<text x="3262" y="863.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="3315" y="863.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="3262" y="890.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="890.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">user_id</text>
+<text x="3262" y="917.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="917.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">ip_address</text>
+<text x="3262" y="944.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="944.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">user_agent</text>
+<text x="3262" y="971.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="971.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">payload</text>
+<text x="3262" y="998.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="3315" y="998.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">last_activity</text>
+<rect x="2200" y="1120" width="320" height="141" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200" y1="1160" x2="2520" y2="1160" stroke="#000000" stroke-width="1.5"/>
+<text x="2360.0" y="1140.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">password_reset_tokens</text>
+<text x="2212" y="1183.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2265" y="1183.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">email</text>
+<text x="2212" y="1210.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1210.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">token</text>
+<text x="2212" y="1237.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1237.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<rect x="100" y="1510" width="320" height="141" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="100" y1="1550" x2="420" y2="1550" stroke="#000000" stroke-width="1.5"/>
+<text x="260.0" y="1530.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">cache</text>
+<text x="112" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="165" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">key</text>
+<text x="112" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">value</text>
+<text x="112" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="165" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">expiration</text>
+<rect x="620" y="1510" width="320" height="141" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="620" y1="1550" x2="940" y2="1550" stroke="#000000" stroke-width="1.5"/>
+<text x="780.0" y="1530.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">cache_locks</text>
+<text x="632" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="685" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">key</text>
+<text x="632" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">owner</text>
+<text x="632" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="685" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">expiration</text>
+<rect x="1140" y="1510" width="320" height="249" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140" y1="1550" x2="1460" y2="1550" stroke="#000000" stroke-width="1.5"/>
+<text x="1300.0" y="1530.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">jobs</text>
+<text x="1152" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="1205" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="1152" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">queue</text>
+<text x="1152" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">payload</text>
+<text x="1152" y="1654.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1654.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">attempts</text>
+<text x="1152" y="1681.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1681.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">reserved_at</text>
+<text x="1152" y="1708.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1708.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">available_at</text>
+<text x="1152" y="1735.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1205" y="1735.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<rect x="1700" y="1510" width="320" height="330" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1700" y1="1550" x2="2020" y2="1550" stroke="#000000" stroke-width="1.5"/>
+<text x="1860.0" y="1530.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">job_batches</text>
+<text x="1712" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="1765" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="1712" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">name</text>
+<text x="1712" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">total_jobs</text>
+<text x="1712" y="1654.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1654.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">pending_jobs</text>
+<text x="1712" y="1681.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1681.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">failed_jobs</text>
+<text x="1712" y="1708.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1708.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">failed_job_ids</text>
+<text x="1712" y="1735.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1735.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">options</text>
+<text x="1712" y="1762.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1762.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">cancelled_at</text>
+<text x="1712" y="1789.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1789.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">created_at</text>
+<text x="1712" y="1816.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="1765" y="1816.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">finished_at</text>
+<rect x="2200" y="1510" width="320" height="249" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200" y1="1550" x2="2520" y2="1550" stroke="#000000" stroke-width="1.5"/>
+<text x="2360.0" y="1530.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">failed_jobs</text>
+<text x="2212" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2265" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="2212" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">UK</text>
+<text x="2265" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">uuid</text>
+<text x="2212" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">connection</text>
+<text x="2212" y="1654.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1654.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">queue</text>
+<text x="2212" y="1681.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1681.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">payload</text>
+<text x="2212" y="1708.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1708.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">exception</text>
+<text x="2212" y="1735.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2265" y="1735.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">failed_at</text>
+<rect x="2730" y="1510" width="320" height="141" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730" y1="1550" x2="3050" y2="1550" stroke="#000000" stroke-width="1.5"/>
+<text x="2890.0" y="1530.0" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#000000">migrations</text>
+<text x="2742" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000">PK</text>
+<text x="2795" y="1573.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">id</text>
+<text x="2742" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="1600.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">migration</text>
+<text x="2742" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#000000"></text>
+<text x="2795" y="1627.5" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="17" font-weight="normal" fill="#000000">batch</text>
+<line x1="267.0" y1="361.0" x2="253.0" y2="361.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="267.0" y1="367.0" x2="253.0" y2="367.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="709.0" y1="490.0" x2="716.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="716.0" y1="490.0" x2="716.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="723.0" y1="490.0" x2="716.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<circle cx="716.0" cy="468.0" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="787.0" y1="334.0" x2="773.0" y2="334.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="787.0" y1="340.0" x2="773.0" y2="340.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="837.0" y1="490.0" x2="844.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="844.0" y1="490.0" x2="844.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="851.0" y1="490.0" x2="844.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<circle cx="844.0" cy="468.0" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1307.0" y1="334.0" x2="1293.0" y2="334.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1307.0" y1="340.0" x2="1293.0" y2="340.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1293.0" y1="490.0" x2="1300.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1300.0" y1="490.0" x2="1300.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1307.0" y1="490.0" x2="1300.0" y2="476.0" stroke="#000000" stroke-width="1.5"/>
+<circle cx="1300.0" cy="468.0" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1694.0" y1="560.5" x2="1694.0" y2="546.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1688.0" y1="560.5" x2="1688.0" y2="546.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1460.0" y1="573.5" x2="1474.0" y2="580.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1460.0" y1="580.5" x2="1474.0" y2="580.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1460.0" y1="587.5" x2="1474.0" y2="580.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="1482.0" cy="580.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1694.0" y1="560.5" x2="1694.0" y2="546.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="1682.0" cy="553.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="100.0" y1="1084.5" x2="86.0" y2="1077.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="100.0" y1="1077.5" x2="86.0" y2="1077.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="100.0" y1="1070.5" x2="86.0" y2="1077.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="78.0" cy="1077.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="787.0" y1="799.0" x2="773.0" y2="799.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="787.0" y1="805.0" x2="773.0" y2="805.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="420.0" y1="1043.5" x2="434.0" y2="1050.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="420.0" y1="1050.5" x2="434.0" y2="1050.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="420.0" y1="1057.5" x2="434.0" y2="1050.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="442.0" cy="1050.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="946.0" y1="546.5" x2="946.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="952.0" y1="546.5" x2="952.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140.0" y1="1147.5" x2="1126.0" y2="1140.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140.0" y1="1140.5" x2="1126.0" y2="1140.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="1140.0" y1="1133.5" x2="1126.0" y2="1140.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="1118.0" cy="1140.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1307.0" y1="826.0" x2="1293.0" y2="826.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1307.0" y1="832.0" x2="1293.0" y2="832.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1293.0" y1="1050.0" x2="1300.0" y2="1036.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1300.0" y1="1050.0" x2="1300.0" y2="1036.0" stroke="#000000" stroke-width="1.5"/>
+<line x1="1307.0" y1="1050.0" x2="1300.0" y2="1036.0" stroke="#000000" stroke-width="1.5"/>
+<circle cx="1300.0" cy="1028.0" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="546.5" x2="2026.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2032.0" y1="546.5" x2="2032.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200.0" y1="257.5" x2="2186.0" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200.0" y1="250.5" x2="2186.0" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200.0" y1="243.5" x2="2186.0" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2178.0" cy="250.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="546.5" x2="2026.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2032.0" y1="546.5" x2="2032.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2724.0" y1="257.5" x2="2724.0" y2="243.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2712.0" cy="250.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="546.5" x2="2026.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2032.0" y1="546.5" x2="2032.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250.0" y1="257.5" x2="3236.0" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250.0" y1="250.5" x2="3236.0" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250.0" y1="243.5" x2="3236.0" y2="250.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="3228.0" cy="250.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="546.5" x2="2026.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2032.0" y1="546.5" x2="2032.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730.0" y1="747.5" x2="2716.0" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730.0" y1="740.5" x2="2716.0" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730.0" y1="733.5" x2="2716.0" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2708.0" cy="740.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="546.5" x2="2026.0" y2="560.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2038.0" cy="553.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730.0" y1="774.5" x2="2716.0" y2="767.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730.0" y1="767.5" x2="2716.0" y2="767.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2730.0" y1="760.5" x2="2716.0" y2="767.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2708.0" cy="767.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="1963.0" y1="853.0" x2="1949.0" y2="853.0" stroke="#000000" stroke-width="1.5"/>
+<circle cx="1956.0" cy="865.0" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250.0" y1="897.5" x2="3236.0" y2="890.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250.0" y1="890.5" x2="3236.0" y2="890.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="3250.0" y1="883.5" x2="3236.0" y2="890.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="3228.0" cy="890.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="627.5" x2="2026.0" y2="641.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2032.0" y1="627.5" x2="2032.0" y2="641.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200.0" y1="747.5" x2="2186.0" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200.0" y1="740.5" x2="2186.0" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2200.0" y1="733.5" x2="2186.0" y2="740.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2178.0" cy="740.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<line x1="2026.0" y1="627.5" x2="2026.0" y2="641.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2032.0" y1="627.5" x2="2032.0" y2="641.5" stroke="#000000" stroke-width="1.5"/>
+<line x1="2194.0" y1="1190.5" x2="2194.0" y2="1176.5" stroke="#000000" stroke-width="1.5"/>
+<circle cx="2182.0" cy="1183.5" r="4" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<text x="100" y="102.0" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="19" font-weight="normal" fill="#000000">INVENTORY AND SALES</text>
+<text x="1700" y="102.0" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="19" font-weight="normal" fill="#000000">ACCOUNTS AND RECOVERY</text>
+<text x="100" y="1462.0" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="19" font-weight="normal" fill="#000000">SYSTEM TABLES - no declared foreign-key relationships</text>
+<text x="100" y="1407.0" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="16" font-weight="normal" fill="#000000">21 unique tables / 144 fields / 13 foreign keys / 3 application references</text>
+<text x="1700" y="1407.0" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="16" font-weight="normal" fill="#000000">Solid lines = database foreign keys; dashed lines = application references</text>
+<text x="100" y="1953.0" dominant-baseline="central" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#000000">PK = Primary key     FK = Foreign key     UK = Unique key     | = One     O = Optional     Crow&#x27;s foot = Many</text>
+</svg>
