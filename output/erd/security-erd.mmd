@@ -1,0 +1,91 @@
+---
+title: Paolo Paolo - accounts and security
+---
+%% Columns from supplied JSON; types / constraints from matching SQL Server migrations.
+%% Solid = declared FK. Dashed = application-only reference (not an FK).
+erDiagram
+    direction LR
+    users {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar name "nvarchar(255); NOT NULL"
+        nvarchar username UK "nvarchar(255); NULL"
+        nvarchar email UK "nvarchar(255); NOT NULL"
+        nvarchar role "nvarchar(255); NOT NULL; default Admin"
+        bit is_active "bit; NOT NULL; default 1"
+        datetime email_verified_at "datetime; NULL"
+        nvarchar password "nvarchar(255); NOT NULL"
+        nvarchar remember_token "nvarchar(100); NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    admin_recovery_codes {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint user_id FK "bigint; NOT NULL"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime used_at "datetime; NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    email_change_codes {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint user_id FK,UK "bigint; NOT NULL"
+        nvarchar new_email "nvarchar(255); NOT NULL"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime expires_at "datetime; NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    pending_employee_registrations {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint created_by FK "bigint; NOT NULL"
+        nvarchar name "nvarchar(255); NOT NULL"
+        nvarchar username UK "nvarchar(255); NOT NULL"
+        nvarchar email UK "nvarchar(255); NOT NULL"
+        nvarchar password_hash "nvarchar(255); NOT NULL"
+        nvarchar role "nvarchar(255); NOT NULL; default Employee"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime expires_at "datetime; NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    password_reset_requests {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint user_id FK "bigint; NOT NULL"
+        bigint approved_by FK "bigint; NULL"
+        nvarchar code_hash "nvarchar(255); NULL"
+        datetime approved_at "datetime; NULL"
+        datetime expires_at "datetime; NULL"
+        datetime used_at "datetime; NULL"
+        datetime completed_at "datetime; NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    sessions {
+        nvarchar id PK "nvarchar(255); NOT NULL"
+        bigint user_id "bigint; NULL; indexed; application reference only"
+        nvarchar ip_address "nvarchar(45); NULL"
+        nvarchar user_agent "nvarchar(max); NULL"
+        nvarchar payload "nvarchar(max); NOT NULL"
+        int last_activity "int; NOT NULL; Unix timestamp"
+    }
+    password_reset_codes {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar email "nvarchar(255); NOT NULL; application reference to users.email"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime expires_at "datetime; NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    password_reset_tokens {
+        nvarchar email PK "nvarchar(255); NOT NULL"
+        nvarchar token "nvarchar(255); NOT NULL"
+        datetime created_at "datetime; NULL"
+    }
+    users ||--o{ admin_recovery_codes : "user_id"
+    users ||--o| email_change_codes : "user_id"
+    users ||--o{ pending_employee_registrations : "created_by"
+    users ||--o{ password_reset_requests : "user_id"
+    users |o--o{ password_reset_requests : "approved_by"
+    users |o..o{ sessions : "user_id logical"
+    users ||..o{ password_reset_codes : "email logical"
+    users ||..o| password_reset_tokens : "email logical"

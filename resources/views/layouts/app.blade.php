@@ -33,6 +33,44 @@
         html:not(.dark) .glass-card { background:#fff; border:1px solid #e2e8f0; box-shadow:0 4px 15px -2px rgba(220,38,38,.05); }
         html:not(.dark) .glass-card:hover { border-color: rgba(41, 38, 241, 0.45); }
         .jdm-racing-border { border-top: 3px solid #dc2626; }
+        .app-topbar { gap: 1rem; }
+        .app-topbar-left { min-width: 0; flex: 1; }
+        .app-topbar-actions { flex-shrink: 0; }
+        .topbar-system-status { display: none; min-width: 0; }
+        .topbar-status-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        @media (min-width: 1280px) {
+            .topbar-system-status { display: flex; }
+        }
+        .topbar-clock {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: .2rem;
+            min-width: 8rem;
+            padding-left: 1rem;
+            border-left: 1px solid #cbd5e1;
+            white-space: nowrap;
+            font-variant-numeric: tabular-nums;
+        }
+        .topbar-clock-time { color: #0f172a; font-size: 1rem; font-weight: 700; line-height: 1.25; }
+        .topbar-clock-date { color: #64748b; font-size: .7rem; line-height: 1.25; }
+        html.dark .topbar-clock { border-color: #1e293b; }
+        html.dark .topbar-clock-time { color: #f8fafc; }
+        html.dark .topbar-clock-date { color: #94a3b8; }
+        @media (max-width: 1023px) {
+            .app-topbar {
+                height: auto;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                gap: .75rem;
+                padding-top: .75rem;
+                padding-bottom: .75rem;
+            }
+            .app-topbar-left { grid-column: 1; grid-row: 1; }
+            .topbar-clock { grid-column: 2; grid-row: 1; }
+            .app-topbar-actions { grid-column: 1 / -1; grid-row: 2; justify-content: flex-end; }
+        }
     </style>
 
     @stack('styles')
@@ -117,8 +155,8 @@
 <!-- Main Page Wrapper (Offset by sidebar width on desktop >= lg) -->
 <div class="app-page flex flex-col min-h-screen flex-1">
 
-    <header class="h-20 bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-3 sm:gap-4">
+    <header class="app-topbar h-20 bg-white/95 dark:bg-[#0d121c]/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between shadow-sm">
+        <div class="app-topbar-left flex items-center gap-3 sm:gap-4">
             <button type="button" id="sidebarCollapseBtn" aria-label="Collapse sidebar" title="Collapse sidebar" aria-controls="navDrawer" aria-expanded="true"
                     class="hidden lg:flex w-9 h-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 dark:bg-dark-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-red-500/50">
                 <svg id="sidebarCollapseIcon" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -141,15 +179,15 @@
             </a>
 
             <!-- Desktop Breadcrumb / System Status Badge (>= lg) -->
-            <div class="hidden lg:flex items-center gap-3">
-                <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <div class="topbar-system-status items-center gap-3">
+                <div class="w-2.5 h-2.5 shrink-0 rounded-full bg-emerald-500 animate-pulse"></div>
+                <div class="topbar-status-label text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Paolo Paolo System &bull; <span class="text-slate-900 dark:text-white font-black">{{ auth()->user() && auth()->user()->isAdmin() ? 'Administration' : 'Cashier Station' }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="flex items-center gap-2.5 sm:gap-3.5">
+        <div class="app-topbar-actions flex items-center gap-2.5 sm:gap-3.5">
         @unless(request()->routeIs('pos.*'))
         <a id="topbarPosLink" href="{{ route('pos.index') }}" title="Open POS" aria-label="Open POS"
            class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm shadow-md transition-all">
@@ -180,6 +218,11 @@
                 </a>
 
             </div>
+        </div>
+        @php($clockNow = now('Asia/Manila'))
+        <div id="topbarClock" class="topbar-clock" role="timer" aria-live="off" aria-label="Current Philippine time" title="Philippine time (Asia/Manila)">
+            <time id="topbarClockTime" class="topbar-clock-time" datetime="{{ $clockNow->toIso8601String() }}">{{ $clockNow->format('h:i:s A') }}</time>
+            <time id="topbarClockDate" class="topbar-clock-date" datetime="{{ $clockNow->format('Y-m-d') }}">{{ $clockNow->format('D, M j, Y') }}</time>
         </div>
     </header>
 
@@ -214,6 +257,36 @@
 </div>
 
 <script>
+    (() => {
+        const timeElement = document.getElementById('topbarClockTime');
+        const dateElement = document.getElementById('topbarClockDate');
+        const timeFormatter = new Intl.DateTimeFormat('en-PH', {
+            timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true,
+        });
+        const dateFormatter = new Intl.DateTimeFormat('en-PH', {
+            timeZone: 'Asia/Manila', weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+        });
+        const dateValueFormatter = new Intl.DateTimeFormat('en-PH', {
+            timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit',
+        });
+
+        function updateClock() {
+            const current = new Date();
+            timeElement.textContent = timeFormatter.format(current);
+            timeElement.dateTime = current.toISOString();
+            dateElement.textContent = dateFormatter.format(current);
+            const parts = Object.fromEntries(dateValueFormatter.formatToParts(current).map(part => [part.type, part.value]));
+            dateElement.dateTime = `${parts.year}-${parts.month}-${parts.day}`;
+        }
+
+        updateClock();
+        window.setInterval(updateClock, 1000);
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) updateClock();
+        });
+        window.addEventListener('pageshow', updateClock);
+    })();
+
     const themeBtn = document.getElementById('themeToggleBtn');
     const themeIcon = document.getElementById('themeIcon');
 

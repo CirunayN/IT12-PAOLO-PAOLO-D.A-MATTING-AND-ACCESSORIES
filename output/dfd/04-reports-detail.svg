@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1050" viewBox="0 0 2000 1050">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="#000000"/></marker></defs>
+<rect width="2000" height="1050" fill="#ffffff"/>
+<text x="757.5078125" y="46.5" fill="#000000" font-family="Times New Roman, serif" font-size="28" font-weight="700">Figure 3c. Reports — Detailed Processes</text>
+<path d="M275,252.5 L367.5,252.5 L367.5,261.5 L460,261.5" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M795,261.5 L1050,261.5" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M260.0,550 L260,473 L1088,473 L1088.0,405" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M782.5,550 L782.5,505 L1202,505 L1202.0,405" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M1700.0,550 L1700,475 L1470,475 L1470,364 L1430,364.0" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M1354.0,405 L1354,685 L1277.5,685 L1277.5,705" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<path d="M1445,807.5 L1520,807.5 L1520,792.5 L1630,792.5" stroke="#000000" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+<rect x="75" y="210" width="200" height="85" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<text x="145.75" y="260.0" fill="#000000" font-family="Arial, sans-serif" font-size="20" font-weight="400">Owner</text>
+<rect x="460" y="200" width="335" height="205" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<path d="M460,228 L795,228" stroke="#000000" stroke-width="1.5" fill="none"/>
+<text x="615.0" y="221.0" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">3.1</text>
+<text x="532.5" y="259.5" fill="#000000" font-family="Arial, sans-serif" font-size="20" font-weight="400">Select Report Criteria</text>
+<text x="530.5" y="312.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Select date / reporting period</text>
+<text x="512.0" y="332.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Choose sales, service or inventory</text>
+<text x="526.25" y="352.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Apply product / category filters</text>
+<text x="535.75" y="372.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Choose print or PDF output</text>
+<rect x="1050" y="200" width="380" height="205" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<path d="M1050,228 L1430,228" stroke="#000000" stroke-width="1.5" fill="none"/>
+<text x="1227.5" y="221.0" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">3.2</text>
+<text x="1150.0" y="259.5" fill="#000000" font-family="Arial, sans-serif" font-size="20" font-weight="400">Summarize Records</text>
+<text x="1129.75" y="312.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Sum revenue and quantities sold</text>
+<text x="1132.5" y="332.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Rank top / least-selling products</text>
+<text x="1129.5" y="352.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Calculate low / out-of-stock items</text>
+<text x="1120.75" y="372.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Summarize service charges / status</text>
+<rect x="1110" y="705" width="335" height="205" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<path d="M1110,733 L1445,733" stroke="#000000" stroke-width="1.5" fill="none"/>
+<text x="1265.0" y="726.0" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">3.3</text>
+<text x="1203.75" y="764.5" fill="#000000" font-family="Arial, sans-serif" font-size="20" font-weight="400">Generate Report</text>
+<text x="1169.75" y="817.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Build totals, lists and summaries</text>
+<text x="1174.25" y="837.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Prepare readable report pages</text>
+<text x="1201.5" y="857.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Print or download PDF</text>
+<text x="1170.25" y="877.0" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="400">Return selected report to Owner</text>
+<rect x="1630" y="750" width="210" height="85" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+<text x="1705.75" y="800.0" fill="#000000" font-family="Arial, sans-serif" font-size="20" font-weight="400">Owner</text>
+<rect x="65" y="550" width="390" height="100" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<path d="M65,550 L455,550" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M65,650 L455,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M65,550 L65,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M118,550 L118,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<text x="80.0" y="606.5" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">D1</text>
+<text x="218.0" y="578.5" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">Records Product</text>
+<text x="185.25" y="612.0" fill="#000000" font-family="Arial, sans-serif" font-size="13" font-weight="400">Product / category / batch balances</text>
+<text x="190.0" y="630.0" fill="#000000" font-family="Arial, sans-serif" font-size="13" font-weight="400">Prices, expiry and stock condition</text>
+<rect x="590" y="550" width="385" height="100" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<path d="M590,550 L975,550" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M590,650 L975,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M590,550 L590,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M643,550 L643,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<text x="605.0" y="606.5" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">D2</text>
+<text x="720.0" y="578.5" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">Records Product Sale</text>
+<text x="727.5078125" y="612.0" fill="#000000" font-family="Arial, sans-serif" font-size="13" font-weight="400">Dates, sold items, qty, totals</text>
+<text x="726.5" y="630.0" fill="#000000" font-family="Arial, sans-serif" font-size="13" font-weight="400">Cashier and payment details</text>
+<rect x="1480" y="550" width="440" height="100" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<path d="M1480,550 L1920,550" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M1480,650 L1920,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M1480,550 L1480,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<path d="M1533,550 L1533,650" stroke="#000000" stroke-width="1.5" fill="none"/>
+<text x="1495.0" y="606.5" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">D3</text>
+<text x="1638.5" y="578.5" fill="#000000" font-family="Arial, sans-serif" font-size="18" font-weight="400">Records Service Sale</text>
+<text x="1618.75" y="612.0" fill="#000000" font-family="Arial, sans-serif" font-size="13" font-weight="400">Service charges, dates and job status</text>
+<text x="1628.75" y="630.0" fill="#000000" font-family="Arial, sans-serif" font-size="13" font-weight="400">Completion and linked transaction</text>
+<rect x="285" y="140" width="295" height="52" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="342.75" y="161.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">Report type, dates, filters</text>
+<text x="353.25" y="182.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">and output preference</text>
+<rect x="810" y="160" width="235" height="52" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="844.0078125" y="181.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">Validated report criteria</text>
+<text x="840.75" y="202.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">and selected date range</text>
+<rect x="350" y="418" width="335" height="48" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="442.25" y="437.0" fill="#000000" font-family="Arial, sans-serif" font-size="14" font-weight="400">Product / inventory data</text>
+<text x="411.25" y="456.0" fill="#000000" font-family="Arial, sans-serif" font-size="14" font-weight="400">(stock, price, category and expiry)</text>
+<rect x="690" y="485" width="300" height="48" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="738.25" y="504.0" fill="#000000" font-family="Arial, sans-serif" font-size="14" font-weight="400">Sales data within selected dates</text>
+<text x="721.2578125" y="523.0" fill="#000000" font-family="Arial, sans-serif" font-size="14" font-weight="400">(items, quantity, revenue and cashier)</text>
+<rect x="1480" y="395" width="465" height="52" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1590.75" y="416.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">Service data within selected dates</text>
+<text x="1584.0" y="437.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">(charges, pending / completed jobs)</text>
+<rect x="1010" y="485" width="430" height="52" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1114.25" y="506.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">Aggregated totals / stock alerts</text>
+<text x="1106.25" y="527.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">Rankings and service summaries</text>
+<rect x="1455" y="855" width="325" height="52" fill="#ffffff" stroke="none" stroke-width="1.5"/>
+<text x="1568.5" y="876.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">Overall report</text>
+<text x="1533.5" y="897.0" fill="#000000" font-family="Arial, sans-serif" font-size="16" font-weight="400">(printable / PDF output)</text>
+<text x="651.2578125" y="1021.0" fill="#000000" font-family="Arial, sans-serif" font-size="14" font-weight="400">Rectangle = external entity     |     Numbered box = process     |     D1–D3 = data stores     |     Arrow = data flow</text>
+</svg>

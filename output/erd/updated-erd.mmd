@@ -1,0 +1,209 @@
+---
+title: Paolo Paolo - complete updated ERD
+---
+%% Columns from supplied JSON; types / constraints from matching SQL Server migrations.
+%% Solid = declared FK. Dashed = application-only reference (not an FK).
+erDiagram
+    direction LR
+    users {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar name "nvarchar(255); NOT NULL"
+        nvarchar username UK "nvarchar(255); NULL"
+        nvarchar email UK "nvarchar(255); NOT NULL"
+        nvarchar role "nvarchar(255); NOT NULL; default Admin"
+        bit is_active "bit; NOT NULL; default 1"
+        datetime email_verified_at "datetime; NULL"
+        nvarchar password "nvarchar(255); NOT NULL"
+        nvarchar remember_token "nvarchar(100); NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Category {
+        bigint ID PK "bigint; NOT NULL; identity"
+        nvarchar Name "nvarchar(255); NOT NULL"
+        bit Is_Archived "bit; NOT NULL; default 0"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Status {
+        bigint ID PK "bigint; NOT NULL; identity"
+        nvarchar Name "nvarchar(255); NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Payment_Method {
+        bigint ID PK "bigint; NOT NULL; identity"
+        nvarchar Name "nvarchar(255); NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Product {
+        bigint ID PK "bigint; NOT NULL; identity"
+        bigint Category_ID FK "bigint; NOT NULL"
+        bigint Status_ID FK "bigint; NOT NULL"
+        nvarchar Name "nvarchar(255); NOT NULL"
+        nvarchar Description "nvarchar(max); NULL"
+        nvarchar Images "nvarchar(max); NULL; JSON image paths"
+        nvarchar Image "nvarchar(255); NULL; single image path"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Stock_in {
+        bigint ID PK "bigint; NOT NULL; identity"
+        bigint Product_ID FK "bigint; NOT NULL"
+        bigint User_ID FK "bigint; NULL"
+        decimal Quantity "decimal(10,2); NOT NULL; default 0"
+        decimal Remaining_Quantity "decimal(10,2); NOT NULL; default 0; FIFO balance"
+        decimal Cost_Price "decimal(10,2); NOT NULL; default 0"
+        decimal Retail_Price "decimal(10,2); NOT NULL; default 0"
+        bit Has_Expiration "bit; NOT NULL; default 0"
+        date Expiration_Date "date; NULL"
+        nvarchar Condition "nvarchar(50); NOT NULL; default Good"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Sale {
+        bigint ID PK "bigint; NOT NULL; identity"
+        bigint User_ID FK "bigint; NOT NULL"
+        bigint Payment_Method_ID FK "bigint; NOT NULL"
+        datetime Date "datetime; NOT NULL"
+        decimal Total "decimal(10,2); NOT NULL; default 0"
+        decimal Amount_Received "decimal(10,2); NOT NULL; default 0"
+        decimal Change_Amount "decimal(10,2); NOT NULL; default 0"
+        nvarchar GCash_Reference_Number "nvarchar(100); NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    tbl_Sold_Item {
+        bigint ID PK "bigint; NOT NULL; identity"
+        bigint Product_ID FK "bigint; NOT NULL"
+        bigint Sale_ID FK "bigint; NOT NULL"
+        decimal Quantity "decimal(10,2); NOT NULL; default 1"
+        decimal Total "decimal(10,2); NOT NULL; default 0"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    admin_recovery_codes {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint user_id FK "bigint; NOT NULL"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime used_at "datetime; NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    email_change_codes {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint user_id FK,UK "bigint; NOT NULL"
+        nvarchar new_email "nvarchar(255); NOT NULL"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime expires_at "datetime; NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    password_reset_requests {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint user_id FK "bigint; NOT NULL"
+        bigint approved_by FK "bigint; NULL"
+        nvarchar code_hash "nvarchar(255); NULL"
+        datetime approved_at "datetime; NULL"
+        datetime expires_at "datetime; NULL"
+        datetime used_at "datetime; NULL"
+        datetime completed_at "datetime; NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    pending_employee_registrations {
+        bigint id PK "bigint; NOT NULL; identity"
+        bigint created_by FK "bigint; NOT NULL"
+        nvarchar name "nvarchar(255); NOT NULL"
+        nvarchar username UK "nvarchar(255); NOT NULL"
+        nvarchar email UK "nvarchar(255); NOT NULL"
+        nvarchar password_hash "nvarchar(255); NOT NULL"
+        nvarchar role "nvarchar(255); NOT NULL; default Employee"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime expires_at "datetime; NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    password_reset_codes {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar email "nvarchar(255); NOT NULL; application reference to users.email"
+        nvarchar code_hash "nvarchar(255); NOT NULL"
+        datetime expires_at "datetime; NOT NULL"
+        datetime created_at "datetime; NULL"
+        datetime updated_at "datetime; NULL"
+    }
+    password_reset_tokens {
+        nvarchar email PK "nvarchar(255); NOT NULL"
+        nvarchar token "nvarchar(255); NOT NULL"
+        datetime created_at "datetime; NULL"
+    }
+    sessions {
+        nvarchar id PK "nvarchar(255); NOT NULL"
+        bigint user_id "bigint; NULL; indexed; application reference only"
+        nvarchar ip_address "nvarchar(45); NULL"
+        nvarchar user_agent "nvarchar(max); NULL"
+        nvarchar payload "nvarchar(max); NOT NULL"
+        int last_activity "int; NOT NULL; Unix timestamp"
+    }
+    cache {
+        nvarchar key PK "nvarchar(255); NOT NULL"
+        nvarchar value "nvarchar(max); NOT NULL"
+        bigint expiration "bigint; NOT NULL; Unix timestamp"
+    }
+    cache_locks {
+        nvarchar key PK "nvarchar(255); NOT NULL"
+        nvarchar owner "nvarchar(255); NOT NULL"
+        bigint expiration "bigint; NOT NULL; Unix timestamp"
+    }
+    jobs {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar queue "nvarchar(255); NOT NULL"
+        nvarchar payload "nvarchar(max); NOT NULL"
+        smallint attempts "smallint; NOT NULL"
+        int reserved_at "int; NULL"
+        int available_at "int; NOT NULL"
+        int created_at "int; NOT NULL"
+    }
+    job_batches {
+        nvarchar id PK "nvarchar(255); NOT NULL"
+        nvarchar name "nvarchar(255); NOT NULL"
+        int total_jobs "int; NOT NULL"
+        int pending_jobs "int; NOT NULL"
+        int failed_jobs "int; NOT NULL"
+        nvarchar failed_job_ids "nvarchar(max); NOT NULL"
+        nvarchar options "nvarchar(max); NULL"
+        int cancelled_at "int; NULL"
+        int created_at "int; NOT NULL"
+        int finished_at "int; NULL"
+    }
+    failed_jobs {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar uuid UK "nvarchar(255); NOT NULL"
+        nvarchar connection "nvarchar(255); NOT NULL"
+        nvarchar queue "nvarchar(255); NOT NULL"
+        nvarchar payload "nvarchar(max); NOT NULL"
+        nvarchar exception "nvarchar(max); NOT NULL"
+        datetime failed_at "datetime; NOT NULL; default CURRENT_TIMESTAMP"
+    }
+    migrations {
+        int id PK "int; NOT NULL; identity"
+        nvarchar migration "nvarchar(255); NOT NULL"
+        int batch "int; NOT NULL"
+    }
+    tbl_Category ||--o{ tbl_Product : "Category_ID"
+    tbl_Status ||--o{ tbl_Product : "Status_ID"
+    tbl_Product ||--o{ tbl_Stock_in : "Product_ID"
+    users |o--o{ tbl_Stock_in : "User_ID"
+    users ||--o{ tbl_Sale : "User_ID"
+    tbl_Payment_Method ||--o{ tbl_Sale : "Payment_Method_ID"
+    tbl_Product ||--o{ tbl_Sold_Item : "Product_ID"
+    tbl_Sale ||--o{ tbl_Sold_Item : "Sale_ID"
+    users ||--o{ admin_recovery_codes : "user_id"
+    users ||--o| email_change_codes : "user_id"
+    users ||--o{ pending_employee_registrations : "created_by"
+    users ||--o{ password_reset_requests : "user_id"
+    users |o--o{ password_reset_requests : "approved_by"
+    users |o..o{ sessions : "user_id logical"
+    users ||..o{ password_reset_codes : "email logical"
+    users ||..o| password_reset_tokens : "email logical"

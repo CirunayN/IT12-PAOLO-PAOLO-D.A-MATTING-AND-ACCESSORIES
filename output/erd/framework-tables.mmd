@@ -1,0 +1,52 @@
+---
+title: Paolo Paolo - framework tables
+---
+%% Columns from supplied JSON; types / constraints from matching SQL Server migrations.
+%% Solid = declared FK. Dashed = application-only reference (not an FK).
+erDiagram
+    direction LR
+    jobs {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar queue "nvarchar(255); NOT NULL"
+        nvarchar payload "nvarchar(max); NOT NULL"
+        smallint attempts "smallint; NOT NULL"
+        int reserved_at "int; NULL"
+        int available_at "int; NOT NULL"
+        int created_at "int; NOT NULL"
+    }
+    job_batches {
+        nvarchar id PK "nvarchar(255); NOT NULL"
+        nvarchar name "nvarchar(255); NOT NULL"
+        int total_jobs "int; NOT NULL"
+        int pending_jobs "int; NOT NULL"
+        int failed_jobs "int; NOT NULL"
+        nvarchar failed_job_ids "nvarchar(max); NOT NULL"
+        nvarchar options "nvarchar(max); NULL"
+        int cancelled_at "int; NULL"
+        int created_at "int; NOT NULL"
+        int finished_at "int; NULL"
+    }
+    failed_jobs {
+        bigint id PK "bigint; NOT NULL; identity"
+        nvarchar uuid UK "nvarchar(255); NOT NULL"
+        nvarchar connection "nvarchar(255); NOT NULL"
+        nvarchar queue "nvarchar(255); NOT NULL"
+        nvarchar payload "nvarchar(max); NOT NULL"
+        nvarchar exception "nvarchar(max); NOT NULL"
+        datetime failed_at "datetime; NOT NULL; default CURRENT_TIMESTAMP"
+    }
+    cache {
+        nvarchar key PK "nvarchar(255); NOT NULL"
+        nvarchar value "nvarchar(max); NOT NULL"
+        bigint expiration "bigint; NOT NULL; Unix timestamp"
+    }
+    cache_locks {
+        nvarchar key PK "nvarchar(255); NOT NULL"
+        nvarchar owner "nvarchar(255); NOT NULL"
+        bigint expiration "bigint; NOT NULL; Unix timestamp"
+    }
+    migrations {
+        int id PK "int; NOT NULL; identity"
+        nvarchar migration "nvarchar(255); NOT NULL"
+        int batch "int; NOT NULL"
+    }

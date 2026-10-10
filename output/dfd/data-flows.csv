@@ -1,0 +1,57 @@
+﻿page,flow_id,source,destination,data
+Level 0 - Reference layout,level-0-flow-01,3.0,owner,"Overall report (sales, services and inventory)"
+Level 0 - Reference layout,level-0-flow-02,owner,3.0,"Report type, date range and print / PDF choice"
+Level 0 - Reference layout,level-0-flow-03,owner,1.0,"Product / category changes, images and shipment details"
+Level 0 - Reference layout,level-0-flow-04,owner,2.0,"Sales transaction details (items, quantities, prices, service request / approval)"
+Level 0 - Reference layout,level-0-flow-05,1.0,products,"Saved product, category and shipment details"
+Level 0 - Reference layout,level-0-flow-06,products,1.0,Catalog / batch data for updates
+Level 0 - Reference layout,level-0-flow-07,products,3.0,"Product / inventory data (prices, stock, expiry)"
+Level 0 - Reference layout,level-0-flow-08,1.0,2.0,Sellable product details and available quantities
+Level 0 - Reference layout,level-0-flow-09,2.0,products,Allocated batch IDs / remaining stock updates
+Level 0 - Reference layout,level-0-flow-10,2.0,product-sales,"Record purchase details (items, qty, total, payment, cashier)"
+Level 0 - Reference layout,level-0-flow-11,product-sales,3.0,"Sales data (revenue, quantities sold, payment totals)"
+Level 0 - Reference layout,level-0-flow-12,2.0,service-sales,"Record service details (description, charge, job status)"
+Level 0 - Reference layout,level-0-flow-13,service-sales,3.0,"Services data (charges, completed / pending jobs)"
+Level 0 - Reference layout,level-0-flow-14,customer,2.0,"Order and payment details (Cash / GCash, tender, reference)"
+Level 0 - Reference layout,level-0-flow-15,2.0,customer,"Product / service details and receipt (total, payment and change)"
+Level 0 - Reference layout,level-0-flow-16,2.0,labor,"Service job details (description, items and instructions)"
+Level 0 - Reference layout,level-0-flow-17,labor,2.0,"Service status (accepted, in progress, completed) and completion details"
+Level 1 - Inventory,inventory-detail-flow-01,owner,1.1,Product / category changes and image files
+Level 1 - Inventory,inventory-detail-flow-02,1.1,1.2,Selected product details and category
+Level 1 - Inventory,inventory-detail-flow-03,owner,1.2,"Shipment details (quantity, cost, retail, expiry, condition)"
+Level 1 - Inventory,inventory-detail-flow-04,owner,1.3,Batch correction request and replacement field values
+Level 1 - Inventory,inventory-detail-flow-05,1.1,catalog,"Saved product, category, archive status and image paths"
+Level 1 - Inventory,inventory-detail-flow-06,catalog,1.1,Existing catalog / category data
+Level 1 - Inventory,inventory-detail-flow-07,1.2,batches,New stock-in batch and initial remaining quantity
+Level 1 - Inventory,inventory-detail-flow-08,batches,1.3,Existing batch values and quantity already sold
+Level 1 - Inventory,inventory-detail-flow-09,1.3,batches,Validated batch corrections and recalculated remaining quantity
+Level 1 - Inventory,inventory-detail-flow-10,catalog,1.4,"Catalog labels, categories and active / archived status"
+Level 1 - Inventory,inventory-detail-flow-11,batches,1.4,"Stock balances, expiry, condition and selling prices"
+Level 1 - Inventory,inventory-detail-flow-12,owner-view,1.4,"Search, category, stock status and sorting option"
+Level 1 - Inventory,inventory-detail-flow-13,1.4,owner-view,Filtered inventory / receiving log Low / out-of-stock alerts
+Level 1 - Inventory,inventory-detail-flow-14,1.4,sales,"Sellable products, available quantities and current retail prices"
+Level 1 - Sales and services,pos-detail-flow-01,owner,2.1,Selected products / quantities and authorized price details
+Level 1 - Sales and services,pos-detail-flow-02,customer,2.1,Customer order and service requirements
+Level 1 - Sales and services,pos-detail-flow-03,2.1,2.2,"Validated order (items, qty, prices, service charge)"
+Level 1 - Sales and services,pos-detail-flow-04,customer,2.2,"Payment details (method, amount tendered, GCash reference)"
+Level 1 - Sales and services,pos-detail-flow-05,2.2,2.3,Accepted payment / confirmed product sale
+Level 1 - Sales and services,pos-detail-flow-06,stock,2.1,"Product availability, batch eligibility and retail prices"
+Level 1 - Sales and services,pos-detail-flow-07,stock,2.3,"Eligible stock batches (ID, quantity, cost, expiry, condition)"
+Level 1 - Sales and services,pos-detail-flow-08,2.3,stock,Allocated batch IDs and reduced remaining quantities
+Level 1 - Sales and services,pos-detail-flow-09,2.3,product-sales,"Sale header, sold items, totals and payment details"
+Level 1 - Sales and services,pos-detail-flow-10,2.1,2.4,"Validated service request (description, items, requested work)"
+Level 1 - Sales and services,pos-detail-flow-11,2.2,2.4,Service charge / payment status
+Level 1 - Sales and services,pos-detail-flow-12,2.4,labor,Service job details and work instructions
+Level 1 - Sales and services,pos-detail-flow-13,labor,2.4,Service status and completion details
+Level 1 - Sales and services,pos-detail-flow-14,2.4,service-sales,"Saved service description, charge, sale link and job status"
+Level 1 - Sales and services,pos-detail-flow-15,product-sales,2.5,"Saved sale, sold items and payment / change details"
+Level 1 - Sales and services,pos-detail-flow-16,service-sales,2.5,"Service charge, status and linked transaction details"
+Level 1 - Sales and services,pos-detail-flow-17,2.5,customer-out,Receipt and product / service transaction details
+Level 1 - Sales and services,pos-detail-flow-18,2.5,owner,Transaction confirmation / receipt and recorded sale ID
+Level 1 - Reports,reports-detail-flow-01,owner,3.1,"Report type, dates, filters and output preference"
+Level 1 - Reports,reports-detail-flow-02,3.1,3.2,Validated report criteria and selected date range
+Level 1 - Reports,reports-detail-flow-03,products,3.2,"Product / inventory data (stock, price, category and expiry)"
+Level 1 - Reports,reports-detail-flow-04,product-sales,3.2,"Sales data within selected dates (items, quantity, revenue and cashier)"
+Level 1 - Reports,reports-detail-flow-05,service-sales,3.2,"Service data within selected dates (charges, pending / completed jobs)"
+Level 1 - Reports,reports-detail-flow-06,3.2,3.3,Aggregated totals / stock alerts Rankings and service summaries
+Level 1 - Reports,reports-detail-flow-07,3.3,owner-out,Overall report (printable / PDF output)

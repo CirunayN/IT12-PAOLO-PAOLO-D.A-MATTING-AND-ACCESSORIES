@@ -1,0 +1,145 @@
+﻿table,column,sql_server_type,nullable,keys,references,on_delete,note
+users,id,bigint,False,PK,,,identity
+users,name,nvarchar(255),False,,,,
+users,username,nvarchar(255),True,UK,,,
+users,email,nvarchar(255),False,UK,,,
+users,role,nvarchar(255),False,,,,default Admin
+users,is_active,bit,False,,,,default 1
+users,email_verified_at,datetime,True,,,,
+users,password,nvarchar(255),False,,,,
+users,remember_token,nvarchar(100),True,,,,
+users,created_at,datetime,True,,,,
+users,updated_at,datetime,True,,,,
+tbl_Category,ID,bigint,False,PK,,,identity
+tbl_Category,Name,nvarchar(255),False,,,,
+tbl_Category,Is_Archived,bit,False,,,,default 0
+tbl_Category,created_at,datetime,True,,,,
+tbl_Category,updated_at,datetime,True,,,,
+tbl_Status,ID,bigint,False,PK,,,identity
+tbl_Status,Name,nvarchar(255),False,,,,
+tbl_Status,created_at,datetime,True,,,,
+tbl_Status,updated_at,datetime,True,,,,
+tbl_Payment_Method,ID,bigint,False,PK,,,identity
+tbl_Payment_Method,Name,nvarchar(255),False,,,,
+tbl_Payment_Method,created_at,datetime,True,,,,
+tbl_Payment_Method,updated_at,datetime,True,,,,
+tbl_Product,ID,bigint,False,PK,,,identity
+tbl_Product,Category_ID,bigint,False,FK,tbl_Category.ID,CASCADE,
+tbl_Product,Status_ID,bigint,False,FK,tbl_Status.ID,CASCADE,
+tbl_Product,Name,nvarchar(255),False,,,,
+tbl_Product,Description,nvarchar(max),True,,,,
+tbl_Product,Images,nvarchar(max),True,,,,JSON image paths
+tbl_Product,Image,nvarchar(255),True,,,,single image path
+tbl_Product,created_at,datetime,True,,,,
+tbl_Product,updated_at,datetime,True,,,,
+tbl_Stock_in,ID,bigint,False,PK,,,identity
+tbl_Stock_in,Product_ID,bigint,False,FK,tbl_Product.ID,CASCADE,
+tbl_Stock_in,User_ID,bigint,True,FK,users.id,SET NULL,
+tbl_Stock_in,Quantity,"decimal(10,2)",False,,,,default 0
+tbl_Stock_in,Remaining_Quantity,"decimal(10,2)",False,,,,default 0; FIFO balance
+tbl_Stock_in,Cost_Price,"decimal(10,2)",False,,,,default 0
+tbl_Stock_in,Retail_Price,"decimal(10,2)",False,,,,default 0
+tbl_Stock_in,Has_Expiration,bit,False,,,,default 0
+tbl_Stock_in,Expiration_Date,date,True,,,,
+tbl_Stock_in,Condition,nvarchar(50),False,,,,default Good
+tbl_Stock_in,created_at,datetime,True,,,,
+tbl_Stock_in,updated_at,datetime,True,,,,
+tbl_Sale,ID,bigint,False,PK,,,identity
+tbl_Sale,User_ID,bigint,False,FK,users.id,CASCADE,
+tbl_Sale,Payment_Method_ID,bigint,False,FK,tbl_Payment_Method.ID,CASCADE,
+tbl_Sale,Date,datetime,False,,,,
+tbl_Sale,Total,"decimal(10,2)",False,,,,default 0
+tbl_Sale,Amount_Received,"decimal(10,2)",False,,,,default 0
+tbl_Sale,Change_Amount,"decimal(10,2)",False,,,,default 0
+tbl_Sale,GCash_Reference_Number,nvarchar(100),True,,,,
+tbl_Sale,created_at,datetime,True,,,,
+tbl_Sale,updated_at,datetime,True,,,,
+tbl_Sold_Item,ID,bigint,False,PK,,,identity
+tbl_Sold_Item,Product_ID,bigint,False,FK,tbl_Product.ID,CASCADE,
+tbl_Sold_Item,Sale_ID,bigint,False,FK,tbl_Sale.ID,CASCADE,
+tbl_Sold_Item,Quantity,"decimal(10,2)",False,,,,default 1
+tbl_Sold_Item,Total,"decimal(10,2)",False,,,,default 0
+tbl_Sold_Item,created_at,datetime,True,,,,
+tbl_Sold_Item,updated_at,datetime,True,,,,
+admin_recovery_codes,id,bigint,False,PK,,,identity
+admin_recovery_codes,user_id,bigint,False,FK,users.id,CASCADE,
+admin_recovery_codes,code_hash,nvarchar(255),False,,,,
+admin_recovery_codes,used_at,datetime,True,,,,
+admin_recovery_codes,created_at,datetime,True,,,,
+admin_recovery_codes,updated_at,datetime,True,,,,
+email_change_codes,id,bigint,False,PK,,,identity
+email_change_codes,user_id,bigint,False,"FK,UK",users.id,CASCADE,
+email_change_codes,new_email,nvarchar(255),False,,,,
+email_change_codes,code_hash,nvarchar(255),False,,,,
+email_change_codes,expires_at,datetime,False,,,,
+email_change_codes,created_at,datetime,True,,,,
+email_change_codes,updated_at,datetime,True,,,,
+password_reset_requests,id,bigint,False,PK,,,identity
+password_reset_requests,user_id,bigint,False,FK,users.id,CASCADE,
+password_reset_requests,approved_by,bigint,True,FK,users.id,NO ACTION,
+password_reset_requests,code_hash,nvarchar(255),True,,,,
+password_reset_requests,approved_at,datetime,True,,,,
+password_reset_requests,expires_at,datetime,True,,,,
+password_reset_requests,used_at,datetime,True,,,,
+password_reset_requests,completed_at,datetime,True,,,,
+password_reset_requests,created_at,datetime,True,,,,
+password_reset_requests,updated_at,datetime,True,,,,
+pending_employee_registrations,id,bigint,False,PK,,,identity
+pending_employee_registrations,created_by,bigint,False,FK,users.id,CASCADE,
+pending_employee_registrations,name,nvarchar(255),False,,,,
+pending_employee_registrations,username,nvarchar(255),False,UK,,,
+pending_employee_registrations,email,nvarchar(255),False,UK,,,
+pending_employee_registrations,password_hash,nvarchar(255),False,,,,
+pending_employee_registrations,role,nvarchar(255),False,,,,default Employee
+pending_employee_registrations,code_hash,nvarchar(255),False,,,,
+pending_employee_registrations,expires_at,datetime,False,,,,
+pending_employee_registrations,created_at,datetime,True,,,,
+pending_employee_registrations,updated_at,datetime,True,,,,
+password_reset_codes,id,bigint,False,PK,,,identity
+password_reset_codes,email,nvarchar(255),False,,users.email,logical reference only,application reference to users.email
+password_reset_codes,code_hash,nvarchar(255),False,,,,
+password_reset_codes,expires_at,datetime,False,,,,
+password_reset_codes,created_at,datetime,True,,,,
+password_reset_codes,updated_at,datetime,True,,,,
+password_reset_tokens,email,nvarchar(255),False,PK,users.email,logical reference only,
+password_reset_tokens,token,nvarchar(255),False,,,,
+password_reset_tokens,created_at,datetime,True,,,,
+sessions,id,nvarchar(255),False,PK,,,
+sessions,user_id,bigint,True,,users.id,logical reference only,indexed; application reference only
+sessions,ip_address,nvarchar(45),True,,,,
+sessions,user_agent,nvarchar(max),True,,,,
+sessions,payload,nvarchar(max),False,,,,
+sessions,last_activity,int,False,,,,Unix timestamp
+cache,key,nvarchar(255),False,PK,,,
+cache,value,nvarchar(max),False,,,,
+cache,expiration,bigint,False,,,,Unix timestamp
+cache_locks,key,nvarchar(255),False,PK,,,
+cache_locks,owner,nvarchar(255),False,,,,
+cache_locks,expiration,bigint,False,,,,Unix timestamp
+jobs,id,bigint,False,PK,,,identity
+jobs,queue,nvarchar(255),False,,,,
+jobs,payload,nvarchar(max),False,,,,
+jobs,attempts,smallint,False,,,,
+jobs,reserved_at,int,True,,,,
+jobs,available_at,int,False,,,,
+jobs,created_at,int,False,,,,
+job_batches,id,nvarchar(255),False,PK,,,
+job_batches,name,nvarchar(255),False,,,,
+job_batches,total_jobs,int,False,,,,
+job_batches,pending_jobs,int,False,,,,
+job_batches,failed_jobs,int,False,,,,
+job_batches,failed_job_ids,nvarchar(max),False,,,,
+job_batches,options,nvarchar(max),True,,,,
+job_batches,cancelled_at,int,True,,,,
+job_batches,created_at,int,False,,,,
+job_batches,finished_at,int,True,,,,
+failed_jobs,id,bigint,False,PK,,,identity
+failed_jobs,uuid,nvarchar(255),False,UK,,,
+failed_jobs,connection,nvarchar(255),False,,,,
+failed_jobs,queue,nvarchar(255),False,,,,
+failed_jobs,payload,nvarchar(max),False,,,,
+failed_jobs,exception,nvarchar(max),False,,,,
+failed_jobs,failed_at,datetime,False,,,,default CURRENT_TIMESTAMP
+migrations,id,int,False,PK,,,identity
+migrations,migration,nvarchar(255),False,,,,
+migrations,batch,int,False,,,,

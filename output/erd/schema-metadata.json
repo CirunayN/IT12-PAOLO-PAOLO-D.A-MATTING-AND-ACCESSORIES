@@ -1,0 +1,1385 @@
+{
+  "source_file": "backup_p7db_2026-10-10_051707_a825b96d.json",
+  "source_sha256": "96121f48cb270c14d8b402c8be660b5e9426ab43a73c02b41cdd3122a8f99841",
+  "created_at": "2026-10-09T21:17:09+00:00",
+  "table_count": 21,
+  "column_count": 144,
+  "schema_basis": "Columns: backup. SQL Server types / constraints: matching local migrations. No live catalog audit.",
+  "migrations": [
+    "0001_01_01_000000_create_users_table",
+    "0001_01_01_000001_create_cache_table",
+    "0001_01_01_000002_create_jobs_table",
+    "2026_09_20_000001_create_p7_erd_tables",
+    "2026_09_23_155236_add_username_to_users_table",
+    "2026_09_24_000001_add_images_to_tbl_product_table",
+    "2026_09_24_000002_add_user_id_to_tbl_stock_in_table",
+    "2026_09_26_222944_move_expiration_from_product_to_stock_in",
+    "2026_09_27_000001_add_payment_details_to_tbl_sale",
+    "2026_09_27_000002_add_description_and_expiration_to_tbl_product",
+    "2026_09_27_000006_create_password_reset_codes_table",
+    "2026_09_27_000007_create_pending_employee_registrations_table",
+    "2026_09_27_000008_create_email_change_codes_table",
+    "2026_09_29_010500_add_fifo_inventory_tracking",
+    "2026_09_29_204200_verify_existing_admin_accounts",
+    "2026_09_30_000001_add_gcash_reference_to_tbl_sale",
+    "2026_09_30_000001_add_offline_security",
+    "2026_10_09_000001_add_product_image_column",
+    "2026_10_10_000001_add_category_archiving"
+  ],
+  "tables": {
+    "users": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "username",
+          "type": "nvarchar(255)",
+          "nullable": true,
+          "keys": [
+            "UK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "email",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "UK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "role",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": "default Admin"
+        },
+        {
+          "name": "is_active",
+          "type": "bit",
+          "nullable": false,
+          "keys": [],
+          "note": "default 1"
+        },
+        {
+          "name": "email_verified_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "password",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "remember_token",
+          "type": "nvarchar(100)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 5
+    },
+    "tbl_Category": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "Name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "Is_Archived",
+          "type": "bit",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 8
+    },
+    "tbl_Status": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "Name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 4
+    },
+    "tbl_Payment_Method": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "Name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 5
+    },
+    "tbl_Product": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "Category_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Status_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "Description",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "Images",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "keys": [],
+          "note": "JSON image paths"
+        },
+        {
+          "name": "Image",
+          "type": "nvarchar(255)",
+          "nullable": true,
+          "keys": [],
+          "note": "single image path"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 29
+    },
+    "tbl_Stock_in": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "Product_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "User_ID",
+          "type": "bigint",
+          "nullable": true,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Quantity",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "Remaining_Quantity",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0; FIFO balance"
+        },
+        {
+          "name": "Cost_Price",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "Retail_Price",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "Has_Expiration",
+          "type": "bit",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "Expiration_Date",
+          "type": "date",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "Condition",
+          "type": "nvarchar(50)",
+          "nullable": false,
+          "keys": [],
+          "note": "default Good"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 103
+    },
+    "tbl_Sale": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "User_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Payment_Method_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Date",
+          "type": "datetime",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "Total",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "Amount_Received",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "Change_Amount",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "GCash_Reference_Number",
+          "type": "nvarchar(100)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 285
+    },
+    "tbl_Sold_Item": {
+      "columns": [
+        {
+          "name": "ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "Product_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Sale_ID",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "Quantity",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 1"
+        },
+        {
+          "name": "Total",
+          "type": "decimal(10,2)",
+          "nullable": false,
+          "keys": [],
+          "note": "default 0"
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 514
+    },
+    "admin_recovery_codes": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "user_id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "code_hash",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "used_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 10
+    },
+    "email_change_codes": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "user_id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK",
+            "UK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "new_email",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "code_hash",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "datetime",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "password_reset_requests": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "user_id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "approved_by",
+          "type": "bigint",
+          "nullable": true,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "code_hash",
+          "type": "nvarchar(255)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "approved_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "used_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "completed_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "pending_employee_registrations": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "created_by",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "FK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "username",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "UK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "email",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "UK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "password_hash",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "role",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": "default Employee"
+        },
+        {
+          "name": "code_hash",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "datetime",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "password_reset_codes": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "email",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": "application reference to users.email"
+        },
+        {
+          "name": "code_hash",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "expires_at",
+          "type": "datetime",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "password_reset_tokens": {
+      "columns": [
+        {
+          "name": "email",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "token",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "datetime",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "sessions": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "user_id",
+          "type": "bigint",
+          "nullable": true,
+          "keys": [],
+          "note": "indexed; application reference only"
+        },
+        {
+          "name": "ip_address",
+          "type": "nvarchar(45)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "user_agent",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "payload",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "last_activity",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": "Unix timestamp"
+        }
+      ],
+      "row_count": 2
+    },
+    "cache": {
+      "columns": [
+        {
+          "name": "key",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "value",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "expiration",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [],
+          "note": "Unix timestamp"
+        }
+      ],
+      "row_count": 1
+    },
+    "cache_locks": {
+      "columns": [
+        {
+          "name": "key",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "owner",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "expiration",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [],
+          "note": "Unix timestamp"
+        }
+      ],
+      "row_count": 0
+    },
+    "jobs": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "queue",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "payload",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "attempts",
+          "type": "smallint",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "reserved_at",
+          "type": "int",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "available_at",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "job_batches": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "name",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "total_jobs",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "pending_jobs",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "failed_jobs",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "failed_job_ids",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "options",
+          "type": "nvarchar(max)",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "cancelled_at",
+          "type": "int",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "created_at",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "finished_at",
+          "type": "int",
+          "nullable": true,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 0
+    },
+    "failed_jobs": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "bigint",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "uuid",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [
+            "UK"
+          ],
+          "note": ""
+        },
+        {
+          "name": "connection",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "queue",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "payload",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "exception",
+          "type": "nvarchar(max)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "failed_at",
+          "type": "datetime",
+          "nullable": false,
+          "keys": [],
+          "note": "default CURRENT_TIMESTAMP"
+        }
+      ],
+      "row_count": 0
+    },
+    "migrations": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "int",
+          "nullable": false,
+          "keys": [
+            "PK"
+          ],
+          "note": "identity"
+        },
+        {
+          "name": "migration",
+          "type": "nvarchar(255)",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        },
+        {
+          "name": "batch",
+          "type": "int",
+          "nullable": false,
+          "keys": [],
+          "note": ""
+        }
+      ],
+      "row_count": 19
+    }
+  },
+  "relationships": [
+    {
+      "parent": "tbl_Category",
+      "parent_column": "ID",
+      "child": "tbl_Product",
+      "child_column": "Category_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "tbl_Status",
+      "parent_column": "ID",
+      "child": "tbl_Product",
+      "child_column": "Status_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "tbl_Product",
+      "parent_column": "ID",
+      "child": "tbl_Stock_in",
+      "child_column": "Product_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "tbl_Stock_in",
+      "child_column": "User_ID",
+      "optional_parent": true,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "SET NULL"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "tbl_Sale",
+      "child_column": "User_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "tbl_Payment_Method",
+      "parent_column": "ID",
+      "child": "tbl_Sale",
+      "child_column": "Payment_Method_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "tbl_Product",
+      "parent_column": "ID",
+      "child": "tbl_Sold_Item",
+      "child_column": "Product_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "tbl_Sale",
+      "parent_column": "ID",
+      "child": "tbl_Sold_Item",
+      "child_column": "Sale_ID",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "admin_recovery_codes",
+      "child_column": "user_id",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "email_change_codes",
+      "child_column": "user_id",
+      "optional_parent": false,
+      "unique_child": true,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "pending_employee_registrations",
+      "child_column": "created_by",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "password_reset_requests",
+      "child_column": "user_id",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "CASCADE"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "password_reset_requests",
+      "child_column": "approved_by",
+      "optional_parent": true,
+      "unique_child": false,
+      "logical": false,
+      "on_delete": "NO ACTION"
+    },
+    {
+      "parent": "users",
+      "parent_column": "id",
+      "child": "sessions",
+      "child_column": "user_id",
+      "optional_parent": true,
+      "unique_child": false,
+      "logical": true,
+      "on_delete": null
+    },
+    {
+      "parent": "users",
+      "parent_column": "email",
+      "child": "password_reset_codes",
+      "child_column": "email",
+      "optional_parent": false,
+      "unique_child": false,
+      "logical": true,
+      "on_delete": null
+    },
+    {
+      "parent": "users",
+      "parent_column": "email",
+      "child": "password_reset_tokens",
+      "child_column": "email",
+      "optional_parent": false,
+      "unique_child": true,
+      "logical": true,
+      "on_delete": null
+    }
+  ]
+}
