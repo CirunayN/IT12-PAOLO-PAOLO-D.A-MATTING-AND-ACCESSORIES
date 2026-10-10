@@ -41,6 +41,8 @@ class SystemAuditTest extends TestCase
         $response->assertSee('Administration');
         $response->assertSee('Top 5 Best-Selling Products');
         $response->assertSee('Top 5 Least-Selling Products');
+        $response->assertDontSee('Apply Dates');
+        $response->assertSee('Reset');
     }
 
     public function test_admin_pos_renders_successfully(): void
@@ -169,6 +171,10 @@ class SystemAuditTest extends TestCase
         $response = $this->actingAs($this->admin)->get(route('reports.index'));
         $response->assertOk();
         $response->assertSee('Reports');
+        $response->assertDontSee('Generate, review, and print business, inventory, or cashier performance reports in tamper-evident PDF format.');
+        $response->assertSee(route('transactions.index'));
+        $response->assertSee(route('products.index'));
+        $response->assertSee(route('stock-in.index'));
 
         $responsePrint = $this->actingAs($this->admin)->get(route('reports.print'));
         $responsePrint->assertOk();

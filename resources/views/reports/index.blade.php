@@ -10,9 +10,6 @@
                 <i class="fas fa-file-lines text-red-500"></i>
                 Dashboard &amp; Reports
             </h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Generate, review, and print business, inventory, or cashier performance reports in tamper-evident PDF format.
-            </p>
             @include('reports.tabs')
         </div>
 
@@ -230,120 +227,196 @@
     @if($scope !== 'inventory')
     <!-- SALES SUMMARY (BUSINESS & EMPLOYEE) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">Total Sales</div>
+        <a href="{{ route('transactions.index') }}"
+           class="glass-card rounded-2xl p-5 border hover:border-emerald-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-emerald-500 transition-colors">
+                <span>Total Sales</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
             <div class="text-2xl font-black text-emerald-500 mt-2">
                 ₱{{ number_format($totalSales, 2) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">Period total revenue</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>Period total revenue</span>
+                <span class="text-emerald-500 font-semibold group-hover:underline">View sales &rarr;</span>
+            </div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">Transactions</div>
-            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white">
+        <a href="{{ route('transactions.index') }}"
+           class="glass-card rounded-2xl p-5 border hover:border-blue-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-blue-500 transition-colors">
+                <span>Transactions</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
+            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
                 {{ number_format($totalTransactions) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">Completed orders</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>Completed orders</span>
+                <span class="text-blue-500 font-semibold group-hover:underline">View all &rarr;</span>
+            </div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">Cash Sales</div>
+        <a href="{{ route('transactions.index', ['payment_method' => 'Cash']) }}"
+           class="glass-card rounded-2xl p-5 border hover:border-slate-400/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
+                <span>Cash Sales</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
             <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white">
                 ₱{{ number_format($cashSales, 2) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">Cash in register</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>Cash in register</span>
+                <span class="text-slate-500 group-hover:underline">Cash orders &rarr;</span>
+            </div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">GCash Sales</div>
+        <a href="{{ route('transactions.index', ['payment_method' => 'GCash']) }}"
+           class="glass-card rounded-2xl p-5 border hover:border-blue-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-blue-500 transition-colors">
+                <span>GCash Sales</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
             <div class="text-2xl font-black mt-2 text-blue-500">
                 ₱{{ number_format($gcashSales, 2) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">Digital payments</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>Digital payments</span>
+                <span class="text-blue-500 font-semibold group-hover:underline">GCash orders &rarr;</span>
+            </div>
+        </a>
     </div>
     @endif
 
     @if($scope === 'inventory')
     <!-- INVENTORY REPORT SUMMARY KPIS -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-        <div class="glass-card rounded-2xl p-4 border">
-            <div class="text-[11px] uppercase font-bold text-slate-400">Products</div>
-            <div class="text-xl sm:text-2xl font-black mt-1.5 text-slate-900 dark:text-white">
+        <a href="{{ route('products.index') }}"
+           class="glass-card rounded-2xl p-4 border hover:border-red-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] uppercase font-bold text-slate-400 group-hover:text-red-500 transition-colors">
+                <span>Products</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[9px]"></i>
+            </div>
+            <div class="text-xl sm:text-2xl font-black mt-1.5 text-slate-900 dark:text-white group-hover:text-red-500 transition-colors">
                 {{ number_format($totalProducts) }}
             </div>
-            <div class="text-[10px] text-slate-400">Catalog items</div>
-        </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Catalog items</div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-4 border">
-            <div class="text-[11px] uppercase font-bold text-slate-400">Total Units</div>
+        <a href="{{ route('products.index') }}"
+           class="glass-card rounded-2xl p-4 border hover:border-blue-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] uppercase font-bold text-slate-400 group-hover:text-blue-500 transition-colors">
+                <span>Total Units</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[9px]"></i>
+            </div>
             <div class="text-xl sm:text-2xl font-black mt-1.5 text-blue-600 dark:text-blue-400">
                 {{ number_format($totalStockUnits, 0) }}
             </div>
-            <div class="text-[10px] text-slate-400">On-hand stock</div>
-        </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">On-hand stock</div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-4 border">
-            <div class="text-[11px] uppercase font-bold text-slate-400">Cost Valuation</div>
+        <a href="{{ route('products.index') }}"
+           class="glass-card rounded-2xl p-4 border hover:border-slate-400/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] uppercase font-bold text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
+                <span>Cost Valuation</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[9px]"></i>
+            </div>
             <div class="text-xl sm:text-2xl font-black mt-1.5 text-slate-900 dark:text-white">
                 ₱{{ number_format($inventoryCostValue, 2) }}
             </div>
-            <div class="text-[10px] text-slate-400">Invested cost</div>
-        </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Invested cost</div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-4 border">
-            <div class="text-[11px] uppercase font-bold text-slate-400">Retail Valuation</div>
+        <a href="{{ route('products.index') }}"
+           class="glass-card rounded-2xl p-4 border hover:border-emerald-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] uppercase font-bold text-slate-400 group-hover:text-emerald-500 transition-colors">
+                <span>Retail Valuation</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[9px]"></i>
+            </div>
             <div class="text-xl sm:text-2xl font-black mt-1.5 text-emerald-600 dark:text-emerald-400">
                 ₱{{ number_format($inventoryRetailValue, 2) }}
             </div>
-            <div class="text-[10px] text-slate-400">Market value</div>
-        </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Market value</div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-4 border">
-            <div class="text-[11px] uppercase font-bold text-slate-400">Est. Profit Margin</div>
+        <a href="{{ route('products.index') }}"
+           class="glass-card rounded-2xl p-4 border hover:border-emerald-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] uppercase font-bold text-slate-400 group-hover:text-emerald-500 transition-colors">
+                <span>Est. Profit</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[9px]"></i>
+            </div>
             <div class="text-xl sm:text-2xl font-black mt-1.5 text-emerald-500">
                 ₱{{ number_format($potentialProfit, 2) }}
             </div>
-            <div class="text-[10px] text-slate-400">Potential profit</div>
-        </div>
+            <div class="text-[10px] text-slate-400 mt-0.5">Potential profit</div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-4 border">
-            <div class="text-[11px] uppercase font-bold text-slate-400">Alerts</div>
+        <a href="{{ route('products.index', ['sort' => 'stock_asc']) }}"
+           class="glass-card rounded-2xl p-4 border hover:border-amber-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-[11px] uppercase font-bold text-slate-400 group-hover:text-amber-500 transition-colors">
+                <span>Alerts</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[9px]"></i>
+            </div>
             <div class="text-xl sm:text-2xl font-black mt-1.5 flex items-center gap-2">
                 <span class="text-amber-500 text-sm font-bold">{{ $lowStockCount }} Low</span>
                 <span class="text-rose-500 text-sm font-bold">{{ $outOfStockCount }} Out</span>
             </div>
-            <div class="text-[10px] text-slate-400">Attention needed</div>
-        </div>
+            <div class="text-[10px] text-slate-400 mt-0.5 flex items-center justify-between">
+                <span>Restock needed</span>
+                <span class="text-amber-500 font-semibold group-hover:underline">Manage &rarr;</span>
+            </div>
+        </a>
     </div>
     @endif
 
     @if($scope === 'business')
     <!-- STOCK-IN SUMMARY (BUSINESS SCOPE) -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">Stock-In Batches</div>
-            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white">
+        <a href="{{ route('stock-in.index') }}"
+           class="glass-card rounded-2xl p-5 border hover:border-red-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-red-500 transition-colors">
+                <span>Stock-In Batches</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
+            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white group-hover:text-red-500 transition-colors">
                 {{ number_format($stockInBatches) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">Deliveries received in period</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>Deliveries received in period</span>
+                <span class="text-red-500 font-semibold group-hover:underline">Stock-In logs &rarr;</span>
+            </div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">Units Received</div>
-            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white">
+        <a href="{{ route('stock-in.index') }}"
+           class="glass-card rounded-2xl p-5 border hover:border-red-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-red-500 transition-colors">
+                <span>Units Received</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
+            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white group-hover:text-red-500 transition-colors">
                 {{ number_format($unitsReceived, 0) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">New inventory added</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>New inventory added</span>
+                <span class="text-red-500 font-semibold group-hover:underline">Stock-In logs &rarr;</span>
+            </div>
+        </a>
 
-        <div class="glass-card rounded-2xl p-5 border">
-            <div class="text-xs uppercase font-bold text-slate-400">Stock-In Cost</div>
-            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white">
+        <a href="{{ route('stock-in.index') }}"
+           class="glass-card rounded-2xl p-5 border hover:border-red-500/50 hover:shadow-md transition-all group block cursor-pointer">
+            <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-red-500 transition-colors">
+                <span>Stock-In Cost</span>
+                <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
+            </div>
+            <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white group-hover:text-red-500 transition-colors">
                 ₱{{ number_format($stockInCost, 2) }}
             </div>
-            <div class="text-xs text-slate-400 mt-1">Total shipment investment</div>
-        </div>
+            <div class="text-xs text-slate-400 mt-1 flex items-center justify-between">
+                <span>Total shipment investment</span>
+                <span class="text-red-500 font-semibold group-hover:underline">Stock-In logs &rarr;</span>
+            </div>
+        </a>
     </div>
     @endif
 
@@ -355,7 +428,13 @@
                 <i class="fas fa-receipt text-blue-500"></i>
                 <span>Sales Transactions</span>
             </h3>
-            <span class="text-xs font-bold text-slate-400">{{ $sales->count() }} records</span>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-slate-400">{{ $sales->count() }} records</span>
+                <a href="{{ route('transactions.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 transition-colors">
+                    <span>Manage</span>
+                    <i class="fas fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -422,7 +501,13 @@
                 <i class="fas fa-boxes-stacked text-blue-500"></i>
                 <span>Current Stock Levels &amp; Valuation</span>
             </h3>
-            <span class="text-xs font-bold text-slate-400">{{ $products->count() }} items listed</span>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-slate-400">{{ $products->count() }} items listed</span>
+                <a href="{{ route('products.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 transition-colors">
+                    <span>Manage</span>
+                    <i class="fas fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
         </div>
 
         <div class="overflow-x-auto">
@@ -504,7 +589,13 @@
                 <i class="fas fa-truck-ramp-box text-blue-500"></i>
                 <span>Stock-In Deliveries Received ({{ $periodLabel }})</span>
             </h3>
-            <span class="text-xs font-bold text-slate-400">{{ $stockIns->count() }} batches</span>
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-slate-400">{{ $stockIns->count() }} batches</span>
+                <a href="{{ route('stock-in.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-600 dark:hover:text-blue-400 flex items-center gap-1 transition-colors">
+                    <span>Manage</span>
+                    <i class="fas fa-arrow-right text-[10px]"></i>
+                </a>
+            </div>
         </div>
 
         <div class="overflow-x-auto">

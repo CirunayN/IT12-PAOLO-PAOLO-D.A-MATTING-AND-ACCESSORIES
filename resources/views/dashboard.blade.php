@@ -62,19 +62,11 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button type="submit" id="dashboardApplyBtn"
-                        class="w-full sm:w-auto px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md shadow-red-600/25 flex items-center justify-center gap-1.5 transition-all cursor-pointer">
-                        <i class="fas fa-calendar-check"></i>
-                        <span>Apply Dates</span>
-                    </button>
-
-                    @if(request()->filled('start_date') || request()->filled('end_date') || (request()->filled('period') && request('period') !== 'month'))
                     <a href="{{ route('dashboard') }}" title="Reset to current month"
-                        class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-400 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                        class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-400 font-bold text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm">
                         <i class="fas fa-rotate-left"></i>
                         <span>Reset</span>
                     </a>
-                    @endif
                 </div>
             </form>
         </div>
@@ -92,6 +84,9 @@
                 if (endInput.value && endInput.value < this.value) {
                     endInput.value = this.value;
                 }
+                if (this.value && endInput.value) {
+                    filterForm.submit();
+                }
             });
 
             endInput.addEventListener('change', function() {
@@ -99,6 +94,9 @@
                     startInput.value = this.value;
                 }
                 endInput.min = startInput.value;
+                if (this.value && startInput.value) {
+                    filterForm.submit();
+                }
             });
         })();
     </script>
