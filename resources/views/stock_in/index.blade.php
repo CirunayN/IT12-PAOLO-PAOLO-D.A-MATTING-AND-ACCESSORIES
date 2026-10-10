@@ -11,6 +11,12 @@
         </div>
 
         <div class="flex items-center gap-2.5 flex-wrap">
+            <button type="button" onclick="openCategoryManager()"
+                class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 transition-all cursor-pointer">
+                <i class="fas fa-tags text-red-500" aria-hidden="true"></i>
+                <span>Manage Categories</span>
+            </button>
+
             <a href="{{ route('stock-in.print', request()->except(['page', 'output'])) }}" onclick="event.preventDefault(); openReportOutput(this.href)"
                 class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
                 <i class="fas fa-print text-blue-500"></i>
@@ -47,11 +53,11 @@
 
     <div class="glass-card rounded-2xl p-4 border shadow-sm">
         <form data-auto-filter method="GET" action="{{ route('stock-in.index') }}"
-            class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+            class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
 
-            <div class="sm:col-span-5">
+            <div class="flex-1">
                 <select name="product_id"
-                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500">
                     <option value="">All Products</option>
                     @foreach($products as $prod)
                     <option value="{{ $prod->ID }}"
@@ -62,29 +68,19 @@
                 </select>
             </div>
 
-            <div class="sm:col-span-4">
-                <select name="user_id"
-                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="">All Receiving Staff</option>
-                    @foreach($users as $user)
-                    <option value="{{ $user->id }}"
-                        {{ request('user_id') == $user->id ? 'selected' : '' }}>
-                        {{ $user->name }} ({{ $user->role ?? 'Staff' }})
-                    </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="sm:col-span-3 flex items-center gap-2">
+            <div class="flex items-center gap-2">
                 <noscript><button type="submit"
-                    class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm transition-colors">
+                    class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm transition-colors">
                     Filter
                 </button></noscript>
 
+                @if(request()->filled('product_id'))
                 <a href="{{ route('stock-in.index') }}"
-                    class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors">
-                    Reset
+                    class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors flex items-center gap-1.5">
+                    <i class="fas fa-rotate-left"></i>
+                    <span>Reset</span>
                 </a>
+                @endif
             </div>
         </form>
     </div>
@@ -96,7 +92,6 @@
                     <tr class="text-xs uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-dark-850 border-b border-slate-200 dark:border-slate-800">
                         <th class="py-3.5 px-4">Batch & Date</th>
                         <th class="py-3.5 px-4">Product</th>
-                        <th class="py-3.5 px-4">Received By</th>
                         <th class="py-3.5 px-4 text-right">Units (In / Left)</th>
                         <th class="py-3.5 px-4 text-right">Pricing (Retail / Cost)</th>
                         <th class="py-3.5 px-4 text-right">Total Investment</th>
@@ -155,21 +150,6 @@
                             </div>
                         </td>
 
-                        <td class="py-3 px-4 whitespace-nowrap">
-                            <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-lg {{ $si->user?->isAdmin() ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : 'bg-slate-200 dark:bg-dark-700 text-slate-600 dark:text-slate-300' }} flex items-center justify-center text-[10px] font-black shrink-0">
-                                    {{ strtoupper(substr($userName, 0, 1)) }}
-                                </div>
-                                <div class="min-w-0">
-                                    <div class="font-semibold text-xs text-slate-800 dark:text-slate-200 truncate max-w-[110px]" title="{{ $userName }}">
-                                        {{ $userName }}
-                                    </div>
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase">
-                                        {{ $userRole }}
-                                    </span>
-                                </div>
-                            </div>
-                        </td>
 
                         <td class="py-3 px-4 text-right whitespace-nowrap">
                             <div class="font-black text-emerald-600 dark:text-emerald-400 text-sm">
@@ -231,7 +211,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="p-8 text-center text-slate-400">
+                        <td colspan="6" class="p-8 text-center text-slate-400">
                             No stock-in records found.
                         </td>
                     </tr>

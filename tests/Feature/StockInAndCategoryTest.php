@@ -162,4 +162,38 @@ class StockInAndCategoryTest extends TestCase
             'Payment_Method_ID' => $pm->ID,
         ]);
     }
+
+    public function test_stock_in_index_renders_without_received_by_column_or_staff_filter_and_has_manage_categories(): void
+    {
+        $admin = User::factory()->create([
+            'username' => 'admin_test',
+            'role' => 'Admin',
+            'is_active' => true,
+        ]);
+
+        $cat = Category::create(['Name' => 'Mats']);
+        $status = Status::create(['Name' => 'Active']);
+        $product = Product::create([
+            'Name' => 'Heavy Rubber Mat',
+            'Category_ID' => $cat->ID,
+            'Status_ID' => $status->ID,
+        ]);
+
+        StockIn::create([
+            'Product_ID' => $product->ID,
+            'User_ID' => $admin->id,
+            'Quantity' => 10,
+            'Remaining_Quantity' => 10,
+            'Cost_Price' => 120.00,
+            'Retail_Price' => 220.00,
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('stock-in.index'));
+
+        $response->assertOk();
+        $response->assertDontSee('Received By');
+        $response->assertDontSee('All Receiving Staff');
+        $response->assertSee('Manage Categories');
+        $response->assertSee('openCategoryManager()', false);
+    }
 }
