@@ -290,9 +290,11 @@
             </table>
         </div>
 
+        @if($sales->total() > 0)
         <div class="p-4 border-t border-slate-200 dark:border-slate-800">
             {{ $sales->links() }}
         </div>
+        @endif
     </div>
 
 </div>

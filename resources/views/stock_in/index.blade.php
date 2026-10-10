@@ -235,7 +235,7 @@
             </table>
         </div>
 
-        @if($stockIns->hasPages())
+        @if($stockIns->total() > 0)
         <div class="p-4 border-t border-slate-200 dark:border-slate-800">
             {{ $stockIns->links() }}
         </div>

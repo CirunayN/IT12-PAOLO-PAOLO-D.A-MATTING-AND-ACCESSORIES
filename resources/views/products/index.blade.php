@@ -227,7 +227,7 @@
             </table>
         </div>
 
-        @if($products->hasPages())
+        @if($products->total() > 0)
         <div class="p-4 border-t border-slate-200 dark:border-slate-800">
             {{ $products->links() }}
         </div>
