@@ -39,7 +39,7 @@
         @csrf
 
         <input type="hidden" name="product_mode" id="productMode" value="{{ old('product_mode', 'existing') }}">
-        <input type="hidden" name="Product_ID" id="selectedProductId" value="{{ old('Product_ID') }}">
+        <input type="hidden" name="Product_ID" id="selectedProductId" value="{{ old('Product_ID', request('product_id')) }}">
 
         <div class="space-y-3">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -793,6 +793,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (row) {
             selectProductFromList(row);
+            const qty = document.getElementById('qtyInput');
+            if (qty) {
+                setTimeout(() => {
+                    qty.focus();
+                    qty.select();
+                }, 100);
+            }
         }
     }
 });

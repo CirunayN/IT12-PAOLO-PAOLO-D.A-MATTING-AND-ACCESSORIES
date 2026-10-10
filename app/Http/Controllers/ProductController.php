@@ -104,14 +104,16 @@ class ProductController extends Controller
             }
         }
 
-        switch ($request->input('sort', 'newest')) {
+        switch ($request->input('sort', 'stock_asc')) {
             case 'name_asc':
             case 'name_desc':
                 $query->orderBy('Name', $request->sort === 'name_asc' ? 'asc' : 'desc');
                 break;
-            case 'stock_asc':
             case 'stock_desc':
-                $query->orderBy($sellableStock(), $request->sort === 'stock_asc' ? 'asc' : 'desc');
+                $query->orderBy($sellableStock(), 'desc');
+                break;
+            case 'stock_asc':
+                $query->orderBy($sellableStock(), 'asc');
                 break;
             case 'price_asc':
             case 'price_desc':

@@ -131,7 +131,11 @@ class StockInController extends Controller
                     "'{$product->Name}' processed by {$processorName} ({$processorRole})"
                 );
 
-                return redirect()->route('stock-in.index')->with(
+                $redirectResponse = $request->input('redirect_to') === 'products'
+                    ? redirect()->route('products.index')
+                    : redirect()->route('stock-in.index');
+
+                return $redirectResponse->with(
                     'success',
                     "Stock-In batch #SI-{$stockIn->ID} recorded successfully ".
                     "(+{$stockIn->Quantity} units of {$product->Name})!"

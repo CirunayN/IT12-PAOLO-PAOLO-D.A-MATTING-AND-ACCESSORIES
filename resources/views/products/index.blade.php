@@ -76,12 +76,12 @@
             </div>
             <div class="xl:col-span-3">
                 <select name="sort" aria-label="Order by" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="newest" {{ request('sort', 'newest') === 'newest' ? 'selected' : '' }}>Newest first</option>
+                    <option value="stock_asc" {{ request('sort', 'stock_asc') === 'stock_asc' ? 'selected' : '' }}>Stock: Low to High (0 - 100+)</option>
+                    <option value="stock_desc" {{ request('sort') === 'stock_desc' ? 'selected' : '' }}>Stock: High to Low</option>
+                    <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Newest first</option>
                     <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest first</option>
                     <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>Name: A to Z</option>
                     <option value="name_desc" {{ request('sort') === 'name_desc' ? 'selected' : '' }}>Name: Z to A</option>
-                    <option value="stock_asc" {{ request('sort') === 'stock_asc' ? 'selected' : '' }}>Stock: Low to High</option>
-                    <option value="stock_desc" {{ request('sort') === 'stock_desc' ? 'selected' : '' }}>Stock: High to Low</option>
                     <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
                     <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
                 </select>
@@ -194,6 +194,15 @@
                         <td class="p-4 text-center">
                             <div class="flex items-center justify-center gap-2">
                                 @if(!$isArchived)
+                                @if($stock <= 0)
+                                <button type="button"
+                                    onclick="openQuickRestockModal({{ $product->ID }}, '{{ addslashes($product->Name) }}', {{ (float)$cost }}, {{ (float)$retail }})"
+                                    class="w-8 h-8 rounded-lg bg-emerald-500/15 hover:bg-emerald-600 text-emerald-600 hover:text-white dark:text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xs font-bold transition-all shadow-sm"
+                                    title="Quick Restock (Out of Stock)">
+                                    <i class="fas fa-boxes-stacked text-xs"></i>
+                                </button>
+                                @endif
+
                                 <a href="{{ route('products.edit', $product->ID) }}" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-red-600 hover:text-white flex items-center justify-center text-xs transition-colors" title="Edit Product">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -300,6 +309,109 @@
     </div>
 </div>
 
+<!-- QUICK RESTOCK MODAL FOR OUT-OF-STOCK PRODUCTS -->
+<div id="quickRestockModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-6 space-y-4">
+        <!-- Header -->
+        <div class="flex items-start justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-lg">
+                    <i class="fas fa-boxes-stacked"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold font-display text-slate-900 dark:text-white">Quick Restock</h3>
+                    <p class="text-[11px] text-slate-400">Receive new batch for out-of-stock product</p>
+                </div>
+            </div>
+            <button type="button" onclick="closeQuickRestockModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl cursor-pointer">&times;</button>
+        </div>
+
+        <form method="POST" action="{{ route('stock-in.store') }}" class="space-y-4">
+            @csrf
+            <input type="hidden" name="product_mode" value="existing">
+            <input type="hidden" name="Product_ID" id="quickRestockProductId">
+            <input type="hidden" name="redirect_to" value="products">
+
+            <!-- Product info banner -->
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div class="min-w-0 pr-2">
+                    <span class="text-[10px] uppercase font-bold text-slate-400">Restocking Item:</span>
+                    <div id="quickRestockProductName" class="text-sm font-bold text-slate-900 dark:text-white truncate"></div>
+                </div>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25 shrink-0">
+                    Out of Stock
+                </span>
+            </div>
+
+            <!-- Quantity Received -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                    Quantity to Add <span class="text-rose-500">*</span>
+                </label>
+                <div class="flex items-center gap-2">
+                    <input type="number" name="Quantity" id="quickRestockQuantity" min="1" step="1" required
+                        class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-base font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+                        placeholder="e.g. 10">
+                </div>
+                <div class="flex items-center gap-1.5 pt-1.5">
+                    <span class="text-[10px] text-slate-400 font-semibold mr-1">Quick:</span>
+                    <button type="button" onclick="setQuickRestockQty(5)" class="px-2 py-0.5 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-emerald-600 hover:text-white text-xs font-bold transition-all">+5</button>
+                    <button type="button" onclick="setQuickRestockQty(10)" class="px-2 py-0.5 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-emerald-600 hover:text-white text-xs font-bold transition-all">+10</button>
+                    <button type="button" onclick="setQuickRestockQty(25)" class="px-2 py-0.5 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-emerald-600 hover:text-white text-xs font-bold transition-all">+25</button>
+                    <button type="button" onclick="setQuickRestockQty(50)" class="px-2 py-0.5 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-emerald-600 hover:text-white text-xs font-bold transition-all">+50</button>
+                </div>
+            </div>
+
+            <!-- Cost & Retail Prices -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                        Cost Price (₱) <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="number" name="Cost_Price" id="quickRestockCost" min="0" step="0.01" required
+                        class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                        Retail Price (₱) <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="number" name="Retail_Price" id="quickRestockRetail" min="0" step="0.01" required
+                        class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-bold text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-emerald-500">
+                </div>
+            </div>
+
+            <!-- Expiration Date (Optional) -->
+            <div class="space-y-2">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" name="Has_Expiration" id="quickRestockHasExp" value="1" onchange="toggleQuickRestockExp(this.checked)"
+                        class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                    <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Has Expiration Date</span>
+                </label>
+                <div id="quickRestockExpDateWrapper" class="hidden">
+                    <input type="date" name="Expiration_Date" id="quickRestockExpDate" min="{{ now()->toDateString() }}"
+                        class="w-full px-3 py-2 rounded-xl bg-white dark:bg-dark-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white">
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="pt-2 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+                <a id="quickRestockFullLink" href="#" class="text-[11px] text-slate-400 hover:text-red-500 transition-colors flex items-center gap-1 font-semibold">
+                    <i class="fas fa-up-right-from-square text-[10px]"></i> Full Form
+                </a>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="closeQuickRestockModal()" class="px-3.5 py-2 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md shadow-emerald-600/20 flex items-center gap-1.5 cursor-pointer">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Restock Product</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 // Lightbox Gallery Logic
 let currentGalleryImages = [];
@@ -385,10 +497,51 @@ function closeArchiveModal() {
     document.getElementById('archiveModal').classList.add('hidden');
 }
 
+// Quick Restock Modal Logic
+function openQuickRestockModal(id, name, cost, retail) {
+    document.getElementById('quickRestockProductId').value = id;
+    document.getElementById('quickRestockProductName').textContent = name;
+    document.getElementById('quickRestockCost').value = (cost || 0).toFixed(2);
+    document.getElementById('quickRestockRetail').value = (retail || 0).toFixed(2);
+    document.getElementById('quickRestockQuantity').value = '';
+    document.getElementById('quickRestockHasExp').checked = false;
+    document.getElementById('quickRestockExpDateWrapper').classList.add('hidden');
+    document.getElementById('quickRestockExpDate').value = '';
+    document.getElementById('quickRestockFullLink').href = "{{ route('stock-in.create') }}?product_id=" + id;
+
+    const modal = document.getElementById('quickRestockModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        const qty = document.getElementById('quickRestockQuantity');
+        if (qty) qty.focus();
+    }, 100);
+}
+
+function closeQuickRestockModal() {
+    const modal = document.getElementById('quickRestockModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+function setQuickRestockQty(amt) {
+    const input = document.getElementById('quickRestockQuantity');
+    const cur = parseInt(input.value) || 0;
+    input.value = cur + amt;
+}
+
+function toggleQuickRestockExp(checked) {
+    const wrapper = document.getElementById('quickRestockExpDateWrapper');
+    const dateInput = document.getElementById('quickRestockExpDate');
+    wrapper.classList.toggle('hidden', !checked);
+    dateInput.required = checked;
+}
+
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeArchiveModal();
         closeImageGallery();
+        closeQuickRestockModal();
     } else if (e.key === 'ArrowLeft') {
         if (!document.getElementById('galleryModal').classList.contains('hidden')) {
             prevGalleryImage();
