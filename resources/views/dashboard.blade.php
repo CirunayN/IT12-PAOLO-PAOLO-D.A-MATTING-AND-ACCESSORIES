@@ -23,7 +23,7 @@
     <script>document.getElementById('dashboardStart').addEventListener('change', () => { const end = document.getElementById('dashboardEnd'), start = document.getElementById('dashboardStart').value; end.min = start; if (end.value < start) end.value = start; });</script>
 
     <!-- 5-Column Stats Grid with Featured Main "Sales in Selected Period" Hero Card -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 items-stretch">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5 items-stretch">
 
         <!-- MAIN FEATURED HERO CARD: Sales in Selected Period (Spans 2 columns, larger typography & live badge) -->
         <div class="md:col-span-2 lg:col-span-2 glass-card rounded-3xl p-6 sm:p-7 border-2 border-emerald-500/30 dark:border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 via-slate-50 to-slate-100 dark:from-emerald-950/40 dark:via-dark-900 dark:to-dark-850 shadow-lg shadow-emerald-500/5 relative overflow-hidden flex flex-col justify-between">
@@ -61,19 +61,19 @@
         <!-- STAT CARD 2: Total Sales Revenue -->
         <a href="{{ route('transactions.index', ['period' => 'overall']) }}"
            title="View all sales transactions"
-           class="glass-card group rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md hover:border-blue-500/40 flex flex-col justify-between cursor-pointer">
+           class="dashboard-sales-card glass-card group rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md hover:border-blue-500/40 flex flex-col justify-between cursor-pointer min-w-0">
             <div>
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">All-Time Sales</span>
-                    <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-base">
+                <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="min-w-0 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">All-Time Sales</span>
+                    <div class="w-10 h-10 shrink-0 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center text-base">
                         <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
-                <div class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
+                <div class="dashboard-sales-amount font-black font-display text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
                     ₱{{ number_format($totalSalesAllTime, 2) }}
                 </div>
             </div>
-            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between">
+            <div class="pt-3 mt-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center justify-between gap-2">
                 <span class="flex items-center gap-1.5"><i class="fas fa-file-invoice text-blue-500"></i><strong>{{ $totalTransactions }}</strong> sales</span>
                 <span class="text-blue-500 font-bold flex items-center gap-1 text-[11px] group-hover:translate-x-0.5 transition-transform">View &rarr;</span>
             </div>
@@ -196,6 +196,8 @@
 
         @include('dashboard.stock-alerts')
     </div>
+
+    @include('dashboard.product-sales')
 
 </div>
 @endsection

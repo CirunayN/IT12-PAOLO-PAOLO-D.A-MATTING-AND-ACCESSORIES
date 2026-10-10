@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SoldItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -37,12 +38,21 @@ class DashboardController extends Controller
 
         $products = Product::with(['category', 'status', 'stockIns'])
             ->whereHas('status', fn ($query) => $query->where('Name', '!=', 'Archived'))->get();
+        $productSales = SoldItem::select('Product_ID')
+            ->selectRaw('SUM(Quantity) AS units_sold, SUM(Total) AS sales_total')
+            ->whereHas('sale', fn ($query) => $query
+                ->where('Date', '>=', $start)
+                ->where('Date', '<', $end->copy()->startOfDay()->addDay()))
+            ->groupBy('Product_ID')->get()->keyBy('Product_ID');
         $totalProductsCount = $products->count();
         $lowStockCount = 0;
         $outOfStockCount = 0;
         $totalStockUnits = 0;
         $inventoryValue = 0;
         foreach ($products as $product) {
+            $sales = $productSales->get($product->ID);
+            $product->setAttribute('dashboard_units_sold', (float) ($sales?->units_sold ?? 0));
+            $product->setAttribute('dashboard_sales_total', (float) ($sales?->sales_total ?? 0));
             $quantity = $product->stock_quantity;
             $product->setAttribute('dashboard_stock', $quantity);
             $totalStockUnits += $quantity;
@@ -52,10 +62,17 @@ class DashboardController extends Controller
         }
         $stockAlerts = $products->filter(fn ($product) => $product->dashboard_stock <= 5)
             ->sortBy('dashboard_stock')->values();
+        $bestSellingProducts = $products->filter(fn ($product) => $product->dashboard_units_sold > 0)
+            ->sortBy([['dashboard_units_sold', 'desc'], ['Name', 'asc'], ['ID', 'asc']])
+            ->take(5)->values();
+        $leastSellingProducts = $products
+            ->sortBy([['dashboard_units_sold', 'asc'], ['Name', 'asc'], ['ID', 'asc']])
+            ->take(5)->values();
         return view('dashboard', compact(
             'startDate', 'endDate', 'periodLabel', 'todaySalesTotal', 'todaySalesCount',
             'totalSalesAllTime', 'totalTransactions', 'totalProductsCount', 'lowStockCount',
-            'outOfStockCount', 'totalStockUnits', 'inventoryValue', 'recentSales', 'stockAlerts'
+            'outOfStockCount', 'totalStockUnits', 'inventoryValue', 'recentSales', 'stockAlerts',
+            'bestSellingProducts', 'leastSellingProducts'
         ));
     }
 }

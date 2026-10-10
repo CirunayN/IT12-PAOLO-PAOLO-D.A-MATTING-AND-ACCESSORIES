@@ -7,11 +7,13 @@ use App\Models\Category;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\SoldItem;
 use App\Models\Status;
 use App\Models\StockIn;
 use App\Models\User;
 use App\Services\NativeBackupFolderPicker;
 use App\Services\SqlServerSnapshotService;
+use Database\Seeders\SeptemberOctober2026Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -245,6 +247,109 @@ class ApplicationEnhancementsTest extends TestCase
         $this->get(route('products.index', ['sort' => 'stock_desc', 'stock_level' => 'available']))->assertOk()
             ->assertViewHas('products', fn ($products) => $products->pluck('ID')->all() === [$middle->ID, $this->product->ID]);
         $this->getJson(route('products.index', ['sort' => 'invalid']))->assertUnprocessable();
+    }
+
+    public function test_dashboard_product_rankings_use_period_quantities_and_include_zero_sales(): void
+    {
+        $cash = PaymentMethod::create(['Name' => 'Cash']);
+        $products = [];
+        foreach (['Popular air freshener', 'Premium floor mat', 'Alpha wiper', 'Beta wiper', 'Slow towel', 'Zero alpha', 'Zero beta'] as $name) {
+            $products[$name] = Product::create(['Name' => $name, 'Category_ID' => $this->product->Category_ID, 'Status_ID' => $this->product->Status_ID]);
+        }
+        $archived = Product::create(['Name' => 'Archived sample product', 'Category_ID' => $this->product->Category_ID,
+            'Status_ID' => Status::create(['Name' => 'Archived'])->ID]);
+        $makeSale = function (string $date, array $lines) use ($cash): void {
+            $sale = Sale::create(['Date' => $date, 'Total' => array_sum(array_column($lines, 2)),
+                'User_ID' => $this->admin->id, 'Payment_Method_ID' => $cash->ID]);
+            foreach ($lines as [$product, $quantity, $total]) {
+                SoldItem::create(['Product_ID' => $product->ID, 'Quantity' => $quantity, 'Total' => $total, 'Sale_ID' => $sale->ID]);
+            }
+        };
+        $makeSale('2026-10-01 12:00:00', [
+            [$products['Popular air freshener'], 10, 100], [$products['Premium floor mat'], 6, 6000],
+            [$products['Alpha wiper'], 4, 400], [$products['Beta wiper'], 4, 40],
+            [$products['Slow towel'], 1.25, 125], [$this->product, 2, 200], [$archived, 100, 10000],
+        ]);
+        $makeSale('2026-10-02 23:59:59', [[$products['Popular air freshener'], 2, 20]]);
+        $makeSale('2026-10-03 00:00:00', [[$products['Zero alpha'], 99, 9900]]);
+        $makeSale('2026-09-30 23:59:59', [[$products['Zero beta'], 88, 8800]]);
+
+        $expectedBest = array_map(fn ($product) => (int) $product->ID, [
+            $products['Popular air freshener'], $products['Premium floor mat'], $products['Alpha wiper'], $products['Beta wiper'], $this->product,
+        ]);
+        $expectedLeast = array_map(fn ($product) => (int) $product->ID, [
+            $products['Zero alpha'], $products['Zero beta'], $products['Slow towel'], $this->product, $products['Alpha wiper'],
+        ]);
+        $response = $this->actingAs($this->admin)->get(route('dashboard', ['start_date' => '2026-10-01', 'end_date' => '2026-10-02']));
+        $response->assertOk()->assertSee('Top 5 Best-Selling Products')->assertSee('Top 5 Least-Selling Products')
+            ->assertSee('Units Sold')->assertSee('1.25')->assertDontSee('Archived sample product')
+            ->assertViewHas('bestSellingProducts', fn ($ranking) => $ranking->pluck('ID')->map(fn ($id) => (int) $id)->all() === $expectedBest)
+            ->assertViewHas('leastSellingProducts', fn ($ranking) => $ranking->pluck('ID')->map(fn ($id) => (int) $id)->all() === $expectedLeast);
+        $this->assertSame(12.0, $response->viewData('bestSellingProducts')->first()->dashboard_units_sold);
+        $this->assertSame(120.0, $response->viewData('bestSellingProducts')->first()->dashboard_sales_total);
+        $this->assertSame(0.0, $response->viewData('leastSellingProducts')->first()->dashboard_units_sold);
+
+        $this->get(route('dashboard', ['start_date' => '2026-10-04', 'end_date' => '2026-10-04']))
+            ->assertOk()->assertSee('No products sold in the selected dates.')
+            ->assertViewHas('bestSellingProducts', fn ($ranking) => $ranking->isEmpty())
+            ->assertViewHas('leastSellingProducts', fn ($ranking) => $ranking->count() === 5 && $ranking->every(fn ($product) => $product->dashboard_units_sold === 0.0));
+    }
+
+    public function test_history_seed_preserves_existing_data_and_keeps_stock_and_receipts_consistent(): void
+    {
+        User::factory()->create(['role' => 'Cashier', 'is_active' => true]);
+        $inactive = User::factory()->create(['role' => 'Cashier', 'is_active' => false]);
+        $originalBatch = $this->batch->fresh()->getAttributes();
+        $originalProduct = $this->product->fresh()->getAttributes();
+        $seeder = new SeptemberOctober2026Seeder;
+        $seeder->run(20261010);
+        $manifest = json_decode(File::get($seeder->manifestPath()), true, 512, JSON_THROW_ON_ERROR);
+        $sales = Sale::whereIn('ID', $manifest['sale_ids'])->with('soldItems', 'paymentMethod')->orderBy('Date')->get();
+        $batches = StockIn::whereIn('ID', $manifest['stock_batch_ids'])->get();
+
+        $this->assertSame($originalBatch, $this->batch->fresh()->getAttributes());
+        $this->assertSame($originalProduct, $this->product->fresh()->getAttributes());
+        $this->assertSame(16, $seeder->report['new_products']);
+        $this->assertCount(40, $sales->groupBy(fn ($sale) => $sale->Date->toDateString()));
+        $this->assertSame('2026-09-01', $sales->first()->Date->toDateString());
+        $this->assertSame('2026-10-10', $sales->last()->Date->toDateString());
+        $this->assertTrue($batches->every(fn ($batch) => $batch->created_at->isSunday()));
+        $this->assertEqualsCanonicalizing(['2026-08-30', '2026-09-06', '2026-09-13', '2026-09-20', '2026-09-27', '2026-10-04'], $seeder->report['restock_dates']);
+        $this->assertTrue($sales->every(fn ($sale) => (int) $sale->User_ID !== (int) $inactive->id));
+        $this->assertSame(['Cash', 'GCash'], $sales->pluck('paymentMethod.Name')->unique()->sort()->values()->all());
+        $this->assertGreaterThanOrEqual(6, count(array_unique(array_column($seeder->report['daily'], 'sales'))));
+        $this->assertGreaterThanOrEqual(30, count(array_unique(array_column($seeder->report['daily'], 'total'))));
+
+        $paymentTotalsValid = true;
+        $chronologyValid = true;
+        $soldByProduct = [];
+        foreach ($sales as $sale) {
+            $cents = (int) round((float) $sale->Total * 100);
+            $received = (int) round((float) $sale->Amount_Received * 100);
+            $change = (int) round((float) $sale->Change_Amount * 100);
+            $paymentTotalsValid = $paymentTotalsValid
+                && $cents === (int) round((float) $sale->soldItems->sum('Total') * 100)
+                && $received >= $cents && $received - $cents === $change;
+            if ($sale->paymentMethod->Name === 'GCash') {
+                $paymentTotalsValid = $paymentTotalsValid && $received === $cents && $change === 0
+                    && str_starts_with($sale->GCash_Reference_Number, SeptemberOctober2026Seeder::REFERENCE_PREFIX);
+            }
+            foreach ($sale->soldItems as $item) {
+                $receivedByThen = $batches->filter(fn ($batch) => $batch->Product_ID === $item->Product_ID && $batch->created_at->lte($sale->Date))->sum('Quantity');
+                $soldByProduct[$item->Product_ID] = ($soldByProduct[$item->Product_ID] ?? 0) + (float) $item->Quantity;
+                $chronologyValid = $chronologyValid && $receivedByThen >= $soldByProduct[$item->Product_ID];
+            }
+        }
+        $this->assertTrue($paymentTotalsValid, 'Each receipt must balance, including exact GCash payment and cash change.');
+        $this->assertTrue($chronologyValid, 'Products must be received before they are sold, without overselling.');
+        $this->assertTrue($batches->every(fn ($batch) => (float) $batch->Remaining_Quantity >= 0 && (float) $batch->Remaining_Quantity <= (float) $batch->Quantity));
+        foreach ($batches->groupBy('Product_ID') as $productId => $productBatches) {
+            $this->assertEquals($productBatches->sum('Quantity') - ($soldByProduct[$productId] ?? 0), $productBatches->sum('Remaining_Quantity'));
+        }
+        $this->assertFileExists($seeder->report['backup']);
+        $counts = [Product::count(), StockIn::count(), Sale::count(), DB::table('tbl_sold_item')->count()];
+        (new SeptemberOctober2026Seeder)->run();
+        $this->assertSame($counts, [Product::count(), StockIn::count(), Sale::count(), DB::table('tbl_sold_item')->count()]);
     }
 
     public function test_topbar_actions_are_hidden_on_their_own_pages(): void

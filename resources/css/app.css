@@ -98,6 +98,18 @@ body.scenic-app #navDrawer {
     min-width: 0;
 }
 
+.dashboard-sales-card {
+    container-type: inline-size;
+}
+
+.dashboard-sales-amount {
+    font-size: clamp(1rem, 14cqw, 1.875rem);
+    line-height: 1.2;
+    letter-spacing: -.025em;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
 @media (min-width: 1024px) {
     html { --sidebar-width: 14rem; }
     html.sidebar-collapsed { --sidebar-width: 4.5rem; }
