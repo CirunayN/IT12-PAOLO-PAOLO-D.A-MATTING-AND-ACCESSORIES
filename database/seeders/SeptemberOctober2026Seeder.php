@@ -178,8 +178,14 @@ class SeptemberOctober2026Seeder extends Seeder
                 throw new RuntimeException('A required category is archived: '.$item['category']);
             }
             $category ??= Category::create(['Name' => $item['category'], 'Is_Archived' => false]);
-            $product = new Product(['Name' => $item['name'], 'Description' => $item['description'],
-                'Category_ID' => $category->ID, 'Status_ID' => $activeId]);
+            $product = new Product([
+                'Name' => $item['name'],
+                'Description' => $item['description'],
+                'Category_ID' => $category->ID,
+                'Status_ID' => $activeId,
+                'Image' => $item['image'] ?? null,
+                'Images' => $item['images'] ?? null,
+            ]);
             $product->created_at = $launched;
             $product->updated_at = $launched;
             $product->save();
