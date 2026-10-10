@@ -111,8 +111,6 @@
                         $categoryName = $si->product?->category->Name ?? 'General';
                         $img = $si->product?->image_url;
                         $condition = $si->Condition ?? 'Good';
-                        $userName = $si->user->name ?? 'Admin';
-                        $userRole = $si->user->role ?? 'Staff';
                     @endphp
 
                     <tr class="hover:bg-slate-50 dark:hover:bg-dark-800/40 transition-colors {{ $isExpired ? 'bg-rose-500/5' : '' }}">
@@ -191,8 +189,6 @@
                                     data-date="{{ $si->created_at ? $si->created_at->format('M d, Y h:i A') : '-' }}"
                                     data-product="{{ $si->product->Name ?? 'N/A' }}"
                                     data-category="{{ $categoryName }}"
-                                    data-user="{{ $userName }}"
-                                    data-role="{{ $userRole }}"
                                     data-qty="{{ number_format($si->Quantity, 0) }}"
                                     data-remaining="{{ number_format($remaining, 0) }}"
                                     data-cost="₱{{ number_format($si->Cost_Price, 2) }}"
@@ -287,17 +283,10 @@
                 </div>
             </div>
 
-            <!-- Expiration & Processed By -->
-            <div class="grid grid-cols-2 gap-3">
-                <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
-                    <span class="text-[10px] uppercase font-bold text-slate-400">Expiration:</span>
-                    <div id="siModalExp" class="font-bold text-xs mt-0.5"></div>
-                </div>
-                <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
-                    <span class="text-[10px] uppercase font-bold text-slate-400">Processed By:</span>
-                    <div id="siModalUser" class="font-bold text-xs text-slate-900 dark:text-white mt-0.5"></div>
-                    <div id="siModalRole" class="text-[10px] text-slate-400 mt-0.5 uppercase font-semibold"></div>
-                </div>
+            <!-- Expiration -->
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-400">Expiration Date:</span>
+                <div id="siModalExp" class="font-bold text-xs"></div>
             </div>
         </div>
 
@@ -321,8 +310,6 @@ function openStockInDetailModal(btn) {
     document.getElementById('siModalCost').textContent = d.cost;
     document.getElementById('siModalRetail').textContent = d.retail;
     document.getElementById('siModalTotal').textContent = d.total;
-    document.getElementById('siModalUser').textContent = d.user;
-    document.getElementById('siModalRole').textContent = d.role;
 
     const condEl = document.getElementById('siModalCondition');
     condEl.textContent = d.condition;

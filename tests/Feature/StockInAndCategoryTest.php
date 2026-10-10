@@ -192,6 +192,8 @@ class StockInAndCategoryTest extends TestCase
 
         $response->assertOk();
         $response->assertDontSee('Received By');
+        $response->assertDontSee('Processed By:');
+        $response->assertDontSee('siModalUser');
         $response->assertDontSee('All Receiving Staff');
         $response->assertSee('Manage Categories');
         $response->assertSee('openCategoryManager()', false);
