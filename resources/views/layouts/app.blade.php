@@ -47,7 +47,7 @@
             flex-direction: column;
             align-items: flex-end;
             gap: .2rem;
-            min-width: 8rem;
+            min-width: 6.5rem;
             padding-left: 1rem;
             border-left: 1px solid #cbd5e1;
             white-space: nowrap;
@@ -221,7 +221,7 @@
         </div>
         @php($clockNow = now('Asia/Manila'))
         <div id="topbarClock" class="topbar-clock" role="timer" aria-live="off" aria-label="Current Philippine time" title="Philippine time (Asia/Manila)">
-            <time id="topbarClockTime" class="topbar-clock-time" datetime="{{ $clockNow->toIso8601String() }}">{{ $clockNow->format('h:i:s A') }}</time>
+            <time id="topbarClockTime" class="topbar-clock-time" datetime="{{ $clockNow->toIso8601String() }}">{{ $clockNow->format('h:i A') }}</time>
             <time id="topbarClockDate" class="topbar-clock-date" datetime="{{ $clockNow->format('Y-m-d') }}">{{ $clockNow->format('D, M j, Y') }}</time>
         </div>
     </header>
@@ -261,7 +261,7 @@
         const timeElement = document.getElementById('topbarClockTime');
         const dateElement = document.getElementById('topbarClockDate');
         const timeFormatter = new Intl.DateTimeFormat('en-PH', {
-            timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true,
+            timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: true,
         });
         const dateFormatter = new Intl.DateTimeFormat('en-PH', {
             timeZone: 'Asia/Manila', weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
