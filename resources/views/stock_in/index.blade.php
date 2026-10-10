@@ -91,20 +91,16 @@
 
     <div class="glass-card rounded-2xl border shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm min-w-[1250px]">
+            <table class="w-full text-left text-sm">
                 <thead>
                     <tr class="text-xs uppercase tracking-wider text-slate-400 bg-slate-50/50 dark:bg-dark-850 border-b border-slate-200 dark:border-slate-800">
-                        <th class="p-4">Batch ID</th>
-                        <th class="p-4">Date Received</th>
-                        <th class="p-4">Product</th>
-                        <th class="p-4">Processed By</th>
-                        <th class="p-4 text-right">Received</th>
-                        <th class="p-4 text-right">Remaining</th>
-                        <th class="p-4 text-right">Cost</th>
-                        <th class="p-4 text-right">Retail</th>
-                        <th class="p-4">Expiration</th>
-                        <th class="p-4">Condition</th>
-                        <th class="p-4 text-right">Batch Cost</th>
+                        <th class="py-3.5 px-4">Batch & Date</th>
+                        <th class="py-3.5 px-4">Product</th>
+                        <th class="py-3.5 px-4">Received By</th>
+                        <th class="py-3.5 px-4 text-right">Units (In / Left)</th>
+                        <th class="py-3.5 px-4 text-right">Pricing (Retail / Cost)</th>
+                        <th class="py-3.5 px-4 text-right">Total Investment</th>
+                        <th class="py-3.5 px-4 text-center">Details</th>
                     </tr>
                 </thead>
 
@@ -117,116 +113,125 @@
                             $si->Expiration_Date->lt(today());
 
                         $remaining = (float) ($si->Remaining_Quantity ?? 0);
+                        $categoryName = $si->product?->category->Name ?? 'General';
+                        $img = $si->product?->image_url;
+                        $condition = $si->Condition ?? 'Good';
+                        $userName = $si->user->name ?? 'Admin';
+                        $userRole = $si->user->role ?? 'Staff';
                     @endphp
 
                     <tr class="hover:bg-slate-50 dark:hover:bg-dark-800/40 transition-colors {{ $isExpired ? 'bg-rose-500/5' : '' }}">
-                        <td class="p-4">
-                            <div class="font-mono font-bold text-slate-800 dark:text-slate-200">
+                        <td class="py-3 px-4 whitespace-nowrap">
+                            <div class="font-mono font-bold text-xs text-slate-800 dark:text-slate-200">
                                 #SI-{{ $si->ID }}
                             </div>
-
+                            <div class="text-[11px] text-slate-400 mt-0.5">
+                                {{ $si->created_at ? $si->created_at->format('M d, Y') : '-' }}
+                            </div>
                             @if($remaining <= 0)
-                            <span class="inline-block mt-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-200 dark:bg-dark-800 text-slate-500">
+                            <span class="inline-block mt-0.5 text-[9px] font-bold px-1.5 py-0.2 rounded bg-slate-200 dark:bg-dark-800 text-slate-500">
                                 Depleted
                             </span>
                             @endif
                         </td>
 
-                        <td class="p-4 text-slate-600 dark:text-slate-300">
-                            {{ $si->created_at ? $si->created_at->format('M d, Y h:i A') : '-' }}
-                        </td>
-
-                        <td class="p-4">
-                            <div class="font-bold text-slate-900 dark:text-white">
-                                {{ $si->product->Name ?? 'N/A' }}
-                            </div>
-
-                            @if($si->product?->category)
-                            <div class="text-[11px] text-slate-400 mt-0.5">
-                                {{ $si->product->category->Name }}
-                            </div>
-                            @endif
-                        </td>
-
-                        <td class="p-4">
-                            @if($si->user)
-                            <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-lg {{ $si->user->isAdmin() ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : 'bg-slate-200 dark:bg-dark-700 text-slate-600 dark:text-slate-300' }} flex items-center justify-center text-xs font-black">
-                                    {{ strtoupper(substr($si->user->name, 0, 1)) }}
+                        <td class="py-3 px-4 min-w-0">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-dark-800 border border-slate-200 dark:border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                                    @if($img)
+                                    <img src="{{ $img }}" alt="{{ $si->product->Name ?? '' }}" class="w-full h-full object-cover">
+                                    @else
+                                    <i class="fas fa-boxes-stacked text-slate-400 text-xs"></i>
+                                    @endif
                                 </div>
-
-                                <div>
-                                    <div class="font-bold text-xs text-slate-800 dark:text-slate-200">
-                                        {{ $si->user->name }}
+                                <div class="min-w-0">
+                                    <div class="font-bold text-xs text-slate-900 dark:text-white truncate max-w-[200px]" title="{{ $si->product->Name ?? 'N/A' }}">
+                                        {{ $si->product->Name ?? 'N/A' }}
                                     </div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">
+                                        {{ $categoryName }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
 
-                                    <span class="inline-block text-[10px] font-bold px-1.5 py-0.5 rounded {{ $si->user->isAdmin() ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20' : 'bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300' }}">
-                                        {{ $si->user->role ?? 'Staff' }}
+                        <td class="py-3 px-4 whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-lg {{ $si->user?->isAdmin() ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400' : 'bg-slate-200 dark:bg-dark-700 text-slate-600 dark:text-slate-300' }} flex items-center justify-center text-[10px] font-black shrink-0">
+                                    {{ strtoupper(substr($userName, 0, 1)) }}
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-semibold text-xs text-slate-800 dark:text-slate-200 truncate max-w-[110px]" title="{{ $userName }}">
+                                        {{ $userName }}
+                                    </div>
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase">
+                                        {{ $userRole }}
                                     </span>
                                 </div>
                             </div>
-                            @else
-                            <span class="text-xs text-slate-400">System Admin</span>
-                            @endif
                         </td>
 
-                        <td class="p-4 text-right font-black text-emerald-600 dark:text-emerald-400 text-base">
-                            +{{ number_format($si->Quantity, 0) }}
+                        <td class="py-3 px-4 text-right whitespace-nowrap">
+                            <div class="font-black text-emerald-600 dark:text-emerald-400 text-sm">
+                                +{{ number_format($si->Quantity, 0) }}
+                            </div>
+                            <div class="text-[10px] {{ $remaining > 0 ? 'text-slate-500 dark:text-slate-400 font-medium' : 'text-slate-400 opacity-60' }}">
+                                {{ number_format($remaining, 0) }} left
+                            </div>
                         </td>
 
-                        <td class="p-4 text-right">
-                            <span class="font-black {{ $remaining > 0 ? 'text-slate-900 dark:text-white' : 'text-slate-400' }}">
-                                {{ number_format($remaining, 0) }}
-                            </span>
+                        <td class="py-3 px-4 text-right whitespace-nowrap">
+                            <div class="text-xs font-black text-slate-900 dark:text-white">
+                                ₱{{ number_format($si->Retail_Price, 2) }}
+                            </div>
+                            <div class="text-[10px] text-slate-400">
+                                ₱{{ number_format($si->Cost_Price, 2) }} cost
+                            </div>
                         </td>
 
-                        <td class="p-4 text-right text-slate-500 dark:text-slate-400">
-                            ₱{{ number_format($si->Cost_Price, 2) }}
-                        </td>
-
-                        <td class="p-4 text-right font-bold text-slate-900 dark:text-white">
-                            ₱{{ number_format($si->Retail_Price, 2) }}
-                        </td>
-
-                        <td class="p-4">
-                            @if($si->Has_Expiration && $si->Expiration_Date)
-                                @if($isExpired)
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-rose-500 bg-rose-500/10 px-2 py-1 rounded-lg border border-rose-500/20">
-                                    <i class="fas fa-triangle-exclamation"></i>
-                                    Expired {{ $si->Expiration_Date->format('M d, Y') }}
-                                </span>
-                                @else
-                                <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-1 rounded-lg border border-amber-500/20">
-                                    <i class="fas fa-calendar"></i>
-                                    {{ $si->Expiration_Date->format('M d, Y') }}
-                                </span>
-                                @endif
-                            @else
-                            <span class="text-xs text-slate-400">No expiration</span>
-                            @endif
-                        </td>
-
-                        <td class="p-4">
-                            @php
-                                $condition = $si->Condition ?? 'Good';
-                            @endphp
-
-                            <span class="inline-flex items-center text-xs font-bold px-2 py-1 rounded-lg
-                                {{ $condition === 'Good'
-                                    ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
-                                    : 'bg-rose-500/10 text-rose-500 border border-rose-500/20' }}">
-                                {{ $condition }}
-                            </span>
-                        </td>
-
-                        <td class="p-4 text-right font-black font-display text-slate-900 dark:text-white">
+                        <td class="py-3 px-4 text-right font-black font-display text-sm text-slate-900 dark:text-white whitespace-nowrap">
                             ₱{{ number_format($si->Quantity * $si->Cost_Price, 2) }}
                         </td>
-                    </tr>
 
+                        <td class="py-3 px-4 text-center whitespace-nowrap">
+                            <div class="flex items-center justify-center gap-1.5">
+                                @if($si->Has_Expiration && $si->Expiration_Date && $isExpired)
+                                <span class="text-[10px] font-bold text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20" title="Expired {{ $si->Expiration_Date->format('M d, Y') }}">
+                                    Expired
+                                </span>
+                                @endif
+                                @if($condition !== 'Good')
+                                <span class="text-[10px] font-bold text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
+                                    {{ $condition }}
+                                </span>
+                                @endif
+                                <button type="button"
+                                    onclick="openStockInDetailModal(this)"
+                                    data-id="{{ $si->ID }}"
+                                    data-date="{{ $si->created_at ? $si->created_at->format('M d, Y h:i A') : '-' }}"
+                                    data-product="{{ $si->product->Name ?? 'N/A' }}"
+                                    data-category="{{ $categoryName }}"
+                                    data-user="{{ $userName }}"
+                                    data-role="{{ $userRole }}"
+                                    data-qty="{{ number_format($si->Quantity, 0) }}"
+                                    data-remaining="{{ number_format($remaining, 0) }}"
+                                    data-cost="₱{{ number_format($si->Cost_Price, 2) }}"
+                                    data-retail="₱{{ number_format($si->Retail_Price, 2) }}"
+                                    data-total="₱{{ number_format($si->Quantity * $si->Cost_Price, 2) }}"
+                                    data-hasexp="{{ $si->Has_Expiration ? '1' : '0' }}"
+                                    data-exp="{{ $si->Expiration_Date ? $si->Expiration_Date->format('M d, Y') : 'No expiration' }}"
+                                    data-expired="{{ $isExpired ? '1' : '0' }}"
+                                    data-condition="{{ $condition }}"
+                                    class="w-7 h-7 rounded-full hover:bg-red-500/15 text-red-500 dark:text-red-400 inline-flex items-center justify-center transition-transform hover:scale-110 cursor-pointer"
+                                    title="View shipment batch details">
+                                    <i class="fas fa-circle-info text-base"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
                     @empty
                     <tr>
-                        <td colspan="11" class="p-8 text-center text-slate-400">
+                        <td colspan="7" class="p-8 text-center text-slate-400">
                             No stock-in records found.
                         </td>
                     </tr>
@@ -242,4 +247,134 @@
         @endif
     </div>
 </div>
+
+<!-- STOCK-IN BATCH DETAILS MODAL (POS STYLE) -->
+<div id="stockInDetailModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="glass-card max-w-md w-full rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl p-5 sm:p-6 space-y-4">
+        <!-- Header -->
+        <div class="flex items-start justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-500/15 text-red-500 flex items-center justify-center text-lg">
+                    <i class="fas fa-truck-ramp-box"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold font-display text-slate-900 dark:text-white flex items-center gap-2">
+                        <span>Shipment Batch</span>
+                        <span id="siModalBatchId" class="text-xs px-2 py-0.5 rounded-full bg-red-500/15 text-red-500 font-mono font-bold"></span>
+                    </h3>
+                    <p id="siModalDate" class="text-[11px] text-slate-400 mt-0.5"></p>
+                </div>
+            </div>
+            <button type="button" onclick="closeStockInDetailModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-xl cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+            <!-- Product & Category -->
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
+                <span class="text-[10px] uppercase font-bold text-slate-400">Product:</span>
+                <div id="siModalProduct" class="text-sm font-bold text-slate-900 dark:text-white mt-0.5"></div>
+                <div class="mt-1.5 flex items-center gap-2">
+                    <span id="siModalCategory" class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200 dark:bg-dark-800 text-slate-600 dark:text-slate-300"></span>
+                    <span id="siModalCondition" class="text-[10px] font-bold px-2 py-0.5 rounded"></span>
+                </div>
+            </div>
+
+            <!-- Units & Stock Status -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
+                    <span class="text-[10px] uppercase font-bold text-slate-400">Units Received:</span>
+                    <div id="siModalQty" class="text-base font-black text-emerald-600 dark:text-emerald-400 mt-0.5"></div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
+                    <span class="text-[10px] uppercase font-bold text-slate-400">Remaining Units:</span>
+                    <div id="siModalRemaining" class="text-base font-black text-slate-900 dark:text-white mt-0.5"></div>
+                </div>
+            </div>
+
+            <!-- Financials -->
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800 space-y-1.5">
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-500 dark:text-slate-400">Cost Price (Unit):</span>
+                    <span id="siModalCost" class="font-bold text-slate-900 dark:text-white"></span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-slate-500 dark:text-slate-400">Retail Selling Price:</span>
+                    <span id="siModalRetail" class="font-bold text-emerald-600 dark:text-emerald-400"></span>
+                </div>
+                <div class="flex items-center justify-between pt-1.5 border-t border-slate-200 dark:border-slate-800 font-bold">
+                    <span class="text-slate-700 dark:text-slate-300">Total Batch Investment:</span>
+                    <span id="siModalTotal" class="text-sm font-black text-slate-900 dark:text-white"></span>
+                </div>
+            </div>
+
+            <!-- Expiration & Processed By -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
+                    <span class="text-[10px] uppercase font-bold text-slate-400">Expiration:</span>
+                    <div id="siModalExp" class="font-bold text-xs mt-0.5"></div>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-800">
+                    <span class="text-[10px] uppercase font-bold text-slate-400">Processed By:</span>
+                    <div id="siModalUser" class="font-bold text-xs text-slate-900 dark:text-white mt-0.5"></div>
+                    <div id="siModalRole" class="text-[10px] text-slate-400 mt-0.5 uppercase font-semibold"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-2 flex justify-end border-t border-slate-200 dark:border-slate-800">
+            <button type="button" onclick="closeStockInDetailModal()" class="px-5 py-2 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-xs cursor-pointer">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function openStockInDetailModal(btn) {
+    const d = btn.dataset;
+    document.getElementById('siModalBatchId').textContent = '#SI-' + d.id;
+    document.getElementById('siModalDate').textContent = d.date;
+    document.getElementById('siModalProduct').textContent = d.product;
+    document.getElementById('siModalCategory').textContent = d.category;
+    document.getElementById('siModalQty').textContent = '+' + d.qty;
+    document.getElementById('siModalRemaining').textContent = d.remaining + ' left';
+    document.getElementById('siModalCost').textContent = d.cost;
+    document.getElementById('siModalRetail').textContent = d.retail;
+    document.getElementById('siModalTotal').textContent = d.total;
+    document.getElementById('siModalUser').textContent = d.user;
+    document.getElementById('siModalRole').textContent = d.role;
+
+    const condEl = document.getElementById('siModalCondition');
+    condEl.textContent = d.condition;
+    condEl.className = d.condition === 'Good'
+        ? 'text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
+        : 'text-[10px] font-bold px-2 py-0.5 rounded bg-rose-500/10 text-rose-500 border border-rose-500/20';
+
+    const expEl = document.getElementById('siModalExp');
+    if (d.hasexp === '1') {
+        if (d.expired === '1') {
+            expEl.innerHTML = `<span class="text-rose-500 flex items-center gap-1"><i class="fas fa-triangle-exclamation"></i> Expired (${d.exp})</span>`;
+        } else {
+            expEl.innerHTML = `<span class="text-amber-500 flex items-center gap-1"><i class="fas fa-calendar"></i> ${d.exp}</span>`;
+        }
+    } else {
+        expEl.textContent = 'No expiration';
+        expEl.className = 'font-bold text-xs mt-0.5 text-slate-400';
+    }
+
+    const modal = document.getElementById('stockInDetailModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function closeStockInDetailModal() {
+    const modal = document.getElementById('stockInDetailModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeStockInDetailModal();
+});
+</script>
 @endsection
