@@ -54,8 +54,9 @@ class SqlServerSnapshotService
 
     public function restore(Connection $connection, array $snapshot, bool $requireAllTables = true, bool $requireEmpty = false): void
     {
-        if ($connection->getDriverName() !== 'sqlsrv') {
-            throw new InvalidArgumentException('This restore requires a SQL Server database.');
+        $driver = $connection->getDriverName();
+        if (!in_array($driver, ['sqlsrv', 'mysql', 'mariadb'])) {
+            throw new InvalidArgumentException('This restore requires a SQL Server or MySQL database.');
         }
         if (($snapshot['format'] ?? null) !== 'paolo-paolo-database-snapshot'
             || ($snapshot['version'] ?? null) !== 1
@@ -119,18 +120,23 @@ class SqlServerSnapshotService
             $validatedTables[$table] = ['columns' => $data['columns'], 'rows' => $data['rows'], 'identity' => $hasIdentity];
         }
 
-        $connection->transaction(function () use ($connection, $validatedTables) {
+        $connection->transaction(function () use ($connection, $validatedTables, $driver) {
             $grammar = $connection->getQueryGrammar();
-            foreach ($validatedTables as $table => $data) {
-                $connection->statement('ALTER TABLE '.$grammar->wrapTable($table).' NOCHECK CONSTRAINT ALL');
+            if ($driver === 'sqlsrv') {
+                foreach ($validatedTables as $table => $data) {
+                    $connection->statement('ALTER TABLE '.$grammar->wrapTable($table).' NOCHECK CONSTRAINT ALL');
+                }
+            } else {
+                $connection->statement('SET FOREIGN_KEY_CHECKS = 0');
             }
+
             foreach ($validatedTables as $table => $data) {
                 $connection->table($table)->delete();
                 if ($data['rows'] === []) {
                     continue;
                 }
                 $wrappedTable = $grammar->wrapTable($table);
-                if ($data['identity']) {
+                if ($driver === 'sqlsrv' && $data['identity']) {
                     $connection->unprepared("SET IDENTITY_INSERT {$wrappedTable} ON");
                 }
                 try {
@@ -140,13 +146,18 @@ class SqlServerSnapshotService
                         $connection->table($table)->insert($rows);
                     }
                 } finally {
-                    if ($data['identity']) {
+                    if ($driver === 'sqlsrv' && $data['identity']) {
                         $connection->unprepared("SET IDENTITY_INSERT {$wrappedTable} OFF");
                     }
                 }
             }
-            foreach ($validatedTables as $table => $data) {
-                $connection->statement('ALTER TABLE '.$grammar->wrapTable($table).' WITH CHECK CHECK CONSTRAINT ALL');
+
+            if ($driver === 'sqlsrv') {
+                foreach ($validatedTables as $table => $data) {
+                    $connection->statement('ALTER TABLE '.$grammar->wrapTable($table).' WITH CHECK CHECK CONSTRAINT ALL');
+                }
+            } else {
+                $connection->statement('SET FOREIGN_KEY_CHECKS = 1');
             }
         });
     }

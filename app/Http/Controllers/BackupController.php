@@ -489,7 +489,8 @@ class BackupController extends Controller
         }
 
         try {
-            if (DB::connection()->getDriverName() === 'sqlsrv') {
+            $isJson = str_ends_with(strtolower($targetFile), '.json');
+            if ($isJson || DB::connection()->getDriverName() === 'sqlsrv') {
                 app(SqlServerSnapshotService::class)->restoreFile(DB::connection(), $targetFile);
             } else {
                 $sql = File::get($targetFile);
