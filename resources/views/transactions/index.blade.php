@@ -25,29 +25,8 @@
         </div>
     </div>
 
-    <!-- Filters & Quick Presets -->
-    <div class="glass-card rounded-2xl p-4 sm:p-5 border shadow-sm space-y-4">
-        <!-- Quick Preset Pills -->
-        <div class="flex items-center gap-2 flex-wrap pb-2 border-b border-slate-200 dark:border-slate-800">
-            <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 mr-1">Quick Presets:</span>
-            <button type="button" onclick="setPreset('today')"
-                class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ request('period') === 'today' ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-dark-700' }}">
-                Today
-            </button>
-            <button type="button" onclick="setPreset('monthly')"
-                class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ (!request('period') || request('period') === 'monthly') ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-dark-700' }}">
-                This Month
-            </button>
-            <button type="button" onclick="setPreset('yearly')"
-                class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ request('period') === 'yearly' ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-dark-700' }}">
-                This Year
-            </button>
-            <button type="button" onclick="setPreset('overall')"
-                class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ request('period') === 'overall' ? 'bg-red-600 text-white shadow-sm' : 'bg-slate-100 dark:bg-dark-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-dark-700' }}">
-                All Time (Overall)
-            </button>
-        </div>
-
+    <!-- Filters -->
+    <div class="glass-card rounded-2xl p-4 sm:p-5 border shadow-sm">
         <!-- Filter Form -->
         <form data-auto-filter method="GET" action="{{ route('transactions.index') }}" id="transactionFilterForm" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
             <!-- Search by Invoice / GCash Ref -->
@@ -386,10 +365,6 @@ function handlePeriodChange(submit = true) {
     if (submit) document.getElementById('transactionFilterForm').requestSubmit();
 }
 
-function setPreset(p) {
-    document.getElementById('personalReportPeriod').value = p;
-    handlePeriodChange();
-}
 
 function printCurrentTransactionReport() {
     const params = new URLSearchParams(window.location.search);
