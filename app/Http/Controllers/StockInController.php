@@ -44,7 +44,7 @@ class StockInController extends Controller
         return app(\App\Services\PrintableReport::class)->respond($request, 'stock_in.print', compact('stockIns'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $archivedStatus = Status::where('Name', 'Archived')->first();
 
@@ -57,7 +57,10 @@ class StockInController extends Controller
         $products = $query->orderBy('Name', 'asc')->get();
         $categories = Category::active()->orderBy('Name', 'asc')->get();
 
-        return view('stock_in.create', compact('products', 'categories'));
+        $selectedProductId = $request->input('product_id') ?: old('Product_ID');
+        $preselectedProduct = $selectedProductId ? $products->firstWhere('ID', (int) $selectedProductId) : null;
+
+        return view('stock_in.create', compact('products', 'categories', 'preselectedProduct'));
     }
 
     public function store(Request $request)
@@ -67,7 +70,7 @@ class StockInController extends Controller
             'Product_ID' => 'required_if:product_mode,existing|nullable|exists:tbl_product,ID',
             'New_Product_Name' => 'required_if:product_mode,new|nullable|string|max:255|unique:tbl_product,Name',
             'New_Product_Description' => 'nullable|string|max:2000',
-            'New_Category_ID' => ['required_if:product_mode,new', 'nullable', Rule::exists('tbl_category', 'ID')->where('Is_Archived', false)],
+            'New_Category_ID' => ['required_if:product_mode,new', 'nullable', Rule::exists('tbl_category', 'ID')->where(fn ($query) => $query->where('Is_Archived', false)->orWhereNull('Is_Archived'))],
             'images' => 'exclude_unless:product_mode,new|nullable|array|max:5',
             'images.*' => 'exclude_unless:product_mode,new|image|mimes:jpeg,png,jpg,webp,gif|max:5120',
             'Quantity' => 'required|numeric|min:1',

@@ -8,9 +8,6 @@
                 <i class="fas fa-truck-ramp-box text-red-500"></i>
                 Receive Stock Shipment
             </h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                Choose an existing product or create a new one, then record the received batch.
-            </p>
         </div>
         <a href="{{ route('stock-in.index') }}"
             class="px-4 py-2 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-slate-200 font-bold text-xs hover:bg-slate-300 dark:hover:bg-dark-700 transition-colors">
@@ -39,7 +36,8 @@
         @csrf
 
         <input type="hidden" name="product_mode" id="productMode" value="{{ old('product_mode', 'existing') }}">
-        <input type="hidden" name="Product_ID" id="selectedProductId" value="{{ old('Product_ID', request('product_id')) }}">
+        <input type="hidden" name="Product_ID" id="selectedProductId" value="{{ old('Product_ID', $preselectedProduct?->ID ?? request('product_id')) }}">
+        <input type="hidden" name="redirect_to" value="{{ old('redirect_to', request('redirect_to')) }}">
 
         <div class="space-y-3">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -67,12 +65,12 @@
             </div>
 
             <div id="selectedProductCard"
-                class="hidden p-4 rounded-2xl bg-slate-50 dark:bg-dark-900/90 border-2 border-red-500/40">
+                class="{{ $preselectedProduct ? '' : 'hidden' }} p-4 rounded-2xl bg-slate-50 dark:bg-dark-900/90 border-2 border-red-500/40">
                 <div class="flex items-center justify-between gap-4">
                     <div class="flex items-center gap-3.5 min-w-0">
                         <div class="w-16 h-16 rounded-xl bg-slate-200 dark:bg-dark-800 border border-slate-300 dark:border-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center">
-                            <img id="selectedProductImg" src="" alt="Product" class="w-full h-full object-cover hidden">
-                            <div id="selectedProductImgPlaceholder" class="text-slate-400 text-xl">
+                            <img id="selectedProductImg" src="{{ $preselectedProduct?->image_url ?? '' }}" alt="Product" class="w-full h-full object-cover {{ $preselectedProduct?->image_url ? '' : 'hidden' }}">
+                            <div id="selectedProductImgPlaceholder" class="text-slate-400 text-xl {{ $preselectedProduct?->image_url ? 'hidden' : '' }}">
                                 <i class="fas fa-boxes-stacked"></i>
                             </div>
                         </div>
@@ -80,28 +78,38 @@
                         <div class="min-w-0">
                             <div class="flex flex-wrap items-center gap-2 mb-1">
                                 <span id="selectedProductCategory"
-                                    class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-red-500/10 text-red-500 border border-red-500/20"></span>
+                                    class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-red-500/10 text-red-500 border border-red-500/20">{{ $preselectedProduct?->category?->Name ?? 'General' }}</span>
                                 <span id="selectedProductStockBadge"
-                                    class="text-[10px] font-bold px-2 py-0.5 rounded-md"></span>
+                                    class="text-[10px] font-bold px-2 py-0.5 rounded-md {{ ($preselectedProduct?->stock_quantity ?? 0) <= 0 ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : (($preselectedProduct?->stock_quantity ?? 0) <= 5 ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20') }}">
+                                    @if($preselectedProduct)
+                                        @if($preselectedProduct->stock_quantity <= 0)
+                                            Out of Stock (0)
+                                        @elseif($preselectedProduct->stock_quantity <= 5)
+                                            {{ $preselectedProduct->stock_quantity }} units remaining
+                                        @else
+                                            {{ $preselectedProduct->stock_quantity }} in stock
+                                        @endif
+                                    @endif
+                                </span>
                             </div>
 
                             <h3 id="selectedProductName"
-                                class="text-sm sm:text-base font-bold text-slate-900 dark:text-white truncate"></h3>
+                                class="text-sm sm:text-base font-bold text-slate-900 dark:text-white truncate">{{ $preselectedProduct?->Name ?? '' }}</h3>
 
                             <p id="selectedProductDescription"
-                                class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2"></p>
+                                class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{{ $preselectedProduct?->Description ?? 'No description provided.' }}</p>
 
                             <div class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 flex flex-wrap items-center gap-2">
                                 <span>
                                     Current Cost:
                                     <strong id="selectedProductCostText"
-                                        class="text-slate-700 dark:text-slate-300 font-mono">₱0.00</strong>
+                                        class="text-slate-700 dark:text-slate-300 font-mono">₱{{ number_format($preselectedProduct?->cost_price ?? 0, 2) }}</strong>
                                 </span>
                                 <span>&bull;</span>
                                 <span>
                                     Current Retail:
                                     <strong id="selectedProductRetailText"
-                                        class="text-emerald-500 font-mono">₱0.00</strong>
+                                        class="text-emerald-500 font-mono">₱{{ number_format($preselectedProduct?->retail_price ?? 0, 2) }}</strong>
                                 </span>
                             </div>
                         </div>
@@ -115,7 +123,7 @@
                 </div>
             </div>
 
-            <div id="productDropdownContainer" class="relative">
+            <div id="productDropdownContainer" class="relative {{ $preselectedProduct ? 'hidden' : '' }}">
                 <div class="relative">
                     <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
                     <input type="text" id="productSearchInput"
@@ -323,7 +331,7 @@
                     Unit Cost Price (₱) <span class="text-rose-500">*</span>
                 </label>
                 <input type="number" name="Cost_Price" id="costPriceInput"
-                    value="{{ old('Cost_Price', 0) }}" min="0" step="0.01" required
+                    value="{{ old('Cost_Price', $preselectedProduct ? (float)$preselectedProduct->cost_price : 0) }}" min="0" step="0.01" required
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-base font-bold text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
                     oninput="recalculateSummary()">
                 <p class="text-[11px] text-slate-400">Wholesale cost per unit</p>
@@ -334,7 +342,7 @@
                     Retail Selling Price (₱) <span class="text-rose-500">*</span>
                 </label>
                 <input type="number" name="Retail_Price" id="retailPriceInput"
-                    value="{{ old('Retail_Price', 0) }}" min="0" step="0.01" required
+                    value="{{ old('Retail_Price', $preselectedProduct ? (float)$preselectedProduct->retail_price : 0) }}" min="0" step="0.01" required
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-base font-bold text-emerald-600 dark:text-emerald-400 focus:ring-2 focus:ring-red-500"
                     oninput="recalculateSummary()">
                 <p class="text-[11px] text-slate-400">POS selling price</p>
@@ -418,21 +426,6 @@
                     ₱0.00 (0%)
                 </span>
             </div>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-dark-900/60 border border-slate-200 dark:border-slate-700/60 space-y-3">
-            <div class="flex items-center justify-between">
-                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                    <i class="fas fa-user-shield text-red-500 mr-1.5"></i>
-                    Processed / Received By
-                </label>
-                <span class="text-xs text-slate-400">Audit trail</span>
-            </div>
-
-            <div class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-dark-850 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-900 dark:text-white">
-                {{ auth()->user()->name }} ({{ auth()->user()->role ?? 'Staff' }}) &mdash; {{ auth()->user()->username }}
-            </div>
-            <p class="text-[11px] text-slate-400">Automatically recorded as the signed-in user.</p>
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">

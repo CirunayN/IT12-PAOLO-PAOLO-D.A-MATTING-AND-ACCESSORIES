@@ -96,10 +96,57 @@ class StockInShipmentTest extends TestCase
         $this->actingAs($this->admin)->get(route('stock-in.create'))
             ->assertOk()
             ->assertSee($this->admin->name)
-            ->assertSee('Automatically recorded as the signed-in user.')
+            ->assertDontSee('Choose an existing product or create a new one, then record the received batch.')
+            ->assertDontSee('Processed / Received By')
+            ->assertDontSee('Audit trail')
             ->assertSee('enctype="multipart/form-data"', false)
             ->assertSee('name="images[]"', false)
             ->assertDontSee('name="User_ID"', false);
+    }
+
+    public function test_stock_in_form_prefills_when_product_id_provided_and_redirects_to_products(): void
+    {
+        $status = Status::create(['Name' => 'Active']);
+        $product = Product::create([
+            'Name' => 'Prefilled Floor Mat',
+            'Description' => 'High quality rubber mat',
+            'Category_ID' => $this->category->ID,
+            'Status_ID' => $status->ID,
+        ]);
+        StockIn::create([
+            'Product_ID' => $product->ID,
+            'User_ID' => $this->admin->id,
+            'Quantity' => 10,
+            'Remaining_Quantity' => 2,
+            'Cost_Price' => 350.50,
+            'Retail_Price' => 599.99,
+            'Condition' => 'Good',
+        ]);
+
+        $this->actingAs($this->admin)
+            ->get(route('stock-in.create', ['product_id' => $product->ID, 'redirect_to' => 'products']))
+            ->assertOk()
+            ->assertSee('Prefilled Floor Mat')
+            ->assertSee('High quality rubber mat')
+            ->assertSee('350.50')
+            ->assertSee('599.99');
+
+        $this->actingAs($this->admin)->post(route('stock-in.store'), [
+            'product_mode' => 'existing',
+            'Product_ID' => $product->ID,
+            'Quantity' => 15,
+            'Cost_Price' => 350.50,
+            'Retail_Price' => 599.99,
+            'redirect_to' => 'products',
+        ])->assertRedirect(route('products.index'))->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('tbl_stock_in', [
+            'Product_ID' => $product->ID,
+            'User_ID' => $this->admin->id,
+            'Quantity' => 15,
+            'Cost_Price' => 350.50,
+            'Retail_Price' => 599.99,
+        ]);
     }
 
     public function test_new_product_saves_uploaded_photos_and_signed_in_processor(): void

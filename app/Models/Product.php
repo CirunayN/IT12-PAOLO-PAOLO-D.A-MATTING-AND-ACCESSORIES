@@ -65,13 +65,15 @@ class Product extends Model
 
     public function getRetailPriceAttribute(): float
     {
-        $latest = $this->sellableStockIns()->orderBy('ID', 'desc')->first();
+        $latest = $this->sellableStockIns()->orderBy('ID', 'desc')->first()
+            ?? $this->stockIns()->orderBy('ID', 'desc')->first();
         return $latest ? (float) $latest->Retail_Price : 0.00;
     }
 
     public function getCostPriceAttribute(): float
     {
-        $latest = $this->sellableStockIns()->orderBy('ID', 'desc')->first();
+        $latest = $this->sellableStockIns()->orderBy('ID', 'desc')->first()
+            ?? $this->stockIns()->orderBy('ID', 'desc')->first();
         return $latest ? (float) $latest->Cost_Price : 0.00;
     }
 
