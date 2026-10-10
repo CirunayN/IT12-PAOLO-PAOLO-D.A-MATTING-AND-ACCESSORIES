@@ -198,4 +198,135 @@ class StockInAndCategoryTest extends TestCase
         $response->assertSee('Manage Categories');
         $response->assertSee('openCategoryManager()', false);
     }
+
+    public function test_stock_in_index_renders_same_filter_and_search_controls_as_active_catalog(): void
+    {
+        $admin = User::factory()->create([
+            'username' => 'admin_filter_ui',
+            'role' => 'Admin',
+            'is_active' => true,
+        ]);
+
+        $cat = Category::create(['Name' => 'Interior']);
+
+        $response = $this->actingAs($admin)->get(route('stock-in.index'));
+
+        $response->assertOk();
+        $response->assertSee('name="search"', false);
+        $response->assertSee('Search product name or description...', false);
+        $response->assertSee('name="category_id"', false);
+        $response->assertSee('All Categories');
+        $response->assertSee('Interior');
+        $response->assertSee('name="stock_level"', false);
+        $response->assertSee('All Stock Levels');
+        $response->assertSee('Available (6+ units)');
+        $response->assertSee('Low / Out of Stock');
+        $response->assertSee('Low Stock (1-5 units)');
+        $response->assertSee('Out of Stock (0)');
+        $response->assertSee('name="sort"', false);
+        $response->assertSee('Stock: Low to High (0 - 100+)');
+        $response->assertSee('Stock: High to Low');
+        $response->assertSee('Newest first');
+        $response->assertSee('Oldest first');
+        $response->assertSee('Name: A to Z');
+        $response->assertSee('Name: Z to A');
+        $response->assertSee('Price: Low to High');
+        $response->assertSee('Price: High to Low');
+        $response->assertSee(route('stock-in.index'));
+        $response->assertSee('Reset');
+    }
+
+    public function test_stock_in_filters_by_search_category_stock_level_and_sort(): void
+    {
+        $admin = User::factory()->create([
+            'username' => 'admin_filtering',
+            'role' => 'Admin',
+            'is_active' => true,
+        ]);
+
+        $cat1 = Category::create(['Name' => 'Accessories']);
+        $cat2 = Category::create(['Name' => 'Lighting']);
+        $status = Status::create(['Name' => 'Active']);
+
+        $p1 = Product::create(['Name' => 'Alpha LED Headlight', 'Category_ID' => $cat2->ID, 'Status_ID' => $status->ID]);
+        $p2 = Product::create(['Name' => 'Beta Rubber Mat', 'Category_ID' => $cat1->ID, 'Status_ID' => $status->ID]);
+        $p3 = Product::create(['Name' => 'Gamma Floor Mat', 'Category_ID' => $cat1->ID, 'Status_ID' => $status->ID]);
+
+        $si1 = StockIn::create([
+            'Product_ID' => $p1->ID,
+            'User_ID' => $admin->id,
+            'Quantity' => 10,
+            'Remaining_Quantity' => 10,
+            'Cost_Price' => 100,
+            'Retail_Price' => 300,
+        ]);
+
+        $si2 = StockIn::create([
+            'Product_ID' => $p2->ID,
+            'User_ID' => $admin->id,
+            'Quantity' => 5,
+            'Remaining_Quantity' => 2,
+            'Cost_Price' => 50,
+            'Retail_Price' => 150,
+        ]);
+
+        $si3 = StockIn::create([
+            'Product_ID' => $p3->ID,
+            'User_ID' => $admin->id,
+            'Quantity' => 8,
+            'Remaining_Quantity' => 0,
+            'Cost_Price' => 80,
+            'Retail_Price' => 200,
+        ]);
+
+        // Filter by search
+        $resSearch = $this->actingAs($admin)->get(route('stock-in.index', ['search' => 'Headlight']));
+        $resSearch->assertOk();
+        $resSearch->assertSee('Alpha LED Headlight');
+        $resSearch->assertDontSee('Beta Rubber Mat');
+
+        // Filter by category
+        $resCat = $this->actingAs($admin)->get(route('stock-in.index', ['category_id' => $cat1->ID]));
+        $resCat->assertOk();
+        $resCat->assertSee('Beta Rubber Mat');
+        $resCat->assertSee('Gamma Floor Mat');
+        $resCat->assertDontSee('Alpha LED Headlight');
+
+        // Filter by stock level: out
+        $resOut = $this->actingAs($admin)->get(route('stock-in.index', ['stock_level' => 'out']));
+        $resOut->assertOk();
+        $resOut->assertSee('Gamma Floor Mat');
+        $resOut->assertDontSee('Alpha LED Headlight');
+        $resOut->assertDontSee('Beta Rubber Mat');
+
+        // Filter by stock level: low
+        $resLow = $this->actingAs($admin)->get(route('stock-in.index', ['stock_level' => 'low']));
+        $resLow->assertOk();
+        $resLow->assertSee('Beta Rubber Mat');
+        $resLow->assertDontSee('Alpha LED Headlight');
+        $resLow->assertDontSee('Gamma Floor Mat');
+
+        // Filter by stock level: available
+        $resAvail = $this->actingAs($admin)->get(route('stock-in.index', ['stock_level' => 'available']));
+        $resAvail->assertOk();
+        $resAvail->assertSee('Alpha LED Headlight');
+        $resAvail->assertDontSee('Beta Rubber Mat');
+        $resAvail->assertDontSee('Gamma Floor Mat');
+
+        // Sort by name A to Z
+        $resNameAsc = $this->actingAs($admin)->get(route('stock-in.index', ['sort' => 'name_asc']));
+        $resNameAsc->assertOk();
+        $items = $resNameAsc->viewData('stockIns')->items();
+        $this->assertEquals($p1->ID, $items[0]->Product_ID);
+        $this->assertEquals($p2->ID, $items[1]->Product_ID);
+        $this->assertEquals($p3->ID, $items[2]->Product_ID);
+
+        // Sort by price: high to low
+        $resPriceDesc = $this->actingAs($admin)->get(route('stock-in.index', ['sort' => 'price_desc']));
+        $resPriceDesc->assertOk();
+        $itemsPrice = $resPriceDesc->viewData('stockIns')->items();
+        $this->assertEquals(300, (float)$itemsPrice[0]->Retail_Price);
+        $this->assertEquals(200, (float)$itemsPrice[1]->Retail_Price);
+        $this->assertEquals(150, (float)$itemsPrice[2]->Retail_Price);
+    }
 }

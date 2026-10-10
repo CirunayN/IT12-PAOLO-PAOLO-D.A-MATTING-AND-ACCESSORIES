@@ -51,36 +51,50 @@
         </a>
     </div>
 
+    <!-- Filter & Search Bar -->
     <div class="glass-card rounded-2xl p-4 border shadow-sm">
-        <form data-auto-filter method="GET" action="{{ route('stock-in.index') }}"
-            class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-
-            <div class="flex-1">
-                <select name="product_id"
-                    class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-500">
-                    <option value="">All Products</option>
-                    @foreach($products as $prod)
-                    <option value="{{ $prod->ID }}"
-                        {{ request('product_id') == $prod->ID ? 'selected' : '' }}>
-                        {{ $prod->Name }}
-                    </option>
+        <form data-auto-filter method="GET" action="{{ route('stock-in.index') }}" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-3 items-center">
+            <div class="xl:col-span-3 relative">
+                <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search product name or description..."
+                    class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+            <div class="xl:col-span-2">
+                <select name="category_id" data-category-select="filter" aria-label="Category" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                    <option value="">All Categories</option>
+                    @foreach($categories as $cat)
+                    <option value="{{ $cat->ID }}" {{ request('category_id') == $cat->ID ? 'selected' : '' }}>{{ $cat->Name }}{{ $cat->Is_Archived ? ' (Archived)' : '' }}</option>
                     @endforeach
                 </select>
             </div>
-
-            <div class="flex items-center gap-2">
-                <noscript><button type="submit"
-                    class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm transition-colors">
+            <div class="xl:col-span-3">
+                <select name="stock_level" aria-label="Stock level" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                    <option value="">All Stock Levels</option>
+                    <option value="available" {{ request('stock_level') === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
+                    <option value="attention" {{ request('stock_level') === 'attention' ? 'selected' : '' }}>Low / Out of Stock</option>
+                    <option value="low" {{ request('stock_level') === 'low' ? 'selected' : '' }}>Low Stock (1-5 units)</option>
+                    <option value="out" {{ request('stock_level') === 'out' ? 'selected' : '' }}>Out of Stock (0)</option>
+                </select>
+            </div>
+            <div class="xl:col-span-3">
+                <select name="sort" aria-label="Order by" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
+                    <option value="stock_asc" {{ request('sort', 'stock_asc') === 'stock_asc' ? 'selected' : '' }}>Stock: Low to High (0 - 100+)</option>
+                    <option value="stock_desc" {{ request('sort') === 'stock_desc' ? 'selected' : '' }}>Stock: High to Low</option>
+                    <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Newest first</option>
+                    <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest first</option>
+                    <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>Name: A to Z</option>
+                    <option value="name_desc" {{ request('sort') === 'name_desc' ? 'selected' : '' }}>Name: Z to A</option>
+                    <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
+                    <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+                </select>
+            </div>
+            <div class="xl:col-span-1 flex items-center gap-2">
+                <noscript><button type="submit" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm">
                     Filter
                 </button></noscript>
-
-                @if(request()->filled('product_id'))
-                <a href="{{ route('stock-in.index') }}"
-                    class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-300 font-bold text-sm transition-colors flex items-center gap-1.5">
-                    <i class="fas fa-rotate-left"></i>
-                    <span>Reset</span>
+                <a href="{{ route('stock-in.index') }}" class="px-3 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 text-sm text-center">
+                    Reset
                 </a>
-                @endif
             </div>
         </form>
     </div>

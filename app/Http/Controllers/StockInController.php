@@ -16,31 +16,104 @@ use Illuminate\Validation\Rule;
 
 class StockInController extends Controller
 {
-    public function index(Request $request)
+    private function stockInQuery(Request $request)
     {
+        $request->validate(['sort' => ['nullable', Rule::in([
+            'newest', 'oldest', 'name_asc', 'name_desc',
+            'stock_asc', 'stock_desc', 'price_asc', 'price_desc',
+        ])]]);
+
         $query = StockIn::with(['product.category', 'user']);
 
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('product', function ($pq) use ($search) {
+                    $pq->where('Name', 'like', '%' . $search . '%')
+                        ->orWhere('Description', 'like', '%' . $search . '%');
+                });
+                $batchId = preg_replace('/[^0-9]/', '', $search);
+                if ($batchId !== '') {
+                    $q->orWhere('tbl_stock_in.ID', (int) $batchId);
+                }
+            });
+        }
+
+        if ($request->filled('category_id')) {
+            $query->whereHas('product', function ($q) use ($request) {
+                $q->where('Category_ID', $request->category_id);
+            });
+        }
+
         if ($request->filled('product_id')) {
-            $query->where('Product_ID', $request->product_id);
+            $query->where('tbl_stock_in.Product_ID', $request->product_id);
         }
 
         if ($request->filled('user_id')) {
-            $query->where('User_ID', $request->user_id);
+            $query->where('tbl_stock_in.User_ID', $request->user_id);
         }
 
-        $stockIns = $query->orderBy('ID', 'desc')->paginate(15)->withQueryString();
+        if ($request->filled('stock_level')) {
+            switch ($request->stock_level) {
+                case 'attention':
+                    $query->where('tbl_stock_in.Remaining_Quantity', '<=', 5);
+                    break;
+                case 'out':
+                    $query->where('tbl_stock_in.Remaining_Quantity', '<=', 0);
+                    break;
+                case 'low':
+                    $query->where('tbl_stock_in.Remaining_Quantity', '>', 0)
+                        ->where('tbl_stock_in.Remaining_Quantity', '<=', 5);
+                    break;
+                case 'available':
+                    $query->where('tbl_stock_in.Remaining_Quantity', '>', 5);
+                    break;
+            }
+        }
+
+        switch ($request->input('sort', 'stock_asc')) {
+            case 'name_asc':
+            case 'name_desc':
+                $query->join('tbl_product', 'tbl_product.ID', '=', 'tbl_stock_in.Product_ID')
+                    ->select('tbl_stock_in.*')
+                    ->orderBy('tbl_product.Name', $request->sort === 'name_asc' ? 'asc' : 'desc');
+                break;
+            case 'stock_desc':
+                $query->orderBy('tbl_stock_in.Remaining_Quantity', 'desc');
+                break;
+            case 'stock_asc':
+                $query->orderBy('tbl_stock_in.Remaining_Quantity', 'asc');
+                break;
+            case 'price_asc':
+            case 'price_desc':
+                $query->orderBy('tbl_stock_in.Retail_Price', $request->sort === 'price_asc' ? 'asc' : 'desc');
+                break;
+            case 'newest':
+            case 'oldest':
+                break;
+        }
+
+        $query->orderBy('tbl_stock_in.ID', $request->sort === 'oldest' ? 'asc' : 'desc');
+
+        return $query;
+    }
+
+    public function index(Request $request)
+    {
+        $query = $this->stockInQuery($request);
+
+        $stockIns = $query->paginate(15)->withQueryString();
+        $categories = Category::orderBy('Name', 'asc')->get();
         $products = Product::orderBy('Name', 'asc')->get();
         $users = User::orderBy('name', 'asc')->get();
 
-        return view('stock_in.index', compact('stockIns', 'products', 'users'));
+        return view('stock_in.index', compact('stockIns', 'categories', 'products', 'users'));
     }
 
     public function print(Request $request)
     {
-        $query = StockIn::with(['product.category', 'user']);
-        if ($request->filled('product_id')) $query->where('Product_ID', $request->product_id);
-        if ($request->filled('user_id')) $query->where('User_ID', $request->user_id);
-        $stockIns = $query->orderBy('ID', 'desc')->get();
+        $query = $this->stockInQuery($request);
+        $stockIns = $query->get();
         return app(\App\Services\PrintableReport::class)->respond($request, 'stock_in.print', compact('stockIns'));
     }
 
