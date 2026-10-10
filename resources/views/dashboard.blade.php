@@ -15,12 +15,93 @@
 
     </div>
 
-    <form data-auto-filter method="GET" action="{{ route('dashboard') }}" class="glass-card rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><label for="dashboardStart" class="block text-xs font-bold mb-1">From Date</label><input id="dashboardStart" type="date" name="start_date" value="{{ $startDate }}" required class="w-full rounded-xl px-3 py-2.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-dark-900"></div>
-        <div><label for="dashboardEnd" class="block text-xs font-bold mb-1">To Date</label><input id="dashboardEnd" type="date" name="end_date" value="{{ $endDate }}" min="{{ $startDate }}" required class="w-full rounded-xl px-3 py-2.5 border border-slate-300 dark:border-slate-700 bg-white dark:bg-dark-900"></div>
-        <noscript><button type="submit">Apply Dates</button></noscript>
-    </form>
-    <script>document.getElementById('dashboardStart').addEventListener('change', () => { const end = document.getElementById('dashboardEnd'), start = document.getElementById('dashboardStart').value; end.min = start; if (end.value < start) end.value = start; });</script>
+    <!-- Filter Toolbar: Quick Presets & Custom Date Range -->
+    <div class="glass-card rounded-2xl p-4 sm:p-5 border shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            
+            <!-- Quick Period Presets -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1 flex items-center gap-1.5">
+                    <i class="fas fa-clock-rotate-left text-red-500"></i>
+                    <span>Period:</span>
+                </span>
+                <a href="{{ route('dashboard', ['period' => 'today']) }}"
+                   class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ ($activePeriod ?? '') === 'today' ? 'bg-red-600 text-white shadow-sm shadow-red-600/30' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-750 text-slate-700 dark:text-slate-300' }}">
+                    Today
+                </a>
+                <a href="{{ route('dashboard', ['period' => 'month']) }}"
+                   class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ ($activePeriod ?? '') === 'month' ? 'bg-red-600 text-white shadow-sm shadow-red-600/30' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-750 text-slate-700 dark:text-slate-300' }}">
+                    This Month
+                </a>
+                <a href="{{ route('dashboard', ['period' => 'year']) }}"
+                   class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ ($activePeriod ?? '') === 'year' ? 'bg-red-600 text-white shadow-sm shadow-red-600/30' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-750 text-slate-700 dark:text-slate-300' }}">
+                    This Year
+                </a>
+                <a href="{{ route('dashboard', ['period' => 'all']) }}"
+                   class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all {{ ($activePeriod ?? '') === 'all' ? 'bg-red-600 text-white shadow-sm shadow-red-600/30' : 'bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-750 text-slate-700 dark:text-slate-300' }}">
+                    All Time
+                </a>
+            </div>
+
+            <!-- Custom Date Range Form (No data-auto-filter to avoid premature submits) -->
+            <form id="dashboardDateFilterForm" method="GET" action="{{ route('dashboard') }}" class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
+                <div class="flex-1 sm:w-44">
+                    <label for="dashboardStart" class="block text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                        From Date
+                    </label>
+                    <input id="dashboardStart" type="date" name="start_date" value="{{ $startDate }}" required
+                        class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+
+                <div class="flex-1 sm:w-44">
+                    <label for="dashboardEnd" class="block text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                        To Date
+                    </label>
+                    <input id="dashboardEnd" type="date" name="end_date" value="{{ $endDate }}" min="{{ $startDate }}" required
+                        class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button type="submit" id="dashboardApplyBtn"
+                        class="w-full sm:w-auto px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md shadow-red-600/25 flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Apply Dates</span>
+                    </button>
+
+                    @if(request()->filled('start_date') || request()->filled('end_date') || (request()->filled('period') && request('period') !== 'month'))
+                    <a href="{{ route('dashboard') }}" title="Reset to current month"
+                        class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-400 font-bold text-xs flex items-center justify-center gap-1 transition-colors">
+                        <i class="fas fa-rotate-left"></i>
+                        <span>Reset</span>
+                    </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const startInput = document.getElementById('dashboardStart');
+            const endInput = document.getElementById('dashboardEnd');
+            const filterForm = document.getElementById('dashboardDateFilterForm');
+            if (!startInput || !endInput || !filterForm) return;
+
+            startInput.addEventListener('change', function() {
+                endInput.min = this.value;
+                if (endInput.value && endInput.value < this.value) {
+                    endInput.value = this.value;
+                }
+            });
+
+            endInput.addEventListener('change', function() {
+                if (this.value && this.value < startInput.value) {
+                    startInput.value = this.value;
+                }
+                endInput.min = startInput.value;
+            });
+        })();
+    </script>
 
     <!-- 5-Column Stats Grid with Featured Main "Sales in Selected Period" Hero Card -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-5 items-stretch">
@@ -137,11 +218,27 @@
                         <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center">
                             <i class="fas fa-receipt text-xs"></i>
                         </div>
-                        <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">Recent Sales</h3>
+                        <div>
+                            <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">Recent Sales</h3>
+                            @if(!empty($isFallbackRecentSales))
+                                <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+                                    <i class="fas fa-clock-rotate-left text-[10px]"></i> Latest recorded transactions
+                                </span>
+                            @else
+                                <span class="text-[11px] font-semibold text-slate-400">
+                                    {{ $periodLabel }}
+                                </span>
+                            @endif
+                        </div>
                     </div>
-                    <a href="{{ route('pos.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors">
-                        New Sale &rarr;
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <a href="{{ route('transactions.index') }}" class="text-xs font-bold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
+                            Transactions &rarr;
+                        </a>
+                        <a href="{{ route('pos.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors">
+                            New Sale &rarr;
+                        </a>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto">
