@@ -39,6 +39,7 @@ class TransactionController extends Controller
             'soldItems.product'
         ])
         ->orderBy('Date', 'desc')
+        ->orderBy('ID', 'desc')
         ->paginate(15)
         ->withQueryString();
 
@@ -240,7 +241,7 @@ class TransactionController extends Controller
     private function applyPeriod(Builder $query, array $filters): void
     {
         if ($filters['period'] === 'today') {
-            $query->whereDate('Date', today());
+            $query->whereDate('Date', Carbon::now('Asia/Manila')->toDateString());
         } elseif ($filters['period'] === 'monthly') {
             $month = $this->parseMonth($filters['month']);
             $query->where('Date', '>=', $month->copy()->startOfMonth())
@@ -258,7 +259,7 @@ class TransactionController extends Controller
     private function getPeriodLabel(array $filters): string
     {
         if ($filters['period'] === 'today') {
-            return 'Today (' . now()->format('F d, Y') . ')';
+            return 'Today (' . Carbon::now('Asia/Manila')->format('F d, Y') . ')';
         }
         if ($filters['period'] === 'overall') {
             return 'Overall (All-Time)';

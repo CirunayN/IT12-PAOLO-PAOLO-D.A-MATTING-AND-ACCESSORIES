@@ -257,7 +257,7 @@ class PosController extends Controller
             }
 
             $sale = Sale::create([
-                'Date' => Carbon::now(),
+                'Date' => Carbon::now('Asia/Manila'),
                 'Total' => $total,
                 'Amount_Received' => $amountTendered,
                 'Change_Amount' => $change,

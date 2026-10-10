@@ -89,12 +89,12 @@ class DashboardController extends Controller
         $totalTransactions = Sale::count();
 
         $recentSales = (clone $salesQuery)->with(['user', 'paymentMethod', 'soldItems.product'])
-            ->orderBy('Date', 'desc')->limit(8)->get();
+            ->orderBy('Date', 'desc')->orderBy('ID', 'desc')->limit(8)->get();
 
         $isFallbackRecentSales = false;
         if ($recentSales->isEmpty()) {
             $recentSales = Sale::with(['user', 'paymentMethod', 'soldItems.product'])
-                ->orderBy('Date', 'desc')->limit(8)->get();
+                ->orderBy('Date', 'desc')->orderBy('ID', 'desc')->limit(8)->get();
             $isFallbackRecentSales = true;
         }
 
