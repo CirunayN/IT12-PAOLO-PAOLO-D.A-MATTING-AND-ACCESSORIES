@@ -49,7 +49,7 @@
     </div>
 
     <!-- Filter & Search Bar -->
-    <div class="glass-card rounded-2xl p-4 border shadow-sm">
+    <div class="glass-card rounded-2xl p-4 border shadow-sm relative z-30">
         <form data-auto-filter method="GET" action="{{ route('products.index') }}" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-3 items-center">
             <input type="hidden" name="tab" value="{{ $tab }}">
             <div class="xl:col-span-3 relative">
@@ -57,15 +57,10 @@
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Search product name or description..."
                     class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-            <div class="xl:col-span-2">
-                <select name="category_id" data-category-select="filter" aria-label="Category" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $cat)
-                    <option value="{{ $cat->ID }}" {{ request('category_id') == $cat->ID ? 'selected' : '' }}>{{ $cat->Name }}{{ $cat->Is_Archived ? ' (Archived)' : '' }}</option>
-                    @endforeach
-                </select>
-            </div>
             <div class="xl:col-span-3">
+                @include('partials.category-search-filter', ['categories' => $categories])
+            </div>
+            <div class="xl:col-span-2">
                 <select name="stock_level" aria-label="Stock level" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
                     <option value="">All Stock Levels</option>
                     <option value="available" {{ request('stock_level') === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
@@ -98,7 +93,7 @@
     </div>
 
     <!-- Products Table -->
-    <div class="glass-card rounded-2xl border shadow-sm overflow-hidden">
+    <div class="glass-card rounded-2xl border shadow-sm overflow-hidden relative z-10">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead>
