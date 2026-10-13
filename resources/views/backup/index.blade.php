@@ -172,6 +172,19 @@
                         <input type="file" name="backup_file" accept="{{ config('database.default') === 'sqlsrv' ? '.json' : '.sql' }}" required
                             class="w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-red-500/10 file:text-red-500 hover:file:bg-red-500/20 cursor-pointer">
                     </div>
+                    <div>
+                        <label for="uploadRestorePassword" class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-1">Administrator Password</label>
+                        <input id="uploadRestorePassword" type="password" name="current_password" required autocomplete="current-password" aria-describedby="uploadRestorePasswordHelp"
+                            class="w-full py-2 px-3 bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-500">
+                        <p id="uploadRestorePasswordHelp" class="mt-1 text-xs text-slate-500 dark:text-slate-400">Enter your signed-in administrator account's password to authorize the restore.</p>
+                    </div>
+                    @if($errors->getBag('restoreBackup')->any() && !old('existing_file'))
+                        <ul role="alert" class="space-y-1 text-xs text-rose-600 dark:text-rose-400">
+                            @foreach($errors->getBag('restoreBackup')->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
                     <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold text-xs shadow-md transition-all">
                         Upload &amp; Restore Database
                     </button>
@@ -547,6 +560,19 @@
         <form id="restoreExistingBackupForm" method="POST" action="{{ route('backup.restore') }}">
             @csrf
             <input type="hidden" name="existing_file" id="restoreFormFilenameInput">
+            <div class="space-y-1">
+                <label for="existingRestorePassword" class="block text-xs font-bold text-slate-500 dark:text-slate-400">Administrator Password</label>
+                <input id="existingRestorePassword" type="password" name="current_password" required autocomplete="current-password" aria-describedby="existingRestorePasswordHelp"
+                    class="w-full py-2 px-3 bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:ring-1 focus:ring-amber-500">
+                <p id="existingRestorePasswordHelp" class="text-xs text-slate-500 dark:text-slate-400">Enter your signed-in administrator account's password to authorize the restore.</p>
+            </div>
+            @if($errors->getBag('restoreBackup')->any() && old('existing_file'))
+                <ul role="alert" class="mt-2 space-y-1 text-xs text-rose-600 dark:text-rose-400">
+                    @foreach($errors->getBag('restoreBackup')->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
             <div class="flex items-center gap-3 pt-2">
                 <button type="button" onclick="closeRestoreBackupModal()" class="flex-1 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 hover:bg-slate-300 dark:hover:bg-dark-700 text-slate-700 dark:text-slate-200 font-bold text-xs sm:text-sm transition-colors cursor-pointer">
                     Cancel
@@ -668,21 +694,31 @@
         document.getElementById('restoreModalFilename').innerText = filename;
         document.getElementById('restoreModalSize').innerText = size;
         document.getElementById('restoreFormFilenameInput').value = filename;
+        const password = document.getElementById('existingRestorePassword');
+        password.value = '';
 
         const modal = document.getElementById('restoreBackupModal');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        password.focus();
     }
 
     function closeRestoreBackupModal() {
         const modal = document.getElementById('restoreBackupModal');
         modal.classList.add('hidden');
         modal.classList.remove('flex');
+        document.getElementById('existingRestorePassword').value = '';
     }
+
+    @if($errors->getBag('restoreBackup')->any() && old('existing_file'))
+        @php($failedRestore = collect(array_merge($files, $archivedFiles))->firstWhere('name', basename((string) old('existing_file'))))
+        @if($failedRestore)
+            promptRestoreBackup(@json($failedRestore['name']), @json($failedRestore['size']));
+        @endif
+    @endif
 
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            closeBackupFolderPicker();
             closeArchiveBackupModal();
             closeRecoverBackupModal();
             closePurgeBackupModal();

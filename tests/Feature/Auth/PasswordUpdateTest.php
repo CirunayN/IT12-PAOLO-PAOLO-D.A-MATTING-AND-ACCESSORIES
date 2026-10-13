@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\AccountRecoveryCode;
 use App\Models\User;
+use App\Services\AccountRecoveryService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -15,20 +17,30 @@ class PasswordUpdateTest extends TestCase
     {
         $user = User::factory()->create();
 
+        $rememberToken = $user->remember_token;
+        $oldCode = app(AccountRecoveryService::class)->generate($user);
+
         $response = $this
             ->actingAs($user)
-            ->from('/profile')
+            ->from('/settings/password')
             ->put('/password', [
                 'current_password' => '123',
-                'password' => 'new-password',
-                'password_confirmation' => 'new-password',
+                'password' => 'NewPass123',
+                'password_confirmation' => 'NewPass123',
             ]);
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
+            ->assertRedirect(route('password.recovery.replacement'));
 
-        $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+        $this->assertTrue(Hash::check('NewPass123', $user->refresh()->password));
+        $this->assertNotEquals($rememberToken, $user->remember_token);
+        $this->assertDatabaseCount('account_recovery_codes', 1);
+        $this->assertFalse(Hash::check($oldCode, AccountRecoveryCode::first()->code_hash));
+        $this->assertDatabaseCount('admin_recovery_codes', 0);
+        $this->assertGuest();
+        $replacement = app(AccountRecoveryService::class)->revealDisplay(session('replacement_recovery_code'));
+        $this->get(route('password.recovery.replacement'))->assertOk()->assertSee($replacement['code']);
     }
 
     public function test_correct_password_must_be_provided_to_update_password(): void
@@ -37,15 +49,15 @@ class PasswordUpdateTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->from('/profile')
+            ->from('/settings/password')
             ->put('/password', [
                 'current_password' => 'wrong-password',
-                'password' => 'new-password',
-                'password_confirmation' => 'new-password',
+                'password' => 'NewPass123',
+                'password_confirmation' => 'NewPass123',
             ]);
 
         $response
             ->assertSessionHasErrorsIn('updatePassword', 'current_password')
-            ->assertRedirect('/profile');
+            ->assertRedirect('/settings/password');
     }
 }

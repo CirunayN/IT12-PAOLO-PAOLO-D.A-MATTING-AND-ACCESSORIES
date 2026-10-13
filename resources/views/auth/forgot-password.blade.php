@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Offline Password Recovery | Paolo Paolo</title>
+    <title>Forgot Password | Paolo Paolo</title>
     <link rel="icon" type="image/png" href="{{ asset('images/wadwad_paolo_logo.png') }}">
     @include('shared.offline-assets')
     <style>
@@ -17,17 +17,8 @@
 
     <div class="text-center mb-7">
         <img src="{{ asset('images/wadwad_paolo_logo.png') }}" alt="Paolo Paolo" class="w-20 h-20 mx-auto object-contain mb-3">
-        <h1 class="text-xl sm:text-2xl font-jdm tracking-wider text-white">OFFLINE RECOVERY</h1>
-        <p class="text-xs text-slate-400 mt-2">No email or internet is required. Enter your system username to begin password recovery.</p>
-    </div>
-
-    <div class="mb-5 grid gap-2 text-[11px]">
-        <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-700 text-slate-300">
-            <strong class="text-red-400">Employee:</strong> request a reset, then ask the administrator to approve it and give you the generated code.
-        </div>
-        <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-700 text-slate-300">
-            <strong class="text-amber-400">Administrator:</strong> use one of your saved 10 recovery codes.
-        </div>
+        <h1 class="text-xl sm:text-2xl font-jdm tracking-wider text-white">PASSWORD RECOVERY</h1>
+        <p class="text-xs text-slate-400 mt-2">Enter your username and the private recovery code you saved earlier. This works without internet for both Admin and Employee accounts.</p>
     </div>
 
     @if($errors->any())
@@ -36,22 +27,31 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('password.email') }}" class="space-y-4">
+    <form method="POST" action="{{ route('password.recovery.verify') }}" class="space-y-4">
         @csrf
         <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Username</label>
+            <label for="username" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Username</label>
             <div class="relative">
                 <i class="fas fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"></i>
-                <input type="text" name="username" value="{{ old('username') }}" required autofocus autocomplete="username"
+                <input type="text" id="username" name="username" value="{{ old('username') }}" required autofocus autocomplete="username" maxlength="100"
                     class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500"
                     placeholder="Enter your username">
             </div>
         </div>
 
+        <div>
+            <label for="recovery_code" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Saved Recovery Code</label>
+            <input type="text" id="recovery_code" name="recovery_code" required minlength="19" maxlength="19" autocomplete="off" spellcheck="false"
+                pattern="[A-Za-z0-9]{4}(-[A-Za-z0-9]{4}){3}" placeholder="XXXX-XXXX-XXXX-XXXX"
+                class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white text-sm font-mono text-center focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500">
+        </div>
+
         <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-bold text-sm">
-            <i class="fas fa-shield-halved mr-2"></i> Continue Offline Recovery
+            <i class="fas fa-shield-halved mr-2"></i> Verify Recovery Code
         </button>
     </form>
+
+    <p class="text-xs text-slate-400 mt-4">Generate and save your code from My Account &rarr; Password while signed in. A saved code stays valid until used or replaced. After verification, finish the reset within 10 minutes.</p>
 
     <div class="mt-5 text-center">
         <a href="{{ route('login') }}" class="text-xs font-bold text-red-400 hover:text-red-300">

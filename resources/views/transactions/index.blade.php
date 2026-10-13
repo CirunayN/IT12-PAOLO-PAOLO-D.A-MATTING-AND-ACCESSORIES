@@ -345,7 +345,7 @@
             <a id="modalReprintBtn" href="#" target="_blank"
                 class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs shadow-md shadow-red-600/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
                 <i class="fas fa-print"></i>
-                <span>Reprint Receipt</span>
+                <span>Print Receipt</span>
             </a>
         </div>
     </div>

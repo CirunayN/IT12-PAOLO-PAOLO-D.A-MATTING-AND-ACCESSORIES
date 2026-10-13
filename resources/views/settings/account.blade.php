@@ -42,7 +42,7 @@
             <div class="p-4 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-slate-700">
                 <div class="text-[11px] uppercase font-bold tracking-wider text-slate-400">Email</div>
                 <div class="font-bold mt-1 text-slate-900 dark:text-white break-all">{{ $user->email ?: 'Not set' }}</div>
-                <div class="text-[10px] text-slate-400 mt-1">Stored account information only; it is not used for password recovery.</div>
+                <div class="text-[10px] text-slate-400 mt-1">Stored contact information.</div>
             </div>
 
             <div class="p-4 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-200 dark:border-slate-700 md:col-span-2">
@@ -68,9 +68,9 @@
             <div class="flex items-start gap-3">
                 <i class="fas fa-shield-halved text-red-500 mt-0.5"></i>
                 <div>
-                    <div class="text-xs font-bold text-slate-700 dark:text-slate-200">Offline Account Security</div>
+                    <div class="text-xs font-bold text-slate-700 dark:text-slate-200">Account Security</div>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                        Use the Password tab to change a password while signed in. If a password is forgotten, use the offline recovery process from the login screen.
+                        Use the Password tab to change your password and generate a recovery code. Save the code privately so you can reset a forgotten password from the login screen without internet.
                     </p>
                 </div>
             </div>

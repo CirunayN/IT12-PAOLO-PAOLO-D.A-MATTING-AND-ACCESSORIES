@@ -33,6 +33,8 @@
         @csrf
         @method('PUT')
 
+        @include('partials.stock-threshold-input', ['thresholdValue' => $product->low_stock_threshold])
+
         <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
                 Product Name <span class="text-rose-500">*</span>

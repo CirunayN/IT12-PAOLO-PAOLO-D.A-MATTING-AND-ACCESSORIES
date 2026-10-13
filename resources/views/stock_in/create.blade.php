@@ -80,11 +80,11 @@
                                 <span id="selectedProductCategory"
                                     class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-red-500/10 text-red-500 border border-red-500/20">{{ $preselectedProduct?->category?->Name ?? 'General' }}</span>
                                 <span id="selectedProductStockBadge"
-                                    class="text-[10px] font-bold px-2 py-0.5 rounded-md {{ ($preselectedProduct?->stock_quantity ?? 0) <= 0 ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : (($preselectedProduct?->stock_quantity ?? 0) <= 5 ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20') }}">
+                                    class="text-[10px] font-bold px-2 py-0.5 rounded-md {{ ($preselectedProduct?->stock_quantity ?? 0) <= 0 ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : (($preselectedProduct?->stock_quantity ?? 0) <= ($preselectedProduct?->low_stock_threshold ?? 5) ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20') }}">
                                     @if($preselectedProduct)
                                         @if($preselectedProduct->stock_quantity <= 0)
                                             Out of Stock (0)
-                                        @elseif($preselectedProduct->stock_quantity <= 5)
+                                        @elseif($preselectedProduct->stock_quantity <= $preselectedProduct->low_stock_threshold)
                                             {{ $preselectedProduct->stock_quantity }} units remaining
                                         @else
                                             {{ $preselectedProduct->stock_quantity }} in stock
@@ -154,6 +154,7 @@
                         data-description="{{ $prod->Description ?? '' }}"
                         data-category="{{ $categoryName }}"
                         data-stock="{{ $stock }}"
+                        data-threshold="{{ $prod->low_stock_threshold }}"
                         data-cost="{{ $cost }}"
                         data-retail="{{ $retail }}"
                         data-img="{{ $img ?? '' }}"
@@ -178,7 +179,7 @@
                                     <span class="text-[10px] font-bold text-rose-500 bg-rose-500/10 px-1.5 py-0.5 rounded">
                                         Out of stock
                                     </span>
-                                    @elseif($stock <= 5)
+                                    @elseif($stock <= $prod->low_stock_threshold)
                                     <span class="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-1.5 py-0.5 rounded">
                                         {{ number_format($stock, 0) }} in stock
                                     </span>
@@ -227,6 +228,7 @@
 
             <div id="newProductPanel"
                 class="hidden p-5 rounded-2xl bg-slate-50 dark:bg-dark-900/60 border border-red-500/30 space-y-4">
+                @include('partials.stock-threshold-input')
 
                 <div class="flex items-center justify-between gap-3">
                     <div>
@@ -602,6 +604,7 @@ function selectProductFromList(row) {
     const description = row.dataset.description || 'No description provided.';
     const category = row.dataset.category;
     const stock = parseFloat(row.dataset.stock) || 0;
+    const threshold = Number(row.dataset.threshold ?? 5);
     const cost = parseFloat(row.dataset.cost) || 0;
     const retail = parseFloat(row.dataset.retail) || 0;
     const img = row.dataset.img;
@@ -617,7 +620,7 @@ function selectProductFromList(row) {
         stockBadge.className =
             'text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-500 border border-rose-500/20';
         stockBadge.textContent = 'Out of Stock (0)';
-    } else if (stock <= 5) {
+    } else if (stock <= threshold) {
         stockBadge.className =
             'text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-500 border border-amber-500/20';
         stockBadge.textContent = stock + ' units remaining';

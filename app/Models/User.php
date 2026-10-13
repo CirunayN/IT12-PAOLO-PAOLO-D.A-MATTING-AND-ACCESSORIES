@@ -67,13 +67,8 @@ class User extends Authenticatable
         return $this->hasMany(Sale::class, 'User_ID', 'id');
     }
 
-    public function passwordResetRequests()
+    public function recoveryCode()
     {
-        return $this->hasMany(PasswordResetRequest::class, 'user_id');
-    }
-
-    public function adminRecoveryCodes()
-    {
-        return $this->hasMany(AdminRecoveryCode::class, 'user_id');
+        return $this->hasOne(AccountRecoveryCode::class, 'user_id');
     }
 }

@@ -8,9 +8,8 @@
         <div>
             <h1 class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white flex items-center gap-3">
                 <i class="fas fa-file-lines text-red-500"></i>
-                Dashboard &amp; Reports
+                Reports
             </h1>
-            @include('reports.tabs')
         </div>
 
         <button
@@ -112,8 +111,8 @@
                     class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-100"
                 >
                     <option value="">All Stock Levels</option>
-                    <option value="available" {{ $selectedStockStatus === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
-                    <option value="low" {{ $selectedStockStatus === 'low' ? 'selected' : '' }}>Low Stock (1-5 units)</option>
+                    <option value="available" {{ $selectedStockStatus === 'available' ? 'selected' : '' }}>Available (above item threshold)</option>
+                    <option value="low" {{ $selectedStockStatus === 'low' ? 'selected' : '' }}>Low Stock (item threshold)</option>
                     <option value="out" {{ $selectedStockStatus === 'out' ? 'selected' : '' }}>Out of Stock (0 units)</option>
                 </select>
             </div>
@@ -539,7 +538,7 @@
                         <td class="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs">
                             {{ $product->category->Name ?? 'Uncategorized' }}
                         </td>
-                        <td class="px-4 py-3 text-right font-black {{ $qty <= 0 ? 'text-rose-500' : ($qty <= 5 ? 'text-amber-500' : 'text-slate-900 dark:text-white') }}">
+                        <td class="px-4 py-3 text-right font-black {{ $qty <= 0 ? 'text-rose-500' : ($qty <= $product->low_stock_threshold ? 'text-amber-500' : 'text-slate-900 dark:text-white') }}">
                             {{ number_format($qty, 0) }}
                         </td>
                         <td class="px-4 py-3 text-right text-slate-500">
@@ -559,7 +558,7 @@
                             <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-lg bg-rose-500/10 text-rose-500 border border-rose-500/20">
                                 Out of Stock
                             </span>
-                            @elseif($qty <= 5)
+                            @elseif($qty <= $product->low_stock_threshold)
                             <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/10 text-amber-600 border border-amber-500/20">
                                 Low Stock
                             </span>

@@ -22,14 +22,11 @@ Route::get('/', function () {
         : redirect()->route('pos.index');
 });
 
-Route::post('/recovery-codes/download', [\App\Http\Controllers\RecoveryCodeExportController::class, 'download'])
-    ->middleware('throttle:10,1')->name('recovery-codes.download');
-
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/settings/account', [AccountSettingsController::class, 'show'])
         ->name('settings.account');
 
-    Route::view('/settings/password', 'settings.password')
+    Route::get('/settings/password', fn () => response()->view('settings.password')->header('Cache-Control', 'no-store, private'))
         ->name('settings.password');
 
     Route::get('/my-transactions', [TransactionController::class, 'index'])
@@ -57,16 +54,6 @@ Route::middleware(['auth', 'active'])->group(function () {
             ->name('security.index');
 
         Route::post(
-            '/security/password-reset/{passwordResetRequest}/approve',
-            [SecurityController::class, 'approveReset']
-        )->name('security.reset.approve');
-
-        Route::delete(
-            '/security/password-reset/{passwordResetRequest}',
-            [SecurityController::class, 'denyReset']
-        )->name('security.reset.deny');
-
-        Route::post(
             '/security/users',
             [SecurityController::class, 'storeUser']
         )->middleware('throttle:5,1')
@@ -76,12 +63,6 @@ Route::middleware(['auth', 'active'])->group(function () {
             '/security/users/{user}/access',
             [SecurityController::class, 'toggleUser']
         )->name('security.users.access');
-
-        Route::post(
-            '/security/recovery-codes/regenerate',
-            [SecurityController::class, 'regenerateRecoveryCodes']
-        )->middleware('throttle:3,1')
-            ->name('security.recovery.regenerate');
 
         Route::get('/products/print', [ProductController::class, 'print'])->name('products.print');
 
@@ -144,6 +125,7 @@ Route::middleware(['auth', 'active'])->group(function () {
             ->name('backup.purge');
 
         Route::post('/backup/restore', [BackupController::class, 'restoreBackup'])
+            ->middleware('throttle:5,1')
             ->name('backup.restore');
     });
 });

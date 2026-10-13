@@ -100,10 +100,15 @@
         <div class="sidebar-section text-[11px] font-black uppercase tracking-wider text-slate-400 px-3 pt-2 pb-1">Store Navigation</div>
 
         @if(auth()->user() && auth()->user()->isAdmin())
-            <a href="{{ route('dashboard') }}" title="Dashboard &amp; Reports" aria-label="Dashboard &amp; Reports"
-               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-chart-pie w-5 text-center text-base {{ (request()->routeIs('dashboard') || request()->routeIs('reports.*')) ? 'text-red-500' : 'text-slate-400' }}"></i>
-                <span class="sidebar-label font-display">Dashboard &amp; Reports</span>
+            <a href="{{ route('dashboard') }}" title="Dashboard" aria-label="Dashboard"
+               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('dashboard') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-chart-pie w-5 text-center text-base {{ request()->routeIs('dashboard') ? 'text-red-500' : 'text-slate-400' }}"></i>
+                <span class="sidebar-label font-display">Dashboard</span>
+            </a>
+            <a href="{{ route('reports.index') }}" title="Reports" aria-label="Reports"
+               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('reports.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-file-lines w-5 text-center text-base {{ request()->routeIs('reports.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
+                <span class="sidebar-label font-display">Reports</span>
             </a>
         @endif
 
@@ -117,6 +122,13 @@
            class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('transactions.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
             <i class="fas fa-receipt w-5 text-center text-base {{ request()->routeIs('transactions.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
             <span class="sidebar-label font-display">Transactions</span>
+        </a>
+
+        <a href="{{ route('settings.account') }}" id="accountSettingsLink" title="My Account" aria-label="My Account"
+           @if(request()->routeIs('settings.*', 'security.*')) aria-current="page" @endif
+           class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('settings.*', 'security.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+            <i class="fas fa-user-gear w-5 text-center text-base {{ request()->routeIs('settings.*', 'security.*') ? 'text-red-500' : 'text-slate-400' }}" aria-hidden="true"></i>
+            <span class="sidebar-label font-display">My Account</span>
         </a>
 
         @if(auth()->user() && auth()->user()->isAdmin())
@@ -137,14 +149,10 @@
     </nav>
 
     <div class="sidebar-footer p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-dark-850/70">
-        <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}" class="flex items-center justify-between gap-3">
+        <form id="globalLogoutForm" method="POST" action="{{ route('logout') }}">
             @csrf
-            <div class="sidebar-user-details min-w-0">
-                <p class="text-xs font-bold text-slate-900 dark:text-white truncate">{{ auth()->user()->name ?? 'User' }}</p>
-                <p class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}</p>
-            </div>
             <button type="button" onclick="closeDrawer(); openLogoutModal(event);" title="Logout" aria-label="Logout"
-                    class="sidebar-logout-button px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer">
+                    class="sidebar-logout-button w-full px-3 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500 text-rose-500 hover:text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
                 <i class="fas fa-power-off"></i>
                 <span class="sidebar-label">Logout</span>
             </button>
@@ -188,34 +196,18 @@
         </div>
 
         <div class="app-topbar-actions flex items-center gap-2.5 sm:gap-3.5">
-        @unless(request()->routeIs('pos.*'))
-        <a id="topbarPosLink" href="{{ route('pos.index') }}" title="Open POS" aria-label="Open POS"
-           class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-xs sm:text-sm shadow-md transition-all">
-            <i class="fas fa-cash-register"></i><span class="hidden sm:inline">Open POS</span>
-        </a>
-        @endunless
-        @if(auth()->user()?->isAdmin() && !request()->routeIs('products.*', 'stock-in.*'))
-        <a id="topbarRestockLink" href="{{ route('stock-in.create') }}" title="Receive Stock" aria-label="Receive Stock"
-           class="flex items-center gap-2 px-3 sm:px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-800 dark:text-white font-bold text-xs sm:text-sm border border-slate-300 dark:border-slate-700">
-            <i class="fas fa-truck-ramp-box text-red-500"></i><span class="hidden sm:inline">Receive Stock</span>
-        </a>
-        @endif
             <button type="button" id="themeToggleBtn" title="Toggle Light / Dark Mode"
                     class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base sm:text-lg transition-colors cursor-pointer">
                 <i id="themeIcon" class="fas fa-sun"></i>
             </button>
 
             <div class="flex items-center gap-2 sm:gap-3 pl-2 border-l border-slate-300 dark:border-slate-800">
-                <a href="{{ route('settings.account') }}" id="accountSettingsLink" title="Open Settings" aria-label="Open Settings"
-                   class="flex items-center justify-center rounded-xl px-2 py-2 text-right transition-colors focus:outline-none focus:ring-2 focus:ring-red-500/50 {{ request()->routeIs('settings.*') || request()->routeIs('security.*') ? 'bg-red-500/10' : 'hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                    <i class="fas fa-user-gear text-lg text-slate-500 dark:text-slate-300 md:hidden" aria-hidden="true"></i>
-                    <div class="hidden md:block">
-                        <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
-                        <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ auth()->user() && auth()->user()->isAdmin() ? 'text-amber-500' : 'text-red-500' }}">
-                            {{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}
-                        </span>
-                    </div>
-                </a>
+                <div id="topbarAccountSummary" class="min-w-0 px-2 py-2 text-right">
+                    <div class="max-w-[10rem] sm:max-w-[16rem] truncate text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ auth()->user()->name ?? 'User' }}</div>
+                    <span class="text-[10px] sm:text-xs font-semibold uppercase tracking-wider {{ auth()->user() && auth()->user()->isAdmin() ? 'text-amber-500' : 'text-red-500' }}">
+                        {{ auth()->user() && auth()->user()->isAdmin() ? 'Owner (Admin)' : 'Employee' }}
+                    </span>
+                </div>
 
             </div>
         </div>

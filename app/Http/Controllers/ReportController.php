@@ -194,8 +194,8 @@ class ReportController extends Controller
             if ($selectedStockStatus) {
                 $products = $allCatalogProducts->filter(function ($p) use ($selectedStockStatus) {
                     $qty = $p->stock_quantity;
-                    if ($selectedStockStatus === 'available') return $qty > 5;
-                    if ($selectedStockStatus === 'low') return $qty > 0 && $qty <= 5;
+                    if ($selectedStockStatus === 'available') return $qty > $p->low_stock_threshold;
+                    if ($selectedStockStatus === 'low') return $qty > 0 && $qty <= $p->low_stock_threshold;
                     if ($selectedStockStatus === 'out') return $qty <= 0;
                     return true;
                 })->values();
@@ -216,7 +216,7 @@ class ReportController extends Controller
 
                 if ($quantity <= 0) {
                     $outOfStockCount++;
-                } elseif ($quantity <= 5) {
+                } elseif ($quantity <= $product->low_stock_threshold) {
                     $lowStockCount++;
                 }
             }

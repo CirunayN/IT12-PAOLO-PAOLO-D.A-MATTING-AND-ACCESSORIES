@@ -67,6 +67,13 @@ class SqlServerSnapshotService
         $tableNames = $this->tables($connection);
         $currentTables = array_combine(array_map('strtolower', $tableNames), $tableNames);
         $incomingTables = array_map('strtolower', array_keys($snapshot['tables']));
+        // Older full snapshots predate recovery codes for every account.
+        if ($requireAllTables && isset($currentTables['account_recovery_codes'])
+            && !in_array('account_recovery_codes', $incomingTables, true)) {
+            $table = $currentTables['account_recovery_codes'];
+            $snapshot['tables'][$table] = ['columns' => $connection->getSchemaBuilder()->getColumnListing($table), 'rows' => []];
+            $incomingTables[] = 'account_recovery_codes';
+        }
         if (count($incomingTables) !== count(array_unique($incomingTables))
             || array_diff($incomingTables, array_keys($currentTables))
             || ($requireAllTables && array_diff(array_keys($currentTables), $incomingTables))) {
@@ -77,6 +84,43 @@ class SqlServerSnapshotService
         foreach ($snapshot['tables'] as $name => $data) {
             $table = $currentTables[strtolower($name)];
             $columns = $connection->getSchemaBuilder()->getColumnListing($table);
+            // Add the OTP security fields when restoring an older full backup.
+            if (strtolower($table) === 'password_reset_codes' && is_array($data)
+                && is_array($data['columns'] ?? null) && is_array($data['rows'] ?? null)) {
+                $defaults = ['attempts' => 0, 'verified_token_hash' => null, 'verified_at' => null, 'used_at' => null];
+                $missing = array_diff($columns, $data['columns']);
+                if ($missing && !array_diff($missing, array_keys($defaults))
+                    && !array_diff($data['columns'], $columns)) {
+                    foreach ($data['rows'] as &$row) {
+                        if (is_array($row)) {
+                            foreach ($missing as $column) {
+                                if (array_key_exists($column, $row)) {
+                                    throw new InvalidArgumentException('Invalid legacy OTP backup row.');
+                                }
+                                $row[$column] = $defaults[$column];
+                            }
+                        }
+                    }
+                    unset($row);
+                    $data['columns'] = array_merge($data['columns'], array_values($missing));
+                }
+            }
+            // Earlier snapshots predate configurable item thresholds.
+            if (strtolower($table) === 'tbl_product' && is_array($data)
+                && is_array($data['columns'] ?? null) && is_array($data['rows'] ?? null)
+                && array_values(array_diff($columns, $data['columns'])) === ['Low_Stock_Threshold']
+                && !array_diff($data['columns'], $columns)) {
+                foreach ($data['rows'] as &$row) {
+                    if (is_array($row)) {
+                        if (array_key_exists('Low_Stock_Threshold', $row)) {
+                            throw new InvalidArgumentException('Invalid legacy product backup row.');
+                        }
+                        $row['Low_Stock_Threshold'] = 5;
+                    }
+                }
+                unset($row);
+                $data['columns'][] = 'Low_Stock_Threshold';
+            }
             // Backups made before category archiving restore those categories as active.
             if (strtolower($table) === 'tbl_category' && is_array($data)
                 && is_array($data['columns'] ?? null) && is_array($data['rows'] ?? null)
@@ -111,6 +155,10 @@ class SqlServerSnapshotService
                         throw new InvalidArgumentException("Invalid backup value for {$table}.");
                     }
                 }
+            }
+            // Restored snapshots cannot resurrect an OTP or a verified reset.
+            if (in_array(strtolower($table), ['password_reset_codes', 'account_recovery_codes'], true)) {
+                $data['rows'] = [];
             }
             if ($requireEmpty && $connection->table($table)->exists()) {
                 throw new InvalidArgumentException("Import stopped: {$table} already contains data.");

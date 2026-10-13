@@ -352,12 +352,12 @@ class ApplicationEnhancementsTest extends TestCase
         $this->assertSame($counts, [Product::count(), StockIn::count(), Sale::count(), DB::table('tbl_sold_item')->count()]);
     }
 
-    public function test_topbar_actions_are_hidden_on_their_own_pages(): void
+    public function test_quick_links_are_removed_from_the_topbar_on_all_pages(): void
     {
-        $this->actingAs($this->admin)->get(route('dashboard'))->assertOk()->assertSee('topbarPosLink')->assertSee('topbarRestockLink');
+        $this->actingAs($this->admin)->get(route('dashboard'))->assertOk()->assertDontSee('topbarPosLink')->assertDontSee('topbarRestockLink')->assertSee('My Account');
         $this->get(route('pos.index'))->assertOk()->assertDontSee('topbarPosLink')->assertDontSee('posLayoutRatio')->assertSee('posWorkspace');
         foreach (['products.index', 'stock-in.index', 'stock-in.create'] as $route) {
-            $this->get(route($route))->assertOk()->assertDontSee('topbarRestockLink');
+            $this->get(route($route))->assertOk()->assertDontSee('topbarPosLink')->assertDontSee('topbarRestockLink');
         }
     }
 
@@ -474,14 +474,61 @@ class ApplicationEnhancementsTest extends TestCase
         $this->assertSame(0, Artisan::call('migrate', ['--database' => 'sqlsrv', '--force' => true]));
     }
 
-    public function test_recovery_code_print_flows_have_guarded_pdf_downloads(): void
+    public function test_backups_before_item_thresholds_restore_the_default_and_migrate_safely(): void
     {
-        $this->postJson(route('recovery-codes.download'), ['codes' => ['ABCD-EFGH-IJKL']])->assertForbidden();
-        $this->withSession(['new_admin_recovery_codes' => ['ABCD-EFGH-IJKL']])->get(route('password.recovery-codes'))->assertOk()->assertSee('Print / Download Codes');
-        $response = $this->post(route('recovery-codes.download'), ['codes' => ['ABCD-EFGH-IJKL']]);
-        $response->assertOk()->assertHeader('content-type', 'application/pdf');
-        $this->assertStringStartsWith('%PDF-', $response->getContent());
-        $this->withSession(['recovery_codes_export_until' => 0])->actingAs(User::factory()->create(['role' => 'Cashier', 'is_active' => true]))
-            ->postJson(route('recovery-codes.download'),['codes' => ['ABCD-EFGH-IJKL']])->assertForbidden();
+        $service = app(SqlServerSnapshotService::class);
+        $snapshot = $service->snapshot(DB::connection());
+        foreach ($snapshot['tables'] as $table => &$data) {
+            if (strtolower($table) === 'tbl_product') {
+                $data['columns'] = array_values(array_diff($data['columns'], ['Low_Stock_Threshold']));
+                foreach ($data['rows'] as &$row) unset($row['Low_Stock_Threshold']);
+                unset($row);
+            }
+            if (strtolower($table) === 'migrations') {
+                $data['rows'] = array_values(array_filter($data['rows'], fn ($row) =>
+                    $row['migration'] !== '2026_10_13_000001_add_low_stock_threshold_to_tbl_product'));
+            }
+        }
+        unset($data);
+        $this->product->update(['Low_Stock_Threshold' => 20]);
+        $service->restore(DB::connection(), $snapshot);
+        $this->assertSame(5, $this->product->fresh()->low_stock_threshold);
+        $this->assertSame(1, Product::count());
+        $this->assertSame(0, Artisan::call('migrate', ['--database' => 'sqlsrv', '--force' => true]));
+        $this->assertSame(5, $this->product->fresh()->low_stock_threshold);
+    }
+
+    public function test_legacy_recovery_backups_restore_without_reactivating_saved_codes(): void
+    {
+        app(\App\Services\AccountRecoveryService::class)->generate($this->admin);
+        $service = app(SqlServerSnapshotService::class);
+        $snapshot = $service->snapshot(DB::connection());
+        $service->restore(DB::connection(), $snapshot);
+        $this->assertDatabaseCount('account_recovery_codes', 0);
+        $this->assertDatabaseHas('users', ['id' => $this->admin->id]);
+
+        $newColumns = ['attempts', 'verified_token_hash', 'verified_at', 'used_at'];
+        foreach ($snapshot['tables'] as $name => &$data) {
+            if (strtolower($name) !== 'password_reset_codes') {
+                continue;
+            }
+            $data['columns'] = array_values(array_diff($data['columns'], $newColumns));
+            foreach ($data['rows'] as &$row) {
+                foreach ($newColumns as $column) {
+                    unset($row[$column]);
+                }
+            }
+            unset($row);
+        }
+        unset($data);
+        foreach (array_keys($snapshot['tables']) as $name) {
+            if (strtolower($name) === 'account_recovery_codes') {
+                unset($snapshot['tables'][$name]);
+            }
+        }
+        $service->restore(DB::connection(), $snapshot);
+        $this->assertDatabaseCount('account_recovery_codes', 0);
+        $this->assertDatabaseHas('users', ['id' => $this->admin->id]);
+        $this->assertDatabaseHas('tbl_Product', ['ID' => $this->product->ID]);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Status;
 use App\Models\StockIn;
 use App\Models\User;
+use App\Support\InventoryFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -18,10 +19,7 @@ class StockInController extends Controller
 {
     private function stockInQuery(Request $request)
     {
-        $request->validate(['sort' => ['nullable', Rule::in([
-            'newest', 'oldest', 'name_asc', 'name_desc',
-            'stock_asc', 'stock_desc', 'price_asc', 'price_desc',
-        ])]]);
+        [$sortBy, $direction] = InventoryFilters::validate($request);
 
         $query = StockIn::with(['product.category', 'user']);
 
@@ -53,47 +51,46 @@ class StockInController extends Controller
             $query->where('tbl_stock_in.User_ID', $request->user_id);
         }
 
+        foreach (['start_date' => '>=', 'end_date' => '<='] as $field => $operator) {
+            if ($request->filled($field)) $query->whereDate('tbl_stock_in.created_at', $operator, $request->input($field));
+        }
+        foreach (['min_price' => '>=', 'max_price' => '<='] as $field => $operator) {
+            if ($request->filled($field)) $query->where('tbl_stock_in.Retail_Price', $operator, $request->input($field));
+        }
+        foreach (['min_stock' => '>=', 'max_stock' => '<='] as $field => $operator) {
+            if ($request->filled($field)) $query->where('tbl_stock_in.Remaining_Quantity', $operator, $request->input($field));
+        }
         if ($request->filled('stock_level')) {
-            switch ($request->stock_level) {
-                case 'attention':
-                    $query->where('tbl_stock_in.Remaining_Quantity', '<=', 5);
-                    break;
-                case 'out':
-                    $query->where('tbl_stock_in.Remaining_Quantity', '<=', 0);
-                    break;
-                case 'low':
-                    $query->where('tbl_stock_in.Remaining_Quantity', '>', 0)
-                        ->where('tbl_stock_in.Remaining_Quantity', '<=', 5);
-                    break;
-                case 'available':
-                    $query->where('tbl_stock_in.Remaining_Quantity', '>', 5);
-                    break;
-            }
+            $query->whereHas('product', function ($productQuery) use ($request) {
+                $stock = fn () => Product::inventoryStockQuery();
+                $threshold = DB::raw('tbl_product.Low_Stock_Threshold');
+                switch ($request->stock_level) {
+                    case 'attention': $productQuery->where($stock(), '<=', $threshold); break;
+                    case 'out': $productQuery->where($stock(), '<=', 0); break;
+                    case 'low': $productQuery->where($stock(), '>', 0)->where($stock(), '<=', $threshold); break;
+                    case 'available': $productQuery->where($stock(), '>', $threshold); break;
+                }
+            });
         }
 
-        switch ($request->input('sort', 'stock_asc')) {
-            case 'name_asc':
-            case 'name_desc':
+        switch ($sortBy) {
+            case 'name':
                 $query->join('tbl_product', 'tbl_product.ID', '=', 'tbl_stock_in.Product_ID')
                     ->select('tbl_stock_in.*')
-                    ->orderBy('tbl_product.Name', $request->sort === 'name_asc' ? 'asc' : 'desc');
+                    ->orderBy('tbl_product.Name', $direction);
                 break;
-            case 'stock_desc':
-                $query->orderBy('tbl_stock_in.Remaining_Quantity', 'desc');
+            case 'stock':
+                $query->orderBy('tbl_stock_in.Remaining_Quantity', $direction);
                 break;
-            case 'stock_asc':
-                $query->orderBy('tbl_stock_in.Remaining_Quantity', 'asc');
+            case 'price':
+                $query->orderBy('tbl_stock_in.Retail_Price', $direction);
                 break;
-            case 'price_asc':
-            case 'price_desc':
-                $query->orderBy('tbl_stock_in.Retail_Price', $request->sort === 'price_asc' ? 'asc' : 'desc');
-                break;
-            case 'newest':
-            case 'oldest':
+            case 'date':
+                $query->orderBy('tbl_stock_in.created_at', $direction);
                 break;
         }
 
-        $query->orderBy('tbl_stock_in.ID', $request->sort === 'oldest' ? 'asc' : 'desc');
+        $query->orderBy('tbl_stock_in.ID', $sortBy === 'date' && $direction === 'asc' ? 'asc' : 'desc');
 
         return $query;
     }
@@ -142,6 +139,7 @@ class StockInController extends Controller
             'product_mode' => 'required|in:existing,new',
             'Product_ID' => 'required_if:product_mode,existing|nullable|exists:tbl_product,ID',
             'New_Product_Name' => 'required_if:product_mode,new|nullable|string|max:255|unique:tbl_product,Name',
+            'Low_Stock_Threshold' => 'exclude_unless:product_mode,new|sometimes|required|integer|min:0|max:2147483647',
             'New_Product_Description' => 'nullable|string|max:2000',
             'New_Category_ID' => ['required_if:product_mode,new', 'nullable', Rule::exists('tbl_category', 'ID')->where(fn ($query) => $query->where('Is_Archived', false)->orWhereNull('Is_Archived'))],
             'images' => 'exclude_unless:product_mode,new|nullable|array|max:5',
@@ -173,6 +171,7 @@ class StockInController extends Controller
 
                     $product = Product::create([
                         'Name' => $validated['New_Product_Name'],
+                        'Low_Stock_Threshold' => $validated['Low_Stock_Threshold'] ?? 5,
                         'Description' => $validated['New_Product_Description'] ?? null,
                         'Category_ID' => $validated['New_Category_ID'],
                         'Status_ID' => $activeStatus->ID,

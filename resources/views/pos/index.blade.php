@@ -196,7 +196,7 @@
                                 <span class="inline-flex px-2 py-0.5 rounded-md text-[10px] font-black uppercase text-rose-500 bg-rose-500/10 border border-rose-500/25">
                                     Out
                                 </span>
-                                @elseif($qty <= 5)
+                                @elseif($qty <= $p->low_stock_threshold)
                                 <span class="inline-flex px-2 py-0.5 rounded-md text-[11px] font-black text-amber-500 bg-amber-500/10 border border-amber-500/25">
                                     {{ number_format($qty, 0) }} left
                                 </span>
@@ -302,11 +302,12 @@
                             </label>
                             <div class="relative">
                                 <i class="fas fa-hashtag absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                <input type="text" id="gcashReference" inputmode="numeric" maxlength="30"
+                                <input type="text" id="gcashReference" inputmode="numeric" minlength="13" maxlength="13" pattern="[0-9]{13}" aria-describedby="gcashReferenceHelp"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     class="w-full pl-8 pr-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-black text-slate-900 dark:text-white focus:ring-2 focus:ring-red-500"
-                                    placeholder="Enter GCash reference no.">
+                                    placeholder="13-digit payment reference">
                             </div>
+                            <p id="gcashReferenceHelp" class="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Exactly 13 digits from the GCash payment receipt.</p>
                         </div>
 
                         <div>
@@ -868,8 +869,8 @@ function processCheckout() {
     let tendered = parseFloat(document.getElementById('amountTendered').value);
 
     if (gcash) {
-        if (!gcashReference) {
-            alert('Please enter the GCash reference number.');
+        if (!/^[0-9]{13}$/.test(gcashReference)) {
+            alert('GCash reference number must contain exactly 13 digits.');
             document.getElementById('gcashReference').focus();
             return;
         }

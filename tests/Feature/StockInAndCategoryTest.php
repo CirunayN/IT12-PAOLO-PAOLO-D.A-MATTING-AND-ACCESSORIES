@@ -213,25 +213,23 @@ class StockInAndCategoryTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('name="search"', false);
-        $response->assertSee('Search product name or description...', false);
+        $response->assertSee('Product name or description', false);
         $response->assertSee('name="category_id"', false);
         $response->assertSee('All Categories');
         $response->assertSee('Interior');
         $response->assertSee('name="stock_level"', false);
         $response->assertSee('All Stock Levels');
-        $response->assertSee('Available (6+ units)');
+        $response->assertSee('Above item threshold');
         $response->assertSee('Low / Out of Stock');
-        $response->assertSee('Low Stock (1-5 units)');
+        $response->assertSee('Low Stock (item threshold)');
         $response->assertSee('Out of Stock (0)');
         $response->assertSee('name="sort"', false);
-        $response->assertSee('Stock: Low to High (0 - 100+)');
-        $response->assertSee('Stock: High to Low');
-        $response->assertSee('Newest first');
-        $response->assertSee('Oldest first');
-        $response->assertSee('Name: A to Z');
-        $response->assertSee('Name: Z to A');
-        $response->assertSee('Price: Low to High');
-        $response->assertSee('Price: High to Low');
+        $response->assertSee('name="direction"', false);
+        $response->assertSee('Ascending');
+        $response->assertSee('Descending');
+        foreach (['start_date', 'end_date', 'min_price', 'max_price', 'min_stock', 'max_stock'] as $field) {
+            $response->assertSee('name="'.$field.'"', false);
+        }
         $response->assertSee(route('stock-in.index'));
         $response->assertSee('Reset');
     }

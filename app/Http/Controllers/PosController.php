@@ -130,13 +130,13 @@ class PosController extends Controller
         if ($paymentMethodName === 'gcash') {
             $gcashReference = trim((string) ($validated['gcash_reference'] ?? ''));
 
-            if ($gcashReference === '') {
+            if (!preg_match('/\A[0-9]{13}\z/', $gcashReference)) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'GCash reference number is required for GCash payments.',
+                    'message' => 'GCash reference number must contain exactly 13 digits.',
                     'errors' => [
                         'gcash_reference' => [
-                            'GCash reference number is required for GCash payments.',
+                            'GCash reference number must contain exactly 13 digits.',
                         ],
                     ],
                 ], 422);

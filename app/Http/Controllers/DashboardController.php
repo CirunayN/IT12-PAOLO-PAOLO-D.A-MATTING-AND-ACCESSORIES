@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         if ($request->get('tab') === 'reports') {
-            return view('reports.index', app(ReportController::class)->generateReport($request, true));
+            return redirect()->route('reports.index', $request->except('tab'));
         }
 
         $todayStr = now('Asia/Manila')->toDateString();
@@ -120,9 +120,9 @@ class DashboardController extends Controller
             $totalStockUnits += $quantity;
             $inventoryValue += $quantity * $product->retail_price;
             if ($quantity <= 0) $outOfStockCount++;
-            elseif ($quantity <= 5) $lowStockCount++;
+            elseif ($quantity <= $product->low_stock_threshold) $lowStockCount++;
         }
-        $stockAlerts = $products->filter(fn ($product) => $product->dashboard_stock <= 5)
+        $stockAlerts = $products->filter(fn ($product) => $product->dashboard_stock <= $product->low_stock_threshold)
             ->sortBy('dashboard_stock')->values();
         $bestSellingProducts = $products->filter(fn ($product) => $product->dashboard_units_sold > 0)
             ->sortBy([['dashboard_units_sold', 'desc'], ['Name', 'asc'], ['ID', 'asc']])

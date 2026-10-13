@@ -1,5 +1,11 @@
 # Black-and-white Data Flow Diagram
 
+## Figure 2 — Matching context diagram
+
+`00-context-diagram.png` and `.svg` show the context diagram matched to the supplied Figure 3. Open `00-context-diagram.drawio` to edit its native shapes and arrows. One process numbered **0** exchanges eight data flows with **Owner**, **Customer**, and **Labor**. Its external flows exactly balance those on the reference's Level 0 page. Internal Inventory, Sales, Reports, and D1–D3 stores are inside the system boundary and are omitted from the context view. The reference's separate worker roles are grouped as Labor; payroll and expenses are absent because Figure 3 does not include them.
+
+`00-context-data-flows.csv` lists the eight matching flows. Regenerate these context artifacts with `scripts/generate-context-dfd.py`. Existing Level 0 and detailed pages remain available below.
+
 The overview follows the supplied Figure 3: Reports at upper left, Owner above Inventory / Sales, Labor at right, Customer below, and D1–D3 at left. All diagram objects are black and white, square-cornered native draw.io shapes with editable text and arrows.
 
 The four pages are Level 0, detailed Inventory (1.1–1.4), detailed Sales and services (2.1–2.5), and detailed Reports (3.1–3.3). Numbered process headers and open-ended stores follow the reference notation. All arrows describe data, not physical money, products or labor.

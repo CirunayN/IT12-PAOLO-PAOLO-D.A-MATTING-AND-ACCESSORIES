@@ -457,9 +457,13 @@ class BackupController extends Controller
 
     public function restoreBackup(Request $request)
     {
-        $request->validate([
+        $request->validateWithBag('restoreBackup', [
+            'current_password' => 'required|string|current_password',
             'backup_file' => 'nullable|file|extensions:sql,json',
             'existing_file' => 'nullable|string',
+        ], [
+            'current_password.required' => 'Enter your administrator password to restore a backup.',
+            'current_password.current_password' => 'The administrator password is incorrect.',
         ]);
 
         $settings = $this->getSettings();
@@ -501,7 +505,7 @@ class BackupController extends Controller
                 @unlink($targetFile);
             }
 
-            return redirect()->route('backup.index')->with('success', 'Database restored successfully from backup!');
+            return redirect()->route('backup.index')->with('success', 'Database restored successfully from backup. Users must generate new recovery codes in My Account > Password.');
         } catch (\Throwable $e) {
             return redirect()->route('backup.index')->with('error', 'Restore error: ' . ($e->getPrevious() ?? $e)->getMessage());
         }

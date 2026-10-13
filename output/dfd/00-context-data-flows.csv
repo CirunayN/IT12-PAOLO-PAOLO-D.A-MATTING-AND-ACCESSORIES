@@ -1,0 +1,9 @@
+﻿flow_id,source,destination,data
+context-flow-01,system,owner,"Overall report (sales, services and inventory)"
+context-flow-02,owner,system,"Report type, date range and print / PDF choice"
+context-flow-03,owner,system,"Product / category changes, images and shipment details"
+context-flow-04,owner,system,"Sales transaction details (items, quantities, prices, service request / approval)"
+context-flow-05,customer,system,"Order and payment details (Cash / GCash, tender, reference)"
+context-flow-06,system,customer,"Product / service details and receipt (total, payment and change)"
+context-flow-07,system,labor,"Service job details (description, items and instructions)"
+context-flow-08,labor,system,"Service status (accepted, in progress, completed) and completion details"

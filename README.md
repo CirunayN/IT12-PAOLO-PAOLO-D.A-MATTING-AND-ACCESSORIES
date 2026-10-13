@@ -12,7 +12,11 @@ Double-click `start.bat`, or run:
 .\start.bat
 ```
 
-Open http://127.0.0.1:8000. Keep the launcher running while using the app; press Ctrl+C to stop it. XAMPP and its MySQL/Apache servers are not required.
+The launcher opens http://127.0.0.1:8000 in your browser after the login page is ready. Keep the launcher window open while using the app; press Ctrl+C to stop it. Include `:8000` when entering the address manually. XAMPP and its MySQL/Apache servers are not required.
+
+Starting it again opens the existing app without starting another server or backup scheduler. Startup checks the PHP driver, bundled UI files, and local database before launching. If startup fails, the window displays the error and stays open. Server details are saved in `storage/logs/app-server.log` and `app-server-error.log`.
+
+If another application occupies port 8000, use `.\start.bat -Port 8001`. To start without opening a browser, use `.\start.bat -NoBrowser`. The launcher uses the selected port for the application URL and checks localhost directly without an internet proxy.
 
 You can also use `composer start`. The launcher loads the Microsoft SQL Server PHP extensions from this project's private storage directory, so it does not require changing the global PHP installation.
 
@@ -111,7 +115,11 @@ Microsoft references: [PHP driver installation](https://learn.microsoft.com/en-u
 
 Dashboard From/To dates apply immediately to sales and recent transactions. Stock totals and the Low / Out of Stock list show current sellable inventory. Total Items opens Inventory. Inventory and receiving filters apply on selection; typing a search applies after a short pause. Inventory ordering offers newest/oldest, name, sellable stock and current retail price in either direction. Print and PDF exports keep the chosen order.
 
-Login includes Forgot password for the existing offline recovery flow. The main page and navigation use the supplied landscape and sidebar images from local `public/images/scenery` files, with theme-aware fade overlays and opaque content cards to keep text readable. Decorative backgrounds are hidden when printing.
+Login includes Forgot password: enter your username and saved recovery code, then set a new password. Admin and Employee accounts use the same offline process. Generate and save your first code from My Account > Password by confirming your current password. Each account has one random code in `XXXX-XXXX-XXXX-XXXX` format, shown once with a Save Code (.txt) button. The database keeps a secure hash; temporary display data in the session is encrypted.
+
+A code stays valid until a successful reset or replacement. Five incorrect attempts temporarily lock recovery for 15 minutes. After verification, complete the reset within 10 minutes; you can verify the saved code again if you did not finish. Successful password resets and signed-in password changes invalidate sessions, remember-me tokens and the previous code, then show a new code to save before signing in. New employees receive a code at account creation, displayed once to the administrator for private handover. Gmail OTP, the old set of 10 admin codes, and administrator reset approval have been removed. No internet is needed for password recovery. Restoring a backup invalidates recovery codes to prevent reuse of older codes; signed-in users should generate new codes afterward.
+
+The main page and navigation use the supplied landscape and sidebar images from local `public/images/scenery` files, with theme-aware fade overlays and opaque content cards to keep text readable. Decorative backgrounds are hidden when printing.
 
 POS starts with a 70% product grid and 30% cart. The Layout slider saves the chosen split in the browser. On smaller screens the cart follows the grid. Open POS and Receive Stock are in the top bar and hide on their respective pages.
 

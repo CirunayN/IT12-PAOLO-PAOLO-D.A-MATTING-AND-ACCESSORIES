@@ -10,8 +10,7 @@ class AccountSettingsController extends Controller
     /**
      * Display local account information.
      *
-     * Email-change verification was intentionally removed. Password recovery
-     * is handled by the offline approval/recovery-code flow.
+     * Password recovery uses a saved, private recovery code for every role.
      */
     public function show(Request $request): View
     {

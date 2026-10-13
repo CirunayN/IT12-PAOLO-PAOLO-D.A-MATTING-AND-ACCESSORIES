@@ -8,16 +8,15 @@
         <div>
             <h1 class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white flex items-center gap-3">
                 <i class="fas fa-chart-pie text-red-500"></i>
-                Dashboard &amp; Reports
+                Dashboard
             </h1>
-            @include('reports.tabs')
         </div>
 
     </div>
 
     <!-- Filter Toolbar: Quick Presets & Custom Date Range -->
     <div class="glass-card rounded-2xl p-4 sm:p-5 border shadow-sm">
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div class="flex flex-col 2xl:flex-row 2xl:items-center justify-between gap-4">
             
             <!-- Quick Period Presets -->
             <div class="flex items-center gap-1.5 flex-wrap">
@@ -44,21 +43,21 @@
             </div>
 
             <!-- Custom Date Range Form (No data-auto-filter to avoid premature submits) -->
-            <form id="dashboardDateFilterForm" method="GET" action="{{ route('dashboard') }}" class="flex flex-col sm:flex-row items-stretch sm:items-end gap-3">
-                <div class="flex-1 sm:w-44">
-                    <label for="dashboardStart" class="block text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                        From Date
+            <form id="dashboardDateFilterForm" method="GET" action="{{ route('dashboard') }}" lang="en-GB" class="flex items-center gap-3 max-w-full overflow-x-auto pb-1">
+                <div class="flex items-center gap-2 shrink-0">
+                    <label for="dashboardStart" class="text-xs font-bold whitespace-nowrap text-slate-500 dark:text-slate-400">
+                        From Date:
                     </label>
                     <input id="dashboardStart" type="date" name="start_date" value="{{ $startDate }}" required
-                        class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                        class="w-36 px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
                 </div>
-
-                <div class="flex-1 sm:w-44">
-                    <label for="dashboardEnd" class="block text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
-                        To Date
+                <span aria-hidden="true" class="text-slate-400">|</span>
+                <div class="flex items-center gap-2 shrink-0">
+                    <label for="dashboardEnd" class="text-xs font-bold whitespace-nowrap text-slate-500 dark:text-slate-400">
+                        To Date:
                     </label>
                     <input id="dashboardEnd" type="date" name="end_date" value="{{ $endDate }}" min="{{ $startDate }}" required
-                        class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
+                        class="w-36 px-3 py-2 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-red-500">
                 </div>
 
                 <div class="flex items-center gap-2">

@@ -1,6 +1,8 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-echo Starting Paolo Paolo at http://127.0.0.1:8000
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\start-app.ps1"
-if errorlevel 1 pause
+echo Starting Paolo Paolo...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\start-app.ps1" %*
+set "APP_EXIT_CODE=%ERRORLEVEL%"
+if not "%APP_EXIT_CODE%"=="0" pause
+exit /b %APP_EXIT_CODE%

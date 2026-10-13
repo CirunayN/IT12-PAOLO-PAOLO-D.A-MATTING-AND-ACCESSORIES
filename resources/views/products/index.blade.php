@@ -50,45 +50,9 @@
 
     <!-- Filter & Search Bar -->
     <div class="glass-card rounded-2xl p-4 border shadow-sm relative z-30">
-        <form data-auto-filter method="GET" action="{{ route('products.index') }}" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-12 gap-3 items-center">
+        <form data-auto-filter method="GET" action="{{ route('products.index') }}" class="space-y-4">
             <input type="hidden" name="tab" value="{{ $tab }}">
-            <div class="xl:col-span-3 relative">
-                <i class="fas fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search product name or description..."
-                    class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-red-500">
-            </div>
-            <div class="xl:col-span-3">
-                @include('partials.category-search-filter', ['categories' => $categories])
-            </div>
-            <div class="xl:col-span-2">
-                <select name="stock_level" aria-label="Stock level" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="">All Stock Levels</option>
-                    <option value="available" {{ request('stock_level') === 'available' ? 'selected' : '' }}>Available (6+ units)</option>
-                    <option value="attention" {{ request('stock_level') === 'attention' ? 'selected' : '' }}>Low / Out of Stock</option>
-                    <option value="low" {{ request('stock_level') === 'low' ? 'selected' : '' }}>Low Stock (1-5 units)</option>
-                    <option value="out" {{ request('stock_level') === 'out' ? 'selected' : '' }}>Out of Stock (0)</option>
-                </select>
-            </div>
-            <div class="xl:col-span-3">
-                <select name="sort" aria-label="Order by" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-800 dark:text-slate-100">
-                    <option value="stock_asc" {{ request('sort', 'stock_asc') === 'stock_asc' ? 'selected' : '' }}>Stock: Low to High (0 - 100+)</option>
-                    <option value="stock_desc" {{ request('sort') === 'stock_desc' ? 'selected' : '' }}>Stock: High to Low</option>
-                    <option value="newest" {{ request('sort') === 'newest' ? 'selected' : '' }}>Newest first</option>
-                    <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest first</option>
-                    <option value="name_asc" {{ request('sort') === 'name_asc' ? 'selected' : '' }}>Name: A to Z</option>
-                    <option value="name_desc" {{ request('sort') === 'name_desc' ? 'selected' : '' }}>Name: Z to A</option>
-                    <option value="price_asc" {{ request('sort') === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
-                    <option value="price_desc" {{ request('sort') === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
-                </select>
-            </div>
-            <div class="xl:col-span-1 flex items-center gap-2">
-                <noscript><button type="submit" class="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 dark:bg-dark-700 dark:hover:bg-dark-600 text-white font-bold text-sm">
-                    Filter
-                </button></noscript>
-                <a href="{{ route('products.index', ['tab' => $tab]) }}" class="px-3 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-600 dark:text-slate-300 text-sm">
-                    Reset
-                </a>
-            </div>
+            @include('partials.inventory-filters', ['resetUrl' => route('products.index', ['tab' => $tab]), 'dateLabel' => 'Date Added'])
         </form>
     </div>
 
@@ -102,6 +66,7 @@
                         <th class="p-4">Category</th>
                         <th class="p-4">Status</th>
                         <th class="p-4 text-right">Stock On-Hand</th>
+                        <th class="p-4 text-center">Low-Stock Threshold</th>
                         <th class="p-4 text-right">Retail Price</th>
                         <th class="p-4 text-right">Cost</th>
                         <th class="p-4 text-center">Actions</th>
@@ -174,11 +139,14 @@
                         <td class="p-4 text-right font-black">
                             @if($stock <= 0)
                             <span class="text-rose-500 font-extrabold">0 Units</span>
-                            @elseif($stock <= 5)
+                            @elseif($stock <= $product->low_stock_threshold)
                             <span class="text-amber-500 font-extrabold">{{ $stock }} Units</span>
                             @else
                             <span class="text-emerald-500 font-extrabold">{{ $stock }} Units</span>
                             @endif
+                        </td>
+                        <td class="p-4 text-center font-semibold text-slate-700 dark:text-slate-300">
+                            {{ number_format($product->low_stock_threshold) }}
                         </td>
                         <td class="p-4 text-right font-black font-display text-slate-900 dark:text-white">
                             ₱{{ number_format($retail, 2) }}
@@ -189,21 +157,21 @@
                         <td class="p-4 text-center">
                             <div class="flex items-center justify-center gap-2">
                                 @if(!$isArchived)
-                                @if($stock <= 5)
+                                @if($stock <= $product->low_stock_threshold)
                                 <a href="{{ route('stock-in.create', ['product_id' => $product->ID, 'redirect_to' => 'products']) }}"
-                                    class="w-8 h-8 rounded-lg {{ $stock <= 0 ? 'bg-rose-500/15 hover:bg-rose-600 text-rose-600 hover:text-white dark:text-rose-400 border border-rose-500/30' : 'bg-amber-500/15 hover:bg-amber-600 text-amber-600 hover:text-white dark:text-amber-400 border border-amber-500/30' }} flex items-center justify-center text-xs font-bold transition-all shadow-sm"
+                                    class="w-8 h-8 rounded-lg bg-yellow-500/15 hover:bg-yellow-500 text-yellow-700 hover:text-slate-900 dark:text-yellow-400 dark:hover:text-slate-900 border border-yellow-500/30 flex items-center justify-center text-xs font-bold transition-colors shadow-sm"
                                     title="{{ $stock <= 0 ? 'Restock (Out of Stock)' : 'Restock (Low Stock: ' . number_format($stock, 0) . ' units)' }}">
                                     <i class="fas fa-boxes-stacked text-xs"></i>
                                 </a>
                                 @endif
 
-                                <a href="{{ route('products.edit', $product->ID) }}" class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-red-600 hover:text-white flex items-center justify-center text-xs transition-colors" title="Edit Product">
+                                <a href="{{ route('products.edit', $product->ID) }}" class="w-8 h-8 rounded-lg bg-blue-500/15 hover:bg-blue-600 text-blue-600 hover:text-white dark:text-blue-400 dark:hover:text-white border border-blue-500/30 flex items-center justify-center text-xs transition-colors" title="Edit Product">
                                     <i class="fas fa-edit"></i>
                                 </a>
 
                                 <button type="button"
                                     onclick="openArchiveModal('{{ $product->ID }}', '{{ addslashes($product->Name) }}')"
-                                    class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-dark-800 hover:bg-rose-500 hover:text-white text-slate-400 flex items-center justify-center text-xs transition-colors"
+                                    class="w-8 h-8 rounded-lg bg-red-500/15 hover:bg-red-600 text-red-600 hover:text-white dark:text-red-400 dark:hover:text-white border border-red-500/30 flex items-center justify-center text-xs transition-colors"
                                     title="Archive / Disable Product">
                                     <i class="fas fa-trash-can"></i>
                                 </button>
@@ -221,7 +189,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="p-8 text-center text-slate-400">
+                        <td colspan="8" class="p-8 text-center text-slate-400">
                             No products found in this view.
                         </td>
                     </tr>

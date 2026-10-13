@@ -3,127 +3,59 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\PasswordResetRequest;
 use App\Models\User;
-use App\Services\SecurityCodeService;
+use App\Services\AccountRecoveryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class NewPasswordController extends Controller
 {
-    public function create(Request $request): View|RedirectResponse
+    public function create(Request $request, AccountRecoveryService $resets): View|RedirectResponse
     {
-        $userId = $request->session()->get('password_reset_verified_user_id');
+        $grant = $request->session()->get('account_password_reset_grant');
+        $record = $resets->validGrant($grant);
+        $user = $record ? User::whereKey($record->user_id)->where('is_active', true)->first() : null;
 
-        if (!$userId) {
-            return redirect()->route('password.request');
-        }
-
-        $user = User::find($userId);
-
-        if (!$user || !$user->is_active) {
-            return redirect()->route('password.request')->withErrors([
-                'username' => 'That account is not available for password recovery.',
-            ]);
-        }
-
-        return view('auth.reset-password', compact('user'));
+        return $user ? view('auth.reset-password', compact('user')) : $this->expired($request);
     }
 
-    public function store(
-        Request $request,
-        SecurityCodeService $codes
-    ): RedirectResponse {
-        $userId = $request->session()->get('password_reset_verified_user_id');
-
-        if (!$userId) {
-            return redirect()->route('password.request');
-        }
-
-        $user = User::findOrFail($userId);
-
-        if (!$user->is_active) {
-            return redirect()->route('password.request')->withErrors([
-                'username' => 'That account has been disabled.',
-            ]);
+    public function store(Request $request, AccountRecoveryService $resets): RedirectResponse
+    {
+        $grant = $request->session()->get('account_password_reset_grant');
+        if (! $resets->validGrant($grant)) {
+            return $this->expired($request);
         }
 
         $validated = $request->validate([
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'max:16',
-                'regex:/^[A-Za-z0-9]+$/',
-                'confirmed',
-            ],
+            'password' => ['required', 'string', 'min:8', 'max:16', 'regex:/^[A-Za-z0-9]+$/', 'confirmed'],
         ], [
-            'password.min' => 'The password must contain at least 8 characters.',
-            'password.max' => 'The password must not exceed 16 characters.',
             'password.regex' => 'The password may only contain uppercase letters, lowercase letters, and numbers.',
             'password.confirmed' => 'The password confirmation does not match.',
         ]);
 
-        if (Hash::check($validated['password'], $user->password)) {
-            return back()->withErrors([
-                'password' => 'Your new password must be different from your current password.',
-            ]);
+        $result = $resets->resetPassword($grant, $validated['password']);
+        if ($result['status'] === 'same-password') {
+            return back()->withErrors(['password' => 'Your new password must be different from your current password.']);
+        }
+        if ($result['status'] !== 'success') {
+            return $this->expired($request);
         }
 
-        $user->forceFill([
-            'password' => Hash::make($validated['password']),
-            'remember_token' => Str::random(60),
-        ])->save();
-
-        DB::table('sessions')
-            ->where('user_id', $user->id)
-            ->delete();
-
-        $resetRequestId = $request->session()->get('password_reset_request_id');
-
-        if ($resetRequestId) {
-            PasswordResetRequest::whereKey($resetRequestId)
-                ->where('user_id', $user->id)
-                ->update(['completed_at' => now()]);
-        }
-
-        $newRecoveryCodes = $user->isAdmin()
-            ? $codes->rotateAdminRecoveryCodes($user)
-            : null;
-
-        $request->session()->forget([
-            'password_reset_mode',
-            'password_reset_user_id',
-            'password_reset_request_id',
-            'password_reset_verified_user_id',
-        ]);
-
+        $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        if ($newRecoveryCodes) {
-            $request->session()->put('new_admin_recovery_codes', $newRecoveryCodes);
+        $request->session()->put('replacement_recovery_code', $resets->encryptedDisplay($result));
 
-            return redirect()->route('password.recovery-codes');
-        }
-
-        return redirect()
-            ->route('login')
-            ->with('status', 'Password reset successfully. You can now sign in using your new password.');
+        return redirect()->route('password.recovery.replacement');
     }
 
-    public function recoveryCodes(Request $request): View|RedirectResponse
+    private function expired(Request $request): RedirectResponse
     {
-        $codes = $request->session()->pull('new_admin_recovery_codes');
+        $request->session()->forget('account_password_reset_grant');
 
-        if (!$codes || !is_array($codes)) {
-            return redirect()->route('login');
-        }
-
-        $request->session()->put('recovery_codes_export_until', time() + 600);
-        return view('auth.admin-recovery-codes', compact('codes'));
+        return redirect()->route('password.request')->withErrors([
+            'recovery_code' => 'Verify your saved recovery code before resetting your password.',
+        ]);
     }
 }

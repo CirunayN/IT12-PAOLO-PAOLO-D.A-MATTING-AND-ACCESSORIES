@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Status;
 use App\Models\StockIn;
+use App\Support\InventoryFilters;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -40,10 +41,7 @@ class ProductController extends Controller
 
     private function inventoryQuery(Request $request): array
     {
-        $request->validate(['sort' => ['nullable', Rule::in([
-            'newest', 'oldest', 'name_asc', 'name_desc',
-            'stock_asc', 'stock_desc', 'price_asc', 'price_desc',
-        ])]]);
+        [$sortBy, $direction] = InventoryFilters::validate($request);
         $query = Product::with(['category', 'status', 'stockIns', 'soldItems']);
 
         $tab = $request->get('tab', 'active');
@@ -70,23 +68,22 @@ class ProductController extends Controller
             $query->where('Status_ID', $request->status_id);
         }
 
-        // Filter by SELLABLE stock only: remaining > 0, Good condition,
-        // and either non-expiring or not yet expired.
-        $sellableBatches = fn () => StockIn::query()
-            ->whereColumn('Product_ID', 'tbl_product.ID')
-            ->where('Remaining_Quantity', '>', 0)
-            ->where('Condition', 'Good')
-            ->where(function ($stockQuery) {
-                $stockQuery->where('Has_Expiration', false)
-                    ->orWhereNull('Expiration_Date')
-                    ->orWhereDate('Expiration_Date', '>=', today()->toDateString());
-            });
-        $sellableStock = fn () => $sellableBatches()->selectRaw('COALESCE(SUM(Remaining_Quantity), 0)');
+        $sellableStock = fn () => Product::inventoryStockQuery();
+        $retailPrice = fn () => Product::inventoryRetailPriceQuery();
+        foreach (['start_date' => '>=', 'end_date' => '<='] as $field => $operator) {
+            if ($request->filled($field)) $query->whereDate('tbl_product.created_at', $operator, $request->input($field));
+        }
+        foreach (['min_price' => '>=', 'max_price' => '<='] as $field => $operator) {
+            if ($request->filled($field)) $query->where($retailPrice(), $operator, $request->input($field));
+        }
+        foreach (['min_stock' => '>=', 'max_stock' => '<='] as $field => $operator) {
+            if ($request->filled($field)) $query->where($sellableStock(), $operator, $request->input($field));
+        }
 
         if ($request->filled('stock_level')) {
             switch ($request->stock_level) {
                 case 'attention':
-                    $query->where($sellableStock(), '<=', 5);
+                    $query->where($sellableStock(), '<=', DB::raw('tbl_product.Low_Stock_Threshold'));
                     break;
 
                 case 'out':
@@ -95,33 +92,30 @@ class ProductController extends Controller
 
                 case 'low':
                     $query->where($sellableStock(), '>', 0)
-                        ->where($sellableStock(), '<=', 5);
+                        ->where($sellableStock(), '<=', DB::raw('tbl_product.Low_Stock_Threshold'));
                     break;
 
                 case 'available':
-                    $query->where($sellableStock(), '>', 5);
+                    $query->where($sellableStock(), '>', DB::raw('tbl_product.Low_Stock_Threshold'));
                     break;
             }
         }
 
-        switch ($request->input('sort', 'stock_asc')) {
-            case 'name_asc':
-            case 'name_desc':
-                $query->orderBy('Name', $request->sort === 'name_asc' ? 'asc' : 'desc');
+        switch ($sortBy) {
+            case 'name':
+                $query->orderBy('Name', $direction);
                 break;
-            case 'stock_desc':
-                $query->orderBy($sellableStock(), 'desc');
+            case 'stock':
+                $query->orderBy($sellableStock(), $direction);
                 break;
-            case 'stock_asc':
-                $query->orderBy($sellableStock(), 'asc');
+            case 'price':
+                $query->orderBy($retailPrice(), $direction);
                 break;
-            case 'price_asc':
-            case 'price_desc':
-                // Match the retail price shown in inventory: the newest sellable batch.
-                $query->orderBy($sellableBatches()->select('Retail_Price')->orderBy('ID', 'desc')->limit(1), $request->sort === 'price_asc' ? 'asc' : 'desc');
+            case 'date':
+                $query->orderBy('tbl_product.created_at', $direction);
                 break;
         }
-        $query->orderBy('ID', $request->sort === 'oldest' ? 'asc' : 'desc');
+        $query->orderBy('ID', $direction === 'asc' && $sortBy === 'date' ? 'asc' : 'desc');
 
         return [$query, $tab, $archivedStatus];
     }
@@ -166,6 +160,8 @@ class ProductController extends Controller
 
             'Description' =>
                 'nullable|string|max:2000',
+
+            'Low_Stock_Threshold' => 'exclude_unless:product_mode,new|sometimes|required|integer|min:0|max:2147483647',
 
             'Category_ID' =>
                 ['required_if:product_mode,new', 'nullable', Rule::exists('tbl_category', 'ID')->where('Is_Archived', false)],
@@ -292,6 +288,7 @@ class ProductController extends Controller
 
             $product = Product::create([
                 'Name' => $validated['Name'],
+                'Low_Stock_Threshold' => $validated['Low_Stock_Threshold'] ?? 5,
                 'Description' => $validated['Description'] ?? null,
                 'Category_ID' => $validated['Category_ID'],
                 'Status_ID' => $validated['Status_ID'],
@@ -341,6 +338,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'Name' => 'required|string|max:255',
             'Description' => 'nullable|string|max:2000',
+            'Low_Stock_Threshold' => 'sometimes|required|integer|min:0|max:2147483647',
             'Category_ID' => ['required', Rule::exists('tbl_category', 'ID')->where(fn ($query) =>
                 $query->where(fn ($categories) => $categories->where('Is_Archived', false)->orWhere('ID', $existingProduct->Category_ID)))],
             'Status_ID' => 'required|exists:tbl_status,ID',
@@ -426,6 +424,7 @@ class ProductController extends Controller
                 $product->update([
                     'Name' => $validated['Name'],
                     'Description' => $validated['Description'] ?? null,
+                    'Low_Stock_Threshold' => $validated['Low_Stock_Threshold'] ?? $product->low_stock_threshold,
                     'Category_ID' => $validated['Category_ID'],
                     'Status_ID' => $validated['Status_ID'],
                     'Image' => $currentImages[0] ?? null,

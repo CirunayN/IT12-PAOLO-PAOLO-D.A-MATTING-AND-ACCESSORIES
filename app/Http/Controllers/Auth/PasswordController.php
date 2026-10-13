@@ -3,22 +3,21 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\SecurityCodeService;
+use App\Services\AccountRecoveryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class PasswordController extends Controller
 {
     /**
      * Update the currently logged-in user's password.
      */
-    public function update(
-        Request $request,
-        SecurityCodeService $codes
-    ): RedirectResponse {
+    public function update(Request $request, AccountRecoveryService $recovery): RedirectResponse
+    {
         $validated = $request->validateWithBag(
             'updatePassword',
             [
@@ -57,33 +56,22 @@ class PasswordController extends Controller
             );
         }
 
-        $user->update([
-            'password' => Hash::make($validated['password']),
-        ]);
+        $replacement = DB::transaction(function () use ($user, $validated, $recovery) {
+            $user->update([
+                'password' => Hash::make($validated['password']),
+                'remember_token' => Str::random(60),
+            ]);
+            DB::table('sessions')->where('user_id', $user->id)->delete();
 
-        DB::table('sessions')
-            ->where('user_id', $user->id)
-            ->delete();
-
-        $newRecoveryCodes = $user->isAdmin()
-            ? $codes->rotateAdminRecoveryCodes($user)
-            : null;
+            return ['code' => $recovery->generate($user), 'username' => $user->username];
+        });
 
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        if ($newRecoveryCodes) {
-            $request->session()->put('new_admin_recovery_codes', $newRecoveryCodes);
+        $request->session()->put('replacement_recovery_code', $recovery->encryptedDisplay($replacement));
 
-            return redirect()->route('password.recovery-codes');
-        }
-
-        return redirect()
-            ->route('login')
-            ->with(
-                'status',
-                'Password changed successfully. Please sign in again using your new password.'
-            );
+        return redirect()->route('password.recovery.replacement');
     }
 }

@@ -119,8 +119,7 @@ body.scenic-app #navDrawer {
         transition: padding-left .3s ease-in-out;
     }
     html.sidebar-collapsed #navDrawer .sidebar-label,
-    html.sidebar-collapsed #navDrawer .sidebar-section,
-    html.sidebar-collapsed #navDrawer .sidebar-user-details {
+    html.sidebar-collapsed #navDrawer .sidebar-section {
         display: none;
     }
     html.sidebar-collapsed #navDrawer .sidebar-brand-header,

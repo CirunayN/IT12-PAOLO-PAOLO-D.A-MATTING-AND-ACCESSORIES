@@ -14,27 +14,26 @@
 
     @include('settings.partials.tabs', ['active' => 'password'])
 
-    @if(auth()->user() && auth()->user()->isAdmin())
-        <div class="glass-card rounded-2xl p-5 border border-amber-500/25">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-start gap-3">
-                    <div class="w-11 h-11 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center flex-shrink-0">
-                        <i class="fas fa-life-ring"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-black text-slate-900 dark:text-white">Administrator Recovery</h2>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                            Manage your 10 offline recovery codes and employee password reset approvals in Security &amp; Access.
-                        </p>
-                    </div>
-                </div>
-                <a href="{{ route('security.index') }}"
-                    class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs whitespace-nowrap">
-                    Open Security
-                </a>
-            </div>
-        </div>
+    @if($displayRecovery = app(\App\Services\AccountRecoveryService::class)->revealDisplay(session('generated_recovery_code')))
+        @include('shared.recovery-code-card', ['recovery' => $displayRecovery])
     @endif
+
+    <div class="glass-card rounded-2xl p-6 border space-y-4">
+        <h2 class="font-display font-black text-xl text-slate-900 dark:text-white">Password Recovery</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400">Generate a private recovery code and save it before you forget your password. Admin and Employee accounts use the same offline recovery process.</p>
+        <p class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ auth()->user()->recoveryCode ? 'A recovery code is already set. Generating another invalidates it.' : 'No recovery code is set. Generate and save one now.' }}</p>
+        @if($errors->generateRecoveryCode->any())
+            <div class="text-sm text-rose-500">{{ $errors->generateRecoveryCode->first() }}</div>
+        @endif
+        <form method="POST" action="{{ route('password.recovery.generate') }}" class="space-y-3">
+            @csrf
+            <label for="recovery_current_password" class="block text-xs font-bold text-slate-500 dark:text-slate-400">Current Password</label>
+            <input type="password" id="recovery_current_password" name="current_password" required autocomplete="current-password"
+                placeholder="Confirm your current password"
+                class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white">
+            <button type="submit" class="px-5 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-sm">Generate Recovery Code</button>
+        </form>
+    </div>
 
     <div class="glass-card rounded-2xl p-6 sm:p-8 border shadow-lg">
         <div class="flex items-start gap-4 mb-6">
@@ -57,9 +56,6 @@
                 <li>Only uppercase letters A-Z, lowercase letters a-z, and numbers 0-9 are allowed.</li>
                 <li>Spaces and special characters are not allowed.</li>
                 <li>New password must be different from the current password.</li>
-                @if(auth()->user() && auth()->user()->isAdmin())
-                    <li>Changing the administrator password invalidates old recovery codes and generates a new set of 10.</li>
-                @endif
             </ul>
         </div>
 
@@ -115,10 +111,7 @@
                     <div>
                         <div class="text-xs font-bold text-amber-600 dark:text-amber-400">You will be logged out</div>
                         <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                            After changing your password, you must sign in again using the new password.
-                            @if(auth()->user() && auth()->user()->isAdmin())
-                                You will first be shown the new set of 10 recovery codes.
-                            @endif
+                            After changing your password, save the replacement recovery code and sign in again using the new password. Your previous recovery code will no longer work.
                         </p>
                     </div>
                 </div>

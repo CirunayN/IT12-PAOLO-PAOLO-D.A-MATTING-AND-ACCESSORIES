@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -19,11 +20,45 @@ class Product extends Model
         'Status_ID',
         'Image',
         'Images',
+        'Low_Stock_Threshold',
     ];
 
     protected $casts = [
         'Images' => 'array',
+        'Low_Stock_Threshold' => 'integer',
     ];
+
+    protected $attributes = ['Low_Stock_Threshold' => 5];
+
+    public function getLowStockThresholdAttribute(): int
+    {
+        return (int) ($this->attributes['Low_Stock_Threshold'] ?? 5);
+    }
+
+    public static function inventoryBatchesQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return StockIn::query()
+            ->whereColumn('Product_ID', 'tbl_product.ID')
+            ->where('Remaining_Quantity', '>', 0)
+            ->where('Condition', 'Good')
+            ->where(fn ($query) => $query->where('Has_Expiration', false)
+                ->orWhereNull('Expiration_Date')->orWhereDate('Expiration_Date', '>=', today()->toDateString()));
+    }
+
+    public static function inventoryStockQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return static::inventoryBatchesQuery()->selectRaw('CAST(COALESCE(SUM(Remaining_Quantity), 0) AS DECIMAL(18, 2))');
+    }
+
+    public static function inventoryRetailPriceQuery(): \Illuminate\Database\Query\Builder
+    {
+        $sellable = static::inventoryBatchesQuery()->select('Retail_Price')->orderByDesc('ID')->limit(1);
+        $fallback = StockIn::query()->whereColumn('Product_ID', 'tbl_product.ID')
+            ->select('Retail_Price')->orderByDesc('ID')->limit(1);
+
+        return DB::query()->selectRaw('CAST(COALESCE(('.$sellable->toSql().'), ('.$fallback->toSql().'), 0) AS DECIMAL(18, 2))',
+            [...$sellable->getBindings(), ...$fallback->getBindings()]);
+    }
 
     public function category()
     {
