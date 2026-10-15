@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="5285" viewBox="0 0 2600 5285">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="black"/></marker></defs>
+<rect width="2600" height="5285" fill="white"/>
+<text x="1269.5" y="64.0" font-family="Times New Roman, serif" font-size="28" font-weight="700">Sales</text>
+<path d="M340,245.2 L370,245.2 L370,218.0 L880,218.0 L880,463.5 L930,463.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,489.75 L885,489.75 L885,328.0 L375,328.0 L375,287.5 L340,287.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,435.2 L380,435.2 L380,408.0 L890,408.0 L890,518.625 L930,518.625" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,544.875 L895,544.875 L895,518.0 L385,518.0 L385,477.5 L340,477.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,625.2 L390,625.2 L390,598.0 L900,598.0 L900,573.75 L930,573.75" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,307.5 L2014,307.5 L2014,218.0 L1436,218.0 L1436,463.5 L1390,463.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1239.75 L885,1239.75 L885,1173.0 L375,1173.0 L375,1132.5 L340,1132.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1350.0 L895,1350.0 L895,1363.0 L385,1363.0 L385,1322.5 L340,1322.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,1745.2 L370,1745.2 L370,1718.0 L880,1718.0 L880,1963.5 L930,1963.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1989.75 L885,1989.75 L885,1828.0 L375,1828.0 L375,1787.5 L340,1787.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,1935.2 L380,1935.2 L380,1908.0 L890,1908.0 L890,2018.625 L930,2018.625" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,2044.875 L895,2044.875 L895,2018.0 L385,2018.0 L385,1977.5 L340,1977.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,2125.2 L390,2125.2 L390,2098.0 L900,2098.0 L900,2073.75 L930,2073.75" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,2644.75 L1430,2644.75 L1430,2673.0 L2020,2673.0 L2020,2591.4 L2070,2591.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,3204.75 L885,3204.75 L885,3138.0 L375,3138.0 L375,3097.5 L340,3097.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,3315.0 L895,3315.0 L895,3328.0 L385,3328.0 L385,3287.5 L340,3287.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,3117.5 L2014,3117.5 L2014,3028.0 L1436,3028.0 L1436,3178.5 L1390,3178.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,3204.75 L1430,3204.75 L1430,3138.0 L2020,3138.0 L2020,3056.4 L2070,3056.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,3710.2 L370,3710.2 L370,3683.0 L880,3683.0 L880,3833.5 L930,3833.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,3859.75 L885,3859.75 L885,3793.0 L375,3793.0 L375,3752.5 L340,3752.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,3900.2 L380,3900.2 L380,3873.0 L890,3873.0 L890,3943.75 L930,3943.75" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,3970.0 L895,3970.0 L895,3983.0 L385,3983.0 L385,3942.5 L340,3942.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,3772.5 L2014,3772.5 L2014,3683.0 L1436,3683.0 L1436,3833.5 L1390,3833.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,4365.2 L370,4365.2 L370,4338.0 L880,4338.0 L880,4583.5 L930,4583.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,4609.75 L885,4609.75 L885,4448.0 L375,4448.0 L375,4407.5 L340,4407.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,4555.2 L380,4555.2 L380,4528.0 L890,4528.0 L890,4638.625 L930,4638.625" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,4664.875 L895,4664.875 L895,4638.0 L385,4638.0 L385,4597.5 L340,4597.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,4720.0 L905,4720.0 L905,4828.0 L395,4828.0 L395,4787.5 L340,4787.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,4427.5 L2014,4427.5 L2014,4338.0 L1436,4338.0 L1436,4583.5 L1390,4583.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1137.0,617.5 L1137.0,1025 L1137.0,1192.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1137.0,1367.5 L1137.0,1680 L1137.0,1942.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1137.0,2117.5 L1137.0,2525 L1137.0,2597.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1137.0,2772.5 L1137.0,2990 L1137.0,3157.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1261.2,3332.5 L1261.2,3565 L2565,3565 L2565,4163 L1261.2,4163 L1261.2,4562.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1137.0,3987.5 L1137.0,4300 L1137.0,4562.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="930" y="442.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,470.5 L1390,470.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="463.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">8.0</text>
+<text x="1043.5078125" y="515.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Validate Sales Order</text>
+<text x="1013.0" y="585.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Check selected items and availability</text>
+<rect x="60" y="220" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="274.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="410" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="464.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="60" y="600" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="144.5" y="654.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Customer</text>
+<rect x="2070" y="210" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,210 L2540,210" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,340 L2540,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,210 L2070,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,210 L2123,340" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="283.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="244.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="289.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="311.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="930" y="1192.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1220.5 L1390,1220.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="1213.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">9.0</text>
+<text x="1040.015625" y="1265.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Calculate Sales Total</text>
+<text x="1014.5" y="1335.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Calculate line amounts and total due</text>
+<rect x="60" y="1065" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="1119.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="1255" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="1309.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="930" y="1942.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1970.5 L1390,1970.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="1963.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">10.0</text>
+<text x="1074.0078125" y="2015.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Verify Payment</text>
+<text x="1000.5" y="2085.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Check amount and payment information</text>
+<rect x="60" y="1720" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="1774.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="1910" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="1964.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="60" y="2100" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="144.5" y="2154.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Customer</text>
+<rect x="930" y="2597.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,2625.5 L1390,2625.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5078125" y="2618.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">11.0</text>
+<text x="1013.0078125" y="2670.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Record Sales Transaction</text>
+<text x="1019.5" y="2740.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Save the sale and purchased items</text>
+<rect x="2070" y="2555" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,2555 L2540,2555" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,2685 L2540,2685" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,2555 L2070,2685" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,2555 L2123,2685" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="2628.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D2</text>
+<text x="2217.0" y="2589.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Sale Records</text>
+<text x="2230.0078125" y="2634.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Sale, cashier, items, totals</text>
+<text x="2204.5" y="2656.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and Cash/GCash payment details</text>
+<rect x="930" y="3157.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,3185.5 L1390,3185.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="3178.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">12.0</text>
+<text x="1024.5078125" y="3230.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Update Stock After Sale</text>
+<text x="1024.5" y="3300.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Apply the recorded sold quantities</text>
+<rect x="60" y="3030" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="3084.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="3220" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="3274.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="2070" y="3020" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,3020 L2540,3020" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,3150 L2540,3150" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,3020 L2070,3150" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,3020 L2123,3150" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="3093.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="3054.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="3099.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="3121.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="930" y="3812.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,3840.5 L1390,3840.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="3833.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">13.0</text>
+<text x="1053.5" y="3885.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">View Sales History</text>
+<text x="1010.0" y="3955.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Cashier can view only their own sales</text>
+<rect x="60" y="3685" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="3739.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="3875" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="3929.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="2070" y="3675" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,3675 L2540,3675" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,3805 L2540,3805" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,3675 L2070,3805" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,3675 L2123,3805" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="3748.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D2</text>
+<text x="2217.0" y="3709.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Sale Records</text>
+<text x="2230.0078125" y="3754.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Sale, cashier, items, totals</text>
+<text x="2204.5" y="3776.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and Cash/GCash payment details</text>
+<rect x="930" y="4562.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,4590.5 L1390,4590.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="4583.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">14.0</text>
+<text x="1051.5" y="4635.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Print Sales Receipt</text>
+<text x="1001.0" y="4705.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Prepare the selected transaction receipt</text>
+<rect x="60" y="4340" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="4394.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="4530" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="4584.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="60" y="4720" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="144.5" y="4774.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Customer</text>
+<rect x="2070" y="4330" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,4330 L2540,4330" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,4460 L2540,4460" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,4330 L2070,4460" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,4330 L2123,4460" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="4403.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D2</text>
+<text x="2217.0" y="4364.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Sale Records</text>
+<text x="2230.0078125" y="4409.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Sale, cashier, items, totals</text>
+<text x="2204.5" y="4431.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and Cash/GCash payment details</text>
+<rect x="415" y="190" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="563.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected products</text>
+<text x="579.0" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and quantities</text>
+<rect x="415" y="300" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="547.0" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Order validation result</text>
+<text x="537.0" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or item-availability errors</text>
+<rect x="415" y="380" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="563.0" y="403.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected products</text>
+<text x="579.0" y="426.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and quantities</text>
+<rect x="415" y="490" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="547.0" y="513.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Order validation result</text>
+<text x="537.0" y="536.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or item-availability errors</text>
+<rect x="415" y="570" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="572.5" y="593.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Customer order</text>
+<text x="536.5" y="616.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and requested quantities</text>
+<rect x="1510" y="190" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1679.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Available products,</text>
+<text x="1644.5" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">quantities and selling prices</text>
+<rect x="415" y="1145" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="532.0" y="1168.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Calculated order amounts</text>
+<text x="583.0" y="1191.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and total due</text>
+<rect x="415" y="1335" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="532.0" y="1358.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Calculated order amounts</text>
+<text x="583.0" y="1381.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and total due</text>
+<rect x="415" y="1690" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="536.5" y="1713.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Payment method, tender</text>
+<text x="549.0" y="1736.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and GCash reference</text>
+<rect x="415" y="1800" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="534.5" y="1823.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Payment validation result</text>
+<text x="564.0" y="1846.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or payment errors</text>
+<rect x="415" y="1880" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="536.5" y="1903.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Payment method, tender</text>
+<text x="549.0" y="1926.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and GCash reference</text>
+<rect x="415" y="1990" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="534.5" y="2013.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Payment validation result</text>
+<text x="564.0" y="2036.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or payment errors</text>
+<rect x="415" y="2070" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="530.5" y="2093.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Customer payment details</text>
+<text x="567.0" y="2116.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">(Cash or GCash)</text>
+<rect x="1510" y="2645" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1650.0078125" y="2668.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Sale, cashier, items, totals</text>
+<text x="1635.5" y="2691.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and accepted payment details</text>
+<rect x="415" y="3110" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="561.0" y="3133.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Completed sale ID</text>
+<text x="541.5" y="3156.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and stock-update result</text>
+<rect x="415" y="3300" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="561.0" y="3323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Completed sale ID</text>
+<text x="541.5" y="3346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and stock-update result</text>
+<rect x="1510" y="3000" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1668.5" y="3023.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Eligible stock batches</text>
+<text x="1657.0" y="3046.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and remaining quantities</text>
+<rect x="1510" y="3110" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1652.0" y="3133.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Deducted stock quantities</text>
+<text x="1642.0" y="3156.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and updated batch balances</text>
+<rect x="415" y="3655" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="559.0" y="3678.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Sales-history filters</text>
+<text x="537.5" y="3701.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and selected transaction</text>
+<rect x="415" y="3765" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="546.0" y="3788.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Matching sales history</text>
+<text x="545.0" y="3811.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and transaction details</text>
+<rect x="415" y="3845" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="568.5" y="3868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Own-sales filters</text>
+<text x="537.5" y="3891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and selected transaction</text>
+<rect x="415" y="3955" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="564.0" y="3978.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Own sales history</text>
+<text x="545.0" y="4001.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and transaction details</text>
+<rect x="1510" y="3655" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1670.5" y="3678.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Sales records filtered</text>
+<text x="1643.0" y="3701.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">by authorized cashier scope</text>
+<rect x="415" y="4310" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="569.5" y="4333.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected sale ID</text>
+<text x="567.5" y="4356.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and print request</text>
+<rect x="415" y="4420" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="576.0" y="4443.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Printable sales</text>
+<text x="608.0" y="4466.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">receipt</text>
+<rect x="415" y="4500" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="569.5" y="4523.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected sale ID</text>
+<text x="567.5" y="4546.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and print request</text>
+<rect x="415" y="4610" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="576.0" y="4633.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Printable sales</text>
+<text x="608.0" y="4656.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">receipt</text>
+<rect x="415" y="4800" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="538.5" y="4823.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Purchase receipt: items,</text>
+<text x="529.0" y="4846.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">total, payment and change</text>
+<rect x="1510" y="4310" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1657.5" y="4333.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Saved sale, items, totals</text>
+<text x="1642.5" y="4356.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and payment/change details</text>
+<rect x="945" y="1005" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1108.5078125" y="1027.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Validated order:</text>
+<text x="1048.5" y="1049.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">items, quantities and unit prices</text>
+<rect x="945" y="1660" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1071.5" y="1682.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Calculated order amounts</text>
+<text x="1119.5" y="1704.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">and total due</text>
+<rect x="945" y="2505" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1056.5" y="2527.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Order and accepted payment:</text>
+<text x="1025.5078125" y="2549.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">method, tender, reference and change</text>
+<rect x="945" y="2970" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1102.5" y="2992.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Recorded sale ID</text>
+<text x="1097.5" y="3014.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">and quantities sold</text>
+<rect x="945" y="4138" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1100.0" y="4160.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Confirmed sale ID</text>
+<text x="1085.0" y="4182.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">for receipt preparation</text>
+<rect x="945" y="4280" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1052.0" y="4302.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Selected history transaction ID</text>
+<text x="1099.5" y="4324.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">for receipt printing</text>
+<text x="936.5" y="5188.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Repeated actors/stores are the same entities. Cashier history is limited to their own transactions.</text>
+<text x="896.5" y="5218.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">*Labor and service records are retained from the earlier business DFD and are not in the supplied use case.</text>
+<text x="934.5" y="5256.0" font-family="Arial, sans-serif" font-size="14" font-weight="400">Rectangle = external entity  |  Numbered box = separate process  |  D1-D6 = logical data stores  |  Arrow = data flow</text>
+</svg>

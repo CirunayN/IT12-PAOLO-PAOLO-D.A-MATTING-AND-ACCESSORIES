@@ -1,0 +1,13 @@
+﻿supplied_use_case,level_0_process
+Add Product; Update Product,1.0 Manage Product Records
+Record Incoming Stock,2.0 Record Incoming Stock
+View Inventory,3.0 View Inventory
+Process Sales Transaction,4.0 Process Sales Transaction
+View Sales History,5.0 View Sales History
+Print Sales Receipt,6.0 Print Sales Receipt
+Generate Sales Report; Print or Download Reports,7.0 Generate Sales Report
+Generate Inventory Report; Print or Download Reports,8.0 Generate Inventory Report
+Log In,9.0 Log In
+Create User Account; Enable or Disable User Account,10.0 Manage User Accounts
+Create Database Backup,11.0 Create Database Backup
+Restore Database Backup,12.0 Restore Database Backup

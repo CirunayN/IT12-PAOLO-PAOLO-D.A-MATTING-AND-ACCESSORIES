@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1905" viewBox="0 0 2600 1905">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="black"/></marker></defs>
+<rect width="2600" height="1905" fill="white"/>
+<text x="1253.0" y="64.0" font-family="Times New Roman, serif" font-size="28" font-weight="700">Reports</text>
+<path d="M340,245.2 L370,245.2 L370,218.0 L880,218.0 L880,368.5 L930,368.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,394.75 L885,394.75 L885,328.0 L375,328.0 L375,287.5 L340,287.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,307.5 L2014,307.5 L2014,218.0 L1436,218.0 L1436,368.5 L1390,368.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,497.5 L2001,497.5 L2001,408.0 L1449,408.0 L1449,478.75 L1390,478.75" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,900.2 L370,900.2 L370,873.0 L880,873.0 L880,928.5 L930,928.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,954.75 L885,954.75 L885,983.0 L375,983.0 L375,942.5 L340,942.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,962.5 L2014,962.5 L2014,873.0 L1436,873.0 L1436,928.5 L1390,928.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,1365.2 L370,1365.2 L370,1338.0 L880,1338.0 L880,1393.5 L930,1393.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1419.75 L885,1419.75 L885,1448.0 L375,1448.0 L375,1407.5 L340,1407.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1261.2,522.5 L1261.2,755 L2565,755 L2565,1163 L1261.2,1163 L1261.2,1372.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1137.0,1082.5 L1137.0,1300 L1137.0,1372.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="930" y="347.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,375.5 L1390,375.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="368.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">15.0</text>
+<text x="1032.0" y="420.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Generate Sales Report</text>
+<text x="1004.0" y="490.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Summarize sales for the chosen period</text>
+<rect x="60" y="220" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="274.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="210" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,210 L2540,210" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,340 L2540,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,210 L2070,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,210 L2123,340" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="283.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D2</text>
+<text x="2217.0" y="244.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Sale Records</text>
+<text x="2230.0078125" y="289.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Sale, cashier, items, totals</text>
+<text x="2204.5" y="311.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and Cash/GCash payment details</text>
+<rect x="2070" y="400" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,400 L2540,400" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,530 L2540,530" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,400 L2070,530" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,400 L2123,530" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="473.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D3</text>
+<text x="2214.5" y="434.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Service Sale Records*</text>
+<text x="2223.0" y="479.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Service description, charges</text>
+<text x="2244.0" y="501.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">job status and sale link</text>
+<rect x="930" y="907.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,935.5 L1390,935.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="928.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">16.0</text>
+<text x="1009.0" y="980.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Generate Inventory Report</text>
+<text x="1008.0" y="1050.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Summarize inventory and stock status</text>
+<rect x="60" y="875" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="929.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="865" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,865 L2540,865" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,995 L2540,995" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,865 L2070,995" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,865 L2123,995" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="938.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="899.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="944.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="966.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="930" y="1372.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1400.5 L1390,1400.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="1393.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">17.0</text>
+<text x="1007.0" y="1445.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Print or Download Reports</text>
+<text x="1028.0" y="1515.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Prepare the chosen report output</text>
+<rect x="60" y="1340" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="1394.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="415" y="190" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="540.5" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Sales-report date range</text>
+<text x="596.0" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and filters</text>
+<rect x="415" y="300" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="543.0" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Generated sales report</text>
+<text x="572.5" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and sales totals</text>
+<rect x="1510" y="190" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1687.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Sales data within</text>
+<text x="1661.0" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">the selected date range</text>
+<rect x="1510" y="380" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1645.0" y="403.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Retained service-sale data*</text>
+<text x="1651.5" y="426.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">within the reporting period</text>
+<rect x="415" y="845" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="547.5" y="868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Inventory-report filters</text>
+<text x="554.5" y="891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and selected criteria</text>
+<rect x="415" y="955" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="527.5" y="978.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Generated inventory report</text>
+<text x="530.0" y="1001.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and stock-status summary</text>
+<rect x="1510" y="845" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1644.0" y="868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Product details, stock levels</text>
+<text x="1656.0" y="891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and low-stock thresholds</text>
+<rect x="415" y="1310" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="574.0" y="1333.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected report</text>
+<text x="530.5" y="1356.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and print/download choice</text>
+<rect x="415" y="1420" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="573.5" y="1443.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Printable report</text>
+<text x="529.0" y="1466.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or downloadable report file</text>
+<rect x="945" y="1138" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1062.5" y="1160.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Generated sales-report data</text>
+<text x="1098.0" y="1182.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">for selected output</text>
+<rect x="945" y="1280" width="445" height="54" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1048.0" y="1302.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">Generated inventory-report data</text>
+<text x="1098.0" y="1324.0" font-family="Arial, sans-serif" font-size="17" font-weight="400">for selected output</text>
+<text x="936.5" y="1808.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Repeated actors/stores are the same entities. Cashier history is limited to their own transactions.</text>
+<text x="896.5" y="1838.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">*Labor and service records are retained from the earlier business DFD and are not in the supplied use case.</text>
+<text x="934.5" y="1876.0" font-family="Arial, sans-serif" font-size="14" font-weight="400">Rectangle = external entity  |  Numbered box = separate process  |  D1-D6 = logical data stores  |  Arrow = data flow</text>
+</svg>

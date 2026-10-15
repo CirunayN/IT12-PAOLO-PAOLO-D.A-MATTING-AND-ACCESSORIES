@@ -1,0 +1,16 @@
+﻿supplied_use_case,level_0_process,permitted_actor
+Log In,4.0,Admin/Owner; Cashier
+Create User Account,4.0,Admin/Owner
+Enable or Disable User Account,4.0,Admin/Owner
+Add Product,1.0,Admin/Owner
+Update Product,1.0,Admin/Owner
+View Inventory,1.0,Admin/Owner
+Record Incoming Stock,1.0,Admin/Owner
+Process Sales Transaction,2.0,Admin/Owner; Cashier
+View Sales History,2.0,Admin/Owner; Cashier (own transactions only)
+Print Sales Receipt,2.0,Admin/Owner; Cashier
+Generate Sales Report,3.0,Admin/Owner
+Generate Inventory Report,3.0,Admin/Owner
+Print or Download Reports,3.0,Admin/Owner
+Create Database Backup,5.0,Admin/Owner
+Restore Database Backup,5.0,Admin/Owner

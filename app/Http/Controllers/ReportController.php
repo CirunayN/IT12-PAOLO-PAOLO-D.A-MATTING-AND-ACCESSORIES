@@ -21,7 +21,7 @@ class ReportController extends Controller
     */
     public function index(Request $request)
     {
-        $data = $this->generateReport($request, true);
+        $data = app(\App\Services\FilterCache::class)->remember('reports', $request->query(), fn () => $this->generateReport($request, true));
 
         return view('reports.index', $data);
     }

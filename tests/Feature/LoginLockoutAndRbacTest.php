@@ -100,7 +100,7 @@ class LoginLockoutAndRbacTest extends TestCase
         $responseDash->assertStatus(403);
     }
 
-    public function test_cashier_can_access_pos_and_inventory(): void
+    public function test_cashier_can_access_pos_but_inventory_is_administrator_only(): void
     {
         $cashier = User::factory()->create([
             'username' => 'cashier_user2',
@@ -111,13 +111,13 @@ class LoginLockoutAndRbacTest extends TestCase
         $responsePos = $this->actingAs($cashier)->get('/pos');
         $responsePos->assertStatus(200);
 
-        // Accessing Products list -> 200 OK
+        // Inventory management is restricted to the administrator.
         $responseProducts = $this->actingAs($cashier)->get('/products');
-        $responseProducts->assertStatus(200);
+        $responseProducts->assertStatus(403);
 
-        // Accessing Stock-In list -> 200 OK
+        // Stock receiving is also restricted to the administrator.
         $responseStockIn = $this->actingAs($cashier)->get('/stock-in');
-        $responseStockIn->assertStatus(200);
+        $responseStockIn->assertStatus(403);
     }
 
     public function test_admin_has_full_access(): void

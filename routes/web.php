@@ -47,6 +47,8 @@ Route::middleware(['auth', 'active'])->group(function () {
     });
 
     Route::middleware(['role:Admin'])->group(function () {
+        Route::get('/notifications/expiry', \App\Http\Controllers\ExpiryNotificationController::class)
+            ->name('notifications.expiry');
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 

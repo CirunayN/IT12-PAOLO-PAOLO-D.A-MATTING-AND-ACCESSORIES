@@ -1,0 +1,94 @@
+﻿module,flow_id,source,destination,data
+Accounts and Access,dissected-accounts-flow-01,accounts-1.0-actor-0,1.0,Admin username and password
+Accounts and Access,dissected-accounts-flow-02,1.0,accounts-1.0-actor-0,Login result and assigned interface
+Accounts and Access,dissected-accounts-flow-03,accounts-1.0-actor-1,1.0,Cashier username and password
+Accounts and Access,dissected-accounts-flow-04,1.0,accounts-1.0-actor-1,Login result and cashier interface
+Accounts and Access,dissected-accounts-flow-05,accounts-1.0-store-D4-0,1.0,"Stored credentials, role and account access status"
+Accounts and Access,dissected-accounts-flow-06,1.0,accounts-1.0-store-D4-0,Authenticated session record
+Accounts and Access,dissected-accounts-flow-07,accounts-2.0-actor-0,2.0,New user details and admin password
+Accounts and Access,dissected-accounts-flow-08,2.0,accounts-2.0-actor-0,Created account details or validation result
+Accounts and Access,dissected-accounts-flow-09,accounts-2.0-store-D4-0,2.0,Existing usernames and admin account credentials
+Accounts and Access,dissected-accounts-flow-10,2.0,accounts-2.0-store-D4-0,New user account and assigned role
+Accounts and Access,dissected-accounts-flow-11,accounts-3.0-actor-0,3.0,Selected user ID and requested access status
+Accounts and Access,dissected-accounts-flow-12,3.0,accounts-3.0-actor-0,Updated account access status
+Accounts and Access,dissected-accounts-flow-13,accounts-3.0-store-D4-0,3.0,Selected account and active sessions
+Accounts and Access,dissected-accounts-flow-14,3.0,accounts-3.0-store-D4-0,Updated access status and session records
+Inventory,dissected-inventory-flow-01,inventory-4.0-actor-0,4.0,New product details and category selection
+Inventory,dissected-inventory-flow-02,4.0,inventory-4.0-actor-0,Saved product details or validation result
+Inventory,dissected-inventory-flow-03,inventory-4.0-store-D1-0,4.0,Existing product/category information
+Inventory,dissected-inventory-flow-04,4.0,inventory-4.0-store-D1-0,New product record
+Inventory,dissected-inventory-flow-05,inventory-5.0-actor-0,5.0,Product ID and updated product values
+Inventory,dissected-inventory-flow-06,5.0,inventory-5.0-actor-0,Updated product details or validation result
+Inventory,dissected-inventory-flow-07,inventory-5.0-store-D1-0,5.0,Existing product record and low-stock threshold
+Inventory,dissected-inventory-flow-08,5.0,inventory-5.0-store-D1-0,Updated product record and threshold
+Inventory,dissected-inventory-flow-09,inventory-6.0-actor-0,6.0,Name/date/price/stock filters and sort direction
+Inventory,dissected-inventory-flow-10,6.0,inventory-6.0-actor-0,Filtered inventory and current stock levels
+Inventory,dissected-inventory-flow-11,inventory-6.0-store-D1-0,6.0,"Product details, prices and available quantities"
+Inventory,dissected-inventory-flow-12,inventory-7.0-actor-0,7.0,"Product, received quantity, prices and batch details"
+Inventory,dissected-inventory-flow-13,7.0,inventory-7.0-actor-0,Recorded incoming stock and receiving confirmation
+Inventory,dissected-inventory-flow-14,inventory-7.0-store-D1-0,7.0,Selected product and existing stock
+Inventory,dissected-inventory-flow-15,7.0,inventory-7.0-store-D1-0,New receiving batch and updated stock balance
+Sales,dissected-sales-flow-01,sales-8.0-actor-0,8.0,Selected products and quantities
+Sales,dissected-sales-flow-02,8.0,sales-8.0-actor-0,Order validation result or item-availability errors
+Sales,dissected-sales-flow-03,sales-8.0-actor-1,8.0,Selected products and quantities
+Sales,dissected-sales-flow-04,8.0,sales-8.0-actor-1,Order validation result or item-availability errors
+Sales,dissected-sales-flow-05,sales-8.0-actor-2,8.0,Customer order and requested quantities
+Sales,dissected-sales-flow-06,sales-8.0-store-D1-0,8.0,"Available products, quantities and selling prices"
+Sales,dissected-sales-flow-07,9.0,sales-9.0-actor-0,Calculated order amounts and total due
+Sales,dissected-sales-flow-08,9.0,sales-9.0-actor-1,Calculated order amounts and total due
+Sales,dissected-sales-flow-09,sales-10.0-actor-0,10.0,"Payment method, tender and GCash reference"
+Sales,dissected-sales-flow-10,10.0,sales-10.0-actor-0,Payment validation result or payment errors
+Sales,dissected-sales-flow-11,sales-10.0-actor-1,10.0,"Payment method, tender and GCash reference"
+Sales,dissected-sales-flow-12,10.0,sales-10.0-actor-1,Payment validation result or payment errors
+Sales,dissected-sales-flow-13,sales-10.0-actor-2,10.0,Customer payment details (Cash or GCash)
+Sales,dissected-sales-flow-14,11.0,sales-11.0-store-D2-0,"Sale, cashier, items, totals and accepted payment details"
+Sales,dissected-sales-flow-15,12.0,sales-12.0-actor-0,Completed sale ID and stock-update result
+Sales,dissected-sales-flow-16,12.0,sales-12.0-actor-1,Completed sale ID and stock-update result
+Sales,dissected-sales-flow-17,sales-12.0-store-D1-0,12.0,Eligible stock batches and remaining quantities
+Sales,dissected-sales-flow-18,12.0,sales-12.0-store-D1-0,Deducted stock quantities and updated batch balances
+Sales,dissected-sales-flow-19,sales-13.0-actor-0,13.0,Sales-history filters and selected transaction
+Sales,dissected-sales-flow-20,13.0,sales-13.0-actor-0,Matching sales history and transaction details
+Sales,dissected-sales-flow-21,sales-13.0-actor-1,13.0,Own-sales filters and selected transaction
+Sales,dissected-sales-flow-22,13.0,sales-13.0-actor-1,Own sales history and transaction details
+Sales,dissected-sales-flow-23,sales-13.0-store-D2-0,13.0,Sales records filtered by authorized cashier scope
+Sales,dissected-sales-flow-24,sales-14.0-actor-0,14.0,Selected sale ID and print request
+Sales,dissected-sales-flow-25,14.0,sales-14.0-actor-0,Printable sales receipt
+Sales,dissected-sales-flow-26,sales-14.0-actor-1,14.0,Selected sale ID and print request
+Sales,dissected-sales-flow-27,14.0,sales-14.0-actor-1,Printable sales receipt
+Sales,dissected-sales-flow-28,14.0,sales-14.0-actor-2,"Purchase receipt: items, total, payment and change"
+Sales,dissected-sales-flow-29,sales-14.0-store-D2-0,14.0,"Saved sale, items, totals and payment/change details"
+Sales,dissected-sales-flow-30,8.0,9.0,"Validated order: items, quantities and unit prices"
+Sales,dissected-sales-flow-31,9.0,10.0,Calculated order amounts and total due
+Sales,dissected-sales-flow-32,10.0,11.0,"Order and accepted payment: method, tender, reference and change"
+Sales,dissected-sales-flow-33,11.0,12.0,Recorded sale ID and quantities sold
+Sales,dissected-sales-flow-34,12.0,14.0,Confirmed sale ID for receipt preparation
+Sales,dissected-sales-flow-35,13.0,14.0,Selected history transaction ID for receipt printing
+Reports,dissected-reports-flow-01,reports-15.0-actor-0,15.0,Sales-report date range and filters
+Reports,dissected-reports-flow-02,15.0,reports-15.0-actor-0,Generated sales report and sales totals
+Reports,dissected-reports-flow-03,reports-15.0-store-D2-0,15.0,Sales data within the selected date range
+Reports,dissected-reports-flow-04,reports-15.0-store-D3-1,15.0,Retained service-sale data* within the reporting period
+Reports,dissected-reports-flow-05,reports-16.0-actor-0,16.0,Inventory-report filters and selected criteria
+Reports,dissected-reports-flow-06,16.0,reports-16.0-actor-0,Generated inventory report and stock-status summary
+Reports,dissected-reports-flow-07,reports-16.0-store-D1-0,16.0,"Product details, stock levels and low-stock thresholds"
+Reports,dissected-reports-flow-08,reports-17.0-actor-0,17.0,Selected report and print/download choice
+Reports,dissected-reports-flow-09,17.0,reports-17.0-actor-0,Printable report or downloadable report file
+Reports,dissected-reports-flow-10,15.0,17.0,Generated sales-report data for selected output
+Reports,dissected-reports-flow-11,16.0,17.0,Generated inventory-report data for selected output
+Database Backup and Restore,dissected-backup-flow-01,backup-18.0-actor-0,18.0,Database-backup request and destination details
+Database Backup and Restore,dissected-backup-flow-02,18.0,backup-18.0-actor-0,Saved backup file details and backup confirmation
+Database Backup and Restore,dissected-backup-flow-03,backup-18.0-store-D6-0,18.0,Current database records for backup
+Database Backup and Restore,dissected-backup-flow-04,18.0,backup-18.0-store-D5-1,New database snapshot and backup file details
+Database Backup and Restore,dissected-backup-flow-05,backup-19.0-actor-0,19.0,Selected backup file and administrator password
+Database Backup and Restore,dissected-backup-flow-06,19.0,backup-19.0-actor-0,Database-restoration result or validation errors
+Database Backup and Restore,dissected-backup-flow-07,backup-19.0-store-D5-0,19.0,Selected database backup contents
+Database Backup and Restore,dissected-backup-flow-08,backup-19.0-store-D4-1,19.0,Admin credentials and administrator role
+Database Backup and Restore,dissected-backup-flow-09,19.0,backup-19.0-store-D6-2,Validated database records restored from the backup
+Retained Service Business Processes*,dissected-services-flow-01,services-20.0-actor-0,20.0,"Service description, charge and linked transaction ID*"
+Retained Service Business Processes*,dissected-services-flow-02,20.0,services-20.0-actor-0,Recorded service request and job reference*
+Retained Service Business Processes*,dissected-services-flow-03,20.0,services-20.0-actor-1,Service job details and work instructions*
+Retained Service Business Processes*,dissected-services-flow-04,20.0,services-20.0-store-D3-0,"Service request, charge transaction link and job status*"
+Retained Service Business Processes*,dissected-services-flow-05,services-21.0-actor-0,21.0,Service progress and completion details*
+Retained Service Business Processes*,dissected-services-flow-06,21.0,services-21.0-actor-0,Recorded service status confirmation*
+Retained Service Business Processes*,dissected-services-flow-07,21.0,services-21.0-actor-1,Updated service status and completion information*
+Retained Service Business Processes*,dissected-services-flow-08,services-21.0-store-D3-0,21.0,Existing service job and transaction link*
+Retained Service Business Processes*,dissected-services-flow-09,21.0,services-21.0-store-D3-0,Updated service status and completion details*

@@ -1,0 +1,36 @@
+﻿flow_id,source,destination,data
+level-0-use-case-matched-flow-01,owner-accounts,4.0,"Login credentials, new account details and enable/disable request"
+level-0-use-case-matched-flow-02,4.0,owner-accounts,"Login result, created account and updated access status"
+level-0-use-case-matched-flow-03,cashier-accounts,4.0,Cashier username and password
+level-0-use-case-matched-flow-04,4.0,cashier-accounts,Login result and cashier access
+level-0-use-case-matched-flow-05,4.0,accounts,"New account, access status and authenticated session"
+level-0-use-case-matched-flow-06,accounts,4.0,"Stored credentials, role and current access status"
+level-0-use-case-matched-flow-07,owner-inventory,1.0,"Product details, updated values, incoming-stock details and filters"
+level-0-use-case-matched-flow-08,1.0,owner-inventory,"Saved changes, current inventory and incoming-stock confirmation"
+level-0-use-case-matched-flow-09,1.0,products-inventory,New or updated product details and received-stock records
+level-0-use-case-matched-flow-10,products-inventory,1.0,"Existing products, prices and available stock quantities"
+level-0-use-case-matched-flow-11,owner-sales,2.0,"Sales transaction details, history selection and receipt request"
+level-0-use-case-matched-flow-12,2.0,owner-sales,"Transaction result, sales history and printable sales receipt"
+level-0-use-case-matched-flow-13,cashier-sales,2.0,"Sales details, own-history selection and receipt request"
+level-0-use-case-matched-flow-14,2.0,cashier-sales,"Transaction result, own sales history and printable sales receipt"
+level-0-use-case-matched-flow-15,customer,2.0,"Order and payment details (Cash/GCash, amount and reference)"
+level-0-use-case-matched-flow-16,2.0,customer,"Purchase details and receipt (total, payment and change)"
+level-0-use-case-matched-flow-17,labor,2.0,Service status and completion details*
+level-0-use-case-matched-flow-18,2.0,labor,Service job details and work instructions*
+level-0-use-case-matched-flow-19,products-sales,2.0,"Available products, quantities and selling prices"
+level-0-use-case-matched-flow-20,2.0,products-sales,Stock quantities deducted for recorded sales
+level-0-use-case-matched-flow-21,2.0,product-sales,"Completed sale, items, totals, payment details and cashier ID"
+level-0-use-case-matched-flow-22,product-sales,2.0,Sales records and receipt details (filtered by cashier when required)
+level-0-use-case-matched-flow-23,2.0,service-sales,"Service description, charge, transaction link and job status*"
+level-0-use-case-matched-flow-24,service-sales,2.0,Existing service-sale and completion details*
+level-0-use-case-matched-flow-25,owner-reports,3.0,"Report type, date range, filters and print/download selection"
+level-0-use-case-matched-flow-26,3.0,owner-reports,Sales and inventory reports for printing or downloading
+level-0-use-case-matched-flow-27,products-reports,3.0,Inventory data and current stock balances
+level-0-use-case-matched-flow-28,product-sales-reports,3.0,Sales data for the selected reporting period
+level-0-use-case-matched-flow-29,service-sales-reports,3.0,Service-sale data retained from the previous DFD*
+level-0-use-case-matched-flow-30,owner-backup,5.0,Backup request or selected restore file and administrator password
+level-0-use-case-matched-flow-31,5.0,owner-backup,Backup file/details or restoration confirmation
+level-0-use-case-matched-flow-32,system-database,5.0,Current database records for a new backup
+level-0-use-case-matched-flow-33,5.0,system-database,Validated database records restored from the selected backup
+level-0-use-case-matched-flow-34,5.0,backup-files,New database backup and backup file details
+level-0-use-case-matched-flow-35,backup-files,5.0,Selected backup contents for validation and restoration

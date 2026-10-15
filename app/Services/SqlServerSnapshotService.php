@@ -208,5 +208,6 @@ class SqlServerSnapshotService
                 $connection->statement('SET FOREIGN_KEY_CHECKS = 1');
             }
         });
+        $connection->afterCommit(fn () => app(FilterCache::class)->invalidate());
     }
 }

@@ -12,7 +12,7 @@
         </div>
         <div class="flex items-center gap-2.5 flex-wrap">
             <button type="button" onclick="openCategoryManager()" class="px-4 py-2.5 rounded-xl bg-slate-200 dark:bg-dark-800 font-bold text-sm"><i class="fas fa-tags mr-1.5" aria-hidden="true"></i>Manage Categories</button>
-            <a href="{{ route('products.print', request()->except(['page', 'output'])) }}" onclick="event.preventDefault(); openReportOutput(this.href)"
+            <a data-filter-export href="{{ route('products.print', request()->except(['page', 'output'])) }}" onclick="event.preventDefault(); openReportOutput(this.href)"
                 class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
                 <i class="fas fa-print text-blue-500"></i>
                 <span>Print / Download Inventory</span>
@@ -50,14 +50,14 @@
 
     <!-- Filter & Search Bar -->
     <div class="glass-card rounded-2xl p-4 border shadow-sm relative z-30">
-        <form data-auto-filter method="GET" action="{{ route('products.index') }}" class="space-y-4">
+        <form data-auto-filter data-cache-filter method="GET" action="{{ route('products.index') }}" class="space-y-4">
             <input type="hidden" name="tab" value="{{ $tab }}">
             @include('partials.inventory-filters', ['resetUrl' => route('products.index', ['tab' => $tab]), 'dateLabel' => 'Date Added'])
         </form>
     </div>
 
     <!-- Products Table -->
-    <div class="glass-card rounded-2xl border shadow-sm overflow-hidden relative z-10">
+    <div data-filter-results class="glass-card rounded-2xl border shadow-sm overflow-hidden relative z-10">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead>

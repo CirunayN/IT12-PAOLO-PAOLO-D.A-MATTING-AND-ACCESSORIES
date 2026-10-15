@@ -17,6 +17,12 @@ class TransactionController extends Controller
     */
     public function index(Request $request)
     {
+        $data = app(\App\Services\FilterCache::class)->remember('transactions', $request->query(), fn () => $this->transactionData($request));
+        return view('transactions.index', $data);
+    }
+
+    private function transactionData(Request $request): array
+    {
         $filters = $this->getFilters($request);
         $query = $this->buildQuery($request, $filters);
 
@@ -47,7 +53,7 @@ class TransactionController extends Controller
             ? User::orderBy('name')->get()
             : collect();
 
-        return view('transactions.index', [
+        return [
             'sales' => $sales,
             'totalTransactions' => $totalTransactions,
             'totalSales' => $totalSales,
@@ -59,7 +65,7 @@ class TransactionController extends Controller
             'periodLabel' => $this->getPeriodLabel($filters),
             'cashiers' => $cashiers,
             'filters' => $filters,
-        ]);
+        ];
     }
 
     /*

@@ -196,6 +196,9 @@
         </div>
 
         <div class="app-topbar-actions flex items-center gap-2.5 sm:gap-3.5">
+            @if(auth()->user()?->isAdmin())
+                @include('shared.expiry-notifications')
+            @endif
             <button type="button" id="themeToggleBtn" title="Toggle Light / Dark Mode"
                     class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-slate-200 dark:bg-dark-800 text-slate-700 dark:text-amber-400 hover:bg-slate-300 dark:hover:bg-dark-700 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-base sm:text-lg transition-colors cursor-pointer">
                 <i id="themeIcon" class="fas fa-sun"></i>
@@ -211,8 +214,8 @@
 
             </div>
         </div>
-        @php($clockNow = now('Asia/Manila'))
-        <div id="topbarClock" class="topbar-clock" role="timer" aria-live="off" aria-label="Current Philippine time" title="Philippine time (Asia/Manila)">
+        @php($clockNow = app(\App\Services\DeviceClock::class)->now())
+        <div id="topbarClock" class="topbar-clock" role="timer" aria-live="off" aria-label="Current laptop time" title="Uses this device's local date and time, even offline">
             <time id="topbarClockTime" class="topbar-clock-time" datetime="{{ $clockNow->toIso8601String() }}">{{ $clockNow->format('h:i A') }}</time>
             <time id="topbarClockDate" class="topbar-clock-date" datetime="{{ $clockNow->format('Y-m-d') }}">{{ $clockNow->format('D, M j, Y') }}</time>
         </div>
@@ -253,13 +256,13 @@
         const timeElement = document.getElementById('topbarClockTime');
         const dateElement = document.getElementById('topbarClockDate');
         const timeFormatter = new Intl.DateTimeFormat('en-PH', {
-            timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: true,
+            hour: '2-digit', minute: '2-digit', hour12: true,
         });
         const dateFormatter = new Intl.DateTimeFormat('en-PH', {
-            timeZone: 'Asia/Manila', weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
+            weekday: 'short', month: 'short', day: 'numeric', year: 'numeric',
         });
         const dateValueFormatter = new Intl.DateTimeFormat('en-PH', {
-            timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit',
+            year: 'numeric', month: '2-digit', day: '2-digit',
         });
 
         function updateClock() {
@@ -269,6 +272,9 @@
             dateElement.textContent = dateFormatter.format(current);
             const parts = Object.fromEntries(dateValueFormatter.formatToParts(current).map(part => [part.type, part.value]));
             dateElement.dateTime = `${parts.year}-${parts.month}-${parts.day}`;
+            document.querySelectorAll('[data-device-clock]').forEach(element => {
+                element.textContent = current.toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'medium' });
+            });
         }
 
         updateClock();

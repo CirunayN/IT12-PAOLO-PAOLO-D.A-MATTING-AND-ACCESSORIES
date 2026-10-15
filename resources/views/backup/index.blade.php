@@ -92,9 +92,10 @@
                     </div>
 
                     <div>
-                        <label for="backupTime" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Automatic Backup Time (Philippine time)</label>
+                        <label for="backupTime" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Automatic Backup Time (Laptop time)</label>
                         <input id="backupTime" type="time" name="backup_time" required value="{{ old('backup_time', $settings['backup_time']) }}" class="w-full py-2.5 px-3.5 bg-slate-50 dark:bg-dark-900 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white text-sm">
-                        <p class="text-xs text-slate-500 mt-2">Keep the app and computer running at this time. A missed backup runs when the app next starts after the selected time.</p>
+                        <p class="text-xs text-slate-500 mt-2">Uses this laptop's date and time, even offline. Keep the laptop awake and the start.bat window open. The browser can be closed. A missed backup runs on the next check.</p>
+                        <p class="text-xs text-slate-500 mt-2">Laptop time: <strong data-device-clock>{{ $deviceNow->format('M j, Y h:i:s A') }}</strong></p>
                         @error('backup_time')<p class="text-xs text-rose-500">{{ $message }}</p>@enderror
                     </div>
                     <!-- Retention Rule -->

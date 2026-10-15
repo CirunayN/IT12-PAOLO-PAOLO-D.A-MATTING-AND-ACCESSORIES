@@ -95,11 +95,17 @@ class Product extends Model
 
     public function getStockQuantityAttribute(): float
     {
+        if ($this->relationLoaded('stockIns')) {
+            return (float) $this->loadedSellableBatches()->sum('Remaining_Quantity');
+        }
         return (float) $this->sellableStockIns()->sum('Remaining_Quantity');
     }
 
     public function getRetailPriceAttribute(): float
     {
+        if ($this->relationLoaded('stockIns')) {
+            return (float) ($this->latestLoadedBatch()?->Retail_Price ?? 0);
+        }
         $latest = $this->sellableStockIns()->orderBy('ID', 'desc')->first()
             ?? $this->stockIns()->orderBy('ID', 'desc')->first();
         return $latest ? (float) $latest->Retail_Price : 0.00;
@@ -107,9 +113,26 @@ class Product extends Model
 
     public function getCostPriceAttribute(): float
     {
+        if ($this->relationLoaded('stockIns')) {
+            return (float) ($this->latestLoadedBatch()?->Cost_Price ?? 0);
+        }
         $latest = $this->sellableStockIns()->orderBy('ID', 'desc')->first()
             ?? $this->stockIns()->orderBy('ID', 'desc')->first();
         return $latest ? (float) $latest->Cost_Price : 0.00;
+    }
+
+    private function loadedSellableBatches(): \Illuminate\Support\Collection
+    {
+        $today = today()->toDateString();
+        return $this->stockIns->filter(fn (StockIn $batch) => $batch->Remaining_Quantity > 0
+            && $batch->Condition === 'Good'
+            && (! $batch->Has_Expiration || ! $batch->Expiration_Date || $batch->Expiration_Date->toDateString() >= $today));
+    }
+
+    private function latestLoadedBatch(): ?StockIn
+    {
+        return $this->loadedSellableBatches()->sortByDesc('ID')->first()
+            ?? $this->stockIns->sortByDesc('ID')->first();
     }
 
     public function getImageUrlAttribute(): ?string

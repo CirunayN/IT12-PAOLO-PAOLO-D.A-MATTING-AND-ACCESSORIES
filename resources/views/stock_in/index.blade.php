@@ -17,7 +17,7 @@
                 <span>Manage Categories</span>
             </button>
 
-            <a href="{{ route('stock-in.print', request()->except(['page', 'output'])) }}" onclick="event.preventDefault(); openReportOutput(this.href)"
+            <a data-filter-export href="{{ route('stock-in.print', request()->except(['page', 'output'])) }}" onclick="event.preventDefault(); openReportOutput(this.href)"
                 class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-dark-800 dark:hover:bg-dark-700 text-slate-800 dark:text-slate-100 font-bold text-sm border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
                 <i class="fas fa-print text-blue-500"></i>
                 <span>Print / Download Receiving</span>
@@ -53,7 +53,7 @@
 
     <!-- Filter & Search Bar -->
     <div class="glass-card rounded-2xl p-4 border shadow-sm relative z-30">
-        <form data-auto-filter method="GET" action="{{ route('stock-in.index') }}" class="space-y-4">
+        <form data-auto-filter data-cache-filter method="GET" action="{{ route('stock-in.index') }}" class="space-y-4">
             @foreach(['product_id', 'user_id'] as $field)
                 @if(request()->filled($field))<input type="hidden" name="{{ $field }}" value="{{ request($field) }}">@endif
             @endforeach
@@ -61,7 +61,7 @@
         </form>
     </div>
 
-    <div class="glass-card rounded-2xl border shadow-sm overflow-hidden relative z-10">
+    <div data-filter-results class="glass-card rounded-2xl border shadow-sm overflow-hidden relative z-10">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
                 <thead>

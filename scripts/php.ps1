@@ -8,7 +8,8 @@ $projectDirectory = Split-Path -Parent $PSScriptRoot
 $driverDirectory = Join-Path $projectDirectory 'storage\app\sqlserver-setup\drivers-5.13.3\Windows'
 $configurationRoot = Join-Path $projectDirectory 'storage\app\sqlserver-setup\php-conf'
 $configurationDirectory = Join-Path $configurationRoot ('runtime-' + $PID)
-$phpExecutable = (Get-Command php.exe -ErrorAction Stop).Source
+$bundledPhp = Join-Path $projectDirectory 'storage\app\laptop-runtime\php\php.exe'
+$phpExecutable = if (Test-Path -LiteralPath $bundledPhp) { $bundledPhp } else { (Get-Command php.exe -ErrorAction Stop).Source }
 $phpDetails = @'
 <?php
 echo json_encode(['version' => PHP_MAJOR_VERSION . PHP_MINOR_VERSION, 'mode' => PHP_ZTS ? 'ts' : 'nts', 'arch' => PHP_INT_SIZE === 8 ? 'x64' : 'x86']);

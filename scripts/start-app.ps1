@@ -70,13 +70,14 @@ function Open-App {
     }
 }
 
+function Start-BackupWorker {
+    return Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $wrapper + '"'), 'artisan', 'backup:watch') -WorkingDirectory $projectDirectory -WindowStyle Hidden -RedirectStandardOutput $workerLog -RedirectStandardError $workerErrorLog -PassThru
+}
+
 try {
     $status = Get-AppStatus
     if ($status.Ready) {
         Write-Host ('Paolo Paolo is already running: ' + $appUrl)
-        Write-Host 'Keep the original launcher window open while using the app.'
-        Open-App
-        $result = 0
     } else {
         if (Test-PortInUse) {
             throw ('Port ' + $Port + ' is in use, but the Paolo Paolo login page is not ready (' + $status.Detail + '). Check the existing launcher and storage\logs, or use start.bat -Port 8001.')
@@ -107,14 +108,33 @@ try {
         } while ([DateTime]::UtcNow -lt $deadline)
         if (-not $status.Ready) { throw ('The app did not become ready at ' + $appUrl + ' (' + $status.Detail + ').') }
 
-        $worker = Start-Process -FilePath 'powershell.exe' -ArgumentList @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', ('"' + $wrapper + '"'), 'artisan', 'schedule:work') -WorkingDirectory $projectDirectory -WindowStyle Hidden -RedirectStandardOutput $workerLog -RedirectStandardError $workerErrorLog -PassThru
-        Write-Host ('Paolo Paolo is ready: ' + $appUrl + ' (scheduled backups enabled)')
-        Write-Host 'Keep this window open while using the app. Press Ctrl+C to stop it.'
-        Open-App
-        while (-not $server.WaitForExit(500)) { }
-        $server.Refresh()
-        $result = $server.ExitCode
-        if ($result -ne 0) { throw ('The local web server stopped with exit code ' + $result + '.') }
+    }
+
+    New-Item -ItemType Directory -Path $logs -Force | Out-Null
+    $worker = Start-BackupWorker
+    $workerRestartTimer = [System.Diagnostics.Stopwatch]::StartNew()
+    Write-Host ('Paolo Paolo is ready: ' + $appUrl + ' (automatic backups follow laptop time)')
+    Write-Host 'Keep this window open and the laptop awake. The browser can be closed. Press Ctrl+C to stop.'
+    Open-App
+    $result = 0
+    while ($true) {
+        if ($server) {
+            if ($server.WaitForExit(500)) {
+                $server.Refresh()
+                $result = $server.ExitCode
+                if ($result -ne 0) { throw ('The local web server stopped with exit code ' + $result + '.') }
+                break
+            }
+        } else {
+            if (-not (Test-PortInUse)) { break }
+            Start-Sleep -Milliseconds 500
+        }
+        $worker.Refresh()
+        if ($worker.HasExited -and $workerRestartTimer.ElapsedMilliseconds -ge 5000) {
+            Write-Warning 'The backup worker stopped. Restarting it...'
+            $worker = Start-BackupWorker
+            $workerRestartTimer.Restart()
+        }
     }
 } catch {
     Write-Host ('Startup failed: ' + $_.Exception.Message) -ForegroundColor Red

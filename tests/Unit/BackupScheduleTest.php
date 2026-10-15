@@ -12,8 +12,8 @@ class BackupScheduleTest extends TestCase
     {
         $schedule = new BackupSchedule;
         $settings = ['backup_mode' => 'automatic', 'frequency' => '1_day', 'backup_time' => '18:30'];
-        $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 10:29:00', 'UTC')));
-        $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-10-10 10:30:00', 'UTC')));
+        $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 18:29:59', 'Asia/Manila')));
+        $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-10-10 18:30:00', 'Asia/Manila')));
         $settings['last_automatic_backup_at'] = '2026-10-10T18:31:00+08:00';
         $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 23:00', 'Asia/Manila')));
         $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-10-11 18:30', 'Asia/Manila')));
@@ -31,5 +31,28 @@ class BackupScheduleTest extends TestCase
         $settings['last_automatic_backup_at'] = '2026-01-31T08:00:00+08:00';
         $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-02-27 12:00', 'Asia/Manila')));
         $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-02-28 08:00', 'Asia/Manila')));
+    }
+
+    public function test_device_time_zone_is_authoritative_and_missed_runs_catch_up_before_todays_slot(): void
+    {
+        $schedule = new BackupSchedule;
+        $settings = ['backup_mode' => 'automatic', 'backup_time' => '18:30'];
+        $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 18:29:59', '-07:00')));
+        $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-10-10 18:30:00', '-07:00')));
+        $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 10:30:00', 'UTC')));
+        $settings['last_automatic_backup_at'] = '2026-10-08T18:30:00-07:00';
+        $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-10-10 09:00:00', '-07:00')));
+    }
+
+    public function test_changed_schedule_can_run_today_but_does_not_repeat_the_same_schedule(): void
+    {
+        $schedule = new BackupSchedule;
+        $settings = ['backup_mode' => 'automatic', 'frequency' => '1_day', 'backup_time' => '18:30',
+            'last_automatic_backup_at' => '2026-10-10T17:00:00+08:00', 'last_automatic_schedule' => '1_day|17:00'];
+        $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 18:29', '+08:00')));
+        $this->assertTrue($schedule->isDue($settings, Carbon::parse('2026-10-10 18:30', '+08:00')));
+        $settings['last_automatic_schedule'] = $schedule->key($settings);
+        $settings['last_automatic_backup_at'] = '2026-10-10T18:30:00+08:00';
+        $this->assertFalse($schedule->isDue($settings, Carbon::parse('2026-10-10 19:00', '+08:00')));
     }
 }

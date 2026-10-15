@@ -134,7 +134,9 @@ class SqlServerDatabaseTest extends TestCase
         $service = app(SqlServerSnapshotService::class);
         $snapshot = $service->snapshot(DB::connection());
         $product->update(['Name' => 'Changed after backup']);
+        $revision = app(\App\Services\FilterCache::class)->revision();
         $service->restore(DB::connection(), $snapshot);
+        $this->assertNotSame($revision, app(\App\Services\FilterCache::class)->revision());
         $this->assertDatabaseHas('tbl_product', ['ID' => $product->ID, 'Name' => 'Test product']);
         $this->assertDatabaseHas('users', ['id' => $user->id, 'password' => $user->password]);
         $nextProduct = Product::create(['Name' => 'Next product', 'Category_ID' => $product->Category_ID, 'Status_ID' => $product->Status_ID]);
@@ -149,10 +151,12 @@ class SqlServerDatabaseTest extends TestCase
         $invalid = $before;
         $table = collect(array_keys($invalid['tables']))->first(fn ($name) => strtolower($name) === 'tbl_product');
         $invalid['tables'][$table]['rows'][0]['Category_ID'] = 999999;
+        $revision = app(\App\Services\FilterCache::class)->revision();
         try {
             $service->restore(DB::connection(), $invalid);
             $this->fail('Invalid references must reject the restore.');
         } catch (QueryException) {
+            $this->assertSame($revision, app(\App\Services\FilterCache::class)->revision());
             $this->assertSame($before['tables'], $service->snapshot(DB::connection())['tables']);
             $disabled = DB::selectOne('SELECT COUNT(*) AS total FROM sys.foreign_keys WHERE is_disabled = 1');
             $this->assertEquals(0, $disabled->total);

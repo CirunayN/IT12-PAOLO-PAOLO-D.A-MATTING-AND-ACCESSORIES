@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\SqlServerSnapshotService;
 use App\Services\BackupDirectoryBrowser;
+use App\Services\BackupSchedule;
+use App\Services\DeviceClock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +44,7 @@ class BackupController extends Controller
             'frequency' => '1_day',
             'backup_time' => '18:00',
             'last_automatic_backup_at' => null,
+            'last_automatic_schedule' => null,
             'retention' => '1_month',
             'storage_path' => $this->defaultBackupDir,
             'last_backup_at' => null,
@@ -95,6 +98,7 @@ class BackupController extends Controller
 
     public function index()
     {
+        $deviceNow = app(DeviceClock::class)->now();
         $settings = $this->getSettings();
         $backupDir = $this->getBackupDirectory($settings);
         $archiveDir = $this->getArchiveDirectory($settings);
@@ -114,7 +118,7 @@ class BackupController extends Controller
                         'path' => $file->getPathname(),
                         'size' => $size,
                         'bytes' => $bytes,
-                        'created_at' => Carbon::createFromTimestamp($file->getMTime()),
+                        'created_at' => Carbon::createFromTimestamp($file->getMTime())->timezone($deviceNow->getTimezone()),
                     ];
                 }
             }
@@ -139,7 +143,7 @@ class BackupController extends Controller
                         'path' => $file->getPathname(),
                         'size' => $size,
                         'bytes' => $bytes,
-                        'archived_at' => Carbon::createFromTimestamp($file->getMTime()),
+                        'archived_at' => Carbon::createFromTimestamp($file->getMTime())->timezone($deviceNow->getTimezone()),
                     ];
                 }
             }
@@ -147,7 +151,7 @@ class BackupController extends Controller
             usort($archivedFiles, fn($a, $b) => $b['archived_at']->timestamp <=> $a['archived_at']->timestamp);
         }
 
-        return view('backup.index', compact('settings', 'files', 'archivedFiles', 'backupDir', 'archiveDir'));
+        return view('backup.index', compact('settings', 'files', 'archivedFiles', 'backupDir', 'archiveDir', 'deviceNow'));
     }
 
     private function withBackupLock(callable $action)
@@ -167,7 +171,7 @@ class BackupController extends Controller
     public function createBackup()
     {
         try {
-            $result = $this->withBackupLock(fn () => $this->writeBackup(false, Carbon::now('Asia/Manila')));
+            $result = $this->withBackupLock(fn () => $this->writeBackup(false, app(DeviceClock::class)->now()));
             if ($result === null) return redirect()->route('backup.index')->with('error', 'A backup is already running.');
             return redirect()->route('backup.index')->with('success', $result);
         } catch (\Throwable $exception) {
@@ -178,8 +182,8 @@ class BackupController extends Controller
 
     public function runScheduledBackup(?Carbon $now = null): bool
     {
-        $now ??= Carbon::now('Asia/Manila');
         try {
+            $now ??= app(DeviceClock::class)->now();
             return (bool) $this->withBackupLock(function () use ($now) {
                 if (!app(\App\Services\BackupSchedule::class)->isDue($this->getSettings(), $now)) return false;
                 $this->writeBackup(true, $now);
@@ -210,7 +214,10 @@ class BackupController extends Controller
         // Re-read to retain settings changed while the snapshot was being written.
         $current = $this->getSettings();
         $current['last_backup_at'] = $now->toIso8601String();
-        if ($automatic) $current['last_automatic_backup_at'] = $now->toIso8601String();
+        if ($automatic) {
+            $current['last_automatic_backup_at'] = $now->toIso8601String();
+            $current['last_automatic_schedule'] = app(BackupSchedule::class)->key($settings);
+        }
         $this->saveSettings($current);
         $this->cleanupOldBackups($settings, $backupDir);
         $message = "Database backup '{$filename}' created successfully in {$backupDir}!";
@@ -570,6 +577,10 @@ class BackupController extends Controller
             $latest = $this->getSettings();
             $settings['last_backup_at'] = $latest['last_backup_at'];
             $settings['last_automatic_backup_at'] = $latest['last_automatic_backup_at'];
+            // Remember the previous schedule so a newly selected time can run
+            // today even when an earlier automatic backup already completed.
+            $settings['last_automatic_schedule'] = $latest['last_automatic_schedule']
+                ?? app(BackupSchedule::class)->key($latest);
             $this->saveSettings($settings);
             return true;
         });

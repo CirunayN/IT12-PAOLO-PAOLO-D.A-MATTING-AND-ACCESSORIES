@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="2180" viewBox="0 0 2600 2180">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="black"/></marker></defs>
+<rect width="2600" height="2180" fill="white"/>
+<text x="1241.0" y="64.0" font-family="Times New Roman, serif" font-size="28" font-weight="700">Inventory</text>
+<path d="M340,245.2 L370,245.2 L370,218.0 L880,218.0 L880,273.5 L930,273.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,299.75 L885,299.75 L885,328.0 L375,328.0 L375,287.5 L340,287.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,307.5 L2014,307.5 L2014,218.0 L1436,218.0 L1436,273.5 L1390,273.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,299.75 L1430,299.75 L1430,328.0 L2020,328.0 L2020,246.4 L2070,246.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,710.2 L370,710.2 L370,683.0 L880,683.0 L880,738.5 L930,738.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,764.75 L885,764.75 L885,793.0 L375,793.0 L375,752.5 L340,752.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,772.5 L2014,772.5 L2014,683.0 L1436,683.0 L1436,738.5 L1390,738.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,764.75 L1430,764.75 L1430,793.0 L2020,793.0 L2020,711.4 L2070,711.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,1175.2 L370,1175.2 L370,1148.0 L880,1148.0 L880,1203.5 L930,1203.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1229.75 L885,1229.75 L885,1258.0 L375,1258.0 L375,1217.5 L340,1217.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,1237.5 L2014,1237.5 L2014,1148.0 L1436,1148.0 L1436,1203.5 L1390,1203.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,1640.2 L370,1640.2 L370,1613.0 L880,1613.0 L880,1668.5 L930,1668.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1694.75 L885,1694.75 L885,1723.0 L375,1723.0 L375,1682.5 L340,1682.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,1702.5 L2014,1702.5 L2014,1613.0 L1436,1613.0 L1436,1668.5 L1390,1668.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,1694.75 L1430,1694.75 L1430,1723.0 L2020,1723.0 L2020,1641.4 L2070,1641.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="930" y="252.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,280.5 L1390,280.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="273.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">4.0</text>
+<text x="1087.5" y="325.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Add Product</text>
+<text x="1027.5078125" y="395.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Validate and save product details</text>
+<rect x="60" y="220" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="274.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="210" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,210 L2540,210" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,340 L2540,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,210 L2070,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,210 L2123,340" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="283.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="244.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="289.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="311.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="930" y="717.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,745.5 L1390,745.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="738.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">5.0</text>
+<text x="1070.5" y="790.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Update Product</text>
+<text x="1015.0" y="860.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Save changes to an existing product</text>
+<rect x="60" y="685" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="739.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="675" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,675 L2540,675" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,805 L2540,805" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,675 L2070,805" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,675 L2123,805" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="748.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="709.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="754.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="776.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="930" y="1182.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1210.5 L1390,1210.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="1203.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">6.0</text>
+<text x="1075.0" y="1255.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">View Inventory</text>
+<text x="1011.5" y="1325.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Apply filters and display current stock</text>
+<rect x="60" y="1150" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="1204.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="1140" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,1140 L2540,1140" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1270 L2540,1270" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1140 L2070,1270" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,1140 L2123,1270" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="1213.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="1174.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="1219.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="1241.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="930" y="1647.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1675.5 L1390,1675.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="1668.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">7.0</text>
+<text x="1025.5" y="1720.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Record Incoming Stock</text>
+<text x="1031.5" y="1790.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Record the received stock batch</text>
+<rect x="60" y="1615" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="1669.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="1605" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,1605 L2540,1605" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1735 L2540,1735" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1605 L2070,1735" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,1605 L2123,1735" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="1678.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D1</text>
+<text x="2242.5" y="1639.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Product Records</text>
+<text x="2216.0" y="1684.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Catalog, prices, stock batches</text>
+<text x="2239.0" y="1706.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">and remaining quantities</text>
+<rect x="415" y="190" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="556.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">New product details</text>
+<text x="545.0" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and category selection</text>
+<rect x="415" y="300" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="548.5" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Saved product details</text>
+<text x="562.0" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or validation result</text>
+<rect x="1510" y="190" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1654.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Existing product/category</text>
+<text x="1710.5" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">information</text>
+<rect x="1510" y="300" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1704.5" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">New product</text>
+<text x="1729.5" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">record</text>
+<rect x="415" y="655" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="575.0" y="678.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Product ID and</text>
+<text x="541.5" y="701.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">updated product values</text>
+<rect x="415" y="765" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="540.0" y="788.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Updated product details</text>
+<text x="562.0" y="811.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or validation result</text>
+<rect x="1510" y="655" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1663.0" y="678.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Existing product record</text>
+<text x="1660.5" y="701.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and low-stock threshold</text>
+<rect x="1510" y="765" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1660.5" y="788.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Updated product record</text>
+<text x="1700.5" y="811.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and threshold</text>
+<rect x="415" y="1120" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="521.5" y="1143.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Name/date/price/stock filters</text>
+<text x="566.0" y="1166.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and sort direction</text>
+<rect x="415" y="1230" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="566.0" y="1253.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Filtered inventory</text>
+<text x="540.5" y="1276.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and current stock levels</text>
+<rect x="1510" y="1120" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1666.5" y="1143.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Product details, prices</text>
+<text x="1661.0" y="1166.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and available quantities</text>
+<rect x="415" y="1585" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="528.5078125" y="1608.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Product, received quantity,</text>
+<text x="540.5" y="1631.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">prices and batch details</text>
+<rect x="415" y="1695" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="534.0" y="1718.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Recorded incoming stock</text>
+<text x="530.0" y="1741.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and receiving confirmation</text>
+<rect x="1510" y="1585" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1687.5" y="1608.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected product</text>
+<text x="1683.5" y="1631.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and existing stock</text>
+<rect x="1510" y="1695" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1674.0" y="1718.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">New receiving batch</text>
+<text x="1647.5" y="1741.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and updated stock balance</text>
+<text x="936.5" y="2083.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Repeated actors/stores are the same entities. Cashier history is limited to their own transactions.</text>
+<text x="896.5" y="2113.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">*Labor and service records are retained from the earlier business DFD and are not in the supplied use case.</text>
+<text x="934.5" y="2151.0" font-family="Arial, sans-serif" font-size="14" font-weight="400">Rectangle = external entity  |  Numbered box = separate process  |  D1-D6 = logical data stores  |  Arrow = data flow</text>
+</svg>

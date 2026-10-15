@@ -1,0 +1,122 @@
+[
+  {
+    "listing": 1,
+    "file": "app/Http/Controllers/Auth/AuthenticatedSessionController.php",
+    "start": 25,
+    "end": 40,
+    "title": "Authentication and role based redirection",
+    "code": "public function store(LoginRequest $request): RedirectResponse\n{\n    $request->authenticate();\n\n    $request->session()->regenerate();\n\n    $user = $request->user();\n\n    if ($user && $user->isAdmin()) {\n        return redirect()->intended(route('dashboard', absolute: false));\n    }\n\n    // Operational staff (Cashier, Packer, Installer, Worker) go straight to POS Terminal\n    session()->forget('url.intended');\n    return redirect()->route('pos.index');\n}"
+  },
+  {
+    "listing": 2,
+    "file": "routes/web.php",
+    "start": 49,
+    "end": 54,
+    "title": "Administrator route restriction",
+    "code": "Route::middleware(['role:Admin'])->group(function () {\n    Route::get('/dashboard', [DashboardController::class, 'index'])\n        ->name('dashboard');\n\n    Route::get('/security', [SecurityController::class, 'index'])\n        ->name('security.index');"
+  },
+  {
+    "listing": 3,
+    "file": "app/Models/Product.php",
+    "start": 83,
+    "end": 99,
+    "title": "Sellable stock calculation",
+    "code": "public function sellableStockIns()\n{\n    return $this->stockIns()\n        ->where('Remaining_Quantity', '>', 0)\n        ->where('Condition', 'Good')\n        ->where(function ($query) {\n            $query\n                ->where('Has_Expiration', false)\n                ->orWhereNull('Expiration_Date')\n                ->orWhereDate('Expiration_Date', '>=', today()->toDateString());\n        });\n}\n\npublic function getStockQuantityAttribute(): float\n{\n    return (float) $this->sellableStockIns()->sum('Remaining_Quantity');\n}"
+  },
+  {
+    "listing": 4,
+    "file": "app/Http/Controllers/ProductController.php",
+    "start": 424,
+    "end": 432,
+    "title": "Saving an edited stock threshold",
+    "code": "$product->update([\n    'Name' => $validated['Name'],\n    'Description' => $validated['Description'] ?? null,\n    'Low_Stock_Threshold' => $validated['Low_Stock_Threshold'] ?? $product->low_stock_threshold,\n    'Category_ID' => $validated['Category_ID'],\n    'Status_ID' => $validated['Status_ID'],\n    'Image' => $currentImages[0] ?? null,\n    'Images' => $currentImages,\n]);"
+  },
+  {
+    "listing": 5,
+    "file": "app/Http/Controllers/StockInController.php",
+    "start": 185,
+    "end": 199,
+    "title": "Creating a stock batch",
+    "code": "$hasExpiration = $request->boolean('Has_Expiration');\n\n$stockIn = StockIn::create([\n    'Product_ID' => $product->ID,\n    'User_ID' => $processor->id,\n    'Quantity' => $validated['Quantity'],\n    'Remaining_Quantity' => $validated['Quantity'],\n    'Cost_Price' => $validated['Cost_Price'],\n    'Retail_Price' => $validated['Retail_Price'],\n    'Has_Expiration' => $hasExpiration,\n    'Expiration_Date' => $hasExpiration\n        ? ($validated['Expiration_Date'] ?? null)\n        : null,\n    'Condition' => $validated['Condition'] ?? 'Good',\n]);"
+  },
+  {
+    "listing": 6,
+    "file": "app/Http/Controllers/PosController.php",
+    "start": 159,
+    "end": 176,
+    "title": "Selecting and locking sellable batches",
+    "code": "$batches = StockIn::where('Product_ID', $product->ID)\n    ->where('Remaining_Quantity', '>', 0)\n    ->where('Condition', 'Good')\n    ->where(function ($query) {\n        $query\n            ->where('Has_Expiration', false)\n            ->orWhereNull('Expiration_Date')\n            ->orWhereDate(\n                'Expiration_Date',\n                '>=',\n                today()->toDateString()\n            );\n    })\n    ->orderBy('ID', 'asc')\n    ->lockForUpdate()\n    ->get();\n\n$available = (float) $batches->sum('Remaining_Quantity');"
+  },
+  {
+    "listing": 7,
+    "file": "app/Http/Controllers/PosController.php",
+    "start": 191,
+    "end": 210,
+    "title": "Allocating stock across batches",
+    "code": "$remainingToAllocate = $qty;\n$fifoAllocations = [];\n\nforeach ($batches as $batch) {\n    if ($remainingToAllocate <= 0) {\n        break;\n    }\n\n    $availableInBatch = (float) $batch->Remaining_Quantity;\n    $take = min($availableInBatch, $remainingToAllocate);\n\n    if ($take > 0) {\n        $fifoAllocations[] = [\n            'batch' => $batch,\n            'quantity' => $take,\n        ];\n\n        $remainingToAllocate -= $take;\n    }\n}"
+  },
+  {
+    "listing": 8,
+    "file": "app/Http/Controllers/PosController.php",
+    "start": 259,
+    "end": 288,
+    "title": "Recording a sale and reducing batch balances",
+    "code": "$sale = Sale::create([\n    'Date' => Carbon::now('Asia/Manila'),\n    'Total' => $total,\n    'Amount_Received' => $amountTendered,\n    'Change_Amount' => $change,\n    'GCash_Reference_Number' => $gcashReference,\n    'User_ID' => $cashierId,\n    'Payment_Method_ID' => $paymentMethod->ID,\n]);\n\nforeach ($itemsToSave as $item) {\n    SoldItem::create([\n        'Product_ID' => $item['product_id'],\n        'Quantity' => $item['quantity'],\n        'Total' => $item['total'],\n        'Sale_ID' => $sale->ID,\n    ]);\n\n    foreach ($item['fifo_allocations'] as $allocation) {\n        $batch = $allocation['batch'];\n        $quantityUsed = (float) $allocation['quantity'];\n\n        $batch->Remaining_Quantity = max(\n            0,\n            (float) $batch->Remaining_Quantity - $quantityUsed\n        );\n\n        $batch->save();\n    }\n}"
+  },
+  {
+    "listing": 9,
+    "file": "app/Http/Controllers/ReportController.php",
+    "start": 118,
+    "end": 129,
+    "title": "Filtered sales totals",
+    "code": "$this->applySalePeriod($salesQuery, $period, $month, $year, $week);\n\n$totalTransactions = (clone $salesQuery)->count();\n$totalSales = (float) (clone $salesQuery)->sum('Total');\n\n$cashSales = (float) (clone $salesQuery)\n    ->whereHas('paymentMethod', fn($q) => $q->where('Name', 'Cash'))\n    ->sum('Total');\n\n$gcashSales = (float) (clone $salesQuery)\n    ->whereHas('paymentMethod', fn($q) => $q->where('Name', 'GCash'))\n    ->sum('Total');"
+  },
+  {
+    "listing": 10,
+    "file": "app/Http/Controllers/TransactionController.php",
+    "start": 167,
+    "end": 180,
+    "title": "Restricting employee sales history",
+    "code": "private function buildQuery(Request $request, array $filters): Builder\n{\n    $query = Sale::query();\n\n    // Cashier filter (Admin can view all or filter by staff; Employee is restricted to own sales)\n    if (auth()->user() && auth()->user()->isAdmin()) {\n        if (!empty($filters['cashier_id']) && $filters['cashier_id'] !== 'all') {\n            $query->where('User_ID', $filters['cashier_id']);\n        }\n    } else {\n        $query->where('User_ID', auth()->id());\n    }\n\n    // Apply Date / Period"
+  },
+  {
+    "listing": 11,
+    "file": "app/Services/AccountRecoveryService.php",
+    "start": 41,
+    "end": 56,
+    "title": "Generating and hashing a recovery code",
+    "code": "public function generate(User $user): string\n{\n    return DB::transaction(function () use ($user) {\n        User::whereKey($user->id)->lockForUpdate()->firstOrFail();\n        $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';\n        $code = '';\n        for ($index = 0; $index < 16; $index++) {\n            $code .= $alphabet[random_int(0, strlen($alphabet) - 1)];\n        }\n        $code = implode('-', str_split($code, 4));\n        AccountRecoveryCode::where('user_id', $user->id)->delete();\n        AccountRecoveryCode::create(['user_id' => $user->id, 'code_hash' => Hash::make($code), 'attempts' => 0]);\n\n        return $code;\n    });\n}"
+  },
+  {
+    "listing": 12,
+    "file": "app/Http/Controllers/BackupController.php",
+    "start": 458,
+    "end": 467,
+    "title": "Confirming the administrator password before restore",
+    "code": "public function restoreBackup(Request $request)\n{\n    $request->validateWithBag('restoreBackup', [\n        'current_password' => 'required|string|current_password',\n        'backup_file' => 'nullable|file|extensions:sql,json',\n        'existing_file' => 'nullable|string',\n    ], [\n        'current_password.required' => 'Enter your administrator password to restore a backup.',\n        'current_password.current_password' => 'The administrator password is incorrect.',\n    ]);"
+  },
+  {
+    "listing": 13,
+    "file": "resources/views/pos/receipt.blade.php",
+    "start": 19,
+    "end": 23,
+    "title": "Selecting the smaller thermal paper layout",
+    "code": "body[data-paper-width=\"58\"] {\n    --paper-width: 58mm;\n    --side-padding: 5mm;\n    --receipt-font-size: 8pt;\n}"
+  },
+  {
+    "listing": 14,
+    "file": "resources/views/pos/receipt.blade.php",
+    "start": 74,
+    "end": 79,
+    "title": "Thermal printing styles",
+    "code": "@media print {\n    html, body { margin: 0 !important; padding: 0 !important; background: #fff; }\n    body { width: var(--paper-width); }\n    .no-print { display: none !important; }\n    .receipt-paper { margin: 0; box-shadow: none; }\n}"
+  },
+  {
+    "listing": 15,
+    "file": "resources/views/pos/receipt.blade.php",
+    "start": 136,
+    "end": 140,
+    "title": "Displaying receipt payment totals",
+    "code": "<div class=\"row total bold\"><span>TOTAL:</span><span>₱{{ number_format($sale->Total, 2) }}</span></div>\n@if(strtolower($sale->paymentMethod->Name ?? '') === 'cash')\n    <div class=\"row\"><span>Amount Received:</span><span>₱{{ number_format($sale->Amount_Received, 2) }}</span></div>\n    <div class=\"row\"><span>Change:</span><span>₱{{ number_format($sale->Change_Amount, 2) }}</span></div>\n@endif"
+  }
+]

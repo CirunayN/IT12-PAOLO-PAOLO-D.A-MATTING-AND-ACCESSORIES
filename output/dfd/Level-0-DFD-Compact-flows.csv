@@ -1,0 +1,75 @@
+﻿flow_id,source,destination,data
+overview-compact-inventory-flow-01,inventory-inventory-4.0-actor-0,inventory-4.0,New product details
+overview-compact-inventory-flow-02,inventory-4.0,inventory-inventory-4.0-actor-0,Saved product details
+overview-compact-inventory-flow-03,inventory-inventory-4.0-store-D1-0,inventory-4.0,Product/category data
+overview-compact-inventory-flow-04,inventory-4.0,inventory-inventory-4.0-store-D1-0,New product record
+overview-compact-inventory-flow-05,inventory-inventory-5.0-actor-0,inventory-5.0,Product ID and changes
+overview-compact-inventory-flow-06,inventory-5.0,inventory-inventory-5.0-actor-0,Updated product details
+overview-compact-inventory-flow-07,inventory-inventory-5.0-store-D1-0,inventory-5.0,Existing product data
+overview-compact-inventory-flow-08,inventory-5.0,inventory-inventory-5.0-store-D1-0,Changed product/threshold
+overview-compact-inventory-flow-09,inventory-inventory-6.0-actor-0,inventory-6.0,Inventory filters and sort
+overview-compact-inventory-flow-10,inventory-6.0,inventory-inventory-6.0-actor-0,Filtered stock list
+overview-compact-inventory-flow-11,inventory-inventory-6.0-store-D1-0,inventory-6.0,"Products, prices, stock"
+overview-compact-inventory-flow-12,inventory-inventory-7.0-actor-0,inventory-7.0,"Product, quantity, price and batch details"
+overview-compact-inventory-flow-13,inventory-7.0,inventory-inventory-7.0-actor-0,Receiving confirmation
+overview-compact-inventory-flow-14,inventory-inventory-7.0-store-D1-0,inventory-7.0,Product/current stock
+overview-compact-inventory-flow-15,inventory-7.0,inventory-inventory-7.0-store-D1-0,Received stock batch
+overview-compact-sales-flow-01,sales-sales-8.0-actor-0,sales-8.0,"Items, quantity, payment"
+overview-compact-sales-flow-02,sales-8.0,sales-sales-8.0-actor-0,Completed transaction
+overview-compact-sales-flow-03,sales-sales-8.0-actor-1,sales-8.0,"Items, quantity, payment"
+overview-compact-sales-flow-04,sales-8.0,sales-sales-8.0-actor-1,Completed transaction
+overview-compact-sales-flow-05,sales-sales-8.0-actor-2,sales-8.0,Order/payment details
+overview-compact-sales-flow-06,sales-8.0,sales-sales-8.0-actor-2,Purchase confirmation
+overview-compact-sales-flow-07,sales-sales-8.0-actor-3,sales-8.0,Service status*
+overview-compact-sales-flow-08,sales-8.0,sales-sales-8.0-actor-3,Service job details*
+overview-compact-sales-flow-09,sales-sales-8.0-store-D1-0,sales-8.0,Available items/prices
+overview-compact-sales-flow-10,sales-8.0,sales-sales-8.0-store-D1-0,Deducted stock balances
+overview-compact-sales-flow-11,sales-8.0,sales-sales-8.0-store-D2-1,Recorded sale/payment
+overview-compact-sales-flow-12,sales-8.0,sales-sales-8.0-store-D3-2,Service charge/status*
+overview-compact-sales-flow-13,sales-sales-9.0-actor-0,sales-9.0,Sales-history filters
+overview-compact-sales-flow-14,sales-9.0,sales-sales-9.0-actor-0,Sales-history records
+overview-compact-sales-flow-15,sales-sales-9.0-actor-1,sales-9.0,Own-sales filters
+overview-compact-sales-flow-16,sales-9.0,sales-sales-9.0-actor-1,Own transaction records
+overview-compact-sales-flow-17,sales-sales-9.0-store-D2-0,sales-9.0,Authorized sale records
+overview-compact-sales-flow-18,sales-sales-10.0-actor-0,sales-10.0,Sale ID/print request
+overview-compact-sales-flow-19,sales-10.0,sales-sales-10.0-actor-0,Printable receipt
+overview-compact-sales-flow-20,sales-sales-10.0-actor-1,sales-10.0,Sale ID/print request
+overview-compact-sales-flow-21,sales-10.0,sales-sales-10.0-actor-1,Printable receipt
+overview-compact-sales-flow-22,sales-10.0,sales-sales-10.0-actor-2,Purchase receipt
+overview-compact-sales-flow-23,sales-sales-10.0-store-D2-0,sales-10.0,"Sale, items, payment, total and change"
+overview-compact-sales-flow-24,sales-8.0,sales-10.0,Completed sale ID
+overview-compact-sales-flow-25,sales-9.0,sales-10.0,Selected sale ID
+overview-compact-accounts-flow-01,accounts-accounts-1.0-actor-0,accounts-1.0,Username and password
+overview-compact-accounts-flow-02,accounts-1.0,accounts-accounts-1.0-actor-0,Admin login result
+overview-compact-accounts-flow-03,accounts-accounts-1.0-actor-1,accounts-1.0,Username and password
+overview-compact-accounts-flow-04,accounts-1.0,accounts-accounts-1.0-actor-1,Cashier login result
+overview-compact-accounts-flow-05,accounts-accounts-1.0-store-D4-0,accounts-1.0,"Credentials, role, access"
+overview-compact-accounts-flow-06,accounts-1.0,accounts-accounts-1.0-store-D4-0,Authenticated session
+overview-compact-accounts-flow-07,accounts-accounts-2.0-actor-0,accounts-2.0,New user/admin password
+overview-compact-accounts-flow-08,accounts-2.0,accounts-accounts-2.0-actor-0,Created user account
+overview-compact-accounts-flow-09,accounts-accounts-2.0-store-D4-0,accounts-2.0,Existing users/admin data
+overview-compact-accounts-flow-10,accounts-2.0,accounts-accounts-2.0-store-D4-0,New account and role
+overview-compact-accounts-flow-11,accounts-accounts-3.0-actor-0,accounts-3.0,User ID and access choice
+overview-compact-accounts-flow-12,accounts-3.0,accounts-accounts-3.0-actor-0,Updated access status
+overview-compact-accounts-flow-13,accounts-accounts-3.0-store-D4-0,accounts-3.0,Current account status
+overview-compact-accounts-flow-14,accounts-3.0,accounts-accounts-3.0-store-D4-0,New status/session data
+overview-compact-reports-flow-01,reports-reports-11.0-actor-0,reports-11.0,Sales-report dates/filters
+overview-compact-reports-flow-02,reports-11.0,reports-reports-11.0-actor-0,Sales summary
+overview-compact-reports-flow-03,reports-reports-11.0-store-D2-0,reports-11.0,Period sales data
+overview-compact-reports-flow-04,reports-reports-11.0-store-D3-1,reports-11.0,Period service data*
+overview-compact-reports-flow-05,reports-reports-12.0-actor-0,reports-12.0,Inventory-report filters
+overview-compact-reports-flow-06,reports-12.0,reports-reports-12.0-actor-0,Inventory summary
+overview-compact-reports-flow-07,reports-reports-12.0-store-D1-0,reports-12.0,Stock/threshold data
+overview-compact-reports-flow-08,reports-reports-13.0-actor-0,reports-13.0,Report/output selection
+overview-compact-reports-flow-09,reports-13.0,reports-reports-13.0-actor-0,Printed/downloaded report
+overview-compact-reports-flow-10,reports-11.0,reports-13.0,Sales report data
+overview-compact-reports-flow-11,reports-12.0,reports-13.0,Inventory report data
+overview-compact-backup-flow-01,backup-backup-14.0-actor-0,backup-14.0,Backup request
+overview-compact-backup-flow-02,backup-14.0,backup-backup-14.0-actor-0,Saved backup details
+overview-compact-backup-flow-03,backup-backup-14.0-store-D6-0,backup-14.0,Current database data
+overview-compact-backup-flow-04,backup-14.0,backup-backup-14.0-store-D5-1,New database backup
+overview-compact-backup-flow-05,backup-backup-15.0-actor-0,backup-15.0,Backup/admin password
+overview-compact-backup-flow-06,backup-15.0,backup-backup-15.0-actor-0,Restoration result
+overview-compact-backup-flow-07,backup-backup-15.0-store-D5-0,backup-15.0,Selected backup data
+overview-compact-backup-flow-08,backup-backup-15.0-store-D4-1,backup-15.0,Admin credentials/role
+overview-compact-backup-flow-09,backup-15.0,backup-backup-15.0-store-D6-2,Restored database data

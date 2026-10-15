@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1820" viewBox="0 0 2600 1820">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="black"/></marker></defs>
+<rect width="2600" height="1820" fill="white"/>
+<text x="1120.0" y="64.0" font-family="Times New Roman, serif" font-size="28" font-weight="700">Database Backup and Restore</text>
+<path d="M340,245.2 L370,245.2 L370,218.0 L880,218.0 L880,368.5 L930,368.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,394.75 L885,394.75 L885,328.0 L375,328.0 L375,287.5 L340,287.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,307.5 L2014,307.5 L2014,218.0 L1436,218.0 L1436,368.5 L1390,368.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,505.0 L1443,505.0 L1443,518.0 L2007,518.0 L2007,436.4 L2070,436.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,900.2 L370,900.2 L370,873.0 L880,873.0 L880,1118.5 L930,1118.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1144.75 L885,1144.75 L885,983.0 L375,983.0 L375,942.5 L340,942.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,962.5 L2014,962.5 L2014,873.0 L1436,873.0 L1436,1118.5 L1390,1118.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,1152.5 L2001,1152.5 L2001,1063.0 L1449,1063.0 L1449,1173.625 L1390,1173.625" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,1255.0 L1456,1255.0 L1456,1363.0 L1994,1363.0 L1994,1281.4 L2070,1281.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="930" y="347.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,375.5 L1390,375.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="368.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">18.0</text>
+<text x="1021.0" y="420.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Create Database Backup</text>
+<text x="1008.0" y="490.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Create and save a database snapshot</text>
+<rect x="60" y="220" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="274.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="210" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,210 L2540,210" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,340 L2540,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,210 L2070,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,210 L2123,340" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="283.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D6</text>
+<text x="2240.0" y="244.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">System Database</text>
+<text x="2225.0" y="289.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Aggregate of D1-D4 records</text>
+<text x="2232.0" y="311.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">for backup and restoration</text>
+<rect x="2070" y="400" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,400 L2540,400" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,530 L2540,530" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,400 L2070,530" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,400 L2123,530" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="473.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D5</text>
+<text x="2212.5" y="434.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Database Backup Files</text>
+<text x="2249.5" y="479.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Saved snapshots and</text>
+<text x="2238.0" y="501.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">selected restoration files</text>
+<rect x="930" y="1097.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1125.5 L1390,1125.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1140.5" y="1118.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">19.0</text>
+<text x="1013.5" y="1170.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Restore Database Backup</text>
+<text x="1002.5078125" y="1240.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Validate access and restore saved data</text>
+<rect x="60" y="875" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="929.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="865" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,865 L2540,865" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,995 L2540,995" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,865 L2070,995" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,865 L2123,995" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="938.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D5</text>
+<text x="2212.5" y="899.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">Database Backup Files</text>
+<text x="2249.5" y="944.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Saved snapshots and</text>
+<text x="2238.0" y="966.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">selected restoration files</text>
+<rect x="2070" y="1055" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,1055 L2540,1055" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1185 L2540,1185" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1055 L2070,1185" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,1055 L2123,1185" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="1128.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D4</text>
+<text x="2213.0078125" y="1089.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">User Account Records</text>
+<text x="2211.0" y="1134.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Username, password hash, role</text>
+<text x="2225.5" y="1156.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">access status and sessions</text>
+<rect x="2070" y="1245" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,1245 L2540,1245" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1375 L2540,1375" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1245 L2070,1375" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,1245 L2123,1375" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="1318.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D6</text>
+<text x="2240.0" y="1279.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">System Database</text>
+<text x="2225.0" y="1324.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Aggregate of D1-D4 records</text>
+<text x="2232.0" y="1346.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">for backup and restoration</text>
+<rect x="415" y="190" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="532.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Database-backup request</text>
+<text x="545.5" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and destination details</text>
+<rect x="415" y="300" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="535.5" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Saved backup file details</text>
+<text x="537.0" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and backup confirmation</text>
+<rect x="1510" y="190" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1685.5" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Current database</text>
+<text x="1680.5" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">records for backup</text>
+<rect x="1510" y="490" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1658.5" y="513.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">New database snapshot</text>
+<text x="1666.0" y="536.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and backup file details</text>
+<rect x="415" y="845" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="554.5" y="868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected backup file</text>
+<text x="524.5" y="891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and administrator password</text>
+<rect x="415" y="955" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="526.5" y="978.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Database-restoration result</text>
+<text x="560.5" y="1001.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or validation errors</text>
+<rect x="1510" y="845" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1680.5" y="868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected database</text>
+<text x="1689.5" y="891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">backup contents</text>
+<rect x="1510" y="1035" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1683.5" y="1058.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Admin credentials</text>
+<text x="1668.0" y="1081.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and administrator role</text>
+<rect x="1510" y="1335" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1645.5078125" y="1358.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Validated database records</text>
+<text x="1655.0" y="1381.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">restored from the backup</text>
+<text x="936.5" y="1723.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Repeated actors/stores are the same entities. Cashier history is limited to their own transactions.</text>
+<text x="896.5" y="1753.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">*Labor and service records are retained from the earlier business DFD and are not in the supplied use case.</text>
+<text x="934.5" y="1791.0" font-family="Arial, sans-serif" font-size="14" font-weight="400">Rectangle = external entity  |  Numbered box = separate process  |  D1-D6 = logical data stores  |  Arrow = data flow</text>
+</svg>

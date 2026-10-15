@@ -1,0 +1,16 @@
+﻿supplied_use_case,separate_process_numbers
+Log In,1.0
+Create User Account,2.0
+Enable or Disable User Account,3.0
+Add Product,4.0
+Update Product,5.0
+View Inventory,6.0
+Record Incoming Stock,7.0
+Process Sales Transaction,"8.0, 9.0, 10.0, 11.0, 12.0"
+View Sales History,13.0
+Print Sales Receipt,14.0
+Generate Sales Report,15.0
+Generate Inventory Report,16.0
+Print or Download Reports,17.0
+Create Database Backup,18.0
+Restore Database Backup,19.0

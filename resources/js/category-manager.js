@@ -97,6 +97,7 @@ function initializeCategoryManager() {
         }, ...(data ? {body: JSON.stringify(data)} : {})});
         const result = await response.json();
         if (!response.ok) throw new Error(result.errors?.Name?.[0] || result.message || 'Unable to save category.');
+        if (method !== 'GET') window.dispatchEvent(new Event('paolo:data-changed'));
         return result;
     }
     async function load() {

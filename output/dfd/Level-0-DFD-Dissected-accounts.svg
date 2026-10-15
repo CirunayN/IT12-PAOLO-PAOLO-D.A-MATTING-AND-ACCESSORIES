@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1905" viewBox="0 0 2600 1905">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="black"/></marker></defs>
+<rect width="2600" height="1905" fill="white"/>
+<text x="1176.015625" y="64.0" font-family="Times New Roman, serif" font-size="28" font-weight="700">Accounts and Access</text>
+<path d="M340,245.2 L370,245.2 L370,218.0 L880,218.0 L880,368.5 L930,368.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,394.75 L885,394.75 L885,328.0 L375,328.0 L375,287.5 L340,287.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,435.2 L380,435.2 L380,408.0 L890,408.0 L890,478.75 L930,478.75" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,505.0 L895,505.0 L895,518.0 L385,518.0 L385,477.5 L340,477.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,307.5 L2014,307.5 L2014,218.0 L1436,218.0 L1436,368.5 L1390,368.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,394.75 L1430,394.75 L1430,328.0 L2020,328.0 L2020,246.4 L2070,246.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,900.2 L370,900.2 L370,873.0 L880,873.0 L880,928.5 L930,928.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,954.75 L885,954.75 L885,983.0 L375,983.0 L375,942.5 L340,942.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,962.5 L2014,962.5 L2014,873.0 L1436,873.0 L1436,928.5 L1390,928.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,954.75 L1430,954.75 L1430,983.0 L2020,983.0 L2020,901.4 L2070,901.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M340,1365.2 L370,1365.2 L370,1338.0 L880,1338.0 L880,1393.5 L930,1393.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M930,1419.75 L885,1419.75 L885,1448.0 L375,1448.0 L375,1407.5 L340,1407.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M2070,1427.5 L2014,1427.5 L2014,1338.0 L1436,1338.0 L1436,1393.5 L1390,1393.5" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1390,1419.75 L1430,1419.75 L1430,1448.0 L2020,1448.0 L2020,1366.4 L2070,1366.4" fill="none" stroke="black" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="930" y="347.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,375.5 L1390,375.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="368.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">1.0</text>
+<text x="1123.0" y="420.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Log In</text>
+<text x="1006.5" y="490.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Check credentials and account access</text>
+<rect x="60" y="220" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="274.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="60" y="410" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="156.5" y="464.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Cashier</text>
+<rect x="2070" y="210" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,210 L2540,210" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,340 L2540,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,210 L2070,340" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,210 L2123,340" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="283.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D4</text>
+<text x="2213.0078125" y="244.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">User Account Records</text>
+<text x="2211.0" y="289.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Username, password hash, role</text>
+<text x="2225.5" y="311.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">access status and sessions</text>
+<rect x="930" y="907.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,935.5 L1390,935.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="928.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">2.0</text>
+<text x="1042.5078125" y="980.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Create User Account</text>
+<text x="1028.0078125" y="1050.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Validate and save a new account</text>
+<rect x="60" y="875" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="929.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="865" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,865 L2540,865" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,995 L2540,995" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,865 L2070,995" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,865 L2123,995" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="938.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D4</text>
+<text x="2213.0078125" y="899.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">User Account Records</text>
+<text x="2211.0" y="944.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Username, password hash, role</text>
+<text x="2225.5" y="966.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">access status and sessions</text>
+<rect x="930" y="1372.5" width="460" height="175" fill="white" stroke="black" stroke-width="1.5"/>
+<path d="M930,1400.5 L1390,1400.5" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="1146.0" y="1393.5" font-family="Arial, sans-serif" font-size="20" font-weight="700">3.0</text>
+<text x="1059.0" y="1431.0" font-family="Arial, sans-serif" font-size="24" font-weight="700">Enable or Disable</text>
+<text x="1082.5078125" y="1460.0" font-family="Arial, sans-serif" font-size="24" font-weight="700">User Account</text>
+<text x="1007.0" y="1515.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Change the selected account&#x27;s access</text>
+<rect x="60" y="1340" width="280" height="90" fill="white" stroke="black" stroke-width="1.5"/>
+<text x="121.5" y="1394.5" font-family="Arial, sans-serif" font-size="24" font-weight="700">Admin/Owner</text>
+<rect x="2070" y="1330" width="470" height="130" fill="white" stroke="none" stroke-width="1.5"/>
+<path d="M2070,1330 L2540,1330" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1460 L2540,1460" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2070,1330 L2070,1460" fill="none" stroke="black" stroke-width="1.5"/>
+<path d="M2123,1330 L2123,1460" fill="none" stroke="black" stroke-width="1.5"/>
+<text x="2082.5" y="1403.5" font-family="Arial, sans-serif" font-size="22" font-weight="700">D4</text>
+<text x="2213.0078125" y="1364.0" font-family="Arial, sans-serif" font-size="22" font-weight="700">User Account Records</text>
+<text x="2211.0" y="1409.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Username, password hash, role</text>
+<text x="2225.5" y="1431.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">access status and sessions</text>
+<rect x="415" y="190" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="567.0" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Admin username</text>
+<text x="579.0" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and password</text>
+<rect x="415" y="300" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="571.0" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Login result and</text>
+<text x="562.0" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">assigned interface</text>
+<rect x="415" y="380" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="561.5" y="403.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Cashier username</text>
+<text x="579.0" y="426.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and password</text>
+<rect x="415" y="490" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="571.0" y="513.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Login result and</text>
+<text x="569.0" y="536.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">cashier interface</text>
+<rect x="1510" y="190" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1662.5" y="213.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Stored credentials, role</text>
+<text x="1649.0" y="236.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and account access status</text>
+<rect x="1510" y="300" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1700.0" y="323.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Authenticated</text>
+<text x="1696.5" y="346.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">session record</text>
+<rect x="415" y="845" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="568.5" y="868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">New user details</text>
+<text x="552.0" y="891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and admin password</text>
+<rect x="415" y="955" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="540.5" y="978.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Created account details</text>
+<text x="562.0" y="1001.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">or validation result</text>
+<rect x="1510" y="845" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1659.0" y="868.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Existing usernames and</text>
+<text x="1650.5" y="891.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">admin account credentials</text>
+<rect x="1510" y="955" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1683.0" y="978.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">New user account</text>
+<text x="1684.0" y="1001.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and assigned role</text>
+<rect x="415" y="1310" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="568.5" y="1333.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected user ID</text>
+<text x="520.5" y="1356.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and requested access status</text>
+<rect x="415" y="1420" width="440" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="567.0" y="1443.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Updated account</text>
+<text x="580.5" y="1466.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">access status</text>
+<rect x="1510" y="1310" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1686.0" y="1333.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Selected account</text>
+<text x="1676.5" y="1356.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and active sessions</text>
+<rect x="1510" y="1420" width="490" height="56" fill="white" stroke="none" stroke-width="1.5"/>
+<text x="1664.0" y="1443.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">Updated access status</text>
+<text x="1674.5" y="1466.0" font-family="Arial, sans-serif" font-size="18" font-weight="400">and session records</text>
+<text x="936.5" y="1808.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">Repeated actors/stores are the same entities. Cashier history is limited to their own transactions.</text>
+<text x="896.5" y="1838.5" font-family="Arial, sans-serif" font-size="17" font-weight="400">*Labor and service records are retained from the earlier business DFD and are not in the supplied use case.</text>
+<text x="934.5" y="1876.0" font-family="Arial, sans-serif" font-size="14" font-weight="400">Rectangle = external entity  |  Numbered box = separate process  |  D1-D6 = logical data stores  |  Arrow = data flow</text>
+</svg>

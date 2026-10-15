@@ -1,0 +1,56 @@
+﻿flow_id,source,destination,data
+flow-01,owner,P1,New/changed product details
+flow-02,D1,P1,Existing product records
+flow-03,P1,D1,Saved product changes
+flow-04,owner,P2,Shipment and received quantity
+flow-05,D1,P2,Product/current stock
+flow-06,P2,D1,New stock batch
+flow-07,owner,P3,Inventory filters
+flow-08,D1,P3,Products/prices/stock
+flow-09,P3,owner,Filtered inventory
+flow-10,owner,P4,Sales details
+flow-11,cashier,P4,Items/quantity/payment
+flow-12,customer,P4,Order/payment details
+flow-13,D1,P4,Sellable items/stock
+flow-14,P4,D1,Deducted stock quantities
+flow-15,P4,D2,Recorded sale/payment
+flow-16,labor,P4,Service progress/status*
+flow-17,P4,labor,Service job details*
+flow-18,P4,D3,Service charge/status*
+flow-19,P4,P6,Completed sale ID
+flow-20,owner,P5,History filters
+flow-21,cashier,P5,Own-sales filters
+flow-22,D2,P5,Authorized sales records
+flow-23,P5,owner,Sales history
+flow-24,P5,cashier,Own sales history
+flow-25,owner,P6,Receipt request
+flow-26,cashier,P6,Receipt request
+flow-27,D2,P6,Sale/items/payment/change
+flow-28,D3,P6,Linked service charges*
+flow-29,P6,owner,Printable receipt
+flow-30,P6,cashier,Printable receipt
+flow-31,P6,customer,Purchase receipt
+flow-32,owner,P7,Sales dates/filters/output
+flow-33,D2,P7,Period sales data
+flow-34,D3,P7,Period service data*
+flow-35,P7,owner,Sales report/print/PDF
+flow-36,owner,P8,Stock filters/output
+flow-37,D1,P8,Stock/threshold data
+flow-38,P8,owner,Inventory report/print/PDF
+flow-39,owner,P9,Username/password
+flow-40,cashier,P9,Username/password
+flow-41,D4,P9,Credentials/role/access
+flow-42,P9,D4,Authenticated session
+flow-43,P9,owner,Admin login result
+flow-44,P9,cashier,Cashier login result
+flow-45,owner,P10,User details/access choice
+flow-46,D4,P10,User/admin records
+flow-47,P10,D4,Created/updated user account
+flow-48,owner,P11,Backup request
+flow-49,D6,P11,Current database data
+flow-50,P11,D5,New database backup
+flow-51,owner,P12,Backup/admin password
+flow-52,D5,P12,Selected backup contents
+flow-53,D4,P12,Admin credentials
+flow-54,P12,D6,Restored database records
+flow-55,P12,owner,Restoration result

@@ -1,0 +1,281 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="4806" height="4107" viewBox="0 0 4806 4107">
+<defs><marker id="arrow" markerWidth="11" markerHeight="10" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 L2,5 Z" fill="black"/></marker></defs>
+<rect width="4806" height="4107" fill="white"/>
+<text x="1926.0078125" y="80.0" font-family="Times New Roman, serif" font-size="60" font-weight="700">Figure 3. Level 0 Data Flow Diagram</text>
+<path d="M2162.7944999999995,218.29999999999998 L1383.9692307692308,218.29999999999998 L257.9806666666666,218.29999999999998 L257.9806666666666,862.0633333333332 L257.9806666666666,978.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M899.0459999999998,1589.45 L730.486,1589.45 L479.50333333333276,1589.45 L479.50333333333276,1227.9360000000001 L479.50333333333276,1199.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M450.9806666666666,1199.45 L450.9806666666666,1319.2635 L450.9806666666666,1613.95 L869.6677777777778,1613.95 L899.0459999999998,1613.95" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2162.7944999999995,302.3 L1714.9599999999982,302.3 L1155.7445,302.3 L1155.7445,864.3966666666664 L1155.7445,978.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1076.6299999999999,1554.45 L1076.6299999999999,1227.9225000000001 L1076.6299999999999,1199.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1216.5507692307692,1199.45 L1216.5507692307692,1497.3859999999997 L1216.5507692307692,1554.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2239.2989999999995,525.3666666666667 L2239.2989999999995,863.9300000000002 L2239.2989999999995,978.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1552.8899999999996,1554.45 L1552.8899999999996,1379.865 L1552.8899999999996,1099.45 L1851.0959999999998,1099.45 L1909.196,1099.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2352.2034999999996,978.45 L2352.2034999999996,554.776 L2352.2034999999996,525.3666666666667" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2162.7944999999995,330.3 L1993.875,330.3 L1656.3933333333334,330.3 L1656.3933333333334,2449.5 L1523.028,2449.5 L1470.3599999999983,2449.5" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M367.12999999999977,1860.7 L620.2220000000001,1860.7 L843.8455555555554,1860.7 L843.8455555555554,2647.677777777778 L926.3739999999998,2647.677777777778 L954.9445,2647.677777777778" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1300.515294117647,3556.2269230769225 L1300.515294117647,2849.5273333333334 L1300.515294117647,2820.65" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1245.3566666666666,1890.45 L1245.3566666666666,2365.164 L1245.3566666666666,2422.9" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1103.3100000000002,2422.9 L1103.3100000000002,1949.5300000000004 L1103.3100000000002,1890.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1470.3599999999983,2565.7000000000003 L1684.6149999999996,2565.7000000000003 L2019.495,2565.7000000000003 L2019.495,2273.478 L2019.495,2245.1" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2839.5944999999992,3523.6499999999996 L2324.1049999999996,3523.6499999999996 L1328.515294117647,3523.6499999999996 L1328.515294117647,2849.1353333333336 L1328.515294117647,2820.65" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1356.5507692307692,2820.65 L1356.5507692307692,3086.519999999999 L1356.5507692307692,3495.6499999999996 L2810.9599999999996,3495.6499999999996 L2839.5944999999992,3495.6499999999996" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1470.3599999999983,2751.9 L2414.7759999999994,2751.9 L2443.3271111111103,2751.9" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1440.515294117647,2820.65 L1440.515294117647,2910.8479999999995 L1440.515294117647,3107.275 L2078.3219999999997,3107.275 L2106.798,3107.275" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2162.7944999999995,277.09999999999997 L1580.5349999999999,277.09999999999997 L758.9531578947368,277.09999999999997 L758.9531578947368,2538.4 L564.2811111111109,2538.4 L535.1299999999998,2538.4" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M197.19449999999995,1920.2 L197.19449999999995,2338.224705882353 L197.19449999999995,2394.9" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1881.3919999999996,2190.4249999999997 L1216.4646153846154,2190.4249999999997 L422.9806666666666,2190.4249999999997 L422.9806666666666,2338.4882352941177 L422.9806666666666,2394.9" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M535.1299999999998,2737.9 L646.542,2737.9 L703.7459999999999,2737.9 L703.7459999999999,246.29999999999998 L2134.294,246.29999999999998 L2162.7944999999995,246.29999999999998" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M285.94449999999995,2394.9 L285.94449999999995,1971.7433333333338 L285.94449999999995,1920.2" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2162.7944999999995,394.7 L2049.216,394.7 L1797.196,394.7 L1797.196,3051.3333333333335 L2078.16,3051.3333333333335 L2106.798,3051.3333333333335" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M367.12999999999977,1805.2833333333333 L562.4579999999997,1805.2833333333333 L786.5847368421051,1805.2833333333333 L786.5847368421051,3161.525 L2078.4974999999995,3161.525 L2106.798,3161.525" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2267.780666666666,2245.1 L2267.780666666666,2936.3839999999996 L2267.780666666666,2966.4" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2611.3449999999993,2820.65 L2611.3449999999993,2935.712 L2611.3449999999993,2966.4" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2106.798,3023.275 L1976.479999999999,3023.275 L1825.3919999999996,3023.275 L1825.3919999999996,475.2 L2134.3079999999995,475.2 L2162.7944999999995,475.2" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2106.798,3133.525 L1492.4799999999973,3133.525 L814.2163157894736,3133.525 L814.2163157894736,1774.95 L397.20199999999977,1774.95 L367.12999999999977,1774.95" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2106.798,3189.525 L1937.1999999999998,3189.525 L1741.9566666666665,3189.525 L1741.9566666666665,3471.709999999999 L1741.9566666666665,3556.2269230769225" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2695.4919999999993,450.7 L3086.8489999999997,450.7 L3846.8959999999997,450.7 L3846.8959999999997,2338.3070588235296 L3846.8959999999997,2394.9" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2553.379999999999,2245.1 L2553.379999999999,2311.3611764705884 L2553.379999999999,2477.5 L3366.766,2477.5 L3395.2944999999995,2477.5" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3199.3021999999996,2705.2333333333336 L3366.9339999999997,2705.2333333333336 L3395.2944999999995,2705.2333333333336" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3818.8959999999997,2394.9 L3818.8959999999997,2080.0625 L3818.8959999999997,496.2 L2765.379999999999,496.2 L2695.4919999999993,496.2" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2593.1799999999967,525.3666666666667 L2593.1799999999967,724.8633333333335 L2593.1799999999967,1495.65 L3281.6133333333323,1495.65 L3339.298,1495.65" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M1629.1633333333332,1830.95 L3281.799999999999,1830.95 L3339.298,1830.95" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3339.298,1528.7833333333333 L2994.489999999999,1528.7833333333333 L2526.446666666666,1528.7833333333333 L2526.446666666666,554.664 L2526.446666666666,525.3666666666667" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2638.8549999999996,525.3666666666667 L2638.8549999999996,619.7533333333336 L2638.8549999999996,880.45 L3012.970000000001,880.45 L3042.7444999999993,880.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M367.12999999999977,1721.2833333333333 L507.9466666666665,1721.2833333333333 L672.843333333333,1721.2833333333333 L672.843333333333,946.95 L3009.8899999999976,946.95 L3042.7444999999993,946.95" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4005.0806666666663,331.7 L4005.0806666666663,591.988 L4005.0806666666663,1005.7131578947369 L3565.3954999999996,1005.7131578947369 L3537.1459999999997,1005.7131578947369" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3537.1459999999997,1078.45 L3722.3799999999983,1078.45 L4033.0806666666663,1078.45 L4033.0806666666663,417.4266666666667 L4033.0806666666663,331.7" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3042.7444999999993,843.1166666666667 L2890.2869999999994,843.1166666666667 L2665.544444444444,843.1166666666667 L2665.544444444444,554.8600000000001 L2665.544444444444,525.3666666666667" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3042.7444999999993,925.95 L2295.1459999999997,925.95 L590.2899999999998,925.95 L590.2899999999998,1693.05 L397.03399999999993,1693.05 L367.12999999999977,1693.05" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2695.4919999999993,357.3666666666667 L3171.5999999999995,357.3666666666667 L4262.132,357.3666666666667 L4262.132,697.7885 L4262.132,754.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4462.589999999997,331.7 L4462.589999999997,697.802 L4462.589999999997,754.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4351.5695,754.45 L4351.5695,417.9866666666667 L4351.5695,331.7" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2695.4919999999993,418.0333333333333 L3115.666666666666,418.0333333333333 L3977.0806666666663,418.0333333333333 L3977.0806666666663,2674.1222222222223 L4176.131999999999,2674.1222222222223 L4234.026666666665,2674.1222222222223" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4436.339999999997,1946.45 L4436.339999999997,2505.5 L4436.339999999997,2590.9" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4436.339999999997,2876.65 L4436.339999999997,3412.353333333333 L4436.339999999997,3441.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M2499.784444444444,525.3666666666667 L2499.784444444444,781.3299999999995 L2499.784444444444,1693.05 L3312.8399999999992,1693.05 L3312.8399999999992,3299.103 L3312.8399999999992,3327.4" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4150.091999999998,3474.6499999999996 L3763.5399999999995,3474.6499999999996 L3708.659999999998,3474.6499999999996" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M4061.0806666666663,331.7 L4061.0806666666663,1046.3290000000002 L4061.0806666666663,3356.425 L3763.176,3356.425 L3708.659999999998,3356.425" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3708.659999999998,3386.6166666666663 L3949.2113333333327,3386.6166666666663 L4201.686666666666,3386.6166666666663 L4201.686666666666,2028.1633333333334 L4201.686666666666,1946.45" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M3254.16,3327.4 L3254.16,2997.4799999999996 L3254.16,1748.7 L2469.979999999999,1748.7 L2469.979999999999,554.776 L2469.979999999999,525.3666666666667" fill="none" stroke="black" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="2162.7944999999995" y="193.1" width="532.6974999999998" height="332.26666666666665" fill="white" stroke="black" stroke-width="3"/>
+<text x="2286.643249999999" y="378.73333333333335" font-family="Arial, sans-serif" font-size="44" font-weight="700">Admin/Owner</text>
+<rect x="116.23499999999989" y="1634.95" width="250.89499999999987" height="285.25" fill="white" stroke="black" stroke-width="3"/>
+<text x="161.68249999999983" y="1797.075" font-family="Arial, sans-serif" font-size="44" font-weight="700">Cashier</text>
+<rect x="1272.515294117647" y="3556.2269230769225" width="496.68070588235287" height="128.77307692307704" fill="white" stroke="black" stroke-width="3"/>
+<text x="1418.3556470588235" y="3640.113461538461" font-family="Arial, sans-serif" font-size="44" font-weight="700">Customer</text>
+<rect x="2839.5944999999992" y="3474.6499999999996" width="303.7143888888895" height="182.97222222222217" fill="white" stroke="black" stroke-width="3"/>
+<text x="2930.451694444444" y="3585.636111111111" font-family="Arial, sans-serif" font-size="44" font-weight="700">Labor</text>
+<rect x="75.73499999999989" y="978.45" width="459.39499999999987" height="221.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M75.73499999999989,1024.45 L535.1299999999998,1024.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="280.43249999999983" y="1015.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">1.0</text>
+<text x="134.93249999999983" y="1106.95" font-family="Arial, sans-serif" font-size="44" font-weight="700">Manage Product</text>
+<text x="217.93249999999983" y="1155.95" font-family="Arial, sans-serif" font-size="44" font-weight="700">Records</text>
+<rect x="954.9445" y="978.45" width="458.1088333333329" height="221.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M954.9445,1024.45 L1413.0533333333328,1024.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="1158.9989166666664" y="1015.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">2.0</text>
+<text x="1004.9989166666664" y="1106.95" font-family="Arial, sans-serif" font-size="44" font-weight="700">Record Incoming</text>
+<text x="1124.4989166666664" y="1155.95" font-family="Arial, sans-serif" font-size="44" font-weight="700">Stock</text>
+<rect x="1909.196" y="978.45" width="534.121777777777" height="221.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M1909.196,1024.45 L2443.317777777777,1024.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="2151.256888888888" y="1015.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">3.0</text>
+<text x="2022.2647013888884" y="1131.45" font-family="Arial, sans-serif" font-size="44" font-weight="700">View Inventory</text>
+<rect x="954.9445" y="2422.9" width="515.4154999999984" height="397.75" fill="white" stroke="black" stroke-width="3"/>
+<path d="M954.9445,2468.9 L1470.3599999999983,2468.9" fill="none" stroke="black" stroke-width="3"/>
+<text x="1187.6522499999992" y="2460.4" font-family="Arial, sans-serif" font-size="36" font-weight="700">4.0</text>
+<text x="1065.6522499999992" y="2639.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">Process Sales</text>
+<text x="1088.6678749999992" y="2688.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">Transaction</text>
+<rect x="75.73499999999989" y="2394.9" width="459.39499999999987" height="397.75" fill="white" stroke="black" stroke-width="3"/>
+<path d="M75.73499999999989,2440.9 L535.1299999999998,2440.9" fill="none" stroke="black" stroke-width="3"/>
+<text x="280.43249999999983" y="2432.4" font-family="Arial, sans-serif" font-size="36" font-weight="700">5.0</text>
+<text x="193.44031249999983" y="2611.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">View Sales</text>
+<text x="229.93249999999983" y="2660.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">History</text>
+<rect x="2106.798" y="2966.4" width="646.2619999999979" height="252.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M2106.798,3012.4 L2753.0599999999977,3012.4" fill="none" stroke="black" stroke-width="3"/>
+<text x="2404.9289999999987" y="3003.9" font-family="Arial, sans-serif" font-size="36" font-weight="700">6.0</text>
+<text x="2317.4289999999987" y="3110.4" font-family="Arial, sans-serif" font-size="44" font-weight="700">Print Sales</text>
+<text x="2350.9289999999987" y="3159.4" font-family="Arial, sans-serif" font-size="44" font-weight="700">Receipt</text>
+<rect x="3395.2944999999995" y="2394.9" width="479.5" height="397.75" fill="white" stroke="black" stroke-width="3"/>
+<path d="M3395.2944999999995,2440.9 L3874.7944999999995,2440.9" fill="none" stroke="black" stroke-width="3"/>
+<text x="3610.0444999999995" y="2432.4" font-family="Arial, sans-serif" font-size="36" font-weight="700">7.0</text>
+<text x="3478.0444999999995" y="2611.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">Generate Sales</text>
+<text x="3564.0444999999995" y="2660.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">Report</text>
+<rect x="3339.298" y="1470.45" width="451.59799999999996" height="532.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M3339.298,1516.45 L3790.8959999999997,1516.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="3540.0969999999998" y="1507.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">8.0</text>
+<text x="3366.0969999999998" y="1754.45" font-family="Arial, sans-serif" font-size="44" font-weight="700">Generate Inventory</text>
+<text x="3494.0969999999998" y="1803.45" font-family="Arial, sans-serif" font-size="44" font-weight="700">Report</text>
+<rect x="3042.7444999999993" y="810.45" width="494.4015000000004" height="333.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M3042.7444999999993,856.45 L3537.1459999999997,856.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="3264.9452499999998" y="847.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">9.0</text>
+<text x="3223.9452499999998" y="1019.45" font-family="Arial, sans-serif" font-size="44" font-weight="700">Log In</text>
+<rect x="4089.0444999999995" y="754.45" width="491.99999999999955" height="417.0" fill="white" stroke="black" stroke-width="3"/>
+<path d="M4089.0444999999995,800.45 L4581.044499999999,800.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="4300.0445" y="791.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">10.0</text>
+<text x="4199.0445" y="980.95" font-family="Arial, sans-serif" font-size="44" font-weight="700">Manage User</text>
+<text x="4235.0445" y="1029.95" font-family="Arial, sans-serif" font-size="44" font-weight="700">Accounts</text>
+<rect x="4234.026666666665" y="2590.9" width="428.01783333333424" height="285.75" fill="white" stroke="black" stroke-width="3"/>
+<path d="M4234.026666666665,2636.9 L4662.044499999999,2636.9" fill="none" stroke="black" stroke-width="3"/>
+<text x="4413.051208333332" y="2628.4" font-family="Arial, sans-serif" font-size="36" font-weight="700">11.0</text>
+<text x="4277.035583333332" y="2751.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">Create Database</text>
+<text x="4369.035583333332" y="2800.775" font-family="Arial, sans-serif" font-size="44" font-weight="700">Backup</text>
+<rect x="3227.4799999999996" y="3327.4" width="481.1799999999985" height="255.74999999999955" fill="white" stroke="black" stroke-width="3"/>
+<path d="M3227.4799999999996,3373.4 L3708.659999999998,3373.4" fill="none" stroke="black" stroke-width="3"/>
+<text x="3433.069999999999" y="3364.9" font-family="Arial, sans-serif" font-size="36" font-weight="700">12.0</text>
+<text x="3283.569999999999" y="3473.2749999999996" font-family="Arial, sans-serif" font-size="44" font-weight="700">Restore Database</text>
+<text x="3389.069999999999" y="3522.2749999999996" font-family="Arial, sans-serif" font-size="44" font-weight="700">Backup</text>
+<rect x="899.0459999999998" y="1554.45" width="730.1173333333334" height="336.0" fill="white" stroke="none" stroke-width="3"/>
+<path d="M899.0459999999998,1554.45 L1629.1633333333332,1554.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M899.0459999999998,1890.45 L1629.1633333333332,1890.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M899.0459999999998,1554.45 L899.0459999999998,1890.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M984.0459999999998,1554.45 L984.0459999999998,1890.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="917.5459999999998" y="1737.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">D1</text>
+<text x="1146.6046666666666" y="1739.95" font-family="Arial, sans-serif" font-size="40" font-weight="700">Product Records</text>
+<rect x="1881.3919999999996" y="2137.1" width="842.0999999999997" height="108.0" fill="white" stroke="none" stroke-width="3"/>
+<path d="M1881.3919999999996,2137.1 L2723.4919999999993,2137.1" fill="none" stroke="black" stroke-width="3"/>
+<path d="M1881.3919999999996,2245.1 L2723.4919999999993,2245.1" fill="none" stroke="black" stroke-width="3"/>
+<path d="M1881.3919999999996,2137.1 L1881.3919999999996,2245.1" fill="none" stroke="black" stroke-width="3"/>
+<path d="M1966.3919999999996,2137.1 L1966.3919999999996,2245.1" fill="none" stroke="black" stroke-width="3"/>
+<text x="1899.8919999999996" y="2206.6" font-family="Arial, sans-serif" font-size="36" font-weight="700">D2</text>
+<text x="2138.4419999999996" y="2208.6" font-family="Arial, sans-serif" font-size="40" font-weight="700">Product Sale Records</text>
+<rect x="2443.3271111111103" y="2618.9" width="755.9750888888893" height="201.75" fill="white" stroke="none" stroke-width="3"/>
+<path d="M2443.3271111111103,2618.9 L3199.3021999999996,2618.9" fill="none" stroke="black" stroke-width="3"/>
+<path d="M2443.3271111111103,2820.65 L3199.3021999999996,2820.65" fill="none" stroke="black" stroke-width="3"/>
+<path d="M2443.3271111111103,2618.9 L2443.3271111111103,2820.65" fill="none" stroke="black" stroke-width="3"/>
+<path d="M2528.3271111111103,2618.9 L2528.3271111111103,2820.65" fill="none" stroke="black" stroke-width="3"/>
+<text x="2461.8271111111103" y="2735.275" font-family="Arial, sans-serif" font-size="36" font-weight="700">D3</text>
+<text x="2653.314655555555" y="2737.275" font-family="Arial, sans-serif" font-size="40" font-weight="700">Service Sale Records*</text>
+<rect x="3949.080666666666" y="148.5" width="604.261333333332" height="183.2" fill="white" stroke="none" stroke-width="3"/>
+<path d="M3949.080666666666,148.5 L4553.341999999998,148.5" fill="none" stroke="black" stroke-width="3"/>
+<path d="M3949.080666666666,331.7 L4553.341999999998,331.7" fill="none" stroke="black" stroke-width="3"/>
+<path d="M3949.080666666666,148.5 L3949.080666666666,331.7" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4034.080666666666,148.5 L4034.080666666666,331.7" fill="none" stroke="black" stroke-width="3"/>
+<text x="3967.580666666666" y="255.6" font-family="Arial, sans-serif" font-size="36" font-weight="700">D4</text>
+<text x="4079.719145833332" y="257.6" font-family="Arial, sans-serif" font-size="40" font-weight="700">User Account Records</text>
+<rect x="4150.091999999998" y="3441.45" width="586.2025000000012" height="188.94999999999982" fill="white" stroke="none" stroke-width="3"/>
+<path d="M4150.091999999998,3441.45 L4736.294499999999,3441.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4150.091999999998,3630.3999999999996 L4736.294499999999,3630.3999999999996" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4150.091999999998,3441.45 L4150.091999999998,3630.3999999999996" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4235.091999999998,3441.45 L4235.091999999998,3630.3999999999996" fill="none" stroke="black" stroke-width="3"/>
+<text x="4168.591999999998" y="3551.4249999999997" font-family="Arial, sans-serif" font-size="36" font-weight="700">D5</text>
+<text x="4270.193249999998" y="3553.4249999999997" font-family="Arial, sans-serif" font-size="40" font-weight="700">Database Backup Files</text>
+<rect x="4150.091999999998" y="1666.45" width="586.2025000000012" height="280.0" fill="white" stroke="none" stroke-width="3"/>
+<path d="M4150.091999999998,1666.45 L4736.294499999999,1666.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4150.091999999998,1946.45 L4736.294499999999,1946.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4150.091999999998,1666.45 L4150.091999999998,1946.45" fill="none" stroke="black" stroke-width="3"/>
+<path d="M4235.091999999998,1666.45 L4235.091999999998,1946.45" fill="none" stroke="black" stroke-width="3"/>
+<text x="4168.591999999998" y="1821.95" font-family="Arial, sans-serif" font-size="36" font-weight="700">D6</text>
+<text x="4321.193249999998" y="1823.95" font-family="Arial, sans-serif" font-size="40" font-weight="700">System Database</text>
+<rect x="618.9184210526315" y="178.46000000000012" width="345.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="626.9184210526315" y="206.96000000000012" font-family="Arial, sans-serif" font-size="26" font-weight="400">New/changed product details</text>
+<rect x="188.00499999999994" y="1508.9633333333334" width="291.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="196.00499999999994" y="1537.4633333333334" font-family="Arial, sans-serif" font-size="26" font-weight="400">Existing product records</text>
+<rect x="173.77999999999997" y="1441.5825000000002" width="283.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="181.77999999999997" y="1470.0825000000002" font-family="Arial, sans-serif" font-size="26" font-weight="400">Saved product changes</text>
+<rect x="994.4085" y="262.4600000000001" width="373.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1002.4085" y="290.9600000000001" font-family="Arial, sans-serif" font-size="26" font-weight="400">Shipment and received quantity</text>
+<rect x="864.541" y="1330.464" width="258.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="872.541" y="1358.964" font-family="Arial, sans-serif" font-size="26" font-weight="400">Product/current stock</text>
+<rect x="1008.5507692307692" y="1255.934" width="204.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1016.5507692307692" y="1284.434" font-family="Arial, sans-serif" font-size="26" font-weight="400">New stock batch</text>
+<rect x="2045.2989999999995" y="761.2891666666668" width="190.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2053.2989999999995" y="789.7891666666668" font-family="Arial, sans-serif" font-size="26" font-weight="400">Inventory filters</text>
+<rect x="1452.7105999999997" y="1103.45" width="260.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1460.7105999999997" y="1131.95" font-family="Arial, sans-serif" font-size="26" font-weight="400">Products/prices/stock</text>
+<rect x="2147.2576923076917" y="645.2690000000001" width="213.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2155.2576923076917" y="673.7690000000001" font-family="Arial, sans-serif" font-size="26" font-weight="400">Filtered inventory</text>
+<rect x="1514.588" y="1301.5335" width="161.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1522.588" y="1330.0335" font-family="Arial, sans-serif" font-size="26" font-weight="400">Sales details</text>
+<rect x="585.586" y="2059.56905" width="280.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="593.586" y="2088.06905" font-family="Arial, sans-serif" font-size="26" font-weight="400">Items/quantity/payment</text>
+<rect x="1052.8755" y="3188.248" width="268.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1060.8755" y="3216.748" font-family="Arial, sans-serif" font-size="26" font-weight="400">Order/payment details</text>
+<rect x="998.3566666666666" y="2228.4855000000002" width="243.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1006.3566666666666" y="2256.9855000000002" font-family="Arial, sans-serif" font-size="26" font-weight="400">Sellable items/stock</text>
+<rect x="830.9685" y="2149.178" width="308.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="838.9685" y="2177.678" font-family="Arial, sans-serif" font-size="26" font-weight="400">Deducted stock quantities</text>
+<rect x="1520.1894999999995" y="2525.7000000000003" width="286.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1528.1894999999995" y="2554.2000000000003" font-family="Arial, sans-serif" font-size="26" font-weight="400">Recorded sale/payment</text>
+<rect x="1308.0917647058823" y="3452.745" width="294.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1316.0917647058823" y="3481.245" font-family="Arial, sans-serif" font-size="26" font-weight="400">Service progress/status*</text>
+<rect x="1360.5507692307692" y="3375.3674999999994" width="234.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1368.5507692307692" y="3403.8674999999994" font-family="Arial, sans-serif" font-size="26" font-weight="400">Service job details*</text>
+<rect x="1773.3359999999998" y="2680.7000000000007" width="272.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1781.3359999999998" y="2709.2000000000007" font-family="Arial, sans-serif" font-size="26" font-weight="400">Service charge/status*</text>
+<rect x="1266.2476923076922" y="3048.6400000000003" width="227.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1274.2476923076922" y="3077.1400000000003" font-family="Arial, sans-serif" font-size="26" font-weight="400">Completed sale ID</text>
+<rect x="589.5633333333333" y="667.8140000000001" width="166.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="597.5633333333333" y="696.3140000000001" font-family="Arial, sans-serif" font-size="26" font-weight="400">History filters</text>
+<rect x="201.19449999999995" y="2006.7061764705884" width="207.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="209.19449999999995" y="2035.2061764705884" font-family="Arial, sans-serif" font-size="26" font-weight="400">Own-sales filters</text>
+<rect x="472.3516538461538" y="2150.4249999999997" width="298.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="480.3516538461538" y="2178.9249999999997" font-family="Arial, sans-serif" font-size="26" font-weight="400">Authorized sales records</text>
+<rect x="536.7459999999999" y="851.2000000000003" width="163.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="544.7459999999999" y="879.7000000000003" font-family="Arial, sans-serif" font-size="26" font-weight="400">Sales history</text>
+<rect x="99.47999999999996" y="2168.3696" width="219.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="107.47999999999996" y="2196.8696" font-family="Arial, sans-serif" font-size="26" font-weight="400">Own sales history</text>
+<rect x="1598.196" y="1040.8583333333333" width="195.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1606.196" y="1069.3583333333333" font-family="Arial, sans-serif" font-size="26" font-weight="400">Receipt request</text>
+<rect x="593.3722222222221" y="2955.5166666666664" width="195.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="601.3722222222221" y="2984.0166666666664" font-family="Arial, sans-serif" font-size="26" font-weight="400">Receipt request</text>
+<rect x="1969.004" y="2612.03" width="331.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1977.004" y="2640.53" font-family="Arial, sans-serif" font-size="26" font-weight="400">Sale/items/payment/change</text>
+<rect x="2319.3449999999993" y="2860.181" width="288.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2327.3449999999993" y="2888.681" font-family="Arial, sans-serif" font-size="26" font-weight="400">Linked service charges*</text>
+<rect x="1829.3919999999996" y="1731.2375" width="201.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1837.3919999999996" y="1759.7375" font-family="Arial, sans-serif" font-size="26" font-weight="400">Printable receipt</text>
+<rect x="629.2299999999998" y="2885.9875" width="201.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="637.2299999999998" y="2914.4875" font-family="Arial, sans-serif" font-size="26" font-weight="400">Printable receipt</text>
+<rect x="1490.7504999999999" y="3206.9610000000002" width="208.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1498.7504999999999" y="3235.4610000000002" font-family="Arial, sans-serif" font-size="26" font-weight="400">Purchase receipt</text>
+<rect x="3517.2014999999997" y="643.7975000000001" width="295.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3525.2014999999997" y="672.2975000000001" font-family="Arial, sans-serif" font-size="26" font-weight="400">Sales dates/filters/output</text>
+<rect x="2734.7414999999996" y="2437.6600000000003" width="213.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2742.7414999999996" y="2466.1600000000003" font-family="Arial, sans-serif" font-size="26" font-weight="400">Period sales data</text>
+<rect x="3093.5653799999995" y="2549.2333333333336" width="245.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3101.5653799999995" y="2577.7333333333336" font-family="Arial, sans-serif" font-size="26" font-weight="400">Period service data*</text>
+<rect x="3578.5443999999998" y="500.20000000000005" width="270.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3586.5443999999998" y="528.7" font-family="Arial, sans-serif" font-size="26" font-weight="400">Sales report/print/PDF</text>
+<rect x="2549.0233333333304" y="1455.65" width="226.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2557.0233333333304" y="1484.15" font-family="Arial, sans-serif" font-size="26" font-weight="400">Stock filters/output</text>
+<rect x="2223.8524999999995" y="1778.4166666666667" width="248.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2231.8524999999995" y="1806.9166666666667" font-family="Arial, sans-serif" font-size="26" font-weight="400">Stock/threshold data</text>
+<rect x="2206.9634999999994" y="1378.5375" width="311.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2214.9634999999994" y="1407.0375" font-family="Arial, sans-serif" font-size="26" font-weight="400">Inventory report/print/PDF</text>
+<rect x="2334.40711111111" y="776.3499999999999" width="252.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2342.40711111111" y="804.8499999999999" font-family="Arial, sans-serif" font-size="26" font-weight="400">Username/password</text>
+<rect x="986.5445" y="836.3166666666666" width="252.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="994.5445" y="864.8166666666666" font-family="Arial, sans-serif" font-size="26" font-weight="400">Username/password</text>
+<rect x="3702.8479999999995" y="976.2184210526316" width="283.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3710.8479999999995" y="1004.7184210526316" font-family="Arial, sans-serif" font-size="26" font-weight="400">Credentials/role/access</text>
+<rect x="3745.230333333332" y="1038.45" width="265.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3753.230333333332" y="1066.95" font-family="Arial, sans-serif" font-size="26" font-weight="400">Authenticated session</text>
+<rect x="2578.018699999999" y="847.1166666666667" width="220.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2586.018699999999" y="875.6166666666667" font-family="Arial, sans-serif" font-size="26" font-weight="400">Admin login result</text>
+<rect x="1324.7179999999998" y="885.95" width="236.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="1332.7179999999998" y="914.45" font-family="Arial, sans-serif" font-size="26" font-weight="400">Cashier login result</text>
+<rect x="3317.2529999999997" y="307.2600000000001" width="320.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3325.2529999999997" y="335.7600000000001" font-family="Arial, sans-serif" font-size="26" font-weight="400">User details/access choice</text>
+<rect x="4217.589999999997" y="496.751" width="241.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="4225.589999999997" y="525.251" font-family="Arial, sans-serif" font-size="26" font-weight="400">User/admin records</text>
+<rect x="3971.3719999999994" y="585.2566666666668" width="358.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3979.3719999999994" y="613.7566666666668" font-family="Arial, sans-serif" font-size="26" font-weight="400">Created/updated user account</text>
+<rect x="3794.4392666666663" y="422.0333333333333" width="193.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3802.4392666666663" y="450.5333333333333" font-family="Arial, sans-serif" font-size="26" font-weight="400">Backup request</text>
+<rect x="4214.126499999999" y="2165.9800999999998" width="269.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="4222.126499999999" y="2194.4800999999998" font-family="Arial, sans-serif" font-size="26" font-weight="400">Current database data</text>
+<rect x="4215.112499999999" y="3162.9325" width="268.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="4223.112499999999" y="3191.4325" font-family="Arial, sans-serif" font-size="26" font-weight="400">New database backup</text>
+<rect x="2828.7954999999997" y="1653.2100000000003" width="295.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2836.7954999999997" y="1681.7100000000003" font-family="Arial, sans-serif" font-size="26" font-weight="400">Backup/admin password</text>
+<rect x="3803.315999999999" y="3434.6499999999996" width="307.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3811.315999999999" y="3463.1499999999996" font-family="Arial, sans-serif" font-size="26" font-weight="400">Selected backup contents</text>
+<rect x="3854.648666666666" y="2130.0647" width="220.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3862.648666666666" y="2158.5647" font-family="Arial, sans-serif" font-size="26" font-weight="400">Admin credentials</text>
+<rect x="3878.734" y="2984.053333333333" width="324.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="3886.734" y="3012.553333333333" font-family="Arial, sans-serif" font-size="26" font-weight="400">Restored database records</text>
+<rect x="2949.615" y="1752.7" width="217.0" height="36" fill="white" stroke="none" stroke-width="3"/>
+<text x="2957.615" y="1781.2" font-family="Arial, sans-serif" font-size="26" font-weight="400">Restoration result</text>
+<text x="1638.0" y="3971.5" font-family="Arial, sans-serif" font-size="32" font-weight="400">Cashier sales history is restricted to their own transactions. D6 represents the aggregate database records.</text>
+<text x="1642.0" y="4026.5" font-family="Arial, sans-serif" font-size="32" font-weight="400">*Labor/service business flows are retained from the original Level 0 and are outside the supplied use case.</text>
+<text x="1822.0078125" y="4075.5" font-family="Arial, sans-serif" font-size="26" font-weight="400">Rectangle = external entity | Numbered box = process | D1-D6 = logical data stores | Arrow = data flow</text>
+</svg>

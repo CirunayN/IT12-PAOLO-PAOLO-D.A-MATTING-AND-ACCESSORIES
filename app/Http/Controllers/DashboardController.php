@@ -16,6 +16,12 @@ class DashboardController extends Controller
             return redirect()->route('reports.index', $request->except('tab'));
         }
 
+        $data = app(\App\Services\FilterCache::class)->remember('dashboard', $request->query(), fn () => $this->dashboardData($request));
+        return view('dashboard', $data);
+    }
+
+    private function dashboardData(Request $request): array
+    {
         $todayStr = now('Asia/Manila')->toDateString();
         $monthStartStr = now('Asia/Manila')->startOfMonth()->toDateString();
         $yearStartStr = now('Asia/Manila')->startOfYear()->toDateString();
@@ -130,11 +136,11 @@ class DashboardController extends Controller
         $leastSellingProducts = $products
             ->sortBy([['dashboard_units_sold', 'asc'], ['Name', 'asc'], ['ID', 'asc']])
             ->take(5)->values();
-        return view('dashboard', compact(
+        return compact(
             'startDate', 'endDate', 'periodLabel', 'activePeriod', 'isFallbackRecentSales',
             'todaySalesTotal', 'todaySalesCount', 'totalSalesAllTime', 'totalTransactions',
             'totalProductsCount', 'lowStockCount', 'outOfStockCount', 'totalStockUnits',
             'inventoryValue', 'recentSales', 'stockAlerts', 'bestSellingProducts', 'leastSellingProducts'
-        ));
+        );
     }
 }

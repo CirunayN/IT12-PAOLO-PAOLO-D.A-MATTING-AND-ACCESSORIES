@@ -18,6 +18,12 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $data = app(\App\Services\FilterCache::class)->remember('inventory', $request->query(), fn () => $this->inventoryData($request));
+        return view('products.index', $data);
+    }
+
+    private function inventoryData(Request $request): array
+    {
         [$query, $tab, $archivedStatus] = $this->inventoryQuery($request);
 
         $products = $query->paginate(15)->withQueryString();
@@ -28,7 +34,7 @@ class ProductController extends Controller
         $archivedCount = Product::where('Status_ID', $archivedStatus->ID)->count();
         $totalCount = Product::count();
 
-        return view('products.index', compact(
+        return compact(
             'products',
             'categories',
             'statuses',
@@ -36,7 +42,7 @@ class ProductController extends Controller
             'activeCount',
             'archivedCount',
             'totalCount'
-        ));
+        );
     }
 
     private function inventoryQuery(Request $request): array

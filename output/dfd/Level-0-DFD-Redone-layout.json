@@ -1,0 +1,8501 @@
+{
+  "nodes": [
+    {
+      "id": "owner",
+      "kind": "external",
+      "title": "Admin/Owner",
+      "ref": "",
+      "x": 1120,
+      "y": 130,
+      "width": 230,
+      "height": 75
+    },
+    {
+      "id": "cashier",
+      "kind": "external",
+      "title": "Cashier",
+      "ref": "",
+      "x": 165,
+      "y": 665,
+      "width": 180,
+      "height": 75
+    },
+    {
+      "id": "customer",
+      "kind": "external",
+      "title": "Customer",
+      "ref": "",
+      "x": 780,
+      "y": 1450,
+      "width": 180,
+      "height": 75
+    },
+    {
+      "id": "labor",
+      "kind": "external",
+      "title": "Labor",
+      "ref": "",
+      "x": 1370,
+      "y": 1440,
+      "width": 180,
+      "height": 75
+    },
+    {
+      "id": "P1",
+      "kind": "process",
+      "title": "Manage Product\nRecords",
+      "ref": "1.0",
+      "x": 180,
+      "y": 360,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P2",
+      "kind": "process",
+      "title": "Record Incoming\nStock",
+      "ref": "2.0",
+      "x": 620,
+      "y": 360,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P3",
+      "kind": "process",
+      "title": "View Inventory",
+      "ref": "3.0",
+      "x": 1040,
+      "y": 360,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P4",
+      "kind": "process",
+      "title": "Process Sales\nTransaction",
+      "ref": "4.0",
+      "x": 630,
+      "y": 1010,
+      "width": 290,
+      "height": 120
+    },
+    {
+      "id": "P5",
+      "kind": "process",
+      "title": "View Sales\nHistory",
+      "ref": "5.0",
+      "x": 180,
+      "y": 1000,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P6",
+      "kind": "process",
+      "title": "Print Sales\nReceipt",
+      "ref": "6.0",
+      "x": 1110,
+      "y": 1190,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P7",
+      "kind": "process",
+      "title": "Generate Sales\nReport",
+      "ref": "7.0",
+      "x": 1690,
+      "y": 1000,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P8",
+      "kind": "process",
+      "title": "Generate Inventory\nReport",
+      "ref": "8.0",
+      "x": 1660,
+      "y": 660,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P9",
+      "kind": "process",
+      "title": "Log In",
+      "ref": "9.0",
+      "x": 1530,
+      "y": 340,
+      "width": 260,
+      "height": 100
+    },
+    {
+      "id": "P10",
+      "kind": "process",
+      "title": "Manage User\nAccounts",
+      "ref": "10.0",
+      "x": 2090,
+      "y": 340,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P11",
+      "kind": "process",
+      "title": "Create Database\nBackup",
+      "ref": "11.0",
+      "x": 2150,
+      "y": 1040,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "P12",
+      "kind": "process",
+      "title": "Restore Database\nBackup",
+      "ref": "12.0",
+      "x": 1640,
+      "y": 1370,
+      "width": 270,
+      "height": 110
+    },
+    {
+      "id": "D1",
+      "kind": "store",
+      "title": "Product Records",
+      "ref": "D1",
+      "x": 650,
+      "y": 660,
+      "width": 370,
+      "height": 80
+    },
+    {
+      "id": "D2",
+      "kind": "store",
+      "title": "Product Sale Records",
+      "ref": "D2",
+      "x": 1070,
+      "y": 840,
+      "width": 340,
+      "height": 80
+    },
+    {
+      "id": "D3",
+      "kind": "store",
+      "title": "Service Sale Records*",
+      "ref": "D3",
+      "x": 1330,
+      "y": 1030,
+      "width": 310,
+      "height": 80
+    },
+    {
+      "id": "D4",
+      "kind": "store",
+      "title": "User Account Records",
+      "ref": "D4",
+      "x": 2050,
+      "y": 100,
+      "width": 340,
+      "height": 80
+    },
+    {
+      "id": "D5",
+      "kind": "store",
+      "title": "Database Backup Files",
+      "ref": "D5",
+      "x": 2170,
+      "y": 1420,
+      "width": 340,
+      "height": 80
+    },
+    {
+      "id": "D6",
+      "kind": "store",
+      "title": "System Database",
+      "ref": "D6",
+      "x": 2170,
+      "y": 670,
+      "width": 340,
+      "height": 80
+    }
+  ],
+  "flows": [
+    {
+      "id": "flow-01",
+      "source": "owner",
+      "target": "P1",
+      "label": "New/changed product details"
+    },
+    {
+      "id": "flow-02",
+      "source": "D1",
+      "target": "P1",
+      "label": "Existing product records"
+    },
+    {
+      "id": "flow-03",
+      "source": "P1",
+      "target": "D1",
+      "label": "Saved product changes"
+    },
+    {
+      "id": "flow-04",
+      "source": "owner",
+      "target": "P2",
+      "label": "Shipment and received quantity"
+    },
+    {
+      "id": "flow-05",
+      "source": "D1",
+      "target": "P2",
+      "label": "Product/current stock"
+    },
+    {
+      "id": "flow-06",
+      "source": "P2",
+      "target": "D1",
+      "label": "New stock batch"
+    },
+    {
+      "id": "flow-07",
+      "source": "owner",
+      "target": "P3",
+      "label": "Inventory filters"
+    },
+    {
+      "id": "flow-08",
+      "source": "D1",
+      "target": "P3",
+      "label": "Products/prices/stock"
+    },
+    {
+      "id": "flow-09",
+      "source": "P3",
+      "target": "owner",
+      "label": "Filtered inventory"
+    },
+    {
+      "id": "flow-10",
+      "source": "owner",
+      "target": "P4",
+      "label": "Sales details"
+    },
+    {
+      "id": "flow-11",
+      "source": "cashier",
+      "target": "P4",
+      "label": "Items/quantity/payment"
+    },
+    {
+      "id": "flow-12",
+      "source": "customer",
+      "target": "P4",
+      "label": "Order/payment details"
+    },
+    {
+      "id": "flow-13",
+      "source": "D1",
+      "target": "P4",
+      "label": "Sellable items/stock"
+    },
+    {
+      "id": "flow-14",
+      "source": "P4",
+      "target": "D1",
+      "label": "Deducted stock quantities"
+    },
+    {
+      "id": "flow-15",
+      "source": "P4",
+      "target": "D2",
+      "label": "Recorded sale/payment"
+    },
+    {
+      "id": "flow-16",
+      "source": "labor",
+      "target": "P4",
+      "label": "Service progress/status*"
+    },
+    {
+      "id": "flow-17",
+      "source": "P4",
+      "target": "labor",
+      "label": "Service job details*"
+    },
+    {
+      "id": "flow-18",
+      "source": "P4",
+      "target": "D3",
+      "label": "Service charge/status*"
+    },
+    {
+      "id": "flow-19",
+      "source": "P4",
+      "target": "P6",
+      "label": "Completed sale ID"
+    },
+    {
+      "id": "flow-20",
+      "source": "owner",
+      "target": "P5",
+      "label": "History filters"
+    },
+    {
+      "id": "flow-21",
+      "source": "cashier",
+      "target": "P5",
+      "label": "Own-sales filters"
+    },
+    {
+      "id": "flow-22",
+      "source": "D2",
+      "target": "P5",
+      "label": "Authorized sales records"
+    },
+    {
+      "id": "flow-23",
+      "source": "P5",
+      "target": "owner",
+      "label": "Sales history"
+    },
+    {
+      "id": "flow-24",
+      "source": "P5",
+      "target": "cashier",
+      "label": "Own sales history"
+    },
+    {
+      "id": "flow-25",
+      "source": "owner",
+      "target": "P6",
+      "label": "Receipt request"
+    },
+    {
+      "id": "flow-26",
+      "source": "cashier",
+      "target": "P6",
+      "label": "Receipt request"
+    },
+    {
+      "id": "flow-27",
+      "source": "D2",
+      "target": "P6",
+      "label": "Sale/items/payment/change"
+    },
+    {
+      "id": "flow-28",
+      "source": "D3",
+      "target": "P6",
+      "label": "Linked service charges*"
+    },
+    {
+      "id": "flow-29",
+      "source": "P6",
+      "target": "owner",
+      "label": "Printable receipt"
+    },
+    {
+      "id": "flow-30",
+      "source": "P6",
+      "target": "cashier",
+      "label": "Printable receipt"
+    },
+    {
+      "id": "flow-31",
+      "source": "P6",
+      "target": "customer",
+      "label": "Purchase receipt"
+    },
+    {
+      "id": "flow-32",
+      "source": "owner",
+      "target": "P7",
+      "label": "Sales dates/filters/output"
+    },
+    {
+      "id": "flow-33",
+      "source": "D2",
+      "target": "P7",
+      "label": "Period sales data"
+    },
+    {
+      "id": "flow-34",
+      "source": "D3",
+      "target": "P7",
+      "label": "Period service data*"
+    },
+    {
+      "id": "flow-35",
+      "source": "P7",
+      "target": "owner",
+      "label": "Sales report/print/PDF"
+    },
+    {
+      "id": "flow-36",
+      "source": "owner",
+      "target": "P8",
+      "label": "Stock filters/output"
+    },
+    {
+      "id": "flow-37",
+      "source": "D1",
+      "target": "P8",
+      "label": "Stock/threshold data"
+    },
+    {
+      "id": "flow-38",
+      "source": "P8",
+      "target": "owner",
+      "label": "Inventory report/print/PDF"
+    },
+    {
+      "id": "flow-39",
+      "source": "owner",
+      "target": "P9",
+      "label": "Username/password"
+    },
+    {
+      "id": "flow-40",
+      "source": "cashier",
+      "target": "P9",
+      "label": "Username/password"
+    },
+    {
+      "id": "flow-41",
+      "source": "D4",
+      "target": "P9",
+      "label": "Credentials/role/access"
+    },
+    {
+      "id": "flow-42",
+      "source": "P9",
+      "target": "D4",
+      "label": "Authenticated session"
+    },
+    {
+      "id": "flow-43",
+      "source": "P9",
+      "target": "owner",
+      "label": "Admin login result"
+    },
+    {
+      "id": "flow-44",
+      "source": "P9",
+      "target": "cashier",
+      "label": "Cashier login result"
+    },
+    {
+      "id": "flow-45",
+      "source": "owner",
+      "target": "P10",
+      "label": "User details/access choice"
+    },
+    {
+      "id": "flow-46",
+      "source": "D4",
+      "target": "P10",
+      "label": "User/admin records"
+    },
+    {
+      "id": "flow-47",
+      "source": "P10",
+      "target": "D4",
+      "label": "Created/updated user account"
+    },
+    {
+      "id": "flow-48",
+      "source": "owner",
+      "target": "P11",
+      "label": "Backup request"
+    },
+    {
+      "id": "flow-49",
+      "source": "D6",
+      "target": "P11",
+      "label": "Current database data"
+    },
+    {
+      "id": "flow-50",
+      "source": "P11",
+      "target": "D5",
+      "label": "New database backup"
+    },
+    {
+      "id": "flow-51",
+      "source": "owner",
+      "target": "P12",
+      "label": "Backup/admin password"
+    },
+    {
+      "id": "flow-52",
+      "source": "D5",
+      "target": "P12",
+      "label": "Selected backup contents"
+    },
+    {
+      "id": "flow-53",
+      "source": "D4",
+      "target": "P12",
+      "label": "Admin credentials"
+    },
+    {
+      "id": "flow-54",
+      "source": "P12",
+      "target": "D6",
+      "label": "Restored database records"
+    },
+    {
+      "id": "flow-55",
+      "source": "P12",
+      "target": "owner",
+      "label": "Restoration result"
+    }
+  ],
+  "layout": {
+    "name": "%1",
+    "directed": true,
+    "strict": false,
+    "_draw_": [
+      {
+        "op": "c",
+        "grad": "none",
+        "color": "#fffffe00"
+      },
+      {
+        "op": "C",
+        "grad": "none",
+        "color": "#ffffff"
+      },
+      {
+        "op": "P",
+        "points": [
+          [
+            -1227.91,
+            -716.6
+          ],
+          [
+            -1227.91,
+            754.1
+          ],
+          [
+            1116.37,
+            754.1
+          ],
+          [
+            1116.37,
+            -716.6
+          ]
+        ]
+      }
+    ],
+    "bb": "-1206.3,-695,1094.8,732.5",
+    "bgcolor": "white",
+    "fontname": "Arial",
+    "forcelabels": "true",
+    "notranslate": "true",
+    "outputorder": "edgesfirst",
+    "overlap": "true",
+    "pad": "0.3",
+    "splines": "ortho",
+    "xdotversion": "1.7",
+    "_subgraph_cnt": 0,
+    "objects": [
+      {
+        "_gvid": 0,
+        "name": "owner",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -10.23,
+                700
+              ],
+              [
+                -240.23,
+                700
+              ],
+              [
+                -240.23,
+                625
+              ],
+              [
+                -10.23,
+                625
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -125.23,
+              656.8
+            ],
+            "align": "c",
+            "width": 115.09,
+            "text": "Admin/Owner"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.0417",
+        "label": "Admin/Owner",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-125.23,662.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.1944"
+      },
+      {
+        "_gvid": 1,
+        "name": "cashier",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -990.23,
+                165
+              ],
+              [
+                -1170.23,
+                165
+              ],
+              [
+                -1170.23,
+                90
+              ],
+              [
+                -990.23,
+                90
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1080.23,
+              121.8
+            ],
+            "align": "c",
+            "width": 65.47,
+            "text": "Cashier"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.0417",
+        "label": "Cashier",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-1080.2,127.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "2.5"
+      },
+      {
+        "_gvid": 2,
+        "name": "customer",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -375.23,
+                -620
+              ],
+              [
+                -555.23,
+                -620
+              ],
+              [
+                -555.23,
+                -695
+              ],
+              [
+                -375.23,
+                -695
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -465.23,
+              -663.2
+            ],
+            "align": "c",
+            "width": 82.35,
+            "text": "Customer"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.0417",
+        "label": "Customer",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-465.23,-657.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "2.5"
+      },
+      {
+        "_gvid": 3,
+        "name": "labor",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                214.77,
+                -610
+              ],
+              [
+                34.77,
+                -610
+              ],
+              [
+                34.77,
+                -685
+              ],
+              [
+                214.77,
+                -685
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              124.77,
+              -653.2
+            ],
+            "align": "c",
+            "width": 48.59,
+            "text": "Labor"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.0417",
+        "label": "Labor",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "124.77,-647.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "2.5"
+      },
+      {
+        "_gvid": 4,
+        "name": "P1",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -930.23,
+                487.5
+              ],
+              [
+                -1200.23,
+                487.5
+              ],
+              [
+                -1200.23,
+                377.5
+              ],
+              [
+                -930.23,
+                377.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1065.23,
+              449.6
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "1.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1065.23,
+              426.8
+            ],
+            "align": "c",
+            "width": 139.42,
+            "text": "Manage Product"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1065.23,
+              404
+            ],
+            "align": "c",
+            "width": 70.75,
+            "text": "Records"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "1.0\nManage Product\nRecords",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-1065.2,432.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 5,
+        "name": "P2",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -490.23,
+                487.5
+              ],
+              [
+                -760.23,
+                487.5
+              ],
+              [
+                -760.23,
+                377.5
+              ],
+              [
+                -490.23,
+                377.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -625.23,
+              449.6
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "2.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -625.23,
+              426.8
+            ],
+            "align": "c",
+            "width": 143.62,
+            "text": "Record Incoming"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -625.23,
+              404
+            ],
+            "align": "c",
+            "width": 47.52,
+            "text": "Stock"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "2.0\nRecord Incoming\nStock",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-625.23,432.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 6,
+        "name": "P3",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -70.23,
+                487.5
+              ],
+              [
+                -340.23,
+                487.5
+              ],
+              [
+                -340.23,
+                377.5
+              ],
+              [
+                -70.23,
+                377.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -205.23,
+              438.2
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "3.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -205.23,
+              415.4
+            ],
+            "align": "c",
+            "width": 124.61,
+            "text": "View Inventory"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "3.0\nView Inventory",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-205.23,432.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 7,
+        "name": "P4",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -470.23,
+                -157.5
+              ],
+              [
+                -760.23,
+                -157.5
+              ],
+              [
+                -760.23,
+                -277.5
+              ],
+              [
+                -470.23,
+                -277.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -615.23,
+              -200.4
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "4.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -615.23,
+              -223.2
+            ],
+            "align": "c",
+            "width": 121.44,
+            "text": "Process Sales"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -615.23,
+              -246
+            ],
+            "align": "c",
+            "width": 99.27,
+            "text": "Transaction"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.6667",
+        "label": "4.0\nProcess Sales\nTransaction",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-615.23,-217.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "4.0278"
+      },
+      {
+        "_gvid": 8,
+        "name": "P5",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -930.23,
+                -152.5
+              ],
+              [
+                -1200.23,
+                -152.5
+              ],
+              [
+                -1200.23,
+                -262.5
+              ],
+              [
+                -930.23,
+                -262.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1065.23,
+              -190.4
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "5.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1065.23,
+              -213.2
+            ],
+            "align": "c",
+            "width": 93.99,
+            "text": "View Sales"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1065.23,
+              -236
+            ],
+            "align": "c",
+            "width": 59.12,
+            "text": "History"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "5.0\nView Sales\nHistory",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-1065.2,-207.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 9,
+        "name": "P6",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -0.23,
+                -342.5
+              ],
+              [
+                -270.23,
+                -342.5
+              ],
+              [
+                -270.23,
+                -452.5
+              ],
+              [
+                -0.23,
+                -452.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -135.23,
+              -380.4
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "6.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -135.23,
+              -403.2
+            ],
+            "align": "c",
+            "width": 91.87,
+            "text": "Print Sales"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -135.23,
+              -426
+            ],
+            "align": "c",
+            "width": 64.42,
+            "text": "Receipt"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "6.0\nPrint Sales\nReceipt",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-135.23,-397.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 10,
+        "name": "P7",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                579.77,
+                -152.5
+              ],
+              [
+                309.77,
+                -152.5
+              ],
+              [
+                309.77,
+                -262.5
+              ],
+              [
+                579.77,
+                -262.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              444.77,
+              -190.4
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "7.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              444.77,
+              -213.2
+            ],
+            "align": "c",
+            "width": 132.03,
+            "text": "Generate Sales"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              444.77,
+              -236
+            ],
+            "align": "c",
+            "width": 57.03,
+            "text": "Report"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "7.0\nGenerate Sales\nReport",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "444.77,-207.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 11,
+        "name": "P8",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                549.77,
+                187.5
+              ],
+              [
+                279.77,
+                187.5
+              ],
+              [
+                279.77,
+                77.5
+              ],
+              [
+                549.77,
+                77.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              414.77,
+              149.6
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "8.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              414.77,
+              126.8
+            ],
+            "align": "c",
+            "width": 162.65,
+            "text": "Generate Inventory"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              414.77,
+              104
+            ],
+            "align": "c",
+            "width": 57.03,
+            "text": "Report"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "8.0\nGenerate Inventory\nReport",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "414.77,132.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 12,
+        "name": "P9",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                414.77,
+                502.5
+              ],
+              [
+                154.77,
+                502.5
+              ],
+              [
+                154.77,
+                402.5
+              ],
+              [
+                414.77,
+                402.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              284.77,
+              458.2
+            ],
+            "align": "c",
+            "width": 26.41,
+            "text": "9.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              284.77,
+              435.4
+            ],
+            "align": "c",
+            "width": 52.83,
+            "text": "Log In"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.3889",
+        "label": "9.0\nLog In",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "284.77,452.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.6111"
+      },
+      {
+        "_gvid": 13,
+        "name": "P10",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                979.77,
+                507.5
+              ],
+              [
+                709.77,
+                507.5
+              ],
+              [
+                709.77,
+                397.5
+              ],
+              [
+                979.77,
+                397.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              844.77,
+              469.6
+            ],
+            "align": "c",
+            "width": 36.98,
+            "text": "10.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              844.77,
+              446.8
+            ],
+            "align": "c",
+            "width": 114.06,
+            "text": "Manage User"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              844.77,
+              424
+            ],
+            "align": "c",
+            "width": 78.15,
+            "text": "Accounts"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "10.0\nManage User\nAccounts",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "844.77,452.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 14,
+        "name": "P11",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                1039.77,
+                -192.5
+              ],
+              [
+                769.77,
+                -192.5
+              ],
+              [
+                769.77,
+                -302.5
+              ],
+              [
+                1039.77,
+                -302.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              904.77,
+              -230.4
+            ],
+            "align": "c",
+            "width": 36.98,
+            "text": "11.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              904.77,
+              -253.2
+            ],
+            "align": "c",
+            "width": 143.64,
+            "text": "Create Database"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              904.77,
+              -276
+            ],
+            "align": "c",
+            "width": 63.37,
+            "text": "Backup"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "11.0\nCreate Database\nBackup",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "904.77,-247.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 15,
+        "name": "P12",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                529.77,
+                -522.5
+              ],
+              [
+                259.77,
+                -522.5
+              ],
+              [
+                259.77,
+                -632.5
+              ],
+              [
+                529.77,
+                -632.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              394.77,
+              -560.4
+            ],
+            "align": "c",
+            "width": 36.98,
+            "text": "12.0"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              394.77,
+              -583.2
+            ],
+            "align": "c",
+            "width": 153.14,
+            "text": "Restore Database"
+          },
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              394.77,
+              -606
+            ],
+            "align": "c",
+            "width": 63.37,
+            "text": "Backup"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.5278",
+        "label": "12.0\nRestore Database\nBackup",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "394.77,-577.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "3.75"
+      },
+      {
+        "_gvid": 16,
+        "name": "D1",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -410.23,
+                172.5
+              ],
+              [
+                -780.23,
+                172.5
+              ],
+              [
+                -780.23,
+                92.5
+              ],
+              [
+                -410.23,
+                92.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -595.23,
+              126.8
+            ],
+            "align": "c",
+            "width": 176.35,
+            "text": "D1  Product Records"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.1111",
+        "label": "D1  Product Records",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-595.23,132.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "5.1389"
+      },
+      {
+        "_gvid": 17,
+        "name": "D2",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -5.23,
+                -7.5
+              ],
+              [
+                -345.23,
+                -7.5
+              ],
+              [
+                -345.23,
+                -87.5
+              ],
+              [
+                -5.23,
+                -87.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -175.23,
+              -53.2
+            ],
+            "align": "c",
+            "width": 219.66,
+            "text": "D2  Product Sale Records"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.1111",
+        "label": "D2  Product Sale Records",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "-175.23,-47.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "4.7222"
+      },
+      {
+        "_gvid": 18,
+        "name": "D3",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                239.77,
+                -197.5
+              ],
+              [
+                -70.23,
+                -197.5
+              ],
+              [
+                -70.23,
+                -277.5
+              ],
+              [
+                239.77,
+                -277.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              84.77,
+              -243.2
+            ],
+            "align": "c",
+            "width": 224.93,
+            "text": "D3  Service Sale Records*"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.1111",
+        "label": "D3  Service Sale Records*",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "84.773,-237.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "4.3056"
+      },
+      {
+        "_gvid": 19,
+        "name": "D4",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                974.77,
+                732.5
+              ],
+              [
+                634.77,
+                732.5
+              ],
+              [
+                634.77,
+                652.5
+              ],
+              [
+                974.77,
+                652.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              804.77,
+              686.8
+            ],
+            "align": "c",
+            "width": 224.92,
+            "text": "D4  User Account Records"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.1111",
+        "label": "D4  User Account Records",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "804.77,692.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "4.7222"
+      },
+      {
+        "_gvid": 20,
+        "name": "D5",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                1094.77,
+                -587.5
+              ],
+              [
+                754.77,
+                -587.5
+              ],
+              [
+                754.77,
+                -667.5
+              ],
+              [
+                1094.77,
+                -667.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              924.77,
+              -633.2
+            ],
+            "align": "c",
+            "width": 230.23,
+            "text": "D5  Database Backup Files"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.1111",
+        "label": "D5  Database Backup Files",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "924.77,-627.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "4.7222"
+      },
+      {
+        "_gvid": 21,
+        "name": "D6",
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#ffffff"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                1094.77,
+                162.5
+              ],
+              [
+                754.77,
+                162.5
+              ],
+              [
+                754.77,
+                82.5
+              ],
+              [
+                1094.77,
+                82.5
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 19,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              924.77,
+              116.8
+            ],
+            "align": "c",
+            "width": 184.8,
+            "text": "D6  System Database"
+          }
+        ],
+        "color": "black",
+        "fillcolor": "white",
+        "fixedsize": "true",
+        "fontname": "Arial",
+        "fontsize": "19",
+        "height": "1.1111",
+        "label": "D6  System Database",
+        "margin": "0.03",
+        "pin": "true",
+        "pos": "924.77,122.5",
+        "shape": "box",
+        "style": "filled",
+        "width": "4.7222"
+      }
+    ],
+    "edges": [
+      {
+        "_gvid": 0,
+        "tail": 0,
+        "head": 4,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -240.49,
+                691
+              ],
+              [
+                -491.5,
+                691
+              ],
+              [
+                -1065.23,
+                691
+              ],
+              [
+                -1065.23,
+                691
+              ],
+              [
+                -1065.23,
+                691
+              ],
+              [
+                -1065.23,
+                497.97
+              ],
+              [
+                -1065.23,
+                497.97
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -1062.25,
+                497.97
+              ],
+              [
+                -1065.23,
+                489.47
+              ],
+              [
+                -1068.2,
+                497.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -833.2,
+              694.9
+            ],
+            "align": "c",
+            "width": 167.66,
+            "text": "New/changed product details"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-01",
+        "pos": "e,-1065.2,487.95 -240.49,691 -491.5,691 -1065.2,691 -1065.2,691 -1065.2,691 -1065.2,497.97 -1065.2,497.97",
+        "xlabel": "New/changed product details",
+        "xlp": "-833.2,698.8"
+      },
+      {
+        "_gvid": 40,
+        "tail": 16,
+        "head": 4,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -780.48,
+                170
+              ],
+              [
+                -864.43,
+                170
+              ],
+              [
+                -945.23,
+                170
+              ],
+              [
+                -945.23,
+                170
+              ],
+              [
+                -945.23,
+                170
+              ],
+              [
+                -945.23,
+                367.14
+              ],
+              [
+                -945.23,
+                367.14
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -948.2,
+                367.14
+              ],
+              [
+                -945.23,
+                375.64
+              ],
+              [
+                -942.25,
+                367.14
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1014.95,
+              174.49
+            ],
+            "align": "c",
+            "width": 139.45,
+            "text": "Existing product records"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-02",
+        "pos": "e,-945.23,377.15 -780.48,170 -864.43,170 -945.23,170 -945.23,170 -945.23,170 -945.23,367.14 -945.23,367.14",
+        "xlabel": "Existing product records",
+        "xlp": "-1015,178.39"
+      },
+      {
+        "_gvid": 18,
+        "tail": 4,
+        "head": 16,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -960.23,
+                377.05
+              ],
+              [
+                -960.23,
+                299.49
+              ],
+              [
+                -960.23,
+                168
+              ],
+              [
+                -960.23,
+                168
+              ],
+              [
+                -960.23,
+                168
+              ],
+              [
+                -790.68,
+                168
+              ],
+              [
+                -790.68,
+                168
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -790.68,
+                170.98
+              ],
+              [
+                -782.18,
+                168
+              ],
+              [
+                -790.68,
+                165.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1028.52,
+              191.65
+            ],
+            "align": "c",
+            "width": 136.6,
+            "text": "Saved product changes"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-03",
+        "pos": "e,-780.67,168 -960.23,377.05 -960.23,299.49 -960.23,168 -960.23,168 -960.23,168 -790.68,168 -790.68,168",
+        "xlabel": "Saved product changes",
+        "xlp": "-1028.5,195.55"
+      },
+      {
+        "_gvid": 1,
+        "tail": 0,
+        "head": 5,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -240.57,
+                663
+              ],
+              [
+                -388.23,
+                663
+              ],
+              [
+                -625.23,
+                663
+              ],
+              [
+                -625.23,
+                663
+              ],
+              [
+                -625.23,
+                663
+              ],
+              [
+                -625.23,
+                497.72
+              ],
+              [
+                -625.23,
+                497.72
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -622.25,
+                497.72
+              ],
+              [
+                -625.23,
+                489.22
+              ],
+              [
+                -628.2,
+                497.72
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -606.59,
+              666.9
+            ],
+            "align": "c",
+            "width": 182.11,
+            "text": "Shipment and received quantity"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-04",
+        "pos": "e,-625.23,487.71 -240.57,663 -388.23,663 -625.23,663 -625.23,663 -625.23,663 -625.23,497.72 -625.23,497.72",
+        "xlabel": "Shipment and received quantity",
+        "xlp": "-606.59,670.8"
+      },
+      {
+        "_gvid": 41,
+        "tail": 16,
+        "head": 5,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -670.23,
+                172.96
+              ],
+              [
+                -670.23,
+                172.96
+              ],
+              [
+                -670.23,
+                367.15
+              ],
+              [
+                -670.23,
+                367.15
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -673.2,
+                367.15
+              ],
+              [
+                -670.23,
+                375.65
+              ],
+              [
+                -667.25,
+                367.15
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -731.64,
+              273.96
+            ],
+            "align": "c",
+            "width": 122.83,
+            "text": "Product/current stock"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-05",
+        "pos": "e,-670.23,377.17 -670.23,172.96 -670.23,172.96 -670.23,367.15 -670.23,367.15",
+        "xlabel": "Product/current stock",
+        "xlp": "-731.64,277.86"
+      },
+      {
+        "_gvid": 19,
+        "tail": 5,
+        "head": 16,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -580.23,
+                377.13
+              ],
+              [
+                -580.23,
+                377.13
+              ],
+              [
+                -580.23,
+                182.69
+              ],
+              [
+                -580.23,
+                182.69
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -577.25,
+                182.69
+              ],
+              [
+                -580.23,
+                174.19
+              ],
+              [
+                -583.2,
+                182.69
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -627.91,
+              283.81
+            ],
+            "align": "c",
+            "width": 95.37,
+            "text": "New stock batch"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-06",
+        "pos": "e,-580.23,172.68 -580.23,377.13 -580.23,377.13 -580.23,182.69 -580.23,182.69",
+        "xlabel": "New stock batch",
+        "xlp": "-627.91,287.71"
+      },
+      {
+        "_gvid": 2,
+        "tail": 0,
+        "head": 6,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -183.56,
+                624.52
+              ],
+              [
+                -183.56,
+                624.52
+              ],
+              [
+                -183.56,
+                497.77
+              ],
+              [
+                -183.56,
+                497.77
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -180.59,
+                497.77
+              ],
+              [
+                -183.56,
+                489.27
+              ],
+              [
+                -186.54,
+                497.77
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -227.63,
+              565.04
+            ],
+            "align": "c",
+            "width": 88.14,
+            "text": "Inventory filters"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-07",
+        "pos": "e,-183.56,487.76 -183.56,624.52 -183.56,624.52 -183.56,497.77 -183.56,497.77",
+        "xlabel": "Inventory filters",
+        "xlp": "-227.63,568.94"
+      },
+      {
+        "_gvid": 42,
+        "tail": 16,
+        "head": 6,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -450.23,
+                172.71
+              ],
+              [
+                -450.23,
+                254.6
+              ],
+              [
+                -450.23,
+                433
+              ],
+              [
+                -450.23,
+                433
+              ],
+              [
+                -450.23,
+                433
+              ],
+              [
+                -350.64,
+                433
+              ],
+              [
+                -350.64,
+                433
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -350.64,
+                435.98
+              ],
+              [
+                -342.14,
+                433
+              ],
+              [
+                -350.64,
+                430.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -512,
+              356.55
+            ],
+            "align": "c",
+            "width": 123.54,
+            "text": "Products/prices/stock"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-08",
+        "pos": "e,-340.63,433 -450.23,172.71 -450.23,254.6 -450.23,433 -450.23,433 -450.23,433 -350.64,433 -350.64,433",
+        "xlabel": "Products/prices/stock",
+        "xlp": "-512,360.45"
+      },
+      {
+        "_gvid": 20,
+        "tail": 6,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -126.89,
+                487.88
+              ],
+              [
+                -126.89,
+                487.88
+              ],
+              [
+                -126.89,
+                614.83
+              ],
+              [
+                -126.89,
+                614.83
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -129.87,
+                614.83
+              ],
+              [
+                -126.89,
+                623.33
+              ],
+              [
+                -123.92,
+                614.83
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -176.75,
+              539.66
+            ],
+            "align": "c",
+            "width": 99.71,
+            "text": "Filtered inventory"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-09",
+        "pos": "e,-126.89,624.85 -126.89,487.88 -126.89,487.88 -126.89,614.83 -126.89,614.83",
+        "xlabel": "Filtered inventory",
+        "xlp": "-176.75,543.56"
+      },
+      {
+        "_gvid": 3,
+        "tail": 0,
+        "head": 7,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -240.35,
+                653
+              ],
+              [
+                -315.05,
+                653
+              ],
+              [
+                -398.56,
+                653
+              ],
+              [
+                -398.56,
+                653
+              ],
+              [
+                -398.56,
+                653
+              ],
+              [
+                -398.56,
+                -167
+              ],
+              [
+                -398.56,
+                -167
+              ],
+              [
+                -398.56,
+                -167
+              ],
+              [
+                -459.79,
+                -167
+              ],
+              [
+                -459.79,
+                -167
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -459.79,
+                -169.97
+              ],
+              [
+                -468.29,
+                -167
+              ],
+              [
+                -459.79,
+                -164.02
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -435.42,
+              295.39
+            ],
+            "align": "c",
+            "width": 73.71,
+            "text": "Sales details"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-10",
+        "pos": "e,-469.81,-167 -240.35,653 -315.05,653 -398.56,653 -398.56,653 -398.56,653 -398.56,-167 -398.56,-167 -398.56,-167 -459.79,-167 -459.79,-167",
+        "xlabel": "Sales details",
+        "xlp": "-435.42,299.29"
+      },
+      {
+        "_gvid": 12,
+        "tail": 1,
+        "head": 7,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -990.08,
+                105
+              ],
+              [
+                -907.81,
+                105
+              ],
+              [
+                -798.98,
+                105
+              ],
+              [
+                -798.98,
+                105
+              ],
+              [
+                -798.98,
+                105
+              ],
+              [
+                -798.98,
+                -210
+              ],
+              [
+                -798.98,
+                -210
+              ],
+              [
+                -798.98,
+                -210
+              ],
+              [
+                -770.47,
+                -210
+              ],
+              [
+                -770.47,
+                -210
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -770.47,
+                -207.02
+              ],
+              [
+                -761.97,
+                -210
+              ],
+              [
+                -770.47,
+                -212.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -866.18,
+              32.7
+            ],
+            "align": "c",
+            "width": 134.4,
+            "text": "Items/quantity/payment"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-11",
+        "pos": "e,-760.46,-210 -990.08,105 -907.81,105 -798.98,105 -798.98,105 -798.98,105 -798.98,-210 -798.98,-210 -798.98,-210 -770.47,-210 -770.47,-210",
+        "xlabel": "Items/quantity/payment",
+        "xlp": "-866.18,36.597"
+      },
+      {
+        "_gvid": 16,
+        "tail": 2,
+        "head": 7,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -538.23,
+                -619.61
+              ],
+              [
+                -538.23,
+                -619.61
+              ],
+              [
+                -538.23,
+                -287.97
+              ],
+              [
+                -538.23,
+                -287.97
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -541.2,
+                -287.97
+              ],
+              [
+                -538.23,
+                -279.47
+              ],
+              [
+                -535.25,
+                -287.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -602.17,
+              -449.89
+            ],
+            "align": "c",
+            "width": 127.89,
+            "text": "Order/payment details"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-12",
+        "pos": "e,-538.23,-277.95 -538.23,-619.61 -538.23,-619.61 -538.23,-287.97 -538.23,-287.97",
+        "xlabel": "Order/payment details",
+        "xlp": "-602.17,-445.99"
+      },
+      {
+        "_gvid": 43,
+        "tail": 16,
+        "head": 7,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -566.89,
+                92.01
+              ],
+              [
+                -566.89,
+                92.01
+              ],
+              [
+                -566.89,
+                -147.19
+              ],
+              [
+                -566.89,
+                -147.19
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -563.92,
+                -147.19
+              ],
+              [
+                -566.89,
+                -155.69
+              ],
+              [
+                -569.87,
+                -147.19
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -624.33,
+              -23.69
+            ],
+            "align": "c",
+            "width": 114.88,
+            "text": "Sellable items/stock"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-13",
+        "pos": "e,-566.89,-157.21 -566.89,92.009 -566.89,92.009 -566.89,-147.19 -566.89,-147.19",
+        "xlabel": "Sellable items/stock",
+        "xlp": "-624.33,-19.793"
+      },
+      {
+        "_gvid": 23,
+        "tail": 7,
+        "head": 16,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -663.56,
+                -157.33
+              ],
+              [
+                -663.56,
+                -157.33
+              ],
+              [
+                -663.56,
+                82.17
+              ],
+              [
+                -663.56,
+                82.17
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -666.54,
+                82.17
+              ],
+              [
+                -663.56,
+                90.67
+              ],
+              [
+                -660.59,
+                82.17
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -737.99,
+              -33.68
+            ],
+            "align": "c",
+            "width": 148.87,
+            "text": "Deducted stock quantities"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-14",
+        "pos": "e,-663.56,92.186 -663.56,-157.33 -663.56,-157.33 -663.56,82.173 -663.56,82.173",
+        "xlabel": "Deducted stock quantities",
+        "xlp": "-737.99,-29.78"
+      },
+      {
+        "_gvid": 24,
+        "tail": 7,
+        "head": 17,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -470.03,
+                -188
+              ],
+              [
+                -390.41,
+                -188
+              ],
+              [
+                -307.73,
+                -188
+              ],
+              [
+                -307.73,
+                -188
+              ],
+              [
+                -307.73,
+                -188
+              ],
+              [
+                -307.73,
+                -97.78
+              ],
+              [
+                -307.73,
+                -97.78
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -310.7,
+                -97.78
+              ],
+              [
+                -307.73,
+                -89.28
+              ],
+              [
+                -304.75,
+                -97.78
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -412.42,
+              -184.1
+            ],
+            "align": "c",
+            "width": 137.3,
+            "text": "Recorded sale/payment"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-15",
+        "pos": "e,-307.73,-87.762 -470.03,-188 -390.41,-188 -307.73,-188 -307.73,-188 -307.73,-188 -307.73,-97.775 -307.73,-97.775",
+        "xlabel": "Recorded sale/payment",
+        "xlp": "-412.42,-180.2"
+      },
+      {
+        "_gvid": 17,
+        "tail": 3,
+        "head": 7,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                34.61,
+                -617
+              ],
+              [
+                -143.04,
+                -617
+              ],
+              [
+                -521.23,
+                -617
+              ],
+              [
+                -521.23,
+                -617
+              ],
+              [
+                -521.23,
+                -617
+              ],
+              [
+                -521.23,
+                -287.76
+              ],
+              [
+                -521.23,
+                -287.76
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -524.2,
+                -287.76
+              ],
+              [
+                -521.23,
+                -279.26
+              ],
+              [
+                -518.25,
+                -287.76
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -478.38,
+              -613.1
+            ],
+            "align": "c",
+            "width": 140.89,
+            "text": "Service progress/status*"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-16",
+        "pos": "e,-521.23,-277.74 34.609,-617 -143.04,-617 -521.23,-617 -521.23,-617 -521.23,-617 -521.23,-287.76 -521.23,-287.76",
+        "xlabel": "Service progress/status*",
+        "xlp": "-478.38,-609.2"
+      },
+      {
+        "_gvid": 21,
+        "tail": 7,
+        "head": 3,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -504.23,
+                -278
+              ],
+              [
+                -504.23,
+                -388.79
+              ],
+              [
+                -504.23,
+                -613
+              ],
+              [
+                -504.23,
+                -613
+              ],
+              [
+                -504.23,
+                -613
+              ],
+              [
+                24.3,
+                -613
+              ],
+              [
+                24.3,
+                -613
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                24.3,
+                -610.02
+              ],
+              [
+                32.8,
+                -613
+              ],
+              [
+                24.3,
+                -615.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -462.74,
+              -609.1
+            ],
+            "align": "c",
+            "width": 110.56,
+            "text": "Service job details*"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-17",
+        "pos": "e,34.318,-613 -504.23,-278 -504.23,-388.79 -504.23,-613 -504.23,-613 -504.23,-613 24.304,-613 24.304,-613",
+        "xlabel": "Service job details*",
+        "xlp": "-462.74,-605.2"
+      },
+      {
+        "_gvid": 25,
+        "tail": 7,
+        "head": 18,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -469.76,
+                -237
+              ],
+              [
+                -469.76,
+                -237
+              ],
+              [
+                -80.54,
+                -237
+              ],
+              [
+                -80.54,
+                -237
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -80.54,
+                -234.02
+              ],
+              [
+                -72.04,
+                -237
+              ],
+              [
+                -80.54,
+                -239.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -340.18,
+              -233.1
+            ],
+            "align": "c",
+            "width": 130.06,
+            "text": "Service charge/status*"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-18",
+        "pos": "e,-70.527,-237 -469.76,-237 -469.76,-237 -80.54,-237 -80.54,-237",
+        "xlabel": "Service charge/status*",
+        "xlp": "-340.18,-229.2"
+      },
+      {
+        "_gvid": 22,
+        "tail": 7,
+        "head": 9,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -487.23,
+                -277.83
+              ],
+              [
+                -487.23,
+                -327.58
+              ],
+              [
+                -487.23,
+                -390
+              ],
+              [
+                -487.23,
+                -390
+              ],
+              [
+                -487.23,
+                -390
+              ],
+              [
+                -280.58,
+                -390
+              ],
+              [
+                -280.58,
+                -390
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -280.58,
+                -387.02
+              ],
+              [
+                -272.08,
+                -390
+              ],
+              [
+                -280.58,
+                -392.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -493.46,
+              -386.1
+            ],
+            "align": "c",
+            "width": 106.94,
+            "text": "Completed sale ID"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-19",
+        "pos": "e,-270.56,-390 -487.23,-277.83 -487.23,-327.58 -487.23,-390 -487.23,-390 -487.23,-390 -280.58,-390 -280.58,-390",
+        "xlabel": "Completed sale ID",
+        "xlp": "-493.46,-382.2"
+      },
+      {
+        "_gvid": 4,
+        "tail": 0,
+        "head": 8,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -240.5,
+                672
+              ],
+              [
+                -446.2,
+                672
+              ],
+              [
+                -855.23,
+                672
+              ],
+              [
+                -855.23,
+                672
+              ],
+              [
+                -855.23,
+                672
+              ],
+              [
+                -855.23,
+                -184
+              ],
+              [
+                -855.23,
+                -184
+              ],
+              [
+                -855.23,
+                -184
+              ],
+              [
+                -919.84,
+                -184
+              ],
+              [
+                -919.84,
+                -184
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -919.84,
+                -186.97
+              ],
+              [
+                -928.34,
+                -184
+              ],
+              [
+                -919.84,
+                -181.02
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -892.79,
+              522.96
+            ],
+            "align": "c",
+            "width": 75.12,
+            "text": "History filters"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-20",
+        "pos": "e,-929.86,-184 -240.5,672 -446.2,672 -855.23,672 -855.23,672 -855.23,672 -855.23,-184 -855.23,-184 -855.23,-184 -919.84,-184 -919.84,-184",
+        "xlabel": "History filters",
+        "xlp": "-892.79,526.86"
+      },
+      {
+        "_gvid": 13,
+        "tail": 1,
+        "head": 8,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -1110.23,
+                89.72
+              ],
+              [
+                -1110.23,
+                89.72
+              ],
+              [
+                -1110.23,
+                -142.09
+              ],
+              [
+                -1110.23,
+                -142.09
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -1107.25,
+                -142.09
+              ],
+              [
+                -1110.23,
+                -150.59
+              ],
+              [
+                -1113.2,
+                -142.09
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1158.27,
+              -22.29
+            ],
+            "align": "c",
+            "width": 96.08,
+            "text": "Own-sales filters"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-21",
+        "pos": "e,-1110.2,-152.11 -1110.2,89.722 -1110.2,89.722 -1110.2,-142.09 -1110.2,-142.09",
+        "xlabel": "Own-sales filters",
+        "xlp": "-1158.3,-18.385"
+      },
+      {
+        "_gvid": 45,
+        "tail": 17,
+        "head": 8,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -345.38,
+                -47
+              ],
+              [
+                -580.27,
+                -47
+              ],
+              [
+                -975.23,
+                -47
+              ],
+              [
+                -975.23,
+                -47
+              ],
+              [
+                -975.23,
+                -47
+              ],
+              [
+                -975.23,
+                -142.25
+              ],
+              [
+                -975.23,
+                -142.25
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -972.25,
+                -142.25
+              ],
+              [
+                -975.23,
+                -150.75
+              ],
+              [
+                -978.2,
+                -142.25
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -779.46,
+              -43.1
+            ],
+            "align": "c",
+            "width": 143.07,
+            "text": "Authorized sales records"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-22",
+        "pos": "e,-975.23,-152.27 -345.38,-47 -580.27,-47 -975.23,-47 -975.23,-47 -975.23,-47 -975.23,-142.25 -975.23,-142.25",
+        "xlabel": "Authorized sales records",
+        "xlp": "-779.46,-39.2"
+      },
+      {
+        "_gvid": 26,
+        "tail": 8,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -929.81,
+                -236
+              ],
+              [
+                -898.41,
+                -236
+              ],
+              [
+                -873.98,
+                -236
+              ],
+              [
+                -873.98,
+                -236
+              ],
+              [
+                -873.98,
+                -236
+              ],
+              [
+                -873.98,
+                681
+              ],
+              [
+                -873.98,
+                681
+              ],
+              [
+                -873.98,
+                681
+              ],
+              [
+                -250.59,
+                681
+              ],
+              [
+                -250.59,
+                681
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -250.59,
+                683.98
+              ],
+              [
+                -242.09,
+                681
+              ],
+              [
+                -250.59,
+                678.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -911.19,
+              510.18
+            ],
+            "align": "c",
+            "width": 74.42,
+            "text": "Sales history"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-23",
+        "pos": "e,-240.58,681 -929.81,-236 -898.41,-236 -873.98,-236 -873.98,-236 -873.98,-236 -873.98,681 -873.98,681 -873.98,681 -250.59,681 -250.59,681",
+        "xlabel": "Sales history",
+        "xlp": "-911.19,514.08"
+      },
+      {
+        "_gvid": 27,
+        "tail": 8,
+        "head": 1,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -1050.23,
+                -152.18
+              ],
+              [
+                -1050.23,
+                -152.18
+              ],
+              [
+                -1050.23,
+                79.79
+              ],
+              [
+                -1050.23,
+                79.79
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -1053.2,
+                79.79
+              ],
+              [
+                -1050.23,
+                88.29
+              ],
+              [
+                -1047.25,
+                79.79
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -1101.52,
+              -47.9
+            ],
+            "align": "c",
+            "width": 102.59,
+            "text": "Own sales history"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-24",
+        "pos": "e,-1050.2,89.804 -1050.2,-152.18 -1050.2,-152.18 -1050.2,79.79 -1050.2,79.79",
+        "xlabel": "Own sales history",
+        "xlp": "-1101.5,-43.996"
+      },
+      {
+        "_gvid": 5,
+        "tail": 0,
+        "head": 9,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -240.66,
+                644
+              ],
+              [
+                -302.14,
+                644
+              ],
+              [
+                -365.23,
+                644
+              ],
+              [
+                -365.23,
+                644
+              ],
+              [
+                -365.23,
+                644
+              ],
+              [
+                -365.23,
+                -374
+              ],
+              [
+                -365.23,
+                -374
+              ],
+              [
+                -365.23,
+                -374
+              ],
+              [
+                -280.7,
+                -374
+              ],
+              [
+                -280.7,
+                -374
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -280.7,
+                -371.02
+              ],
+              [
+                -272.2,
+                -374
+              ],
+              [
+                -280.7,
+                -376.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -410.75,
+              158.92
+            ],
+            "align": "c",
+            "width": 91.05,
+            "text": "Receipt request"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-25",
+        "pos": "e,-270.68,-374 -240.66,644 -302.14,644 -365.23,644 -365.23,644 -365.23,644 -365.23,-374 -365.23,-374 -365.23,-374 -280.7,-374 -280.7,-374",
+        "xlabel": "Receipt request",
+        "xlp": "-410.75,162.82"
+      },
+      {
+        "_gvid": 14,
+        "tail": 1,
+        "head": 9,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -989.81,
+                117
+              ],
+              [
+                -920.44,
+                117
+              ],
+              [
+                -836.48,
+                117
+              ],
+              [
+                -836.48,
+                117
+              ],
+              [
+                -836.48,
+                117
+              ],
+              [
+                -836.48,
+                -421
+              ],
+              [
+                -836.48,
+                -421
+              ],
+              [
+                -836.48,
+                -421
+              ],
+              [
+                -280.45,
+                -421
+              ],
+              [
+                -280.45,
+                -421
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -280.45,
+                -418.02
+              ],
+              [
+                -271.95,
+                -421
+              ],
+              [
+                -280.45,
+                -423.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -882,
+              -349.45
+            ],
+            "align": "c",
+            "width": 91.05,
+            "text": "Receipt request"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-26",
+        "pos": "e,-270.44,-421 -989.81,117 -920.44,117 -836.48,117 -836.48,117 -836.48,117 -836.48,-421 -836.48,-421 -836.48,-421 -280.45,-421 -280.45,-421",
+        "xlabel": "Receipt request",
+        "xlp": "-882,-345.55"
+      },
+      {
+        "_gvid": 46,
+        "tail": 17,
+        "head": 9,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -170.23,
+                -87.99
+              ],
+              [
+                -170.23,
+                -87.99
+              ],
+              [
+                -170.23,
+                -332.14
+              ],
+              [
+                -170.23,
+                -332.14
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -167.25,
+                -332.14
+              ],
+              [
+                -170.23,
+                -340.64
+              ],
+              [
+                -173.2,
+                -332.14
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -250.44,
+              -206.17
+            ],
+            "align": "c",
+            "width": 160.42,
+            "text": "Sale/items/payment/change"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-27",
+        "pos": "e,-170.23,-342.16 -170.23,-87.991 -170.23,-87.991 -170.23,-332.14 -170.23,-332.14",
+        "xlabel": "Sale/items/payment/change",
+        "xlp": "-250.44,-202.27"
+      },
+      {
+        "_gvid": 48,
+        "tail": 18,
+        "head": 9,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -35.23,
+                -277.87
+              ],
+              [
+                -35.23,
+                -277.87
+              ],
+              [
+                -35.23,
+                -332.02
+              ],
+              [
+                -35.23,
+                -332.02
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -32.25,
+                -332.02
+              ],
+              [
+                -35.23,
+                -340.52
+              ],
+              [
+                -38.2,
+                -332.02
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -104.24,
+              -301.05
+            ],
+            "align": "c",
+            "width": 138.02,
+            "text": "Linked service charges*"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-28",
+        "pos": "e,-35.227,-342.03 -35.227,-277.87 -35.227,-277.87 -35.227,-332.02 -35.227,-332.02",
+        "xlabel": "Linked service charges*",
+        "xlp": "-104.24,-297.15"
+      },
+      {
+        "_gvid": 28,
+        "tail": 9,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -270.48,
+                -358
+              ],
+              [
+                -315.89,
+                -358
+              ],
+              [
+                -355.23,
+                -358
+              ],
+              [
+                -355.23,
+                -358
+              ],
+              [
+                -355.23,
+                -358
+              ],
+              [
+                -355.23,
+                634
+              ],
+              [
+                -355.23,
+                634
+              ],
+              [
+                -355.23,
+                634
+              ],
+              [
+                -250.58,
+                634
+              ],
+              [
+                -250.58,
+                634
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -250.58,
+                636.98
+              ],
+              [
+                -242.08,
+                634
+              ],
+              [
+                -250.58,
+                631.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -402.2,
+              136.25
+            ],
+            "align": "c",
+            "width": 93.94,
+            "text": "Printable receipt"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-29",
+        "pos": "e,-240.56,634 -270.48,-358 -315.89,-358 -355.23,-358 -355.23,-358 -355.23,-358 -355.23,634 -355.23,634 -355.23,634 -250.58,634 -250.58,634",
+        "xlabel": "Printable receipt",
+        "xlp": "-402.2,140.15"
+      },
+      {
+        "_gvid": 29,
+        "tail": 9,
+        "head": 1,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -270.48,
+                -405
+              ],
+              [
+                -469.44,
+                -405
+              ],
+              [
+                -817.73,
+                -405
+              ],
+              [
+                -817.73,
+                -405
+              ],
+              [
+                -817.73,
+                -405
+              ],
+              [
+                -817.73,
+                129
+              ],
+              [
+                -817.73,
+                129
+              ],
+              [
+                -817.73,
+                129
+              ],
+              [
+                -979.88,
+                129
+              ],
+              [
+                -979.88,
+                129
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -979.88,
+                126.03
+              ],
+              [
+                -988.38,
+                129
+              ],
+              [
+                -979.88,
+                131.98
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -864.7,
+              -326.65
+            ],
+            "align": "c",
+            "width": 93.94,
+            "text": "Printable receipt"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-30",
+        "pos": "e,-989.89,129 -270.48,-405 -469.44,-405 -817.73,-405 -817.73,-405 -817.73,-405 -817.73,129 -817.73,129 -817.73,129 -979.88,129 -979.88,129",
+        "xlabel": "Printable receipt",
+        "xlp": "-864.7,-322.75"
+      },
+      {
+        "_gvid": 30,
+        "tail": 9,
+        "head": 2,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -270.64,
+                -437
+              ],
+              [
+                -330.2,
+                -437
+              ],
+              [
+                -386.89,
+                -437
+              ],
+              [
+                -386.89,
+                -437
+              ],
+              [
+                -386.89,
+                -437
+              ],
+              [
+                -386.89,
+                -609.58
+              ],
+              [
+                -386.89,
+                -609.58
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -383.92,
+                -609.58
+              ],
+              [
+                -386.89,
+                -618.08
+              ],
+              [
+                -389.87,
+                -609.58
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -435.67,
+              -461.26
+            ],
+            "align": "c",
+            "width": 97.55,
+            "text": "Purchase receipt"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-31",
+        "pos": "e,-386.89,-619.59 -270.64,-437 -330.2,-437 -386.89,-437 -386.89,-437 -386.89,-437 -386.89,-609.58 -386.89,-609.58",
+        "xlabel": "Purchase receipt",
+        "xlp": "-435.67,-457.36"
+      },
+      {
+        "_gvid": 6,
+        "tail": 0,
+        "head": 10,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -10.07,
+                636
+              ],
+              [
+                187.44,
+                636
+              ],
+              [
+                569.77,
+                636
+              ],
+              [
+                569.77,
+                636
+              ],
+              [
+                569.77,
+                636
+              ],
+              [
+                569.77,
+                -142.14
+              ],
+              [
+                569.77,
+                -142.14
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                572.75,
+                -142.14
+              ],
+              [
+                569.77,
+                -150.64
+              ],
+              [
+                566.8,
+                -142.14
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              498.59,
+              540.75
+            ],
+            "align": "c",
+            "width": 142.36,
+            "text": "Sales dates/filters/output"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-32",
+        "pos": "e,569.77,-152.16 -10.072,636 187.44,636 569.77,636 569.77,636 569.77,636 569.77,-142.14 569.77,-142.14",
+        "xlabel": "Sales dates/filters/output",
+        "xlp": "498.59,544.65"
+      },
+      {
+        "_gvid": 47,
+        "tail": 17,
+        "head": 10,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -37.73,
+                -87.76
+              ],
+              [
+                -37.73,
+                -125.78
+              ],
+              [
+                -37.73,
+                -177
+              ],
+              [
+                -37.73,
+                -177
+              ],
+              [
+                -37.73,
+                -177
+              ],
+              [
+                299.39,
+                -177
+              ],
+              [
+                299.39,
+                -177
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                299.39,
+                -174.02
+              ],
+              [
+                307.89,
+                -177
+              ],
+              [
+                299.39,
+                -179.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              35.99,
+              -173.1
+            ],
+            "align": "c",
+            "width": 100.45,
+            "text": "Period sales data"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-33",
+        "pos": "e,309.41,-177 -37.727,-87.765 -37.727,-125.78 -37.727,-177 -37.727,-177 -37.727,-177 299.39,-177 299.39,-177",
+        "xlabel": "Period sales data",
+        "xlp": "35.99,-169.2"
+      },
+      {
+        "_gvid": 49,
+        "tail": 18,
+        "head": 10,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                240.06,
+                -230
+              ],
+              [
+                240.06,
+                -230
+              ],
+              [
+                299.51,
+                -230
+              ],
+              [
+                299.51,
+                -230
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                299.51,
+                -227.02
+              ],
+              [
+                308.01,
+                -230
+              ],
+              [
+                299.51,
+                -232.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              211.61,
+              -226.1
+            ],
+            "align": "c",
+            "width": 116.34,
+            "text": "Period service data*"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-34",
+        "pos": "e,309.52,-230 240.06,-230 240.06,-230 299.51,-230 299.51,-230",
+        "xlabel": "Period service data*",
+        "xlp": "211.61,-222.2"
+      },
+      {
+        "_gvid": 31,
+        "tail": 10,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                559.77,
+                -152.16
+              ],
+              [
+                559.77,
+                34.75
+              ],
+              [
+                559.77,
+                631
+              ],
+              [
+                559.77,
+                631
+              ],
+              [
+                559.77,
+                631
+              ],
+              [
+                0.21,
+                631
+              ],
+              [
+                0.21,
+                631
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                0.21,
+                628.03
+              ],
+              [
+                -8.29,
+                631
+              ],
+              [
+                0.21,
+                633.98
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              495.47,
+              523.1
+            ],
+            "align": "c",
+            "width": 128.6,
+            "text": "Sales report/print/PDF"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-35",
+        "pos": "e,-9.801,631 559.77,-152.16 559.77,34.751 559.77,631 559.77,631 559.77,631 0.21259,631 0.21259,631",
+        "xlabel": "Sales report/print/PDF",
+        "xlp": "495.47,527"
+      },
+      {
+        "_gvid": 7,
+        "tail": 0,
+        "head": 11,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -35.94,
+                624.87
+              ],
+              [
+                -35.94,
+                511.84
+              ],
+              [
+                -35.94,
+                183
+              ],
+              [
+                -35.94,
+                183
+              ],
+              [
+                -35.94,
+                183
+              ],
+              [
+                269.53,
+                183
+              ],
+              [
+                269.53,
+                183
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                269.53,
+                185.98
+              ],
+              [
+                278.03,
+                183
+              ],
+              [
+                269.53,
+                180.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -89.41,
+              255.1
+            ],
+            "align": "c",
+            "width": 106.94,
+            "text": "Stock filters/output"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-36",
+        "pos": "e,279.54,183 -35.942,624.87 -35.942,511.84 -35.942,183 -35.942,183 -35.942,183 269.53,183 269.53,183",
+        "xlabel": "Stock filters/output",
+        "xlp": "-89.411,259"
+      },
+      {
+        "_gvid": 44,
+        "tail": 16,
+        "head": 11,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -409.98,
+                113
+              ],
+              [
+                -409.98,
+                113
+              ],
+              [
+                269.55,
+                113
+              ],
+              [
+                269.55,
+                113
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                269.55,
+                115.98
+              ],
+              [
+                278.05,
+                113
+              ],
+              [
+                269.55,
+                110.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -129.47,
+              116.9
+            ],
+            "align": "c",
+            "width": 118.52,
+            "text": "Stock/threshold data"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-37",
+        "pos": "e,279.56,113 -409.98,113 -409.98,113 269.55,113 269.55,113",
+        "xlabel": "Stock/threshold data",
+        "xlp": "-129.47,120.8"
+      },
+      {
+        "_gvid": 32,
+        "tail": 11,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                279.46,
+                178
+              ],
+              [
+                143.98,
+                178
+              ],
+              [
+                -44.51,
+                178
+              ],
+              [
+                -44.51,
+                178
+              ],
+              [
+                -44.51,
+                178
+              ],
+              [
+                -44.51,
+                614.87
+              ],
+              [
+                -44.51,
+                614.87
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -47.49,
+                614.87
+              ],
+              [
+                -44.51,
+                623.37
+              ],
+              [
+                -41.54,
+                614.87
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -119.29,
+              238.35
+            ],
+            "align": "c",
+            "width": 149.56,
+            "text": "Inventory report/print/PDF"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-38",
+        "pos": "e,-44.513,624.89 279.46,178 143.98,178 -44.513,178 -44.513,178 -44.513,178 -44.513,614.87 -44.513,614.87",
+        "xlabel": "Inventory report/print/PDF",
+        "xlp": "-119.29,242.25"
+      },
+      {
+        "_gvid": 8,
+        "tail": 0,
+        "head": 12,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -27.37,
+                624.53
+              ],
+              [
+                -27.37,
+                575.67
+              ],
+              [
+                -27.37,
+                497
+              ],
+              [
+                -27.37,
+                497
+              ],
+              [
+                -27.37,
+                497
+              ],
+              [
+                144.64,
+                497
+              ],
+              [
+                144.64,
+                497
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                144.64,
+                499.98
+              ],
+              [
+                153.14,
+                497
+              ],
+              [
+                144.64,
+                494.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -64.74,
+              500.9
+            ],
+            "align": "c",
+            "width": 119.22,
+            "text": "Username/password"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-39",
+        "pos": "e,154.66,497 -27.37,624.53 -27.37,575.67 -27.37,497 -27.37,497 -27.37,497 144.64,497 144.64,497",
+        "xlabel": "Username/password",
+        "xlp": "-64.737,504.8"
+      },
+      {
+        "_gvid": 15,
+        "tail": 1,
+        "head": 12,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -989.77,
+                141
+              ],
+              [
+                -941.83,
+                141
+              ],
+              [
+                -892.73,
+                141
+              ],
+              [
+                -892.73,
+                141
+              ],
+              [
+                -892.73,
+                141
+              ],
+              [
+                -892.73,
+                491
+              ],
+              [
+                -892.73,
+                491
+              ],
+              [
+                -892.73,
+                491
+              ],
+              [
+                144.53,
+                491
+              ],
+              [
+                144.53,
+                491
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                144.53,
+                493.98
+              ],
+              [
+                153.03,
+                491
+              ],
+              [
+                144.53,
+                488.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -657.23,
+              494.9
+            ],
+            "align": "c",
+            "width": 119.22,
+            "text": "Username/password"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-40",
+        "pos": "e,154.54,491 -989.77,141 -941.83,141 -892.73,141 -892.73,141 -892.73,141 -892.73,491 -892.73,491 -892.73,491 144.53,491 144.53,491",
+        "xlabel": "Username/password",
+        "xlp": "-657.23,498.8"
+      },
+      {
+        "_gvid": 50,
+        "tail": 19,
+        "head": 12,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                664.77,
+                652.03
+              ],
+              [
+                664.77,
+                587.62
+              ],
+              [
+                664.77,
+                469
+              ],
+              [
+                664.77,
+                469
+              ],
+              [
+                664.77,
+                469
+              ],
+              [
+                425.03,
+                469
+              ],
+              [
+                425.03,
+                469
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                425.03,
+                466.03
+              ],
+              [
+                416.53,
+                469
+              ],
+              [
+                425.03,
+                471.98
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              568.86,
+              472.9
+            ],
+            "align": "c",
+            "width": 135.12,
+            "text": "Credentials/role/access"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-41",
+        "pos": "e,415.02,469 664.77,652.03 664.77,587.62 664.77,469 664.77,469 664.77,469 425.03,469 425.03,469",
+        "xlabel": "Credentials/role/access",
+        "xlp": "568.86,476.8"
+      },
+      {
+        "_gvid": 35,
+        "tail": 12,
+        "head": 19,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                415.21,
+                436
+              ],
+              [
+                530.26,
+                436
+              ],
+              [
+                679.77,
+                436
+              ],
+              [
+                679.77,
+                436
+              ],
+              [
+                679.77,
+                436
+              ],
+              [
+                679.77,
+                642.13
+              ],
+              [
+                679.77,
+                642.13
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                676.8,
+                642.13
+              ],
+              [
+                679.77,
+                650.63
+              ],
+              [
+                682.75,
+                642.13
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              586.95,
+              439.9
+            ],
+            "align": "c",
+            "width": 127.19,
+            "text": "Authenticated session"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-42",
+        "pos": "e,679.77,652.14 415.21,436 530.26,436 679.77,436 679.77,436 679.77,436 679.77,642.13 679.77,642.13",
+        "xlabel": "Authenticated session",
+        "xlp": "586.95,443.8"
+      },
+      {
+        "_gvid": 33,
+        "tail": 12,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                154.71,
+                500
+              ],
+              [
+                72.32,
+                500
+              ],
+              [
+                -18.8,
+                500
+              ],
+              [
+                -18.8,
+                500
+              ],
+              [
+                -18.8,
+                500
+              ],
+              [
+                -18.8,
+                614.8
+              ],
+              [
+                -18.8,
+                614.8
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -21.77,
+                614.8
+              ],
+              [
+                -18.8,
+                623.3
+              ],
+              [
+                -15.82,
+                614.8
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -41.11,
+              503.9
+            ],
+            "align": "c",
+            "width": 103.33,
+            "text": "Admin login result"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-43",
+        "pos": "e,-18.799,624.81 154.71,500 72.316,500 -18.799,500 -18.799,500 -18.799,500 -18.799,614.8 -18.799,614.8",
+        "xlabel": "Admin login result",
+        "xlp": "-41.107,507.8"
+      },
+      {
+        "_gvid": 34,
+        "tail": 12,
+        "head": 1,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                154.48,
+                494
+              ],
+              [
+                -155.57,
+                494
+              ],
+              [
+                -911.48,
+                494
+              ],
+              [
+                -911.48,
+                494
+              ],
+              [
+                -911.48,
+                494
+              ],
+              [
+                -911.48,
+                153
+              ],
+              [
+                -911.48,
+                153
+              ],
+              [
+                -911.48,
+                153
+              ],
+              [
+                -979.91,
+                153
+              ],
+              [
+                -979.91,
+                153
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -979.91,
+                150.03
+              ],
+              [
+                -988.41,
+                153
+              ],
+              [
+                -979.91,
+                155.98
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              -638.85,
+              497.9
+            ],
+            "align": "c",
+            "width": 111.27,
+            "text": "Cashier login result"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-44",
+        "pos": "e,-989.92,153 154.48,494 -155.57,494 -911.48,494 -911.48,494 -911.48,494 -911.48,153 -911.48,153 -911.48,153 -979.91,153 -979.91,153",
+        "xlabel": "Cashier login result",
+        "xlp": "-638.85,501.8"
+      },
+      {
+        "_gvid": 9,
+        "tail": 0,
+        "head": 13,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -10.17,
+                647
+              ],
+              [
+                232.8,
+                647
+              ],
+              [
+                776.02,
+                647
+              ],
+              [
+                776.02,
+                647
+              ],
+              [
+                776.02,
+                647
+              ],
+              [
+                776.02,
+                517.99
+              ],
+              [
+                776.02,
+                517.99
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                779,
+                517.99
+              ],
+              [
+                776.02,
+                509.49
+              ],
+              [
+                773.05,
+                517.99
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              370.48,
+              650.9
+            ],
+            "align": "c",
+            "width": 153.9,
+            "text": "User details/access choice"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-45",
+        "pos": "e,776.02,507.98 -10.168,647 232.8,647 776.02,647 776.02,647 776.02,647 776.02,517.99 776.02,517.99",
+        "xlabel": "User details/access choice",
+        "xlp": "370.48,654.8"
+      },
+      {
+        "_gvid": 51,
+        "tail": 19,
+        "head": 13,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                908.52,
+                652.06
+              ],
+              [
+                908.52,
+                652.06
+              ],
+              [
+                908.52,
+                517.98
+              ],
+              [
+                908.52,
+                517.98
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                911.5,
+                517.98
+              ],
+              [
+                908.52,
+                509.48
+              ],
+              [
+                905.55,
+                517.98
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              851.81,
+              588.92
+            ],
+            "align": "c",
+            "width": 113.43,
+            "text": "User/admin records"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-46",
+        "pos": "e,908.52,507.97 908.52,652.06 908.52,652.06 908.52,517.98 908.52,517.98",
+        "xlabel": "User/admin records",
+        "xlp": "851.81,592.82"
+      },
+      {
+        "_gvid": 36,
+        "tail": 13,
+        "head": 19,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                842.27,
+                507.86
+              ],
+              [
+                842.27,
+                507.86
+              ],
+              [
+                842.27,
+                642.01
+              ],
+              [
+                842.27,
+                642.01
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                839.3,
+                642.01
+              ],
+              [
+                842.27,
+                650.51
+              ],
+              [
+                845.25,
+                642.01
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              754.82,
+              578.84
+            ],
+            "align": "c",
+            "width": 174.9,
+            "text": "Created/updated user account"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-47",
+        "pos": "e,842.27,652.02 842.27,507.86 842.27,507.86 842.27,642.01 842.27,642.01",
+        "xlabel": "Created/updated user account",
+        "xlp": "754.82,582.74"
+      },
+      {
+        "_gvid": 10,
+        "tail": 0,
+        "head": 14,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -10.04,
+                642
+              ],
+              [
+                205.85,
+                642
+              ],
+              [
+                649.77,
+                642
+              ],
+              [
+                649.77,
+                642
+              ],
+              [
+                649.77,
+                642
+              ],
+              [
+                649.77,
+                -227
+              ],
+              [
+                649.77,
+                -227
+              ],
+              [
+                649.77,
+                -227
+              ],
+              [
+                759.42,
+                -227
+              ],
+              [
+                759.42,
+                -227
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                759.42,
+                -224.02
+              ],
+              [
+                767.92,
+                -227
+              ],
+              [
+                759.42,
+                -229.97
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              604.61,
+              486.48
+            ],
+            "align": "c",
+            "width": 90.33,
+            "text": "Backup request"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-48",
+        "pos": "e,769.43,-227 -10.039,642 205.85,642 649.77,642 649.77,642 649.77,642 649.77,-227 649.77,-227 649.77,-227 759.42,-227 759.42,-227",
+        "xlabel": "Backup request",
+        "xlp": "604.61,490.38"
+      },
+      {
+        "_gvid": 54,
+        "tail": 21,
+        "head": 14,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                904.77,
+                82.2
+              ],
+              [
+                904.77,
+                82.2
+              ],
+              [
+                904.77,
+                -182.25
+              ],
+              [
+                904.77,
+                -182.25
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                907.75,
+                -182.25
+              ],
+              [
+                904.77,
+                -190.75
+              ],
+              [
+                901.8,
+                -182.25
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              840.09,
+              -46.13
+            ],
+            "align": "c",
+            "width": 129.37,
+            "text": "Current database data"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-49",
+        "pos": "e,904.77,-192.27 904.77,82.199 904.77,82.199 904.77,-182.25 904.77,-182.25",
+        "xlabel": "Current database data",
+        "xlp": "840.09,-42.226"
+      },
+      {
+        "_gvid": 37,
+        "tail": 14,
+        "head": 20,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                904.77,
+                -302.76
+              ],
+              [
+                904.77,
+                -302.76
+              ],
+              [
+                904.77,
+                -577.03
+              ],
+              [
+                904.77,
+                -577.03
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                907.75,
+                -577.03
+              ],
+              [
+                904.77,
+                -585.53
+              ],
+              [
+                901.8,
+                -577.03
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              840.45,
+              -435.99
+            ],
+            "align": "c",
+            "width": 128.64,
+            "text": "New database backup"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-50",
+        "pos": "e,904.77,-587.04 904.77,-302.76 904.77,-302.76 904.77,-577.03 904.77,-577.03",
+        "xlabel": "New database backup",
+        "xlp": "840.45,-432.09"
+      },
+      {
+        "_gvid": 11,
+        "tail": 0,
+        "head": 15,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                -53.08,
+                624.62
+              ],
+              [
+                -53.08,
+                506.54
+              ],
+              [
+                -53.08,
+                153
+              ],
+              [
+                -53.08,
+                153
+              ],
+              [
+                -53.08,
+                153
+              ],
+              [
+                273.11,
+                153
+              ],
+              [
+                273.11,
+                153
+              ],
+              [
+                273.11,
+                153
+              ],
+              [
+                273.11,
+                -512.28
+              ],
+              [
+                273.11,
+                -512.28
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                276.08,
+                -512.28
+              ],
+              [
+                273.11,
+                -520.78
+              ],
+              [
+                270.13,
+                -512.28
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              136.03,
+              156.9
+            ],
+            "align": "c",
+            "width": 141.63,
+            "text": "Backup/admin password"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-51",
+        "pos": "e,273.11,-522.29 -53.084,624.62 -53.084,506.54 -53.084,153 -53.084,153 -53.084,153 273.11,153 273.11,153 273.11,153 273.11,-512.28 273.11,-512.28",
+        "xlabel": "Backup/admin password",
+        "xlp": "136.03,160.8"
+      },
+      {
+        "_gvid": 53,
+        "tail": 20,
+        "head": 15,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                754.53,
+                -610
+              ],
+              [
+                754.53,
+                -610
+              ],
+              [
+                540,
+                -610
+              ],
+              [
+                540,
+                -610
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                540,
+                -612.97
+              ],
+              [
+                531.5,
+                -610
+              ],
+              [
+                540,
+                -607.02
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              572.82,
+              -606.1
+            ],
+            "align": "c",
+            "width": 148.88,
+            "text": "Selected backup contents"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-52",
+        "pos": "e,529.98,-610 754.53,-610 754.53,-610 540,-610 540,-610",
+        "xlabel": "Selected backup contents",
+        "xlp": "572.82,-602.2"
+      },
+      {
+        "_gvid": 52,
+        "tail": 19,
+        "head": 15,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                694.77,
+                652.06
+              ],
+              [
+                694.77,
+                438.96
+              ],
+              [
+                694.77,
+                -544
+              ],
+              [
+                694.77,
+                -544
+              ],
+              [
+                694.77,
+                -544
+              ],
+              [
+                539.87,
+                -544
+              ],
+              [
+                539.87,
+                -544
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                539.87,
+                -546.97
+              ],
+              [
+                531.37,
+                -544
+              ],
+              [
+                539.87,
+                -541.02
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              643.11,
+              -19.52
+            ],
+            "align": "c",
+            "width": 103.33,
+            "text": "Admin credentials"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-53",
+        "pos": "e,529.85,-544 694.77,652.06 694.77,438.96 694.77,-544 694.77,-544 694.77,-544 539.87,-544 539.87,-544",
+        "xlabel": "Admin credentials",
+        "xlp": "643.11,-15.622"
+      },
+      {
+        "_gvid": 39,
+        "tail": 15,
+        "head": 21,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                530.05,
+                -566
+              ],
+              [
+                634.84,
+                -566
+              ],
+              [
+                762.27,
+                -566
+              ],
+              [
+                762.27,
+                -566
+              ],
+              [
+                762.27,
+                -566
+              ],
+              [
+                762.27,
+                71.99
+              ],
+              [
+                762.27,
+                71.99
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                759.3,
+                71.99
+              ],
+              [
+                762.27,
+                80.49
+              ],
+              [
+                765.25,
+                71.99
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              683.87,
+              -359.22
+            ],
+            "align": "c",
+            "width": 156.81,
+            "text": "Restored database records"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-54",
+        "pos": "e,762.27,82.002 530.05,-566 634.84,-566 762.27,-566 762.27,-566 762.27,-566 762.27,71.988 762.27,71.988",
+        "xlabel": "Restored database records",
+        "xlp": "683.87,-355.32"
+      },
+      {
+        "_gvid": 38,
+        "tail": 15,
+        "head": 0,
+        "_draw_": [
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "b",
+            "points": [
+              [
+                266.44,
+                -522.04
+              ],
+              [
+                266.44,
+                -354.83
+              ],
+              [
+                266.44,
+                133
+              ],
+              [
+                266.44,
+                133
+              ],
+              [
+                266.44,
+                133
+              ],
+              [
+                -61.66,
+                133
+              ],
+              [
+                -61.66,
+                133
+              ],
+              [
+                -61.66,
+                133
+              ],
+              [
+                -61.66,
+                614.83
+              ],
+              [
+                -61.66,
+                614.83
+              ]
+            ]
+          }
+        ],
+        "_hdraw_": [
+          {
+            "op": "S",
+            "style": "solid"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "C",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "P",
+            "points": [
+              [
+                -64.63,
+                614.83
+              ],
+              [
+                -61.66,
+                623.33
+              ],
+              [
+                -58.68,
+                614.83
+              ]
+            ]
+          }
+        ],
+        "_ldraw_": [
+          {
+            "op": "F",
+            "size": 13,
+            "face": "Arial"
+          },
+          {
+            "op": "c",
+            "grad": "none",
+            "color": "#000000"
+          },
+          {
+            "op": "T",
+            "pt": [
+              138.06,
+              136.9
+            ],
+            "align": "c",
+            "width": 101.88,
+            "text": "Restoration result"
+          }
+        ],
+        "arrowsize": "0.85",
+        "color": "black",
+        "fontname": "Arial",
+        "fontsize": "13",
+        "id": "flow-55",
+        "pos": "e,-61.656,624.84 266.44,-522.04 266.44,-354.83 266.44,133 266.44,133 266.44,133 -61.656,133 -61.656,133 -61.656,133 -61.656,614.83 -61.656,614.83",
+        "xlabel": "Restoration result",
+        "xlp": "138.06,140.8"
+      }
+    ]
+  }
+}

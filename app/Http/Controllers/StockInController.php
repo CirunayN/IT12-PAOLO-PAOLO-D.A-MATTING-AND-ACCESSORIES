@@ -97,6 +97,12 @@ class StockInController extends Controller
 
     public function index(Request $request)
     {
+        $data = app(\App\Services\FilterCache::class)->remember('receiving', $request->query(), fn () => $this->receivingData($request));
+        return view('stock_in.index', $data);
+    }
+
+    private function receivingData(Request $request): array
+    {
         $query = $this->stockInQuery($request);
 
         $stockIns = $query->paginate(15)->withQueryString();
@@ -104,7 +110,7 @@ class StockInController extends Controller
         $products = Product::orderBy('Name', 'asc')->get();
         $users = User::orderBy('name', 'asc')->get();
 
-        return view('stock_in.index', compact('stockIns', 'categories', 'products', 'users'));
+        return compact('stockIns', 'categories', 'products', 'users');
     }
 
     public function print(Request $request)
