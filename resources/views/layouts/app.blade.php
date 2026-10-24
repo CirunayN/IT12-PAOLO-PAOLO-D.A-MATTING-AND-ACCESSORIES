@@ -105,11 +105,6 @@
                 <i class="fas fa-chart-pie w-5 text-center text-base {{ request()->routeIs('dashboard') ? 'text-red-500' : 'text-slate-400' }}"></i>
                 <span class="sidebar-label font-display">Dashboard</span>
             </a>
-            <a href="{{ route('reports.index') }}" title="Reports" aria-label="Reports"
-               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('reports.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
-                <i class="fas fa-file-lines w-5 text-center text-base {{ request()->routeIs('reports.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-                <span class="sidebar-label font-display">Reports</span>
-            </a>
         @endif
 
         <a href="{{ route('pos.index') }}" title="POS Terminal" aria-label="POS Terminal"
@@ -118,11 +113,19 @@
             <span class="sidebar-label font-display">POS Terminal</span>
         </a>
 
-        <a href="{{ route('transactions.index') }}" title="Transactions" aria-label="Transactions"
+        <a href="{{ route('transactions.index') }}" title="Sales History" aria-label="Sales History"
            class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('transactions.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
             <i class="fas fa-receipt w-5 text-center text-base {{ request()->routeIs('transactions.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
-            <span class="sidebar-label font-display">Transactions</span>
+            <span class="sidebar-label font-display">Sales History</span>
         </a>
+
+        @if(auth()->user() && auth()->user()->isAdmin())
+            <a href="{{ route('reports.index') }}" title="Reports" aria-label="Reports"
+               class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-sm font-semibold transition-all {{ request()->routeIs('reports.*') ? 'bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30 font-bold' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-dark-800' }}">
+                <i class="fas fa-file-lines w-5 text-center text-base {{ request()->routeIs('reports.*') ? 'text-red-500' : 'text-slate-400' }}"></i>
+                <span class="sidebar-label font-display">Reports</span>
+            </a>
+        @endif
 
         <a href="{{ route('settings.account') }}" id="accountSettingsLink" title="My Account" aria-label="My Account"
            @if(request()->routeIs('settings.*', 'security.*')) aria-current="page" @endif
