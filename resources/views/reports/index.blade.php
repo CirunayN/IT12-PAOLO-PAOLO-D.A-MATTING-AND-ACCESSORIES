@@ -244,7 +244,7 @@
         <a href="{{ route('transactions.index') }}"
            class="glass-card rounded-2xl p-5 border hover:border-blue-500/50 hover:shadow-md transition-all group block cursor-pointer">
             <div class="flex items-center justify-between text-xs uppercase font-bold text-slate-400 group-hover:text-blue-500 transition-colors">
-                <span>Transactions</span>
+                <span>Completed Sales</span>
                 <i class="fas fa-arrow-up-right-from-square opacity-0 group-hover:opacity-100 transition-opacity text-[10px]"></i>
             </div>
             <div class="text-2xl font-black mt-2 text-slate-900 dark:text-white group-hover:text-blue-500 transition-colors">
@@ -425,7 +425,7 @@
         <div class="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fas fa-receipt text-blue-500"></i>
-                <span>Sales Transactions</span>
+                <span>Sales History</span>
             </h3>
             <div class="flex items-center gap-3">
                 <span class="text-xs font-bold text-slate-400">{{ $sales->count() }} records</span>
@@ -440,7 +440,7 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="text-xs uppercase text-slate-400 bg-slate-50/50 dark:bg-dark-850 border-b border-slate-200 dark:border-slate-800">
-                        <th class="px-4 py-3 text-left">Transaction</th>
+                        <th class="px-4 py-3 text-left">Invoice #</th>
                         <th class="px-4 py-3 text-left">Date</th>
                         <th class="px-4 py-3 text-left">Employee</th>
                         <th class="px-4 py-3 text-center">Items</th>
@@ -476,7 +476,7 @@
                     @empty
                     <tr>
                         <td colspan="6" class="p-8 text-center text-slate-400">
-                            No sales transactions recorded for this period.
+                            No sales records found for this period.
                         </td>
                     </tr>
                     @endforelse
