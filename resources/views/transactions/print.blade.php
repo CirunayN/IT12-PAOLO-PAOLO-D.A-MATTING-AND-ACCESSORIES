@@ -12,7 +12,7 @@
     >
 
     <title>
-        Transaction Report - {{ $user->name }}
+        Sales History Report - {{ $user->name }}
     </title>
 
 
@@ -224,7 +224,7 @@
 
 
     <h2>
-        EMPLOYEE TRANSACTION REPORT
+        EMPLOYEE SALES HISTORY REPORT
     </h2>
 
 
@@ -274,7 +274,7 @@
     <tr>
 
         <th>
-            Total Transactions
+            Total Completed Sales
         </th>
 
         <td>
@@ -324,7 +324,7 @@
         <tr>
 
             <th>
-                Transaction
+                Invoice #
             </th>
 
             <th>
@@ -406,7 +406,7 @@
                 class="center"
             >
 
-                No transactions found.
+                No sales records found.
 
             </td>
 
