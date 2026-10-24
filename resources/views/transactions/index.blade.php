@@ -8,7 +8,7 @@
         <div>
             <h1 class="text-2xl sm:text-3xl font-black font-display text-slate-900 dark:text-white flex items-center gap-3">
                 <i class="fas fa-receipt text-red-500"></i>
-                <span>Transactions &amp; Sales</span>
+                <span>Sales History</span>
             </h1>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 Audit history &bull; Active Report: <strong class="text-slate-900 dark:text-white">{{ $periodLabel }}</strong>
@@ -119,7 +119,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
         <div class="glass-card rounded-2xl p-5 border shadow-sm flex flex-col justify-between">
             <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">
-                <span>Transactions</span>
+                <span>Completed Sales</span>
                 <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center"><i class="fas fa-receipt"></i></div>
             </div>
             <div class="text-3xl font-black font-display text-slate-900 dark:text-white">
@@ -167,7 +167,7 @@
         <div class="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <h3 class="font-display font-black text-lg text-slate-900 dark:text-white flex items-center gap-2">
                 <i class="fas fa-list-check text-red-500"></i>
-                <span>Sales Transaction History</span>
+                <span>Sales History Records</span>
             </h3>
             <span class="text-xs text-slate-400">Total: <strong>{{ $sales->total() }}</strong> records</span>
         </div>
@@ -261,7 +261,7 @@
                     <tr>
                         <td colspan="7" class="px-4 py-14 text-center text-slate-400 text-sm">
                             <i class="fas fa-receipt text-3xl mb-2 opacity-50"></i>
-                            <p>No transactions found matching the selected filters.</p>
+                            <p>No sales records found matching the selected filters.</p>
                         </td>
                     </tr>
                     @endforelse
@@ -284,7 +284,7 @@
         <!-- Modal Header -->
         <div class="flex items-start justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
             <div>
-                <div class="text-[10px] uppercase font-bold text-slate-400">Transaction Details</div>
+                <div class="text-[10px] uppercase font-bold text-slate-400">Sale Details</div>
                 <h3 id="modalSaleId" class="font-display font-black text-xl text-slate-900 dark:text-white">INV-0</h3>
             </div>
             <button type="button" onclick="closeSaleModal()" class="text-2xl text-slate-400 hover:text-slate-600 dark:hover:text-white leading-none cursor-pointer">&times;</button>
