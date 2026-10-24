@@ -153,7 +153,7 @@ class SystemAuditTest extends TestCase
     {
         $response = $this->actingAs($this->admin)->get(route('transactions.index'));
         $response->assertOk();
-        $response->assertSee('Transactions & Sales');
+        $response->assertSee('Sales History');
 
         $responseCsv = $this->actingAs($this->admin)->get(route('transactions.export_csv'));
         $responseCsv->assertOk();
@@ -251,7 +251,7 @@ class SystemAuditTest extends TestCase
     {
         $response = $this->actingAs($this->cashier)->get(route('transactions.index'));
         $response->assertOk();
-        $response->assertSee('Transactions & Sales');
+        $response->assertSee('Sales History');
 
         $responsePrint = $this->actingAs($this->cashier)->get(route('transactions.print'));
         $responsePrint->assertOk();
