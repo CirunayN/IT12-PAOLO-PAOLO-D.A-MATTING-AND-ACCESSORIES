@@ -130,7 +130,7 @@
                     <div class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-500 flex items-center justify-center text-xs">
                         <i class="fas fa-receipt"></i>
                     </div>
-                    <span><strong>{{ $todaySalesCount }}</strong> completed {{ Str::plural('transaction', $todaySalesCount) }}</span>
+                    <span><strong>{{ $todaySalesCount }}</strong> completed {{ Str::plural('sale', $todaySalesCount) }}</span>
                 </div>
                 <span class="text-slate-400 font-semibold">{{ $periodLabel }}</span>
             </div>
@@ -138,7 +138,7 @@
 
         <!-- STAT CARD 2: Total Sales Revenue -->
         <a href="{{ route('transactions.index', ['period' => 'overall']) }}"
-           title="View all sales transactions"
+           title="View sales history"
            class="dashboard-sales-card glass-card group rounded-3xl p-5 sm:p-6 border shadow-sm transition-all hover:shadow-md hover:border-blue-500/40 flex flex-col justify-between cursor-pointer min-w-0">
             <div>
                 <div class="flex items-center justify-between gap-2 mb-3">
@@ -219,7 +219,7 @@
                             <h3 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">Recent Sales</h3>
                             @if(!empty($isFallbackRecentSales))
                                 <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                                    <i class="fas fa-clock-rotate-left text-[10px]"></i> Latest recorded transactions
+                                    <i class="fas fa-clock-rotate-left text-[10px]"></i> Latest recorded sales
                                 </span>
                             @else
                                 <span class="text-[11px] font-semibold text-slate-400">
@@ -230,7 +230,7 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <a href="{{ route('transactions.index') }}" class="text-xs font-bold text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 transition-colors">
-                            Transactions &rarr;
+                            Sales History &rarr;
                         </a>
                         <a href="{{ route('pos.index') }}" class="text-xs font-bold text-blue-500 hover:text-blue-400 transition-colors">
                             New Sale &rarr;
