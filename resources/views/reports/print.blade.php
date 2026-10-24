@@ -367,7 +367,7 @@
             <thead>
                 <tr>
                     <th>Total Sales Revenue</th>
-                    <th>Completed Transactions</th>
+                    <th>Completed Sales</th>
                     <th>Cash Payments</th>
                     <th>GCash Payments</th>
                 </tr>
@@ -382,8 +382,8 @@
             </tbody>
         </table>
 
-        <!-- SALES TRANSACTIONS TABLE -->
-        <div class="section-heading">Sales Transactions Detail ({{ $sales->count() }} records)</div>
+        <!-- SALES HISTORY TABLE -->
+        <div class="section-heading">Sales History Detail ({{ $sales->count() }} records)</div>
         <table class="report-table">
             <thead>
                 <tr>
@@ -407,7 +407,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center">No transactions recorded for this period.</td>
+                    <td colspan="6" class="text-center">No sales records found for this period.</td>
                 </tr>
                 @endforelse
             </tbody>
