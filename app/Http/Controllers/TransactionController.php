@@ -120,7 +120,7 @@ class TransactionController extends Controller
         ->orderBy('Date', 'desc')
         ->get();
 
-        $fileName = 'transactions_' . date('Y-m-d_His') . '.csv';
+        $fileName = 'sales_history_' . date('Y-m-d_His') . '.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',

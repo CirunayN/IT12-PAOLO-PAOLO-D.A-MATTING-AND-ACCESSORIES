@@ -29,14 +29,19 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/settings/password', fn () => response()->view('settings.password')->header('Cache-Control', 'no-store, private'))
         ->name('settings.password');
 
-    Route::get('/my-transactions', [TransactionController::class, 'index'])
+    Route::get('/sales-history', [TransactionController::class, 'index'])
         ->name('transactions.index');
 
-    Route::get('/my-transactions/print', [TransactionController::class, 'print'])
+    Route::get('/sales-history/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
 
-    Route::get('/my-transactions/export-csv', [TransactionController::class, 'exportCsv'])
+    Route::get('/sales-history/export-csv', [TransactionController::class, 'exportCsv'])
         ->name('transactions.export_csv');
+
+    // Legacy aliases
+    Route::get('/my-transactions', [TransactionController::class, 'index']);
+    Route::get('/my-transactions/print', [TransactionController::class, 'print']);
+    Route::get('/my-transactions/export-csv', [TransactionController::class, 'exportCsv']);
 
     Route::middleware(['role:Admin,Cashier,Employee'])->group(function () {
         Route::get('/pos', [PosController::class, 'index'])->name('pos.index');
